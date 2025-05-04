@@ -63,39 +63,99 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
-    // Initialize the dnd-tree-view
-    const taskTree = document.getElementById('task-tree');
+    // Get the task tree container
+    const taskTreeContainer = document.getElementById('task-tree');
     
-    // Create and configure the tree view instance
-    const treeView = new DndTreeView({
-        container: taskTree,
-        data: sampleTasks,
+    /**
+     * Recursive function to build the tree structure
+     * @param {Array} tasks - Array of task objects
+     * @param {HTMLElement} parentElement - Parent element to append to
+     */
+    function buildTreeNodes(tasks, parentElement) {
+        // Create a list element for this level
+        const listElement = document.createElement('ul');
+        listElement.className = 'task-list';
+        parentElement.appendChild(listElement);
         
-        // Configuration options
-        dragAndDrop: true,      // Enable drag and drop
-        collapsible: true,      // Enable collapsible nodes
-        initiallyExpanded: true // Start with all nodes expanded
-    });
-
-    // Custom node renderer function to display task content
-    treeView.nodeRenderer = function(node, element) {
-        // Create a span for the task content
-        const taskContent = document.createElement('span');
-        taskContent.textContent = node.content;
-        taskContent.className = 'task-content';
+        // Initialize Sortable on this list
+        new Sortable(listElement, {
+            group: 'nested',     // Set both lists to same group
+            animation: 150,      // Animation speed when sorting
+            fallbackOnBody: true,
+            swapThreshold: 0.65,
+            ghostClass: 'task-ghost',
+            chosenClass: 'task-chosen',
+            dragClass: 'task-drag',
+            // Handle when items are moved between lists
+            onEnd: function(evt) {
+                console.log(`Task moved: ${evt.item.dataset.id}`);
+                // In a real app, you would update your data structure here
+            }
+        });
         
-        // Add the content to the node element
-        element.appendChild(taskContent);
-
-        return element;
-    };
-
-    // Initialize the tree view
-    treeView.render();
-
-    // Event listener for when a node is moved (optional, for demonstration)
-    treeView.on('nodeMoved', function(nodeId, parentId, index) {
-        console.log(`Node ${nodeId} moved to parent ${parentId} at index ${index}`);
-        // In a real application, you might want to save the updated structure
-    });
+        // Loop through each task and create list items
+        tasks.forEach(task => {
+            // Create list item
+            const taskItem = document.createElement('li');
+            taskItem.className = 'task-item';
+            taskItem.dataset.id = task.id;
+            
+            // Create the task content container
+            const taskContent = document.createElement('div');
+            taskContent.className = 'task-content';
+            
+            // Add toggle button if the task has children
+            if (task.children && task.children.length > 0) {
+                const toggleBtn = document.createElement('span');
+                toggleBtn.className = 'toggle-btn expanded';
+                toggleBtn.innerHTML = '▶';
+                
+                // Add click event to toggle visibility of children
+                toggleBtn.addEventListener('click', function() {
+                    const childContainer = taskItem.querySelector('.task-children');
+                    const isExpanded = toggleBtn.classList.contains('expanded');
+                    
+                    if (isExpanded) {
+                        childContainer.style.display = 'none';
+                        toggleBtn.classList.remove('expanded');
+                        toggleBtn.style.transform = 'rotate(0deg)';
+                    } else {
+                        childContainer.style.display = 'block';
+                        toggleBtn.classList.add('expanded');
+                        toggleBtn.style.transform = 'rotate(90deg)';
+                    }
+                });
+                
+                taskContent.appendChild(toggleBtn);
+            }
+            
+            // Create text content
+            const taskText = document.createElement('span');
+            taskText.textContent = task.content;
+            taskText.className = 'task-text';
+            taskContent.appendChild(taskText);
+            
+            // Add task content to the list item
+            taskItem.appendChild(taskContent);
+            
+            // If this task has children, build them recursively
+            if (task.children && task.children.length > 0) {
+                const childContainer = document.createElement('div');
+                childContainer.className = 'task-children';
+                taskItem.appendChild(childContainer);
+                
+                // Build children nodes
+                buildTreeNodes(task.children, childContainer);
+            }
+            
+            // Add the task item to the list
+            listElement.appendChild(taskItem);
+        });
+    }
+    
+    // Initialize the tree with the sample data
+    buildTreeNodes(sampleTasks, taskTreeContainer);
+    
+    // Log a message when the tree is initialized
+    console.log('Task tree initialized with drag-and-drop and collapsible functionality');
 });

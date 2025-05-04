@@ -36,55 +36,78 @@ h1 {
     overflow: hidden;
 }
 
-/* Styling for dnd-tree-view elements */
-.dnd-tree-view {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
+/* Task list styling */
+.task-list {
+    list-style: none;
+    width: 100%;
 }
 
-.dnd-tree-view-node {
-    border: none !important;
-    background-color: transparent !important;
-    color: #7F7F7F;
+/* Task item styling */
+.task-item {
     padding: 8px 0;
     margin: 2px 0;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
-.dnd-tree-view-node:hover {
-    background-color: rgba(0, 206, 247, 0.05) !important;
+.task-item:hover {
+    background-color: rgba(0, 206, 247, 0.05);
 }
 
-.dnd-tree-view-node.drop-target {
-    background-color: rgba(0, 206, 247, 0.1) !important;
+/* Task content styling */
+.task-content {
+    display: flex;
+    align-items: center;
+    cursor: grab;
+    padding: 0 8px;
 }
 
-.dnd-tree-view-node-toggle {
+.task-text {
+    color: #7F7F7F;
+    margin-left: 8px;
+}
+
+/* Toggle button styling */
+.toggle-btn {
     color: #7F7F7F;
     margin-right: 8px;
     cursor: pointer;
-}
-
-.dnd-tree-view-node-toggle::before {
-    content: '▶';
     display: inline-block;
     font-size: 10px;
     transition: transform 0.2s;
 }
 
-.dnd-tree-view-node-toggle.expanded::before {
+.toggle-btn.expanded {
     transform: rotate(90deg);
 }
 
-.dnd-tree-view-node-content {
-    display: flex;
-    align-items: center;
-    cursor: grab;
-}
-
-.dnd-tree-view-node-dragging {
-    opacity: 0.7;
-    background-color: rgba(0, 206, 247, 0.1) !important;
-}
-
-.dnd-tree-view-node-children {
+/* Children container styling */
+.task-children {
     padding-left: 24px;
+    position: relative;
+}
+
+.task-children:before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background-color: rgba(127, 127, 127, 0.2);
+    z-index: -1;
+}
+
+/* Drag and drop styling */
+.task-ghost {
+    opacity: 0.5;
+    background-color: rgba(0, 206, 247, 0.05);
+}
+
+.task-chosen {
+    background-color: rgba(0, 206, 247, 0.1);
+}
+
+.task-drag {
+    opacity: 0.7;
 }
