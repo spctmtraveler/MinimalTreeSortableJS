@@ -107,12 +107,112 @@ document.addEventListener('DOMContentLoaded', function() {
             animation: 150,      // Animation speed when sorting
             fallbackOnBody: true,
             swapThreshold: 0.65,
+            emptyInsertThreshold: 10, // Allow dropping items into empty lists
             ghostClass: 'task-ghost',
             chosenClass: 'task-chosen',
             dragClass: 'task-drag',
+            // Filter out clicks on the toggle button
+            filter: '[data-no-drag]',
+            preventOnFilter: false,
             // Handle when items are moved between lists
             onEnd: function(evt) {
-                console.log(`Task moved: ${evt.item.dataset.id}`);
+                const taskId = evt.item.dataset.id;
+                console.log(`Task moved: ${taskId}`);
+                
+                // Get the parent task (if any)
+                const parentList = evt.to;
+                const parentTask = parentList.closest('.task-item');
+                
+                // If we're dropping onto a task with no children yet, we need to create the children container
+                if (parentTask && !parentTask.querySelector('.task-children')) {
+                    console.log(`Creating new children container for: ${parentTask.dataset.id}`);
+                    
+                    // Create a task-children div
+                    const childContainer = document.createElement('div');
+                    childContainer.className = 'task-children';
+                    
+                    // Get the closest UL to generate a new nested structure
+                    const ul = document.createElement('ul');
+                    ul.className = 'task-list';
+                    childContainer.appendChild(ul);
+                    
+                    // Add the container to the parent task
+                    parentTask.appendChild(childContainer);
+                    
+                    // Initialize Sortable on this new list
+                    new Sortable(ul, {
+                        group: 'nested',
+                        animation: 150,
+                        fallbackOnBody: true,
+                        swapThreshold: 0.65,
+                        emptyInsertThreshold: 10,
+                        ghostClass: 'task-ghost',
+                        chosenClass: 'task-chosen',
+                        dragClass: 'task-drag',
+                        filter: '[data-no-drag]',
+                        preventOnFilter: false
+                    });
+                    
+                    // Make sure the parent has a toggle button
+                    const taskContent = parentTask.querySelector('.task-content');
+                    if (!taskContent.querySelector('.toggle-area')) {
+                        // Create toggle button
+                        const toggleBtn = document.createElement('span');
+                        toggleBtn.className = 'toggle-btn expanded';
+                        toggleBtn.innerHTML = '▶';
+                        
+                        // Create the toggle area
+                        const toggleArea = document.createElement('div');
+                        toggleArea.className = 'toggle-area';
+                        toggleArea.appendChild(toggleBtn);
+                        toggleArea.setAttribute('data-no-drag', 'true');
+                        
+                        // Add toggle functionality
+                        toggleArea.addEventListener('mousedown', function(e) {
+                            e.stopPropagation();
+                        });
+                        
+                        toggleArea.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            
+                            const childContainer = parentTask.querySelector('.task-children');
+                            const isExpanded = toggleBtn.classList.contains('expanded');
+                            
+                            if (isExpanded) {
+                                childContainer.style.display = 'none';
+                                toggleBtn.classList.remove('expanded');
+                                toggleBtn.style.transform = 'rotate(0deg)';
+                            } else {
+                                childContainer.style.display = 'block';
+                                toggleBtn.classList.add('expanded');
+                                toggleBtn.style.transform = 'rotate(90deg)';
+                            }
+                        });
+                        
+                        toggleArea.addEventListener('touchstart', function(e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            
+                            const childContainer = parentTask.querySelector('.task-children');
+                            const isExpanded = toggleBtn.classList.contains('expanded');
+                            
+                            if (isExpanded) {
+                                childContainer.style.display = 'none';
+                                toggleBtn.classList.remove('expanded');
+                                toggleBtn.style.transform = 'rotate(0deg)';
+                            } else {
+                                childContainer.style.display = 'block';
+                                toggleBtn.classList.add('expanded');
+                                toggleBtn.style.transform = 'rotate(90deg)';
+                            }
+                        }, { passive: false });
+                        
+                        // Insert toggle area before the task text
+                        const taskText = taskContent.querySelector('.task-text');
+                        taskContent.insertBefore(toggleArea, taskText);
+                    }
+                }
+                
                 // In a real app, you would update your data structure here
             }
         });
@@ -135,14 +235,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 toggleBtn.innerHTML = '▶';
                 
                 // Create a separate area for toggle click to improve mobile usability
+                // This will be separate from the draggable area
                 const toggleArea = document.createElement('div');
                 toggleArea.className = 'toggle-area';
                 toggleArea.appendChild(toggleBtn);
+                
+                // Make the toggle area completely separate from the draggable part
+                toggleArea.setAttribute('data-no-drag', 'true');
                 
                 // Unified toggle function for reuse
                 const toggleFunction = function(event) {
                     // Prevent event bubbling (important for nested elements)
                     event.stopPropagation();
+                    // Prevent starting drag operation when clicking the toggle
+                    event.preventDefault();
                     
                     const childContainer = taskItem.querySelector('.task-children');
                     const isExpanded = toggleBtn.classList.contains('expanded');
@@ -161,9 +267,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 
                 // Add multiple event listeners for better mobile compatibility
-                toggleArea.addEventListener('click', toggleFunction);
+                toggleArea.addEventListener('mousedown', function(e) {
+                    e.stopPropagation(); // Prevent drag start
+                });
+                
+                toggleArea.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleFunction(e);
+                });
+                
                 toggleArea.addEventListener('touchstart', function(e) {
-                    // Prevent scrolling when touching the toggle
+                    // Prevent scrolling and dragging when touching the toggle
+                    e.stopPropagation();
                     e.preventDefault();
                     toggleFunction(e);
                 }, { passive: false });
@@ -180,6 +295,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add task content to the list item
             taskItem.appendChild(taskContent);
             
+            // Add drop indication area to all tasks to indicate where things can be dropped
+            const dropIndicator = document.createElement('div');
+            dropIndicator.className = 'drop-indicator';
+            taskItem.appendChild(dropIndicator);
+            
             // If this task has children, build them recursively
             if (task.children && task.children.length > 0) {
                 const childContainer = document.createElement('div');
@@ -189,6 +309,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Build children nodes
                 buildTreeNodes(task.children, childContainer);
             }
+            
+            // Make the entire task item a potential drop zone
+            taskItem.addEventListener('dragover', function(e) {
+                // Add a temporary class to highlight this as a potential drop zone
+                this.classList.add('drag-over');
+                // This will be removed on drag leave
+                setTimeout(() => {
+                    this.classList.remove('drag-over');
+                }, 100);
+            });
             
             // Add the task item to the list
             listElement.appendChild(taskItem);
