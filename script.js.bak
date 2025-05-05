@@ -310,17 +310,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Also check for any tasks explicitly marked as wanting to become parents
-                document.querySelectorAll('.force-become-parent').forEach(el => {
-                    if (!el.querySelector('.task-children')) {
-                        console.log(`Found task ${el.dataset.id} that wants to become a parent - creating container`);
-                        createChildrenContainer(el);
-                    }
-                    el.classList.remove('force-become-parent');
-                    el.classList.remove('received-drop');
-                    el.classList.remove('potential-parent');
-                });
+                // This helps catch cases where the drop event happened but Sortable didn't make it a parent
+                setTimeout(() => {
+                    document.querySelectorAll('.force-become-parent').forEach(el => {
+                        if (!el.querySelector('.task-children')) {
+                            console.log(`Found task ${el.dataset.id} that wants to become a parent - creating container`);
+                            createChildrenContainer(el);
+                        }
+                        el.classList.remove('force-become-parent');
+                        el.classList.remove('received-drop');
+                        el.classList.remove('potential-parent');
+                    });
+                }, 10);
 
                 // If we're dropping onto a task with no children yet, we need to create the children container
+                // Either when there's no children container yet, or the task was marked as receiving a drop
                 if (parentTask && (!parentTask.querySelector('.task-children') || 
                                   parentTask.classList.contains('received-drop') ||
                                   parentTask.classList.contains('potential-parent'))) {
@@ -334,8 +338,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                     
                     // Create children container using the helper function
+                    // (This will handle creating the container, initializing Sortable, and adding toggle button)
                     createChildrenContainer(parentTask);
                 }
+                
+                // In a real app, you would update your data structure here
             }
         });
         
@@ -357,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 toggleBtn.innerHTML = '▶';
                 
                 // Create a separate area for toggle click to improve mobile usability
+                // This will be separate from the draggable area
                 const toggleArea = document.createElement('div');
                 toggleArea.className = 'toggle-area';
                 toggleArea.appendChild(toggleBtn);
@@ -435,9 +443,6 @@ document.addEventListener('DOMContentLoaded', function() {
             taskItem.addEventListener('dragover', function(e) {
                 // Add a temporary class to highlight this as a potential drop zone
                 this.classList.add('drag-over');
-                // Also mark this as potential parent
-                this.classList.add('potential-parent');
-                e.preventDefault(); // Important for drop to work
             });
             
             // Remove highlight when dragging leaves this item
@@ -453,7 +458,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
             
-            // Specifically handle drop events to make a task become a parent
+            // Add drop functionality to make any task a potential parent - we need to be more aggressive
+            // about catching drop events on non-parent tasks
+            ['dragover', 'dragenter'].forEach(eventName => {
+                taskItem.addEventListener(eventName, function(e) {
+                    // Mark this as a potential drop target during the whole drag operation
+                    this.classList.add('potential-parent');
+                    e.preventDefault(); // Important for drop events to work
+                });
+            });
+            
+            // When a task receives a drop, we want to ensure it becomes a parent
             taskItem.addEventListener('drop', function(e) {
                 // Prevent default to ensure drop events work properly
                 e.preventDefault();
@@ -462,8 +477,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Check if this item already has children
                 if (!this.querySelector('.task-children')) {
                     console.log(`Item ${this.dataset.id} received a drop but is not yet a parent - flagging it for conversion`);
-                    // Flag this for conversion to parent
+                    
+                    // Force this item to become a parent by adding a class we'll check in the onEnd handler
+                    this.classList.add('received-drop');
                     this.classList.add('force-become-parent');
+                    
+                    // The actual creation of children container happens in the Sortable onEnd handler
                 }
             });
             
