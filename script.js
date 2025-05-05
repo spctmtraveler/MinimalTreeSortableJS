@@ -114,6 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Filter out clicks on the toggle button
             filter: '[data-no-drag]',
             preventOnFilter: false,
+            // Critical for nested functionality - allow moving to different levels
+            put: true,
+            nested: true,
             // Handle when items are moved between lists
             onEnd: function(evt) {
                 const taskId = evt.item.dataset.id;
@@ -122,6 +125,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Get the parent task (if any)
                 const parentList = evt.to;
                 const parentTask = parentList.closest('.task-item');
+                
+                // Debug info
+                if (parentTask) {
+                    console.log(`Dropped into parent task: ${parentTask.dataset.id}`);
+                } else {
+                    console.log('Dropped at root level');
+                }
                 
                 // If we're dropping onto a task with no children yet, we need to create the children container
                 if (parentTask && !parentTask.querySelector('.task-children')) {
@@ -150,7 +160,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         chosenClass: 'task-chosen',
                         dragClass: 'task-drag',
                         filter: '[data-no-drag]',
-                        preventOnFilter: false
+                        preventOnFilter: false,
+                        // Critical for nested functionality - allow moving to different levels
+                        put: true,
+                        nested: true
                     });
                     
                     // Make sure the parent has a toggle button
