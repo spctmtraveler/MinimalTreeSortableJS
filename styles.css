@@ -50,12 +50,18 @@ h1 {
     padding: 4px 0;
     margin: 1px 0;
     border-radius: 4px;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     position: relative; /* Required for absolute positioning of children */
 }
 
 .task-item:hover {
     background-color: rgba(0, 206, 247, 0.05);
+}
+
+/* Show the indent zone when task is hovered */
+.task-item:hover .indent-zone {
+    opacity: 1;
+    background-color: rgba(0, 206, 247, 0.15);
 }
 
 /* Task content styling */
@@ -203,25 +209,32 @@ body > .sortable-drag {
     position: absolute;
     top: 0;
     right: 0;
-    width: 30px;
+    width: 60px; /* Made much wider */
     height: 100%;
     z-index: 10;
-    opacity: 0.2;
+    background-color: rgba(0, 206, 247, 0.1); /* Always slightly visible */
+    border-left: 1px dashed rgba(0, 206, 247, 0.3);
     transition: all 0.2s ease;
 }
 
 .indent-zone:hover, .indent-zone.active {
     background-color: rgba(0, 206, 247, 0.3);
-    opacity: 1;
+    border-left: 2px solid rgba(0, 206, 247, 0.7);
 }
 
 .indent-icon {
     position: absolute;
     top: 50%;
-    right: 5px;
+    right: 15px;
     transform: translateY(-50%);
     color: #00CEF7;
     font-weight: bold;
+    font-size: 16px; /* Larger icon */
+}
+
+/* Task item needs relative position for indent zone */
+.task-item {
+    position: relative;
 }
 
 /* Task when hovered over indent zone */

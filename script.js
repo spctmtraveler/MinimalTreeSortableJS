@@ -614,25 +614,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Basic highlight
                 this.classList.add('drag-over');
                 
-                // Check if mouse is over the indent zone
+                // Check if we have an indent zone
                 const indentZone = this.querySelector('.indent-zone');
                 if (indentZone) {
                     const indentRect = indentZone.getBoundingClientRect();
                     
-                    // Check if the mouse is within the indent zone
-                    if (
-                        mouseX >= indentRect.left && 
-                        mouseX <= indentRect.right && 
-                        mouseY >= indentRect.top && 
-                        mouseY <= indentRect.bottom
-                    ) {
-                        // We're hovering over the indent zone!
-                        console.log(`*** INDENT ZONE ACTIVE for ${taskId}`);
+                    // Get the task item's rect
+                    const taskRect = this.getBoundingClientRect();
+                    
+                    // Check if we're in the right third of the task - simpler and more reliable
+                    const rightThreshold = taskRect.left + (taskRect.width * 0.7);
+                    
+                    if (mouseX >= rightThreshold) {
+                        // We're in the right zone of the task!
+                        console.log(`*** INDENT ZONE ACTIVE for ${taskId} - in right third of task`);
                         this.classList.add('indent-hover');
                         indentZone.classList.add('active');
                         
                         // Flag this to become a parent
                         this.dataset.shouldBecomeParent = "true";
+                        
+                        // If this task doesn't have children yet, create a container immediately
+                        if (!this.querySelector('.task-children')) {
+                            console.log(`*** CREATING CONTAINER during dragover for ${taskId}`);
+                            createChildrenContainer(this);
+                        }
                     } else {
                         // Not in indent zone
                         this.classList.remove('indent-hover');
