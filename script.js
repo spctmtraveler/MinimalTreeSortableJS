@@ -103,20 +103,37 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Initialize Sortable on this list
         new Sortable(listElement, {
-            group: 'nested',     // Set both lists to same group
+            group: {
+                name: 'nested',
+                pull: true,
+                put: function(to, from, dragEl, event) {
+                    return true; // Always allow dropping into any list
+                },
+            },     
             animation: 150,      // Animation speed when sorting
             fallbackOnBody: true,
-            swapThreshold: 0.65,
-            emptyInsertThreshold: 10, // Allow dropping items into empty lists
+            delay: 0,            // Needed for mobile
+            touchStartThreshold: 3, // Threshold to start drag
+            swapThreshold: 0.5,  // Percentage of the item that has to be over the other to swap
+            emptyInsertThreshold: 5, // Allow dropping items into empty lists
+            invertSwap: true,    // Swap items when going down or up, more intuitive
             ghostClass: 'task-ghost',
             chosenClass: 'task-chosen',
             dragClass: 'task-drag',
             // Filter out clicks on the toggle button
             filter: '[data-no-drag]',
             preventOnFilter: false,
-            // Critical for nested functionality - allow moving to different levels
-            put: true,
-            nested: true,
+            // Remove flickering outline for dragged elements
+            forceFallback: true,
+            // Cleanup when drag starts
+            onStart: function(evt) {
+                // Clear any stuck drag-over highlights
+                document.querySelectorAll('.drag-over').forEach(el => {
+                    el.classList.remove('drag-over');
+                });
+                
+                console.log('Started dragging: ' + evt.item.dataset.id);
+            },
             // Handle when items are moved between lists
             onEnd: function(evt) {
                 const taskId = evt.item.dataset.id;
@@ -149,21 +166,37 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Add the container to the parent task
                     parentTask.appendChild(childContainer);
                     
-                    // Initialize Sortable on this new list
+                    // Initialize Sortable on this new list - with identical settings to main list
                     new Sortable(ul, {
-                        group: 'nested',
+                        group: {
+                            name: 'nested',
+                            pull: true,
+                            put: function(to, from, dragEl, event) {
+                                return true; // Always allow dropping into any list
+                            },
+                        },
                         animation: 150,
                         fallbackOnBody: true,
-                        swapThreshold: 0.65,
-                        emptyInsertThreshold: 10,
+                        delay: 0,
+                        touchStartThreshold: 3,
+                        swapThreshold: 0.5,
+                        emptyInsertThreshold: 5,
+                        invertSwap: true,
                         ghostClass: 'task-ghost',
                         chosenClass: 'task-chosen',
                         dragClass: 'task-drag',
                         filter: '[data-no-drag]',
                         preventOnFilter: false,
-                        // Critical for nested functionality - allow moving to different levels
-                        put: true,
-                        nested: true
+                        forceFallback: true,
+                        // Cleanup when drag starts
+                        onStart: function(evt) {
+                            // Clear any stuck drag-over highlights
+                            document.querySelectorAll('.drag-over').forEach(el => {
+                                el.classList.remove('drag-over');
+                            });
+                            
+                            console.log('Started dragging: ' + evt.item.dataset.id);
+                        }
                     });
                     
                     // Make sure the parent has a toggle button
@@ -327,10 +360,19 @@ document.addEventListener('DOMContentLoaded', function() {
             taskItem.addEventListener('dragover', function(e) {
                 // Add a temporary class to highlight this as a potential drop zone
                 this.classList.add('drag-over');
-                // This will be removed on drag leave
-                setTimeout(() => {
-                    this.classList.remove('drag-over');
-                }, 100);
+            });
+            
+            // Remove highlight when dragging leaves this item
+            taskItem.addEventListener('dragleave', function(e) {
+                this.classList.remove('drag-over');
+            });
+            
+            // Ensure highlight is removed when drag ends (fixes stuck highlight bug)
+            taskItem.addEventListener('dragend', function(e) {
+                // Remove drag-over class from all items
+                document.querySelectorAll('.drag-over').forEach(el => {
+                    el.classList.remove('drag-over');
+                });
             });
             
             // Add the task item to the list
@@ -343,4 +385,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Log a message when the tree is initialized
     console.log('Task tree initialized with drag-and-drop and collapsible functionality');
+    
+    // Global cleanup for any stuck highlights
+    document.addEventListener('mouseup', function() {
+        document.querySelectorAll('.drag-over').forEach(el => {
+            el.classList.remove('drag-over');
+        });
+    });
+    
+    // Global dragend event listener to clean up any remaining highlight styles
+    document.addEventListener('dragend', function() {
+        setTimeout(() => {
+            document.querySelectorAll('.drag-over').forEach(el => {
+                el.classList.remove('drag-over');
+            });
+        }, 10);
+    });
 });

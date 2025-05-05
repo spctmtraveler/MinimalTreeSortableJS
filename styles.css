@@ -40,6 +40,9 @@ h1 {
 .task-list {
     list-style: none;
     width: 100%;
+    min-height: 2px; /* Ensure lists are always visible as drop targets */
+    position: relative;
+    z-index: 1;
 }
 
 /* Task item styling */
@@ -128,41 +131,64 @@ h1 {
 
 .task-chosen {
     background-color: rgba(0, 206, 247, 0.1);
-    box-shadow: 0 0 0 2px rgba(0, 206, 247, 0.2);
+    box-shadow: 0 0 0 1px rgba(0, 206, 247, 0.2);
 }
 
 .task-drag {
-    opacity: 0.7;
-}
-
-/* Highlight task items that are potential drop targets */
-.task-item.sortable-chosen,
-.task-item.sortable-ghost {
-    background-color: rgba(0, 206, 247, 0.15);
-}
-
-.task-item.sortable-drag {
     opacity: 0.8;
-    background-color: rgba(0, 206, 247, 0.1);
+    background-color: rgba(33, 33, 33, 0.9) !important;
+    box-shadow: 0 0 8px rgba(0, 206, 247, 0.3);
+    outline: none !important;
+    border: none !important;
 }
 
 /* Highlight empty containers to show they're valid drop targets */
 .task-list:empty {
-    min-height: 30px;
+    min-height: 20px;
     background-color: rgba(0, 206, 247, 0.05);
     border: 1px dashed rgba(0, 206, 247, 0.3);
     border-radius: 4px;
-    margin: 5px 0;
+    margin: 3px 0;
 }
 
-/* Drop indicator styling */
+/* Specific styles for when forceFallback is used (cleaner appearance) */
+.sortable-fallback {
+    opacity: 0.4 !important;
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+.sortable-ghost {
+    opacity: 0.5 !important;
+    background-color: rgba(0, 206, 247, 0.1) !important;
+    box-shadow: inset 0 0 0 1px rgba(0, 206, 247, 0.3);
+    border-radius: 4px;
+}
+
+/* Clear drop area indications */
+.sortable-drag + .sortable-ghost {
+    display: none !important;
+}
+
+/* Make the dragged item cleaner */
+body > .sortable-drag {
+    position: fixed !important;
+    z-index: 1000;
+    margin: 0 !important;
+    padding: 8px !important;
+    background-color: rgba(33, 33, 33, 0.95) !important;
+    box-shadow: 0 0 15px rgba(0, 206, 247, 0.2);
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* Drop indicator styling - cleaner version */
 .drop-indicator {
     display: none;
-    height: 16px;
-    margin: 0 0 2px 20px;
+    height: 12px;
+    margin: 0 0 1px 18px;
     background-color: transparent;
-    border-radius: 3px;
-    transition: all 0.2s ease;
+    border-radius: 2px;
 }
 
 /* Visual indication when dragging over a task */
@@ -170,20 +196,4 @@ h1 {
     display: block;
     background-color: rgba(0, 206, 247, 0.1);
     border: 1px dashed rgba(0, 206, 247, 0.3);
-}
-
-/* Items that are valid drop targets */
-.task-item.sortable-fallback {
-    opacity: 0.4; 
-}
-
-/* Show when an item can be a parent */
-.task-item.sortable-ghost::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
-    height: 2px;
-    background-color: rgba(0, 206, 247, 0.5);
 }
