@@ -590,96 +590,53 @@ document.addEventListener('DOMContentLoaded', function() {
             let lastDragY = 0;
             let lastOverElement = null;
             
-            // On dragover, flag the task for potential parenthood
+            // Add a right-side indent zone for each task item
+            const indentZone = document.createElement('div');
+            indentZone.className = 'indent-zone';
+            indentZone.setAttribute('data-parent-id', task.id);
+            indentZone.innerHTML = '<div class="indent-icon">➔</div>';
+            taskItem.appendChild(indentZone);
+
+            // Add dragover handler - this now detects if we're over the indent zone
             taskItem.addEventListener('dragover', function(e) {
-                // IMPORTANT - Always do this first to allow drops
+                // Always prevent default first to enable drop
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Save position globals
-                lastDragX = e.clientX;
-                lastDragY = e.clientY;
+                // Keep track of the last element
                 lastOverElement = this;
-                
                 const taskId = this.dataset.id;
                 
-                // Calculate position within the task
-                const rect = this.getBoundingClientRect();
-                const offsetX = e.clientX - rect.left;
-                const horizontalPercentage = offsetX / rect.width;
+                // Get the coordinates
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
                 
-                // Visual feedback - basic dragover first
+                // Basic highlight
                 this.classList.add('drag-over');
                 
-                // Determine if we're in the right half of the task
-                if (horizontalPercentage > 0.5) {
-                    console.log(`*** RIGHT HALF DETECTED: ${taskId} at ${horizontalPercentage.toFixed(2)}`);
+                // Check if mouse is over the indent zone
+                const indentZone = this.querySelector('.indent-zone');
+                if (indentZone) {
+                    const indentRect = indentZone.getBoundingClientRect();
                     
-                    // Try to immediately convert this to a parent
-                    if (!this.classList.contains('drag-over-right')) {
-                        console.log(`*** ADDING RIGHT SIDE HIGHLIGHT to ${taskId}`);
-                        this.classList.add('drag-over-right');
-                        this.dataset.shouldBecomeParent = "true";
+                    // Check if the mouse is within the indent zone
+                    if (
+                        mouseX >= indentRect.left && 
+                        mouseX <= indentRect.right && 
+                        mouseY >= indentRect.top && 
+                        mouseY <= indentRect.bottom
+                    ) {
+                        // We're hovering over the indent zone!
+                        console.log(`*** INDENT ZONE ACTIVE for ${taskId}`);
+                        this.classList.add('indent-hover');
+                        indentZone.classList.add('active');
                         
-                        // Direct immediate container creation
-                        if (!this.querySelector('.task-children')) {
-                            console.log(`*** CRITICAL - CREATING PARENT CONTAINER DURING DRAGOVER FOR: ${taskId}`);
-                            
-                            // Create a container immediately
-                            const childContainer = document.createElement('div');
-                            childContainer.className = 'task-children';
-                            childContainer.style.borderLeft = '2px solid #00CEF7';
-                            
-                            // Create the list element
-                            const ul = document.createElement('ul');
-                            ul.className = 'task-list';
-                            ul.style.minHeight = '30px';
-                            childContainer.appendChild(ul);
-                            
-                            // Add to the task
-                            this.appendChild(childContainer);
-                            
-                            // Add toggle button 
-                            const taskContent = this.querySelector('.task-content');
-                            if (taskContent && !taskContent.querySelector('.toggle-area')) {
-                                const toggleBtn = document.createElement('span');
-                                toggleBtn.className = 'toggle-btn expanded';
-                                toggleBtn.innerHTML = '▶';
-                                toggleBtn.style.transform = 'rotate(90deg)';
-                                
-                                const toggleArea = document.createElement('div');
-                                toggleArea.className = 'toggle-area';
-                                toggleArea.setAttribute('data-no-drag', 'true');
-                                toggleArea.appendChild(toggleBtn);
-                                
-                                // Insert before text
-                                const taskText = taskContent.querySelector('.task-text');
-                                if (taskText) {
-                                    taskContent.insertBefore(toggleArea, taskText);
-                                }
-                            }
-                            
-                            // Initialize Sortable
-                            new Sortable(ul, {
-                                group: { name: 'nested', pull: true, put: true },
-                                animation: 150,
-                                fallbackOnBody: true, 
-                                swapThreshold: 0.65,
-                                invertSwap: true,
-                                ghostClass: 'task-ghost',
-                                filter: '[data-no-drag]',
-                                forceFallback: true
-                            });
-                            
-                            // Store it for direct access in onEnd
-                            window.lastCreatedContainer = childContainer;
-                            window.lastCreatedContainerParent = this;
-                        }
-                    }
-                } else {
-                    // We're in the left half, remove the right-side highlight if it exists
-                    if (this.classList.contains('drag-over-right')) {
-                        this.classList.remove('drag-over-right');
+                        // Flag this to become a parent
+                        this.dataset.shouldBecomeParent = "true";
+                    } else {
+                        // Not in indent zone
+                        this.classList.remove('indent-hover');
+                        indentZone.classList.remove('active');
                     }
                 }
             });
@@ -722,45 +679,51 @@ document.addEventListener('DOMContentLoaded', function() {
                 const taskId = this.dataset.id;
                 console.log(`DROP EVENT ON: ${taskId}`);
                 
-                // Immediately create a container if we have the right-side highlight 
-                if (this.classList.contains('drag-over-right') || this.dataset.shouldBecomeParent === 'true') {
-                    console.log(`*** CRITICAL: Detected that ${taskId} was highlighted as a parent target`);
+                // Get mouse position
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                // First check if we're in the indent zone
+                const indentZone = this.querySelector('.indent-zone');
+                let isInIndentZone = false;
+                
+                if (indentZone) {
+                    const indentRect = indentZone.getBoundingClientRect();
                     
-                    if (!this.querySelector('.task-children')) {
-                        console.log(`*** CREATING PARENT CONTAINER DURING DROP for ${taskId}`);
-                        const container = createChildrenContainer(this);
-                        
-                        // Flag this for the onEnd handler
-                        this.classList.add('drop-created-container');
-                        this.classList.add('force-become-parent');
-                        
-                        // Store references
-                        window.lastCreatedContainer = container;
-                        window.lastCreatedContainerParent = this;
+                    // Check if the drop is within the indent zone
+                    isInIndentZone = (
+                        mouseX >= indentRect.left && 
+                        mouseX <= indentRect.right && 
+                        mouseY >= indentRect.top && 
+                        mouseY <= indentRect.bottom
+                    );
+                    
+                    if (isInIndentZone) {
+                        console.log(`*** DROP IN INDENT ZONE for ${taskId}`);
                     }
-                } else {
-                    // Try to calculate where the drop is happening
-                    // But note this is less reliable during the actual drop
-                    try {
-                        const rect = this.getBoundingClientRect();
-                        const offsetX = e.clientX - rect.left;
-                        const horizontalPercentage = offsetX / rect.width;
-                        
-                        if (horizontalPercentage > 0.5) {
-                            console.log(`RIGHT SIDE DROP detected (${horizontalPercentage.toFixed(2)}) on ${taskId}`);
-                            
-                            if (!this.querySelector('.task-children')) {
-                                console.log(`*** Creating container during drop for ${taskId} based on position`);
-                                const container = createChildrenContainer(this);
-                                
-                                this.classList.add('force-become-parent');
-                                window.lastCreatedContainer = container;
-                                window.lastCreatedContainerParent = this;
-                            }
-                        }
-                    } catch (err) {
-                        console.log('Error in drop position calculation:', err);
+                }
+                
+                // Immediately create a container if we're in the indent zone or have the flag set
+                if (isInIndentZone || this.classList.contains('indent-hover') || this.dataset.shouldBecomeParent === 'true') {
+                    console.log(`*** CRITICAL: ${taskId} should become a parent`);
+                    
+                    // Remove any existing container
+                    const existingContainer = this.querySelector('.task-children');
+                    if (existingContainer) {
+                        existingContainer.remove();
                     }
+                    
+                    // Create a new container
+                    console.log(`*** CREATING PARENT CONTAINER for ${taskId}`);
+                    const container = createChildrenContainer(this);
+                    
+                    // Flag this for the onEnd handler
+                    this.classList.add('drop-created-container');
+                    this.classList.add('force-become-parent');
+                    
+                    // Store references
+                    window.lastCreatedContainer = container;
+                    window.lastCreatedContainerParent = this;
                 }
             });
             
