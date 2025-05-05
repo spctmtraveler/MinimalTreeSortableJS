@@ -1,6 +1,6 @@
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Sample task data with nested structure
+    // Sample task data with nested structure (5+ levels deep)
     const sampleTasks = [
         {
             id: 'task-1',
@@ -9,7 +9,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     id: 'task-1-1',
                     content: 'Define project scope',
-                    children: []
+                    children: [
+                        {
+                            id: 'task-1-1-1',
+                            content: 'Gather requirements',
+                            children: [
+                                {
+                                    id: 'task-1-1-1-1',
+                                    content: 'Interview stakeholders',
+                                    children: [
+                                        {
+                                            id: 'task-1-1-1-1-1',
+                                            content: 'Prepare interview questions',
+                                            children: [
+                                                {
+                                                    id: 'task-1-1-1-1-1-1',
+                                                    content: 'Research domain expertise',
+                                                    children: []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     id: 'task-1-2',
@@ -110,10 +134,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 toggleBtn.className = 'toggle-btn expanded';
                 toggleBtn.innerHTML = '▶';
                 
-                // Add click event to toggle visibility of children
-                toggleBtn.addEventListener('click', function() {
+                // Create a separate area for toggle click to improve mobile usability
+                const toggleArea = document.createElement('div');
+                toggleArea.className = 'toggle-area';
+                toggleArea.appendChild(toggleBtn);
+                
+                // Unified toggle function for reuse
+                const toggleFunction = function(event) {
+                    // Prevent event bubbling (important for nested elements)
+                    event.stopPropagation();
+                    
                     const childContainer = taskItem.querySelector('.task-children');
                     const isExpanded = toggleBtn.classList.contains('expanded');
+                    
+                    console.log('Toggle clicked for task: ' + task.id + ', currently expanded: ' + isExpanded);
                     
                     if (isExpanded) {
                         childContainer.style.display = 'none';
@@ -124,9 +158,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         toggleBtn.classList.add('expanded');
                         toggleBtn.style.transform = 'rotate(90deg)';
                     }
-                });
+                };
                 
-                taskContent.appendChild(toggleBtn);
+                // Add multiple event listeners for better mobile compatibility
+                toggleArea.addEventListener('click', toggleFunction);
+                toggleArea.addEventListener('touchstart', function(e) {
+                    // Prevent scrolling when touching the toggle
+                    e.preventDefault();
+                    toggleFunction(e);
+                }, { passive: false });
+                
+                taskContent.appendChild(toggleArea);
             }
             
             // Create text content

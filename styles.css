@@ -59,22 +59,41 @@ h1 {
     display: flex;
     align-items: center;
     cursor: grab;
-    padding: 0 8px;
+    padding: 8px;
+    position: relative;
+    min-height: 44px; /* Minimum touch target size for mobile */
+    width: 100%;
 }
 
 .task-text {
     color: #7F7F7F;
     margin-left: 8px;
+    flex-grow: 1;
+    word-break: break-word; /* Prevent text overflow on small screens */
+}
+
+/* Toggle area styling for better touch targets */
+.toggle-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+    margin-right: 4px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2; /* Ensure the toggle is above other elements */
 }
 
 /* Toggle button styling */
 .toggle-btn {
     color: #7F7F7F;
-    margin-right: 8px;
     cursor: pointer;
     display: inline-block;
     font-size: 10px;
     transition: transform 0.2s;
+    /* Increase hit area for mobile users */
+    padding: 8px;
 }
 
 .toggle-btn.expanded {
