@@ -101,6 +101,21 @@ function createChildrenContainer(taskElement) {
                 console.log('Dropped at root level');
             }
             
+            // Calculate the bounding rectangles for the from/to containers
+            const fromListRect = fromList.getBoundingClientRect();
+            const toListRect = parentList.getBoundingClientRect();
+            
+            console.log(`FROM list rect: x=${fromListRect.left}, width=${fromListRect.width}`);
+            console.log(`TO list rect: x=${toListRect.left}, width=${toListRect.width}`);
+            
+            // If there's a significant horizontal difference, it might indicate an indent operation
+            const horizontalDiff = toListRect.left - fromListRect.left;
+            console.log(`Horizontal difference between lists: ${horizontalDiff}px`);
+            
+            if (horizontalDiff > 20) {
+                console.log(`*** SIGNIFICANT INDENT DETECTED: ${horizontalDiff}px indent`);
+            }
+            
             // Check if we need to remove parent status from the source container
             if (fromTask && fromList.children.length === 0) {
                 console.log(`Source list for ${fromTask.dataset.id} is now empty, removing parent status`);
@@ -119,10 +134,40 @@ function createChildrenContainer(taskElement) {
                 }
             }
             
+            // Special handler for the container that was created during the drag operation
+            if (window.lastCreatedContainer && window.lastCreatedContainerParent) {
+                console.log(`*** CHECKING CREATED CONTAINER for ${window.lastCreatedContainerParent.dataset.id}`);
+                
+                // Get the UL inside the container
+                const containerList = window.lastCreatedContainer.querySelector('ul');
+                
+                // If the container is empty, and the current task didn't end up inside it, 
+                // move the task into it now
+                if (containerList && containerList.children.length === 0 && evt.to !== containerList) {
+                    console.log(`*** FORCING TASK ${taskId} INTO CONTAINER for ${window.lastCreatedContainerParent.dataset.id}`);
+                    
+                    // First, remove the item from its current location
+                    if (evt.item.parentNode) {
+                        evt.item.parentNode.removeChild(evt.item);
+                    }
+                    
+                    // Then add it to the container
+                    containerList.appendChild(evt.item);
+                }
+                
+                // Clear the references
+                window.lastCreatedContainer = null;
+                window.lastCreatedContainerParent = null;
+            }
+            
             // Scan for ALL tasks that might need to become parents
             setTimeout(() => {
-                // Check for tasks marked as potential parents
-                const potentialParents = document.querySelectorAll('.should-become-parent, .force-become-parent, .potential-parent');
+                // Now check for all potential parents using various indicators we've set
+                const potentialParents = document.querySelectorAll(
+                    '.should-become-parent, .force-become-parent, .potential-parent, ' + 
+                    '.confirmed-parent, .drag-over-right, [data-should-become-parent="true"], ' +
+                    '.drop-created-container'
+                );
                 console.log(`Found ${potentialParents.length} potential parents to check`);
                 
                 potentialParents.forEach(el => {
@@ -131,15 +176,21 @@ function createChildrenContainer(taskElement) {
                         createChildrenContainer(el);
                     }
                     
-                    // Clean up all marker classes
-                    ['should-become-parent', 'force-become-parent', 'potential-parent'].forEach(cls => {
+                    // Clean up all marker classes and attributes
+                    [
+                        'should-become-parent', 'force-become-parent', 'potential-parent',
+                        'confirmed-parent', 'drag-over-right', 'drop-created-container'
+                    ].forEach(cls => {
                         if (el.classList.contains(cls)) {
                             el.classList.remove(cls);
                         }
                     });
+                    
+                    // Also clean up data attributes
+                    delete el.dataset.shouldBecomeParent;
                 });
             
-                // Make sure the parent task from the drop operation has a children container
+                // Specifically make sure the parent task has a container
                 if (parentTask && !parentTask.querySelector('.task-children')) {
                     console.log(`Creating children container for parent task: ${parentTask.dataset.id}`);
                     createChildrenContainer(parentTask);
@@ -534,65 +585,105 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // HANDLE DRAG INTERACTIONS FOR ALL TASKS
             
+            // Keep track of the drag position on the page
+            let lastDragX = 0;
+            let lastDragY = 0;
+            let lastOverElement = null;
+            
             // On dragover, flag the task for potential parenthood
             taskItem.addEventListener('dragover', function(e) {
+                // Save last position for later use during drop operations
+                lastDragX = e.clientX;
+                lastDragY = e.clientY;
+                lastOverElement = this;
+                
                 // Prevent default to allow drop
                 e.preventDefault();
                 
                 // Add visual cue
                 this.classList.add('drag-over');
                 
-                // We'll want to check if this should become a parent
-                this.classList.add('potential-parent');
-                
                 // Calculate how far into the task the pointer is
                 const rect = this.getBoundingClientRect();
                 const offsetX = e.clientX - rect.left;
                 const horizontalPercentage = offsetX / rect.width;
                 
+                // Clear highlight from other elements
+                document.querySelectorAll('.drag-over-right').forEach(el => {
+                    if (el !== this) el.classList.remove('drag-over-right');
+                });
+                
                 // If dragging in the right half of the task item, prepare to make it a parent
-                if (horizontalPercentage > 0.5) {
-                    console.log(`Dragging in right half of ${this.dataset.id} - Preparing indent`);
+                if (horizontalPercentage > 0.6) {
+                    console.log(`*** RIGHT SIDE DRAG DETECTED on ${this.dataset.id} - Position: ${horizontalPercentage.toFixed(2)}`);
                     
-                    // This is a stronger indicator that we want this to become a parent
-                    this.classList.add('should-become-parent');
+                    // Add special visual indicator
+                    this.classList.add('drag-over-right');
                     
-                    // If this task doesn't have children yet, add the container right away
-                    if (!this.querySelector('.task-children')) {
-                        console.log(`Creating container DURING DRAG for ${this.dataset.id}`);
-                        createChildrenContainer(this);
-                    }
+                    // Mark this element for becoming a parent
+                    this.dataset.shouldBecomeParent = 'true';
                 }
             });
             
             // When drag leaves the item
             taskItem.addEventListener('dragleave', function(e) {
+                // Only remove the general highlight, keep the right-side indicator
                 this.classList.remove('drag-over');
-                // We keep the other classes for potential parent status
             });
             
             // When drag ends, clean up all highlights
             taskItem.addEventListener('dragend', function(e) {
-                document.querySelectorAll('.drag-over').forEach(el => {
+                // Clean up all drag indicators
+                document.querySelectorAll('.drag-over, .drag-over-right').forEach(el => {
                     el.classList.remove('drag-over');
+                    el.classList.remove('drag-over-right');
                 });
+                
+                // This helps identify where the most recent drop occurred
+                if (lastOverElement && lastOverElement.dataset.shouldBecomeParent === 'true') {
+                    console.log(`CONFIRMED: Element ${lastOverElement.dataset.id} should become a parent`);
+                    lastOverElement.classList.add('confirmed-parent');
+                    
+                    // Create the parent container right away
+                    if (!lastOverElement.querySelector('.task-children')) {
+                        console.log(`Creating children container for target: ${lastOverElement.dataset.id}`);
+                        createChildrenContainer(lastOverElement);
+                    }
+                    
+                    // Clear the flag
+                    delete lastOverElement.dataset.shouldBecomeParent;
+                }
             });
             
-            // Drop event that creates a children container immediately
+            // Drop event 
             taskItem.addEventListener('drop', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                console.log(`DROP DETECTED ON TASK: ${this.dataset.id}`);
+                console.log(`DROP EVENT ON: ${this.dataset.id}`);
                 
-                // Create a container immediately if one doesn't exist
-                if (!this.querySelector('.task-children')) {
-                    console.log(`Creating container on DROP for ${this.dataset.id}`);
-                    createChildrenContainer(this);
+                // Calculate how far into the task the pointer is during the drop
+                const rect = this.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const horizontalPercentage = offsetX / rect.width;
+                
+                // If dropping in the right half, make this a parent immediately
+                if (horizontalPercentage > 0.6) {
+                    console.log(`RIGHT SIDE DROP detected (${horizontalPercentage.toFixed(2)}) on ${this.dataset.id}`);
+                    
+                    // Create a container immediately
+                    if (!this.querySelector('.task-children')) {
+                        console.log(`*** CRITICAL: Creating container during drop for ${this.dataset.id}`);
+                        const container = createChildrenContainer(this);
+                        
+                        // Flag this as needing to be checked after the Sortable onEnd event
+                        this.classList.add('drop-created-container');
+                        
+                        // Store the reference to this container globally for access in onEnd
+                        window.lastCreatedContainer = container;
+                        window.lastCreatedContainerParent = this;
+                    }
                 }
-                
-                // Mark this for checking during the onEnd handler of Sortable
-                this.classList.add('should-become-parent');
             });
             
             // Add the task item to the list

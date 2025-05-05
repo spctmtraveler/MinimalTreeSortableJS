@@ -197,3 +197,21 @@ body > .sortable-drag {
     background-color: rgba(0, 206, 247, 0.1);
     border: 1px dashed rgba(0, 206, 247, 0.3);
 }
+
+/* Special highlighting for right-side drag detection */
+.task-item.drag-over-right {
+    background-color: rgba(0, 206, 247, 0.15) !important;
+    border-right: 2px solid #00CEF7;
+}
+
+.task-item.drag-over-right > .drop-indicator {
+    display: block;
+    background-color: rgba(0, 206, 247, 0.2);
+    border: 1px solid rgba(0, 206, 247, 0.5);
+}
+
+/* Make confirmed parent items stand out during the operation */
+.task-item.confirmed-parent {
+    background-color: rgba(0, 206, 247, 0.1);
+    box-shadow: 0 0 0 1px rgba(0, 206, 247, 0.3);
+}
