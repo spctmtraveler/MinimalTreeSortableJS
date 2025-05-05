@@ -243,25 +243,22 @@ document.addEventListener('DOMContentLoaded', function() {
             group: {
                 name: 'nested',
                 pull: true,
-                put: function(to, from, dragEl, event) {
-                    return true; // Always allow dropping into any list
-                },
+                put: true // Simplify - always allow drops
             },     
-            animation: 150,      // Animation speed when sorting
+            animation: 150,     // Animation speed when sorting
             fallbackOnBody: true,
-            delay: 0,            // Needed for mobile
-            touchStartThreshold: 3, // Threshold to start drag
-            swapThreshold: 0.5,  // Percentage of the item that has to be over the other to swap
-            emptyInsertThreshold: 5, // Allow dropping items into empty lists
-            invertSwap: true,    // Swap items when going down or up, more intuitive
+            delay: 0,           // Needed for mobile
+            touchStartThreshold: 3, 
+            swapThreshold: 0.65, // Make it easier to swap items
+            emptyInsertThreshold: 10, // More aggressive empty list detection
+            invertSwap: true,   
             ghostClass: 'task-ghost',
             chosenClass: 'task-chosen',
             dragClass: 'task-drag',
             // Filter out clicks on the toggle button
             filter: '[data-no-drag]',
             preventOnFilter: false,
-            // Remove flickering outline for dragged elements
-            forceFallback: true,
+            forceFallback: true, // Required for consistent drag behavior
             // Cleanup when drag starts
             onStart: function(evt) {
                 // Clear any stuck drag-over highlights
@@ -465,30 +462,82 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                console.log(`Drop detected on task: ${this.dataset.id}`);
+                console.log(`DROP EVENT DETECTED ON TASK: ${this.dataset.id}`);
                 
-                // IMMEDIATELY create a children container for this item if it doesn't have one
-                if (!this.querySelector('.task-children')) {
-                    console.log(`Direct drop on task ${this.dataset.id} - creating child container immediately`);
-                    createChildrenContainer(this);
+                // FORCEFULLY create a children container with a small delay to ensure SortableJS has completed its operations
+                setTimeout(() => {
+                    // Get a reference to this task again in case the DOM has changed
+                    const task = document.querySelector(`[data-id="${this.dataset.id}"]`);
                     
-                    // The task is now a parent, so we need to ensure it stays that way
-                    this.classList.add('force-become-parent');
-                    this.classList.add('is-now-parent');
-                    
-                    // Force a check for parent tasks after a short delay
-                    setTimeout(() => {
-                        const parentTasks = document.querySelectorAll('.is-now-parent');
-                        console.log(`Found ${parentTasks.length} tasks that need parent status confirmed`);
+                    if (task && !task.querySelector('.task-children')) {
+                        console.log(`DELAYED DIRECT CREATION for task ${task.dataset.id}`);
                         
-                        parentTasks.forEach(el => {
-                            if (!el.querySelector('.task-children')) {
-                                createChildrenContainer(el);
-                            }
-                            el.classList.remove('is-now-parent');
+                        // Create a child container
+                        const childContainer = document.createElement('div');
+                        childContainer.className = 'task-children';
+                        
+                        // Create the list element
+                        const ul = document.createElement('ul');
+                        ul.className = 'task-list';
+                        childContainer.appendChild(ul);
+                        
+                        // Add to the task
+                        task.appendChild(childContainer);
+                        
+                        // Now add the toggle button
+                        const taskContent = task.querySelector('.task-content');
+                        if (!taskContent.querySelector('.toggle-area')) {
+                            // Create toggle button
+                            const toggleBtn = document.createElement('span');
+                            toggleBtn.className = 'toggle-btn expanded';
+                            toggleBtn.innerHTML = '▶';
+                            
+                            // Create the toggle area
+                            const toggleArea = document.createElement('div');
+                            toggleArea.className = 'toggle-area';
+                            toggleArea.appendChild(toggleBtn);
+                            toggleArea.setAttribute('data-no-drag', 'true');
+                            
+                            // Add toggle click event
+                            toggleArea.addEventListener('click', function(e) {
+                                e.stopPropagation();
+                                
+                                const isExpanded = toggleBtn.classList.contains('expanded');
+                                
+                                if (isExpanded) {
+                                    childContainer.style.display = 'none';
+                                    toggleBtn.classList.remove('expanded');
+                                    toggleBtn.style.transform = 'rotate(0deg)';
+                                } else {
+                                    childContainer.style.display = 'block';
+                                    toggleBtn.classList.add('expanded');
+                                    toggleBtn.style.transform = 'rotate(90deg)';
+                                }
+                            });
+                            
+                            // Insert toggle area before the task text
+                            const taskText = taskContent.querySelector('.task-text');
+                            taskContent.insertBefore(toggleArea, taskText);
+                        }
+                        
+                        // Initialize sortable
+                        new Sortable(ul, {
+                            group: { name: 'nested', pull: true, put: true },
+                            animation: 150,
+                            fallbackOnBody: true,
+                            swapThreshold: 0.65,
+                            emptyInsertThreshold: 10,
+                            invertSwap: true,
+                            ghostClass: 'task-ghost',
+                            chosenClass: 'task-chosen',
+                            dragClass: 'task-drag',
+                            filter: '[data-no-drag]',
+                            forceFallback: true
                         });
-                    }, 50);
-                }
+                        
+                        console.log(`Child container created and initialized for ${task.dataset.id}`);
+                    }
+                }, 50);
             });
             
             // Add the task item to the list
