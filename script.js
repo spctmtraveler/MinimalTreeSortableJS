@@ -309,31 +309,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 
-                // Also check for any tasks explicitly marked as wanting to become parents
-                document.querySelectorAll('.force-become-parent').forEach(el => {
-                    if (!el.querySelector('.task-children')) {
-                        console.log(`Found task ${el.dataset.id} that wants to become a parent - creating container`);
-                        createChildrenContainer(el);
-                    }
-                    el.classList.remove('force-become-parent');
-                    el.classList.remove('received-drop');
-                    el.classList.remove('potential-parent');
-                });
-
-                // If we're dropping onto a task with no children yet, we need to create the children container
-                if (parentTask && (!parentTask.querySelector('.task-children') || 
-                                  parentTask.classList.contains('received-drop') ||
-                                  parentTask.classList.contains('potential-parent'))) {
-                    console.log(`Creating new children container for: ${parentTask.dataset.id}`);
+                // Scan for ALL tasks that might need to become parents
+                // This is a more aggressive approach to ensure no drop events are missed
+                setTimeout(() => {
+                    // First, check all tasks marked with our special classes
+                    const potentialParents = document.querySelectorAll('.force-become-parent, .potential-parent, .received-drop, .is-now-parent');
+                    console.log(`Found ${potentialParents.length} potential parents to check`);
                     
-                    // Remove the indicator flags if they were set
-                    ['received-drop', 'force-become-parent', 'potential-parent'].forEach(cls => {
-                        if (parentTask.classList.contains(cls)) {
-                            parentTask.classList.remove(cls);
+                    potentialParents.forEach(el => {
+                        if (!el.querySelector('.task-children')) {
+                            console.log(`Found task ${el.dataset.id} that wants to become a parent - creating container`);
+                            createChildrenContainer(el);
                         }
+                        // Clean up all marker classes
+                        ['received-drop', 'force-become-parent', 'potential-parent', 'is-now-parent'].forEach(cls => {
+                            if (el.classList.contains(cls)) {
+                                el.classList.remove(cls);
+                            }
+                        });
                     });
-                    
-                    // Create children container using the helper function
+                
+                    // Next, specifically check the parent task from the drop operation
+                    if (parentTask && !parentTask.querySelector('.task-children')) {
+                        console.log(`Creating children container for parent task: ${parentTask.dataset.id}`);
+                        createChildrenContainer(parentTask);
+                    }
+                }, 10);
+                
+                // Immediately make sure the parent task has children container
+                if (parentTask && !parentTask.querySelector('.task-children')) {
+                    console.log(`Direct parent handling for: ${parentTask.dataset.id}`);
                     createChildrenContainer(parentTask);
                 }
             }
@@ -435,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
             taskItem.addEventListener('dragover', function(e) {
                 // Add a temporary class to highlight this as a potential drop zone
                 this.classList.add('drag-over');
-                // Also mark this as potential parent
+                // Also mark this as potential parent - very important!
                 this.classList.add('potential-parent');
                 e.preventDefault(); // Important for drop to work
             });
@@ -443,6 +448,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove highlight when dragging leaves this item
             taskItem.addEventListener('dragleave', function(e) {
                 this.classList.remove('drag-over');
+                // Don't remove potential-parent here as we still want it to become a parent
             });
             
             // Ensure highlight is removed when drag ends (fixes stuck highlight bug)
@@ -459,11 +465,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Check if this item already has children
+                console.log(`Drop detected on task: ${this.dataset.id}`);
+                
+                // IMMEDIATELY create a children container for this item if it doesn't have one
                 if (!this.querySelector('.task-children')) {
-                    console.log(`Item ${this.dataset.id} received a drop but is not yet a parent - flagging it for conversion`);
-                    // Flag this for conversion to parent
+                    console.log(`Direct drop on task ${this.dataset.id} - creating child container immediately`);
+                    createChildrenContainer(this);
+                    
+                    // The task is now a parent, so we need to ensure it stays that way
                     this.classList.add('force-become-parent');
+                    this.classList.add('is-now-parent');
+                    
+                    // Force a check for parent tasks after a short delay
+                    setTimeout(() => {
+                        const parentTasks = document.querySelectorAll('.is-now-parent');
+                        console.log(`Found ${parentTasks.length} tasks that need parent status confirmed`);
+                        
+                        parentTasks.forEach(el => {
+                            if (!el.querySelector('.task-children')) {
+                                createChildrenContainer(el);
+                            }
+                            el.classList.remove('is-now-parent');
+                        });
+                    }, 50);
                 }
             });
             
