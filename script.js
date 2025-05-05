@@ -1,3 +1,140 @@
+// Helper function to create children container for a task
+function createChildrenContainer(taskElement) {
+    if (!taskElement) return;
+    
+    console.log(`Creating children container for task: ${taskElement.dataset.id}`);
+    
+    // Remove any existing children container
+    const existingContainer = taskElement.querySelector('.task-children');
+    if (existingContainer) {
+        existingContainer.remove();
+    }
+    
+    // Create the new container
+    const childContainer = document.createElement('div');
+    childContainer.className = 'task-children';
+    
+    // Create the list element
+    const ul = document.createElement('ul');
+    ul.className = 'task-list';
+    childContainer.appendChild(ul);
+    
+    // Add to the task
+    taskElement.appendChild(childContainer);
+    
+    // Initialize Sortable on the new list
+    new Sortable(ul, {
+        group: {
+            name: 'nested',
+            pull: true,
+            put: function(to, from, dragEl, event) {
+                return true; // Always allow dropping into any list
+            },
+        },     
+        animation: 150,
+        fallbackOnBody: true,
+        delay: 0,
+        touchStartThreshold: 3,
+        swapThreshold: 0.5,
+        emptyInsertThreshold: 5,
+        invertSwap: true,
+        ghostClass: 'task-ghost',
+        chosenClass: 'task-chosen',
+        dragClass: 'task-drag',
+        filter: '[data-no-drag]',
+        preventOnFilter: false,
+        forceFallback: true,
+        onStart: function(evt) {
+            document.querySelectorAll('.drag-over').forEach(el => {
+                el.classList.remove('drag-over');
+            });
+            console.log('Started dragging: ' + evt.item.dataset.id);
+        },
+        onEnd: function(evt) {
+            const fromList = evt.from;
+            const fromTask = fromList.closest('.task-item');
+            
+            if (fromTask && fromList.children.length === 0) {
+                console.log(`Source list for ${fromTask.dataset.id} is now empty, removing parent status`);
+                
+                // Get the toggle area
+                const toggleArea = fromTask.querySelector('.toggle-area');
+                if (toggleArea) {
+                    // Remove the toggle button
+                    toggleArea.remove();
+                }
+                
+                // Remove the children container
+                const childContainer = fromTask.querySelector('.task-children');
+                if (childContainer) {
+                    childContainer.remove();
+                }
+            }
+        }
+    });
+    
+    // Add the toggle button if not already present
+    const taskContent = taskElement.querySelector('.task-content');
+    if (!taskContent.querySelector('.toggle-area')) {
+        // Create toggle button
+        const toggleBtn = document.createElement('span');
+        toggleBtn.className = 'toggle-btn expanded';
+        toggleBtn.innerHTML = '▶';
+        
+        // Create the toggle area
+        const toggleArea = document.createElement('div');
+        toggleArea.className = 'toggle-area';
+        toggleArea.appendChild(toggleBtn);
+        toggleArea.setAttribute('data-no-drag', 'true');
+        
+        // Add toggle functionality
+        toggleArea.addEventListener('mousedown', function(e) {
+            e.stopPropagation();
+        });
+        
+        toggleArea.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            const childContainer = taskElement.querySelector('.task-children');
+            const isExpanded = toggleBtn.classList.contains('expanded');
+            
+            if (isExpanded) {
+                childContainer.style.display = 'none';
+                toggleBtn.classList.remove('expanded');
+                toggleBtn.style.transform = 'rotate(0deg)';
+            } else {
+                childContainer.style.display = 'block';
+                toggleBtn.classList.add('expanded');
+                toggleBtn.style.transform = 'rotate(90deg)';
+            }
+        });
+        
+        toggleArea.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            
+            const childContainer = taskElement.querySelector('.task-children');
+            const isExpanded = toggleBtn.classList.contains('expanded');
+            
+            if (isExpanded) {
+                childContainer.style.display = 'none';
+                toggleBtn.classList.remove('expanded');
+                toggleBtn.style.transform = 'rotate(0deg)';
+            } else {
+                childContainer.style.display = 'block';
+                toggleBtn.classList.add('expanded');
+                toggleBtn.style.transform = 'rotate(90deg)';
+            }
+        }, { passive: false });
+        
+        // Insert toggle area before the task text
+        const taskText = taskContent.querySelector('.task-text');
+        taskContent.insertBefore(toggleArea, taskText);
+    }
+    
+    return childContainer;
+}
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Sample task data with nested structure (5+ levels deep)
@@ -172,149 +309,37 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 
+                // Also check for any tasks explicitly marked as wanting to become parents
+                // This helps catch cases where the drop event happened but Sortable didn't make it a parent
+                setTimeout(() => {
+                    document.querySelectorAll('.force-become-parent').forEach(el => {
+                        if (!el.querySelector('.task-children')) {
+                            console.log(`Found task ${el.dataset.id} that wants to become a parent - creating container`);
+                            createChildrenContainer(el);
+                        }
+                        el.classList.remove('force-become-parent');
+                        el.classList.remove('received-drop');
+                        el.classList.remove('potential-parent');
+                    });
+                }, 10);
+
                 // If we're dropping onto a task with no children yet, we need to create the children container
                 // Either when there's no children container yet, or the task was marked as receiving a drop
-                if (parentTask && (!parentTask.querySelector('.task-children') || parentTask.classList.contains('received-drop'))) {
+                if (parentTask && (!parentTask.querySelector('.task-children') || 
+                                  parentTask.classList.contains('received-drop') ||
+                                  parentTask.classList.contains('potential-parent'))) {
                     console.log(`Creating new children container for: ${parentTask.dataset.id}`);
                     
-                    // Remove the received-drop flag if it was set
-                    if (parentTask.classList.contains('received-drop')) {
-                        parentTask.classList.remove('received-drop');
-                    }
-                    
-                    // Remove any existing children container (should not exist, but just in case)
-                    const existingContainer = parentTask.querySelector('.task-children');
-                    if (existingContainer) {
-                        existingContainer.remove();
-                    }
-                    
-                    // Create a task-children div
-                    const childContainer = document.createElement('div');
-                    childContainer.className = 'task-children';
-                    
-                    // Get the closest UL to generate a new nested structure
-                    const ul = document.createElement('ul');
-                    ul.className = 'task-list';
-                    childContainer.appendChild(ul);
-                    
-                    // Add the container to the parent task
-                    parentTask.appendChild(childContainer);
-                    
-                    // Initialize Sortable on this new list - with identical settings to main list
-                    new Sortable(ul, {
-                        group: {
-                            name: 'nested',
-                            pull: true,
-                            put: function(to, from, dragEl, event) {
-                                return true; // Always allow dropping into any list
-                            },
-                        },
-                        animation: 150,
-                        fallbackOnBody: true,
-                        delay: 0,
-                        touchStartThreshold: 3,
-                        swapThreshold: 0.5,
-                        emptyInsertThreshold: 5,
-                        invertSwap: true,
-                        ghostClass: 'task-ghost',
-                        chosenClass: 'task-chosen',
-                        dragClass: 'task-drag',
-                        filter: '[data-no-drag]',
-                        preventOnFilter: false,
-                        forceFallback: true,
-                        // Cleanup when drag starts
-                        onStart: function(evt) {
-                            // Clear any stuck drag-over highlights
-                            document.querySelectorAll('.drag-over').forEach(el => {
-                                el.classList.remove('drag-over');
-                            });
-                            
-                            console.log('Started dragging: ' + evt.item.dataset.id);
-                        },
-                        // Handle when items are moved from child containers
-                        onEnd: function(evt) {
-                            // Check if the FROM list is now empty, and remove parent status if needed
-                            const fromList = evt.from;
-                            const fromTask = fromList.closest('.task-item');
-                            
-                            // Check if we need to remove parent status from the source container
-                            if (fromTask && fromList.children.length === 0) {
-                                console.log(`Source list for ${fromTask.dataset.id} is now empty, removing parent status`);
-                                
-                                // Get the toggle area
-                                const toggleArea = fromTask.querySelector('.toggle-area');
-                                if (toggleArea) {
-                                    // Remove the toggle button
-                                    toggleArea.remove();
-                                }
-                                
-                                // Remove the children container
-                                const childContainer = fromTask.querySelector('.task-children');
-                                if (childContainer) {
-                                    childContainer.remove();
-                                }
-                            }
+                    // Remove the indicator flags if they were set
+                    ['received-drop', 'force-become-parent', 'potential-parent'].forEach(cls => {
+                        if (parentTask.classList.contains(cls)) {
+                            parentTask.classList.remove(cls);
                         }
                     });
                     
-                    // Make sure the parent has a toggle button
-                    const taskContent = parentTask.querySelector('.task-content');
-                    if (!taskContent.querySelector('.toggle-area')) {
-                        // Create toggle button
-                        const toggleBtn = document.createElement('span');
-                        toggleBtn.className = 'toggle-btn expanded';
-                        toggleBtn.innerHTML = '▶';
-                        
-                        // Create the toggle area
-                        const toggleArea = document.createElement('div');
-                        toggleArea.className = 'toggle-area';
-                        toggleArea.appendChild(toggleBtn);
-                        toggleArea.setAttribute('data-no-drag', 'true');
-                        
-                        // Add toggle functionality
-                        toggleArea.addEventListener('mousedown', function(e) {
-                            e.stopPropagation();
-                        });
-                        
-                        toggleArea.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            
-                            const childContainer = parentTask.querySelector('.task-children');
-                            const isExpanded = toggleBtn.classList.contains('expanded');
-                            
-                            if (isExpanded) {
-                                childContainer.style.display = 'none';
-                                toggleBtn.classList.remove('expanded');
-                                toggleBtn.style.transform = 'rotate(0deg)';
-                            } else {
-                                childContainer.style.display = 'block';
-                                toggleBtn.classList.add('expanded');
-                                toggleBtn.style.transform = 'rotate(90deg)';
-                            }
-                        });
-                        
-                        toggleArea.addEventListener('touchstart', function(e) {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            
-                            const childContainer = parentTask.querySelector('.task-children');
-                            const isExpanded = toggleBtn.classList.contains('expanded');
-                            
-                            if (isExpanded) {
-                                childContainer.style.display = 'none';
-                                toggleBtn.classList.remove('expanded');
-                                toggleBtn.style.transform = 'rotate(0deg)';
-                            } else {
-                                childContainer.style.display = 'block';
-                                toggleBtn.classList.add('expanded');
-                                toggleBtn.style.transform = 'rotate(90deg)';
-                            }
-                        }, { passive: false });
-                        
-                        // Insert toggle area before the task text
-                        const taskText = taskContent.querySelector('.task-text');
-                        taskContent.insertBefore(toggleArea, taskText);
-                    }
+                    // Create children container using the helper function
+                    // (This will handle creating the container, initializing Sortable, and adding toggle button)
+                    createChildrenContainer(parentTask);
                 }
                 
                 // In a real app, you would update your data structure here
@@ -433,15 +458,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
             
-            // Add drop functionality to make any task a potential parent
+            // Add drop functionality to make any task a potential parent - we need to be more aggressive
+            // about catching drop events on non-parent tasks
+            ['dragover', 'dragenter'].forEach(eventName => {
+                taskItem.addEventListener(eventName, function(e) {
+                    // Mark this as a potential drop target during the whole drag operation
+                    this.classList.add('potential-parent');
+                    e.preventDefault(); // Important for drop events to work
+                });
+            });
+            
+            // When a task receives a drop, we want to ensure it becomes a parent
             taskItem.addEventListener('drop', function(e) {
+                // Prevent default to ensure drop events work properly
+                e.preventDefault();
+                e.stopPropagation();
+                
                 // Check if this item already has children
                 if (!this.querySelector('.task-children')) {
-                    console.log(`Item ${this.dataset.id} received a drop but is not yet a parent`);
+                    console.log(`Item ${this.dataset.id} received a drop but is not yet a parent - flagging it for conversion`);
                     
-                    // We'll create a children container in the main Sortable onEnd handler
-                    // This is just to indicate that a drop occurred on a non-parent task
+                    // Force this item to become a parent by adding a class we'll check in the onEnd handler
                     this.classList.add('received-drop');
+                    this.classList.add('force-become-parent');
                     
                     // The actual creation of children container happens in the Sortable onEnd handler
                 }
