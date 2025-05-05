@@ -139,20 +139,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 const taskId = evt.item.dataset.id;
                 console.log(`Task moved: ${taskId}`);
                 
-                // Get the parent task (if any)
+                // Get the parent task (if any) that we moved TO
                 const parentList = evt.to;
                 const parentTask = parentList.closest('.task-item');
                 
-                // Debug info
+                // Check if the FROM list is now empty, and remove parent status if needed
+                const fromList = evt.from;
+                const fromTask = fromList.closest('.task-item');
+                
+                // Debug info about where item was moved
                 if (parentTask) {
                     console.log(`Dropped into parent task: ${parentTask.dataset.id}`);
                 } else {
                     console.log('Dropped at root level');
                 }
                 
+                // Check if we need to remove parent status from the source container
+                if (fromTask && fromList.children.length === 0) {
+                    console.log(`Source list for ${fromTask.dataset.id} is now empty, removing parent status`);
+                    
+                    // Get the toggle area
+                    const toggleArea = fromTask.querySelector('.toggle-area');
+                    if (toggleArea) {
+                        // Remove the toggle button
+                        toggleArea.remove();
+                    }
+                    
+                    // Remove the children container
+                    const childContainer = fromTask.querySelector('.task-children');
+                    if (childContainer) {
+                        childContainer.remove();
+                    }
+                }
+                
                 // If we're dropping onto a task with no children yet, we need to create the children container
-                if (parentTask && !parentTask.querySelector('.task-children')) {
+                // Either when there's no children container yet, or the task was marked as receiving a drop
+                if (parentTask && (!parentTask.querySelector('.task-children') || parentTask.classList.contains('received-drop'))) {
                     console.log(`Creating new children container for: ${parentTask.dataset.id}`);
+                    
+                    // Remove the received-drop flag if it was set
+                    if (parentTask.classList.contains('received-drop')) {
+                        parentTask.classList.remove('received-drop');
+                    }
+                    
+                    // Remove any existing children container (should not exist, but just in case)
+                    const existingContainer = parentTask.querySelector('.task-children');
+                    if (existingContainer) {
+                        existingContainer.remove();
+                    }
                     
                     // Create a task-children div
                     const childContainer = document.createElement('div');
@@ -196,6 +230,30 @@ document.addEventListener('DOMContentLoaded', function() {
                             });
                             
                             console.log('Started dragging: ' + evt.item.dataset.id);
+                        },
+                        // Handle when items are moved from child containers
+                        onEnd: function(evt) {
+                            // Check if the FROM list is now empty, and remove parent status if needed
+                            const fromList = evt.from;
+                            const fromTask = fromList.closest('.task-item');
+                            
+                            // Check if we need to remove parent status from the source container
+                            if (fromTask && fromList.children.length === 0) {
+                                console.log(`Source list for ${fromTask.dataset.id} is now empty, removing parent status`);
+                                
+                                // Get the toggle area
+                                const toggleArea = fromTask.querySelector('.toggle-area');
+                                if (toggleArea) {
+                                    // Remove the toggle button
+                                    toggleArea.remove();
+                                }
+                                
+                                // Remove the children container
+                                const childContainer = fromTask.querySelector('.task-children');
+                                if (childContainer) {
+                                    childContainer.remove();
+                                }
+                            }
                         }
                     });
                     
@@ -373,6 +431,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.querySelectorAll('.drag-over').forEach(el => {
                     el.classList.remove('drag-over');
                 });
+            });
+            
+            // Add drop functionality to make any task a potential parent
+            taskItem.addEventListener('drop', function(e) {
+                // Check if this item already has children
+                if (!this.querySelector('.task-children')) {
+                    console.log(`Item ${this.dataset.id} received a drop but is not yet a parent`);
+                    
+                    // We'll create a children container in the main Sortable onEnd handler
+                    // This is just to indicate that a drop occurred on a non-parent task
+                    this.classList.add('received-drop');
+                    
+                    // The actual creation of children container happens in the Sortable onEnd handler
+                }
             });
             
             // Add the task item to the list
