@@ -592,36 +592,95 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // On dragover, flag the task for potential parenthood
             taskItem.addEventListener('dragover', function(e) {
-                // Save last position for later use during drop operations
+                // IMPORTANT - Always do this first to allow drops
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Save position globals
                 lastDragX = e.clientX;
                 lastDragY = e.clientY;
                 lastOverElement = this;
                 
-                // Prevent default to allow drop
-                e.preventDefault();
+                const taskId = this.dataset.id;
                 
-                // Add visual cue
-                this.classList.add('drag-over');
-                
-                // Calculate how far into the task the pointer is
+                // Calculate position within the task
                 const rect = this.getBoundingClientRect();
                 const offsetX = e.clientX - rect.left;
                 const horizontalPercentage = offsetX / rect.width;
                 
-                // Clear highlight from other elements
-                document.querySelectorAll('.drag-over-right').forEach(el => {
-                    if (el !== this) el.classList.remove('drag-over-right');
-                });
+                // Visual feedback - basic dragover first
+                this.classList.add('drag-over');
                 
-                // If dragging in the right half of the task item, prepare to make it a parent
-                if (horizontalPercentage > 0.6) {
-                    console.log(`*** RIGHT SIDE DRAG DETECTED on ${this.dataset.id} - Position: ${horizontalPercentage.toFixed(2)}`);
+                // Determine if we're in the right half of the task
+                if (horizontalPercentage > 0.5) {
+                    console.log(`*** RIGHT HALF DETECTED: ${taskId} at ${horizontalPercentage.toFixed(2)}`);
                     
-                    // Add special visual indicator
-                    this.classList.add('drag-over-right');
-                    
-                    // Mark this element for becoming a parent
-                    this.dataset.shouldBecomeParent = 'true';
+                    // Try to immediately convert this to a parent
+                    if (!this.classList.contains('drag-over-right')) {
+                        console.log(`*** ADDING RIGHT SIDE HIGHLIGHT to ${taskId}`);
+                        this.classList.add('drag-over-right');
+                        this.dataset.shouldBecomeParent = "true";
+                        
+                        // Direct immediate container creation
+                        if (!this.querySelector('.task-children')) {
+                            console.log(`*** CRITICAL - CREATING PARENT CONTAINER DURING DRAGOVER FOR: ${taskId}`);
+                            
+                            // Create a container immediately
+                            const childContainer = document.createElement('div');
+                            childContainer.className = 'task-children';
+                            childContainer.style.borderLeft = '2px solid #00CEF7';
+                            
+                            // Create the list element
+                            const ul = document.createElement('ul');
+                            ul.className = 'task-list';
+                            ul.style.minHeight = '30px';
+                            childContainer.appendChild(ul);
+                            
+                            // Add to the task
+                            this.appendChild(childContainer);
+                            
+                            // Add toggle button 
+                            const taskContent = this.querySelector('.task-content');
+                            if (taskContent && !taskContent.querySelector('.toggle-area')) {
+                                const toggleBtn = document.createElement('span');
+                                toggleBtn.className = 'toggle-btn expanded';
+                                toggleBtn.innerHTML = '▶';
+                                toggleBtn.style.transform = 'rotate(90deg)';
+                                
+                                const toggleArea = document.createElement('div');
+                                toggleArea.className = 'toggle-area';
+                                toggleArea.setAttribute('data-no-drag', 'true');
+                                toggleArea.appendChild(toggleBtn);
+                                
+                                // Insert before text
+                                const taskText = taskContent.querySelector('.task-text');
+                                if (taskText) {
+                                    taskContent.insertBefore(toggleArea, taskText);
+                                }
+                            }
+                            
+                            // Initialize Sortable
+                            new Sortable(ul, {
+                                group: { name: 'nested', pull: true, put: true },
+                                animation: 150,
+                                fallbackOnBody: true, 
+                                swapThreshold: 0.65,
+                                invertSwap: true,
+                                ghostClass: 'task-ghost',
+                                filter: '[data-no-drag]',
+                                forceFallback: true
+                            });
+                            
+                            // Store it for direct access in onEnd
+                            window.lastCreatedContainer = childContainer;
+                            window.lastCreatedContainerParent = this;
+                        }
+                    }
+                } else {
+                    // We're in the left half, remove the right-side highlight if it exists
+                    if (this.classList.contains('drag-over-right')) {
+                        this.classList.remove('drag-over-right');
+                    }
                 }
             });
             
@@ -660,28 +719,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                console.log(`DROP EVENT ON: ${this.dataset.id}`);
+                const taskId = this.dataset.id;
+                console.log(`DROP EVENT ON: ${taskId}`);
                 
-                // Calculate how far into the task the pointer is during the drop
-                const rect = this.getBoundingClientRect();
-                const offsetX = e.clientX - rect.left;
-                const horizontalPercentage = offsetX / rect.width;
-                
-                // If dropping in the right half, make this a parent immediately
-                if (horizontalPercentage > 0.6) {
-                    console.log(`RIGHT SIDE DROP detected (${horizontalPercentage.toFixed(2)}) on ${this.dataset.id}`);
+                // Immediately create a container if we have the right-side highlight 
+                if (this.classList.contains('drag-over-right') || this.dataset.shouldBecomeParent === 'true') {
+                    console.log(`*** CRITICAL: Detected that ${taskId} was highlighted as a parent target`);
                     
-                    // Create a container immediately
                     if (!this.querySelector('.task-children')) {
-                        console.log(`*** CRITICAL: Creating container during drop for ${this.dataset.id}`);
+                        console.log(`*** CREATING PARENT CONTAINER DURING DROP for ${taskId}`);
                         const container = createChildrenContainer(this);
                         
-                        // Flag this as needing to be checked after the Sortable onEnd event
+                        // Flag this for the onEnd handler
                         this.classList.add('drop-created-container');
+                        this.classList.add('force-become-parent');
                         
-                        // Store the reference to this container globally for access in onEnd
+                        // Store references
                         window.lastCreatedContainer = container;
                         window.lastCreatedContainerParent = this;
+                    }
+                } else {
+                    // Try to calculate where the drop is happening
+                    // But note this is less reliable during the actual drop
+                    try {
+                        const rect = this.getBoundingClientRect();
+                        const offsetX = e.clientX - rect.left;
+                        const horizontalPercentage = offsetX / rect.width;
+                        
+                        if (horizontalPercentage > 0.5) {
+                            console.log(`RIGHT SIDE DROP detected (${horizontalPercentage.toFixed(2)}) on ${taskId}`);
+                            
+                            if (!this.querySelector('.task-children')) {
+                                console.log(`*** Creating container during drop for ${taskId} based on position`);
+                                const container = createChildrenContainer(this);
+                                
+                                this.classList.add('force-become-parent');
+                                window.lastCreatedContainer = container;
+                                window.lastCreatedContainerParent = this;
+                            }
+                        }
+                    } catch (err) {
+                        console.log('Error in drop position calculation:', err);
                     }
                 }
             });
