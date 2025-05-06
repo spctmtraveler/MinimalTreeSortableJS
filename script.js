@@ -573,14 +573,45 @@ document.addEventListener('DOMContentLoaded', function() {
             dropIndicator.className = 'drop-indicator';
             taskItem.appendChild(dropIndicator);
             
-            // If this task has children, build them recursively
+            // ALWAYS create a children container, even if there are no children
+            // This is the critical fix - Sortable only recognizes lists that exist at drag start time
+            const childContainer = document.createElement('div');
+            childContainer.className = 'task-children';
+            
+            // Only display if we actually have children
+            childContainer.style.display = (task.children && task.children.length > 0) ? 'block' : 'none';
+            
+            // Create a task list inside the container
+            const ul = document.createElement('ul');
+            ul.className = 'task-list';
+            childContainer.appendChild(ul);
+            taskItem.appendChild(childContainer);
+            
+            // Initialize Sortable on EVERY list, even empty ones
+            if (!ul.dataset.sortable) {
+                new Sortable(ul, {
+                    group: { name: 'nested', pull: true, put: true },
+                    animation: 150,
+                    fallbackOnBody: true,
+                    delay: 0,
+                    touchStartThreshold: 3,
+                    swapThreshold: 0.65,
+                    emptyInsertThreshold: 10,
+                    invertSwap: true,
+                    ghostClass: 'task-ghost',
+                    chosenClass: 'task-chosen',
+                    dragClass: 'task-drag',
+                    filter: '[data-no-drag]',
+                    preventOnFilter: false,
+                    forceFallback: true,
+                });
+                ul.dataset.sortable = '1';
+            }
+            
+            // Only recursively build children if there are any
             if (task.children && task.children.length > 0) {
-                const childContainer = document.createElement('div');
-                childContainer.className = 'task-children';
-                taskItem.appendChild(childContainer);
-                
-                // Build children nodes
-                buildTreeNodes(task.children, childContainer);
+                // Build children nodes into the UL we just created
+                buildTreeNodes(task.children, ul);
             }
             
             // HANDLE DRAG INTERACTIONS FOR ALL TASKS
