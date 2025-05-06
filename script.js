@@ -387,59 +387,31 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Add horizontal movement detection for indenting
             onMove: function(evt, originalEvent) {
-                // Get the dragged task and the task we're over/near
-                const draggedTask = evt.dragged;
-                const relatedTask = evt.related;
+                // Get the coordinates and elements
+                const dragRect = evt.dragged.getBoundingClientRect();
+                const relatedRect = evt.related.getBoundingClientRect();
                 
-                if (!draggedTask || !relatedTask) return true;
+                // Calculate horizontal and vertical position differences
+                const horizontalDiff = dragRect.left - relatedRect.left;
+                const verticalDiff = dragRect.top - relatedRect.top;
                 
-                // Get mouse position from the original event
-                const mouseX = originalEvent.clientX;
-                const mouseY = originalEvent.clientY;
+                // Get the related task's ID
+                const relatedId = evt.related.dataset.id;
                 
-                // Get the related task rect and ID
-                const relatedRect = relatedTask.getBoundingClientRect();
-                const relatedId = relatedTask.dataset.id;
+                console.log(`MOVE: Task ${evt.dragged.dataset.id} near ${relatedId} - H diff: ${horizontalDiff}px, V diff: ${verticalDiff}px`);
                 
-                // Calculate horizontal difference from the left edge
-                const horizontalPosition = mouseX - relatedRect.left;
-                const horizontalPercentage = horizontalPosition / relatedRect.width * 100;
-                
-                console.log(`MOVE: Task ${draggedTask.dataset.id} near ${relatedId} - H pos: ${horizontalPercentage.toFixed(0)}%`);
-                
-                // If mouse is in the right third of the task, flag it to become a parent
-                if (horizontalPercentage > 70) {
-                    console.log(`RIGHT SIDE DETECTED - Task ${draggedTask.dataset.id} should indent under ${relatedId}`);
+                // Check if we're moving horizontally to the right (indenting)
+                if (horizontalDiff > 20) {
+                    console.log(`RIGHT INDENT DETECTED - Task ${evt.dragged.dataset.id} indenting under ${relatedId}`);
                     
-                    // Mark this task as a potential parent
-                    relatedTask.classList.add('indent-hover');
-                    relatedTask.classList.add('should-become-parent');
-                    relatedTask.dataset.shouldBecomeParent = "true";
+                    // Mark this as a potential parent for later use
+                    evt.related.classList.add('should-become-parent');
                     
-                    // Try to immediately create a children container
-                    if (!relatedTask.querySelector('.task-children')) {
-                        createChildrenContainer(relatedTask);
-                    }
-                    
-                    // Highlight the parent button
-                    const parentBtn = relatedTask.querySelector('.make-parent-btn');
-                    if (parentBtn) {
-                        parentBtn.classList.add('active');
-                    }
-                } else {
-                    // Remove highlight if we're not in the right third
-                    relatedTask.classList.remove('indent-hover');
-                    
-                    // Unhighlight the parent button
-                    const parentBtn = relatedTask.querySelector('.make-parent-btn');
-                    if (parentBtn) {
-                        parentBtn.classList.remove('active');
+                    // Try to immediately create a children container for the related element
+                    if (!evt.related.querySelector('.task-children')) {
+                        createChildrenContainer(evt.related);
                     }
                 }
-                
-                // Always return true to allow the default move behavior
-                return true;
-            }
             },
             
             // Cleanup when drag starts
@@ -490,94 +462,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 
-                // FIRST CHECK: Look for any tasks with active parent buttons
-                const activeBtns = document.querySelectorAll('.make-parent-btn.active');
-                if (activeBtns.length > 0) {
-                    console.log(`Found ${activeBtns.length} active parent buttons`);
-                    
-                    // Get the first active button and its parent task
-                    const activeBtn = activeBtns[0];
-                    const targetParent = activeBtn.closest('.task-item');
-                    
-                    if (targetParent) {
-                        console.log(`BUTTON PARENT: Will move ${evt.item.dataset.id} to become child of ${targetParent.dataset.id}`);
-                        
-                        // Create a children container if needed
-                        let childrenContainer = targetParent.querySelector('.task-children');
-                        if (!childrenContainer) {
-                            childrenContainer = createChildrenContainer(targetParent);
-                        }
-                        
-                        // Get the list inside the container
-                        const childList = childrenContainer.querySelector('.task-list');
-                        
-                        // Move the dragged item there
-                        childList.appendChild(evt.item);
-                        
-                        // Expand the parent
-                        const toggleBtn = targetParent.querySelector('.toggle-btn');
-                        if (toggleBtn && !toggleBtn.classList.contains('expanded')) {
-                            toggleBtn.classList.add('expanded');
-                            childrenContainer.style.display = 'block';
-                        }
-                    }
-                } 
-                // SECOND CHECK: Look for tasks flagged as potential parents
-                else {
+                // Scan for ALL tasks that might need to become parents
+                setTimeout(() => {
                     // Check for tasks marked as potential parents
-                    const potentialParents = document.querySelectorAll(
-                        '.should-become-parent, .force-become-parent, .potential-parent, ' +
-                        '.indent-hover, .confirmed-parent, [data-should-become-parent="true"]'
-                    );
+                    const potentialParents = document.querySelectorAll('.should-become-parent, .force-become-parent, .potential-parent');
                     console.log(`Found ${potentialParents.length} potential parents to check`);
                     
-                    // If we have potential parents, use the first one
-                    if (potentialParents.length > 0) {
-                        const targetParent = potentialParents[0];
-                        console.log(`POTENTIAL PARENT: Will move ${evt.item.dataset.id} to become child of ${targetParent.dataset.id}`);
-                        
-                        // Create a children container if needed
-                        let childrenContainer = targetParent.querySelector('.task-children');
-                        if (!childrenContainer) {
-                            childrenContainer = createChildrenContainer(targetParent);
+                    potentialParents.forEach(el => {
+                        if (!el.querySelector('.task-children')) {
+                            console.log(`Converting task ${el.dataset.id} to parent`);
+                            createChildrenContainer(el);
                         }
                         
-                        // Get the list and move the item
-                        const childList = childrenContainer.querySelector('.task-list');
-                        childList.appendChild(evt.item);
-                        
-                        // Expand the parent
-                        const toggleBtn = targetParent.querySelector('.toggle-btn');
-                        if (toggleBtn && !toggleBtn.classList.contains('expanded')) {
-                            toggleBtn.classList.add('expanded');
-                            childrenContainer.style.display = 'block';
-                        }
-                    }
-                }
+                        // Clean up all marker classes
+                        ['should-become-parent', 'force-become-parent', 'potential-parent'].forEach(cls => {
+                            if (el.classList.contains(cls)) {
+                                el.classList.remove(cls);
+                            }
+                        });
+                    });
                 
-                // Clean up all marker classes and active states
-                document.querySelectorAll(
-                    '.should-become-parent, .force-become-parent, .potential-parent, ' +
-                    '.indent-hover, .confirmed-parent, .make-parent-btn.active'
-                ).forEach(el => {
-                    el.classList.remove('should-become-parent');
-                    el.classList.remove('force-become-parent');
-                    el.classList.remove('potential-parent');
-                    el.classList.remove('indent-hover');
-                    el.classList.remove('confirmed-parent');
-                    el.classList.remove('active');
-                    
-                    // Clean up data attributes
-                    if (el.dataset && el.dataset.shouldBecomeParent) {
-                        delete el.dataset.shouldBecomeParent;
+                    // Make sure the parent task from the drop operation has a children container
+                    if (parentTask && !parentTask.querySelector('.task-children')) {
+                        console.log(`Creating children container for parent task: ${parentTask.dataset.id}`);
+                        createChildrenContainer(parentTask);
                     }
-                });
-                
-                // Make sure the parent task from the drop operation has a children container
-                if (parentTask && !parentTask.querySelector('.task-children')) {
-                    console.log(`Creating children container for parent task: ${parentTask.dataset.id}`);
-                    createChildrenContainer(parentTask);
-                }
+                }, 50);
             }
         });
         
@@ -680,97 +590,38 @@ document.addEventListener('DOMContentLoaded', function() {
             let lastDragY = 0;
             let lastOverElement = null;
             
-            // Create a dedicated indent button for each task
-            const makeParentBtn = document.createElement('button');
-            makeParentBtn.className = 'make-parent-btn';
-            makeParentBtn.setAttribute('data-parent-id', task.id);
-            makeParentBtn.innerHTML = '➕'; // Plus sign indicating "add child"
-            makeParentBtn.title = "Drop here to make this a parent";
-            
-            // Add the button at the end of task content
-            taskContent.appendChild(makeParentBtn);
-            
-            // Add click handler for the indent button
-            makeParentBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Create a children container if one doesn't exist
-                if (!taskItem.querySelector('.task-children')) {
-                    console.log(`Creating parent container for ${task.id} via button click`);
-                    createChildrenContainer(taskItem);
-                }
-            });
-            
-            // Also make the button droppable for parent creation
-            makeParentBtn.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log(`Dragover on PARENT BUTTON for ${task.id}`);
-                
-                taskItem.classList.add('indent-hover');
-                this.classList.add('active');
-                taskItem.dataset.shouldBecomeParent = "true";
-            });
-            
-            makeParentBtn.addEventListener('drop', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                console.log(`DROP ON PARENT BUTTON for ${task.id}!!!`);
-                
-                // Force parent container creation
-                if (!taskItem.querySelector('.task-children')) {
-                    const container = createChildrenContainer(taskItem);
-                    taskItem.classList.add('force-become-parent');
-                    
-                    window.lastCreatedContainer = container;
-                    window.lastCreatedContainerParent = taskItem;
-                }
-            });
-
-            // Add dragover handler - detect if we're near the add button
+            // On dragover, flag the task for potential parenthood
             taskItem.addEventListener('dragover', function(e) {
-                // Always prevent default first to enable drop
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Keep track of the last element
+                // Save last position for later use during drop operations
+                lastDragX = e.clientX;
+                lastDragY = e.clientY;
                 lastOverElement = this;
-                const taskId = this.dataset.id;
                 
-                // Basic highlight
+                // Prevent default to allow drop
+                e.preventDefault();
+                
+                // Add visual cue
                 this.classList.add('drag-over');
                 
-                // Check if we have our parent button and get its position
-                const parentBtn = this.querySelector('.make-parent-btn');
-                if (parentBtn) {
-                    // Get mouse position
-                    const mouseX = e.clientX;
-                    const mouseY = e.clientY;
+                // Calculate how far into the task the pointer is
+                const rect = this.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const horizontalPercentage = offsetX / rect.width;
+                
+                // Clear highlight from other elements
+                document.querySelectorAll('.drag-over-right').forEach(el => {
+                    if (el !== this) el.classList.remove('drag-over-right');
+                });
+                
+                // If dragging in the right half of the task item, prepare to make it a parent
+                if (horizontalPercentage > 0.6) {
+                    console.log(`*** RIGHT SIDE DRAG DETECTED on ${this.dataset.id} - Position: ${horizontalPercentage.toFixed(2)}`);
                     
-                    // Get button position
-                    const btnRect = parentBtn.getBoundingClientRect();
+                    // Add special visual indicator
+                    this.classList.add('drag-over-right');
                     
-                    // Check if we're near the button (within 30px)
-                    const nearButton = (
-                        Math.abs(mouseX - btnRect.left - btnRect.width/2) < 30 &&
-                        Math.abs(mouseY - btnRect.top - btnRect.height/2) < 30
-                    );
-                    
-                    if (nearButton) {
-                        // We're near the parent button!
-                        console.log(`*** NEAR PARENT BUTTON for ${taskId}`);
-                        this.classList.add('indent-hover');
-                        parentBtn.classList.add('active');
-                        
-                        // Flag this to become a parent
-                        this.dataset.shouldBecomeParent = "true";
-                    } else {
-                        // Not near the button
-                        this.classList.remove('indent-hover');
-                        parentBtn.classList.remove('active');
-                    }
+                    // Mark this element for becoming a parent
+                    this.dataset.shouldBecomeParent = 'true';
                 }
             });
             
@@ -809,44 +660,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const taskId = this.dataset.id;
-                console.log(`DROP EVENT ON TASK: ${taskId}`);
+                console.log(`DROP EVENT ON: ${this.dataset.id}`);
                 
-                // Get mouse position
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
+                // Calculate how far into the task the pointer is during the drop
+                const rect = this.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const horizontalPercentage = offsetX / rect.width;
                 
-                // Check if we're near the parent button
-                const parentBtn = this.querySelector('.make-parent-btn');
-                let isNearButton = false;
-                
-                if (parentBtn) {
-                    const btnRect = parentBtn.getBoundingClientRect();
+                // If dropping in the right half, make this a parent immediately
+                if (horizontalPercentage > 0.6) {
+                    console.log(`RIGHT SIDE DROP detected (${horizontalPercentage.toFixed(2)}) on ${this.dataset.id}`);
                     
-                    // Check if we're near the button (within 40px - wider margin for drop)
-                    isNearButton = (
-                        Math.abs(mouseX - btnRect.left - btnRect.width/2) < 40 &&
-                        Math.abs(mouseY - btnRect.top - btnRect.height/2) < 40
-                    );
-                    
-                    if (isNearButton) {
-                        console.log(`*** DROP NEAR PARENT BUTTON for ${taskId}`);
-                    }
-                }
-                
-                // Create a parent container if needed
-                if (isNearButton || this.classList.contains('indent-hover') || this.dataset.shouldBecomeParent === 'true') {
-                    console.log(`*** TASK ${taskId} SHOULD BECOME A PARENT`);
-                    
-                    // Create a new container if one doesn't exist
+                    // Create a container immediately
                     if (!this.querySelector('.task-children')) {
-                        console.log(`*** CREATING PARENT CONTAINER FOR TASK: ${taskId}`);
+                        console.log(`*** CRITICAL: Creating container during drop for ${this.dataset.id}`);
                         const container = createChildrenContainer(this);
                         
-                        // Flag this for the onEnd handler
-                        this.classList.add('force-become-parent');
+                        // Flag this as needing to be checked after the Sortable onEnd event
+                        this.classList.add('drop-created-container');
                         
-                        // Store references for later access
+                        // Store the reference to this container globally for access in onEnd
                         window.lastCreatedContainer = container;
                         window.lastCreatedContainerParent = this;
                     }

@@ -50,18 +50,12 @@ h1 {
     padding: 4px 0;
     margin: 1px 0;
     border-radius: 4px;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease;
     position: relative; /* Required for absolute positioning of children */
 }
 
 .task-item:hover {
     background-color: rgba(0, 206, 247, 0.05);
-}
-
-/* Show the indent zone when task is hovered */
-.task-item:hover .indent-zone {
-    opacity: 1;
-    background-color: rgba(0, 206, 247, 0.15);
 }
 
 /* Task content styling */
@@ -204,60 +198,20 @@ body > .sortable-drag {
     border: 1px dashed rgba(0, 206, 247, 0.3);
 }
 
-/* "Make parent" button for each task */
-.make-parent-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto;
-    width: 24px;
-    height: 24px;
-    background-color: transparent;
-    border: 1px solid rgba(0, 206, 247, 0.3);
-    border-radius: 3px;
-    color: #00CEF7;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    opacity: 0.6;
-    padding: 0;
-}
-
-.make-parent-btn:hover, 
-.make-parent-btn.active,
-.task-item.drag-over .make-parent-btn {
-    background-color: rgba(0, 206, 247, 0.2);
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-/* Parent button during dragover highlighting */
-.task-item.indent-hover .make-parent-btn {
-    background-color: rgba(0, 206, 247, 0.4);
-    border: 1px solid #00CEF7;
-    color: white;
-    box-shadow: 0 0 5px rgba(0, 206, 247, 0.5);
-}
-
-/* Task item needs relative position */
-.task-item {
-    position: relative;
-}
-
-/* Task when hovered over indent zone */
-.task-item.indent-hover {
+/* Special highlighting for right-side drag detection */
+.task-item.drag-over-right {
     background-color: rgba(0, 206, 247, 0.15) !important;
-    border-right: 3px solid #00CEF7 !important;
-    border-top: 1px solid #00CEF7 !important;
-    border-bottom: 1px solid #00CEF7 !important;
-    box-shadow: 0 0 8px rgba(0, 206, 247, 0.4) !important;
+    border-right: 2px solid #00CEF7;
+}
+
+.task-item.drag-over-right > .drop-indicator {
+    display: block;
+    background-color: rgba(0, 206, 247, 0.2);
+    border: 1px solid rgba(0, 206, 247, 0.5);
 }
 
 /* Make confirmed parent items stand out during the operation */
-.task-item.confirmed-parent, 
-.task-item.force-become-parent,
-.task-item.drop-created-container,
-.task-item[data-should-become-parent="true"] {
+.task-item.confirmed-parent {
     background-color: rgba(0, 206, 247, 0.1);
-    box-shadow: 0 0 0 1px rgba(0, 206, 247, 0.5) !important;
+    box-shadow: 0 0 0 1px rgba(0, 206, 247, 0.3);
 }
