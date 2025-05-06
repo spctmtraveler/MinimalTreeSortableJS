@@ -590,14 +590,56 @@ document.addEventListener('DOMContentLoaded', function() {
             let lastDragY = 0;
             let lastOverElement = null;
             
-            // Add a right-side indent zone for each task item
-            const indentZone = document.createElement('div');
-            indentZone.className = 'indent-zone';
-            indentZone.setAttribute('data-parent-id', task.id);
-            indentZone.innerHTML = '<div class="indent-icon">➔</div>';
-            taskItem.appendChild(indentZone);
+            // Create a dedicated indent button for each task
+            const makeParentBtn = document.createElement('button');
+            makeParentBtn.className = 'make-parent-btn';
+            makeParentBtn.setAttribute('data-parent-id', task.id);
+            makeParentBtn.innerHTML = '➕'; // Plus sign indicating "add child"
+            makeParentBtn.title = "Drop here to make this a parent";
+            
+            // Add the button at the end of task content
+            taskContent.appendChild(makeParentBtn);
+            
+            // Add click handler for the indent button
+            makeParentBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Create a children container if one doesn't exist
+                if (!taskItem.querySelector('.task-children')) {
+                    console.log(`Creating parent container for ${task.id} via button click`);
+                    createChildrenContainer(taskItem);
+                }
+            });
+            
+            // Also make the button droppable for parent creation
+            makeParentBtn.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log(`Dragover on PARENT BUTTON for ${task.id}`);
+                
+                taskItem.classList.add('indent-hover');
+                this.classList.add('active');
+                taskItem.dataset.shouldBecomeParent = "true";
+            });
+            
+            makeParentBtn.addEventListener('drop', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log(`DROP ON PARENT BUTTON for ${task.id}!!!`);
+                
+                // Force parent container creation
+                if (!taskItem.querySelector('.task-children')) {
+                    const container = createChildrenContainer(taskItem);
+                    taskItem.classList.add('force-become-parent');
+                    
+                    window.lastCreatedContainer = container;
+                    window.lastCreatedContainerParent = taskItem;
+                }
+            });
 
-            // Add dragover handler - this now detects if we're over the indent zone
+            // Add dragover handler - detect if we're near the add button
             taskItem.addEventListener('dragover', function(e) {
                 // Always prevent default first to enable drop
                 e.preventDefault();
@@ -607,42 +649,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 lastOverElement = this;
                 const taskId = this.dataset.id;
                 
-                // Get the coordinates
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
-                
                 // Basic highlight
                 this.classList.add('drag-over');
                 
-                // Check if we have an indent zone
-                const indentZone = this.querySelector('.indent-zone');
-                if (indentZone) {
-                    const indentRect = indentZone.getBoundingClientRect();
+                // Check if we have our parent button and get its position
+                const parentBtn = this.querySelector('.make-parent-btn');
+                if (parentBtn) {
+                    // Get mouse position
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
                     
-                    // Get the task item's rect
-                    const taskRect = this.getBoundingClientRect();
+                    // Get button position
+                    const btnRect = parentBtn.getBoundingClientRect();
                     
-                    // Check if we're in the right third of the task - simpler and more reliable
-                    const rightThreshold = taskRect.left + (taskRect.width * 0.7);
+                    // Check if we're near the button (within 30px)
+                    const nearButton = (
+                        Math.abs(mouseX - btnRect.left - btnRect.width/2) < 30 &&
+                        Math.abs(mouseY - btnRect.top - btnRect.height/2) < 30
+                    );
                     
-                    if (mouseX >= rightThreshold) {
-                        // We're in the right zone of the task!
-                        console.log(`*** INDENT ZONE ACTIVE for ${taskId} - in right third of task`);
+                    if (nearButton) {
+                        // We're near the parent button!
+                        console.log(`*** NEAR PARENT BUTTON for ${taskId}`);
                         this.classList.add('indent-hover');
-                        indentZone.classList.add('active');
+                        parentBtn.classList.add('active');
                         
                         // Flag this to become a parent
                         this.dataset.shouldBecomeParent = "true";
-                        
-                        // If this task doesn't have children yet, create a container immediately
-                        if (!this.querySelector('.task-children')) {
-                            console.log(`*** CREATING CONTAINER during dragover for ${taskId}`);
-                            createChildrenContainer(this);
-                        }
                     } else {
-                        // Not in indent zone
+                        // Not near the button
                         this.classList.remove('indent-hover');
-                        indentZone.classList.remove('active');
+                        parentBtn.classList.remove('active');
                     }
                 }
             });
@@ -683,53 +720,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.stopPropagation();
                 
                 const taskId = this.dataset.id;
-                console.log(`DROP EVENT ON: ${taskId}`);
+                console.log(`DROP EVENT ON TASK: ${taskId}`);
                 
                 // Get mouse position
                 const mouseX = e.clientX;
                 const mouseY = e.clientY;
                 
-                // First check if we're in the indent zone
-                const indentZone = this.querySelector('.indent-zone');
-                let isInIndentZone = false;
+                // Check if we're near the parent button
+                const parentBtn = this.querySelector('.make-parent-btn');
+                let isNearButton = false;
                 
-                if (indentZone) {
-                    const indentRect = indentZone.getBoundingClientRect();
+                if (parentBtn) {
+                    const btnRect = parentBtn.getBoundingClientRect();
                     
-                    // Check if the drop is within the indent zone
-                    isInIndentZone = (
-                        mouseX >= indentRect.left && 
-                        mouseX <= indentRect.right && 
-                        mouseY >= indentRect.top && 
-                        mouseY <= indentRect.bottom
+                    // Check if we're near the button (within 40px - wider margin for drop)
+                    isNearButton = (
+                        Math.abs(mouseX - btnRect.left - btnRect.width/2) < 40 &&
+                        Math.abs(mouseY - btnRect.top - btnRect.height/2) < 40
                     );
                     
-                    if (isInIndentZone) {
-                        console.log(`*** DROP IN INDENT ZONE for ${taskId}`);
+                    if (isNearButton) {
+                        console.log(`*** DROP NEAR PARENT BUTTON for ${taskId}`);
                     }
                 }
                 
-                // Immediately create a container if we're in the indent zone or have the flag set
-                if (isInIndentZone || this.classList.contains('indent-hover') || this.dataset.shouldBecomeParent === 'true') {
-                    console.log(`*** CRITICAL: ${taskId} should become a parent`);
+                // Create a parent container if needed
+                if (isNearButton || this.classList.contains('indent-hover') || this.dataset.shouldBecomeParent === 'true') {
+                    console.log(`*** TASK ${taskId} SHOULD BECOME A PARENT`);
                     
-                    // Remove any existing container
-                    const existingContainer = this.querySelector('.task-children');
-                    if (existingContainer) {
-                        existingContainer.remove();
+                    // Create a new container if one doesn't exist
+                    if (!this.querySelector('.task-children')) {
+                        console.log(`*** CREATING PARENT CONTAINER FOR TASK: ${taskId}`);
+                        const container = createChildrenContainer(this);
+                        
+                        // Flag this for the onEnd handler
+                        this.classList.add('force-become-parent');
+                        
+                        // Store references for later access
+                        window.lastCreatedContainer = container;
+                        window.lastCreatedContainerParent = this;
                     }
-                    
-                    // Create a new container
-                    console.log(`*** CREATING PARENT CONTAINER for ${taskId}`);
-                    const container = createChildrenContainer(this);
-                    
-                    // Flag this for the onEnd handler
-                    this.classList.add('drop-created-container');
-                    this.classList.add('force-become-parent');
-                    
-                    // Store references
-                    window.lastCreatedContainer = container;
-                    window.lastCreatedContainerParent = this;
                 }
             });
             

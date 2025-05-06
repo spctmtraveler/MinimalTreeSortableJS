@@ -204,35 +204,42 @@ body > .sortable-drag {
     border: 1px dashed rgba(0, 206, 247, 0.3);
 }
 
-/* Indent zone - this appears on the right side of each task */
-.indent-zone {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60px; /* Made much wider */
-    height: 100%;
-    z-index: 10;
-    background-color: rgba(0, 206, 247, 0.1); /* Always slightly visible */
-    border-left: 1px dashed rgba(0, 206, 247, 0.3);
-    transition: all 0.2s ease;
-}
-
-.indent-zone:hover, .indent-zone.active {
-    background-color: rgba(0, 206, 247, 0.3);
-    border-left: 2px solid rgba(0, 206, 247, 0.7);
-}
-
-.indent-icon {
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%);
+/* "Make parent" button for each task */
+.make-parent-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: 1px solid rgba(0, 206, 247, 0.3);
+    border-radius: 3px;
     color: #00CEF7;
-    font-weight: bold;
-    font-size: 16px; /* Larger icon */
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+    padding: 0;
 }
 
-/* Task item needs relative position for indent zone */
+.make-parent-btn:hover, 
+.make-parent-btn.active,
+.task-item.drag-over .make-parent-btn {
+    background-color: rgba(0, 206, 247, 0.2);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Parent button during dragover highlighting */
+.task-item.indent-hover .make-parent-btn {
+    background-color: rgba(0, 206, 247, 0.4);
+    border: 1px solid #00CEF7;
+    color: white;
+    box-shadow: 0 0 5px rgba(0, 206, 247, 0.5);
+}
+
+/* Task item needs relative position */
 .task-item {
     position: relative;
 }
