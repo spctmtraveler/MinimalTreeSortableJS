@@ -162,17 +162,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
       /* show dotted box when hovering an empty list */
       onMove(evt) {
+        // Clear all active drop targets
         document.querySelectorAll('.drop-target-active')
                 .forEach(el => el.classList.remove('drop-target-active'));
-        if (evt.to.children.length === 0) evt.to.classList.add('drop-target-active');
+                
+        // Show dotted box for empty lists
+        if (evt.to.children.length === 0) {
+          evt.to.classList.add('drop-target-active');
+          console.log('Empty target: Make it an active drop target');
+        }
+        
+        // Log the drag movement for debugging
+        console.log(`Dragging item ${evt.dragged.textContent.trim()} over/near ${evt.related ? evt.related.textContent.trim() : 'unknown'}`);
+        
+        // Add special class to ALL empty lists to make them visible as potential drop targets
+        document.querySelectorAll('.task-list:empty').forEach(list => {
+          if (list !== evt.to) { // Don't double-highlight the current target
+            list.classList.add('drop-target-hint');
+          }
+        });
+        
         return true;
       },
 
       onEnd(evt) {
-        document.querySelectorAll('.drop-target-active')
-                .forEach(el => el.classList.remove('drop-target-active'));
+        // Clean up all drop target indicators
+        document.querySelectorAll('.drop-target-active, .drop-target-hint')
+                .forEach(el => {
+                  el.classList.remove('drop-target-active');
+                  el.classList.remove('drop-target-hint');
+                });
+        
+        // Clean up drag item classes
         evt.item.classList.remove('drag-compact');
         evt.clone && evt.clone.classList.remove('drag-compact');
+        
+        // Log the result of the drag
+        const parentItem = evt.to.closest('.task-item');
+        if (parentItem) {
+          console.log(`Dropped into: ${parentItem.querySelector('.task-text').textContent.trim()}`);
+        } else {
+          console.log('Dropped at root level');
+        }
       },
 
       onStart(evt) {

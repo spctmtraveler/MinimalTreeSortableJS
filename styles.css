@@ -76,12 +76,21 @@ li::before {
   border: none;
 }
 
-/* Active drop target (dotted box) */
+/* Active drop target (dotted box) - current target */
 .task-list.drop-target-active {
   margin-left: 24px; /* Increased indent for active drop targets */
-  min-height: 24px; /* Slightly larger target area */
-  background: rgba(0, 206, 247, 0.06); /* Accent color to match theme */
-  border: 1px dashed rgba(0, 206, 247, 0.3); /* Accent color border */
+  min-height: 32px; /* Larger target area */
+  background: rgba(0, 206, 247, 0.1); /* Accent color to match theme */
+  border: 1px dashed rgba(0, 206, 247, 0.5); /* Accent color border */
+  border-radius: 4px;
+}
+
+/* Hint style for other possible drop targets */
+.task-list.drop-target-hint {
+  margin-left: 24px; /* Same indent */
+  min-height: 20px; /* Smaller than active */
+  background: rgba(0, 206, 247, 0.03); /* Subtler background */
+  border: 1px dotted rgba(0, 206, 247, 0.2); /* Subtler border */
   border-radius: 4px;
 }
 
@@ -123,4 +132,35 @@ body > .sortable-drag {
   background: rgba(33, 33, 33, 0.95) !important;
   border-radius: 4px;
   box-shadow: 0 0 12px rgba(0, 206, 247, 0.2);
+}
+
+/* Compact drag mode (cleaner appearance) */
+.drag-compact {
+  margin: 0 !important;
+  padding: 2px 8px !important;
+}
+
+/* Add a "right-indent" visual indicator for drag targets */
+.task-item {
+  position: relative;
+}
+
+/* Create a visual right-arrow indicator to show indent */
+.task-item::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 8px;
+  border-color: transparent transparent transparent rgba(0, 206, 247, 0);
+  transform: translateY(-50%);
+  transition: border-color 0.2s;
+}
+
+/* Show the right-arrow when hovering over a task */
+.task-item:hover::after {
+  border-color: transparent transparent transparent rgba(0, 206, 247, 0.15);
 }
