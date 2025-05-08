@@ -1,60 +1,47 @@
 /* ===== Reset & Base ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: 'Inter', sans-serif;
-  background: #212121;
-  color: #ccc;
-  padding: 24px;
-}
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-h1 {
-  color: #00cef7;
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-.description {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 24px;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #212121; color: #ccc; padding: 24px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { color: #00cef7; font-size: 22px; margin-bottom: 8px; }
+.description { font-size: 14px; color: #888; margin-bottom: 24px; }
 
 /* ===== Tree & List ===== */
 #task-tree { width: 100%; }
 .task-list {
   list-style: none;
-  padding-left: 16px;
+  padding-left: 24px; /* Increased indent for child items */
   margin: 0;
 }
 
-/* ===== Items & Content ===== */
+/* Remove any stray pseudo-elements */
+.task-children:before,
+.task-list:before,
+.task-list:empty:before,
+li::before {
+  content: none !important;
+}
+
+/* ===== Items ===== */
 .task-item { margin: 4px 0; }
 .task-content {
   display: flex;
   align-items: center;
-  padding: 2px 4px;
+  padding: 4px 8px;
   border-radius: 4px;
   cursor: grab;
   user-select: none;
   background: transparent;
-  transition: background 0.15s;
 }
 
-/* Remove all hover highlights */
+/* No hover highlight */
 .task-item:hover .task-content {
   background: transparent;
 }
 
-/* ===== Toggle (chevrons) ===== */
+/* ===== Toggle (Chevron) ===== */
 .toggle-area {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   margin-right: 6px;
   display: flex;
   align-items: center;
@@ -62,13 +49,9 @@ h1 {
   cursor: pointer;
 }
 .toggle-btn {
-  font-size: 25px;
+  font-size: 16px;
   color: #888;
   line-height: 1;
-  transition: transform 0.2s;
-}
-.toggle-btn.expanded {
-  transform: rotate(0deg);
 }
 
 /* ===== Text ===== */
@@ -80,55 +63,64 @@ h1 {
 
 /* ===== Children Container ===== */
 .task-children {
-  margin-left: 8px;
-  padding-left: 8px;
-  /* no tree lines */
+  margin-left: 24px; /* Increased indent for children container */
+  padding-left: 0;
 }
 
 /* ===== Empty Drop‑zone Lists ===== */
-/* zero height by default */
 .task-list:empty {
-  min-height: 0;
+  min-height: 4px;
   margin: 0;
   padding: 0;
   background: transparent;
   border: none;
-  transition: min-height 0.1s;
 }
-/* when dragging over, expand to show drop target */
+
+/* Active drop target (dotted box) */
 .task-list.drop-target-active {
-  min-height: 16px;
-  background: rgba(255,255,255,0.05);
-  border: 1px dashed rgba(200,200,200,0.5);
+  margin-left: 24px; /* Increased indent for active drop targets */
+  min-height: 24px; /* Slightly larger target area */
+  background: rgba(0, 206, 247, 0.06); /* Accent color to match theme */
+  border: 1px dashed rgba(0, 206, 247, 0.3); /* Accent color border */
   border-radius: 4px;
 }
 
-/* ===== Drag & Drop Styling ===== */
-.task-ghost {
-  opacity: 0.4;
-  background: rgba(255,255,255,0.05);
-  border-radius: 4px;
-}
-.task-chosen {
-  background: rgba(0,206,247,0.08);
-  border-radius: 4px;
-}
+/* ===== Drag / Ghost ===== */
+.task-ghost,
+.sortable-drag,
 .task-drag {
-  opacity: 0.85;
-  background: rgba(0,206,247,0.12);
-  border: 1px dashed rgba(0,206,247,0.4);
+  background: rgba(0, 206, 247, 0.12) !important;
+  border: 1px dashed rgba(0, 206, 247, 0.4) !important;
   border-radius: 4px;
+  opacity: 0.85 !important;
 }
-.sortable-drag + .sortable-ghost {
+
+/* Hide chevron gap for drag & ghost */
+.task-ghost .toggle-area,
+.sortable-drag .toggle-area,
+.task-drag .toggle-area {
   display: none !important;
 }
+
+/* Align label properly inside drag & ghost */
+.task-ghost .task-content,
+.sortable-drag .task-content,
+.task-drag .task-content {
+  padding-left: 8px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Drag preview container cleanup */
 body > .sortable-drag {
   pointer-events: none;
   position: fixed !important;
   z-index: 999;
   margin: 0 !important;
-  padding: 6px 12px;
-  background: rgba(33,33,33,0.95) !important;
+  padding: 6px 12px !important;
+  background: rgba(33, 33, 33, 0.95) !important;
   border-radius: 4px;
-  box-shadow: 0 0 12px rgba(0,206,247,0.2);
+  box-shadow: 0 0 12px rgba(0, 206, 247, 0.2);
 }

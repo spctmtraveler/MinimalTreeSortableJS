@@ -1,9 +1,12 @@
 // -------------  Task Tree Demo  ------------------
-// Visual polish pass – minimalist look
-// Drop zones are subtle unless active. Tree lines removed.
+// Minimalist visuals • accurate indent • compact drag preview
+// Updated: 2025‑05‑07 02:30
+//  ✱ drop target & ghost now render at correct child indent
+//  ✱ dragged / ghost items are fully compact (no chevron gap)
 // ---------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
+  /* ---------- Sample Data ----------- */
   const sampleTasks = [
     {
       id: 'task-1',
@@ -66,13 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  const treeRoot = document.getElementById('task-tree');
-  buildTree(sampleTasks, treeRoot);
+  const root = document.getElementById('task-tree');
+  buildTree(sampleTasks, root);
 
-  function buildTree(tasks, parentElem) {
+  /* ---------- Build Tree ----------- */
+  function buildTree(tasks, parent) {
     const ul = document.createElement('ul');
     ul.className = 'task-list';
-    parentElem.appendChild(ul);
+    parent.appendChild(ul);
     createSortable(ul);
 
     tasks.forEach(task => {
@@ -80,57 +84,71 @@ document.addEventListener('DOMContentLoaded', () => {
       li.className = 'task-item';
       li.dataset.id = task.id;
 
-      const content = document.createElement('div');
-      content.className = 'task-content';
-      li.appendChild(content);
+      /* --- content row --- */
+      const row = document.createElement('div');
+      row.className = 'task-content';
+      li.appendChild(row);
 
-      const toggle = document.createElement('span');
-      toggle.className = 'toggle-btn';
-      toggle.innerHTML = '▸';
-      toggle.style.display = task.children?.length ? 'inline-block' : 'none';
+      /* chevron */
+      const chevron = document.createElement('span');
+      chevron.className = 'toggle-btn';
+      chevron.textContent = '▸';
+      chevron.style.display = task.children?.length ? 'inline-block' : 'none';
 
       const toggleArea = document.createElement('div');
       toggleArea.className = 'toggle-area';
       toggleArea.setAttribute('data-no-drag', 'true');
-      toggleArea.appendChild(toggle);
-      content.appendChild(toggleArea);
+      toggleArea.appendChild(chevron);
+      row.appendChild(toggleArea);
 
+      /* toggle action */
       toggleArea.addEventListener('click', e => {
         e.stopPropagation();
-        const open = toggle.classList.toggle('expanded');
-        toggle.innerHTML = open ? '▾' : '▸';
-        childCtr.style.display = open ? 'block' : 'none';
+        const open = chevron.classList.toggle('expanded');
+        chevron.textContent = open ? '▾' : '▸';
+        childContainer.style.display = open ? 'block' : 'none';
       });
 
-      const span = document.createElement('span');
-      span.className = 'task-text';
-      span.textContent = task.content;
-      content.appendChild(span);
+      /* text */
+      const txt = document.createElement('span');
+      txt.className = 'task-text';
+      txt.textContent = task.content;
+      row.appendChild(txt);
 
-      const childCtr = document.createElement('div');
-      childCtr.className = 'task-children';
-      li.appendChild(childCtr);
+      /* child container with empty ul */
+      const childContainer = document.createElement('div');
+      childContainer.className = 'task-children';
+      li.appendChild(childContainer);
 
       const childList = document.createElement('ul');
       childList.className = 'task-list';
-      childCtr.appendChild(childList);
+      childContainer.appendChild(childList);
+      createSortable(childList, chevron, childContainer);
 
-      createSortable(childList, task, toggle, childCtr);
+      /* show drop zone even when pointer over row of a leaf */
+      row.addEventListener('dragover', () => {
+        if (childList.children.length === 0) childList.classList.add('drop-target-active');
+      });
+      row.addEventListener('dragleave', () => {
+        childList.classList.remove('drop-target-active');
+      });
 
+      /* recurse */
       if (task.children?.length) {
         buildTree(task.children, childList);
-        toggle.classList.add('expanded');
-        toggle.innerHTML = '▾';
+        chevron.classList.add('expanded');
+        chevron.textContent = '▾';
       }
 
       ul.appendChild(li);
     });
   }
 
-  function createSortable(listElem, owningTask = null, toggleBtn = null, container = null) {
-    if (listElem.dataset.sortable) return;
+  /* ---------- Sortable Factory ----------- */
+  function createSortable(list, chevron = null, container = null) {
+    if (list.dataset.sortable) return; // already done
 
-    new Sortable(listElem, {
+    new Sortable(list, {
       group: { name: 'nested', pull: true, put: true },
       animation: 150,
       fallbackOnBody: true,
@@ -142,25 +160,43 @@ document.addEventListener('DOMContentLoaded', () => {
       dragClass: 'task-drag',
       filter: '[data-no-drag]',
 
-      onAdd(evt) {
-        if (!toggleBtn) return;
+      /* show dotted box when hovering an empty list */
+      onMove(evt) {
+        document.querySelectorAll('.drop-target-active')
+                .forEach(el => el.classList.remove('drop-target-active'));
+        if (evt.to.children.length === 0) evt.to.classList.add('drop-target-active');
+        return true;
+      },
+
+      onEnd(evt) {
+        document.querySelectorAll('.drop-target-active')
+                .forEach(el => el.classList.remove('drop-target-active'));
+        evt.item.classList.remove('drag-compact');
+        evt.clone && evt.clone.classList.remove('drag-compact');
+      },
+
+      onStart(evt) {
+        evt.item.classList.add('drag-compact');
+        evt.clone && evt.clone.classList.add('drag-compact');
+      },
+
+      onAdd() {
+        if (!chevron) return;
         container.style.display = 'block';
-        toggleBtn.style.display = 'inline-block';
-        toggleBtn.classList.add('expanded');
-        toggleBtn.innerHTML = '▾';
+        chevron.style.display = 'inline-block';
+        chevron.classList.add('expanded');
+        chevron.textContent = '▾';
       },
 
       onRemove(evt) {
         const parentLi = evt.from.closest('.task-item');
-        if (!parentLi) return;
-        const listLeft = evt.from;
-        if (listLeft.children.length === 0) {
+        if (parentLi && evt.from.children.length === 0) {
           const tgl = parentLi.querySelector('.toggle-btn');
           if (tgl) tgl.style.display = 'none';
         }
       }
     });
 
-    listElem.dataset.sortable = '1';
+    list.dataset.sortable = '1';
   }
 });
