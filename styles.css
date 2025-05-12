@@ -69,17 +69,25 @@ li::before {
 
 /* ===== Empty Drop‑zone Lists ===== */
 .task-list:empty {
-  min-height: 4px;
+  min-height: 0;
+  height: 0;
   margin: 0;
   padding: 0;
   background: transparent;
   border: none;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s, visibility 0.1s, min-height 0.1s;
 }
 
 /* Active drop target (dotted box) - current target */
 .task-list.drop-target-active {
-  margin-left: 24px; /* Increased indent for active drop targets */
+  visibility: visible;
+  opacity: 1;
   min-height: 32px; /* Larger target area */
+  height: auto;
+  margin-left: 24px; /* Increased indent for active drop targets */
   background: rgba(0, 206, 247, 0.1); /* Accent color to match theme */
   border: 1px dashed rgba(0, 206, 247, 0.5); /* Accent color border */
   border-radius: 4px;
@@ -87,11 +95,20 @@ li::before {
 
 /* Hint style for other possible drop targets */
 .task-list.drop-target-hint {
-  margin-left: 24px; /* Same indent */
+  visibility: visible;
+  opacity: 1;
   min-height: 20px; /* Smaller than active */
+  height: auto;
+  margin-left: 24px; /* Same indent */
   background: rgba(0, 206, 247, 0.03); /* Subtler background */
   border: 1px dotted rgba(0, 206, 247, 0.2); /* Subtler border */
   border-radius: 4px;
+}
+
+/* To track when the body is in dragging state */
+body.is-dragging .task-list:empty {
+  min-height: 0;
+  height: 0;
 }
 
 /* ===== Drag / Ghost ===== */

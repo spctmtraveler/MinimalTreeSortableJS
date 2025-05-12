@@ -258,27 +258,22 @@ document.addEventListener('DOMContentLoaded', () => {
       dragClass: 'task-drag',
       filter: '[data-no-drag]',
 
-      /* show dotted box when hovering an empty list */
+      /* show dotted box ONLY when hovering an empty list */
       onMove(evt) {
-        // Clear all active drop targets
-        document.querySelectorAll('.drop-target-active')
-                .forEach(el => el.classList.remove('drop-target-active'));
-                
-        // Show dotted box for empty lists
+        // First, hide ALL drop targets
+        document.querySelectorAll('.task-list:empty')
+                .forEach(el => {
+                  el.classList.remove('drop-target-active');
+                  el.classList.remove('drop-target-hint');
+                });
+        
+        // Only show the active drop target we're directly hovering over
         if (evt.to.children.length === 0) {
           evt.to.classList.add('drop-target-active');
-          console.log('Empty target: Make it an active drop target');
         }
         
-        // Log the drag movement for debugging
-        console.log(`Dragging item ${evt.dragged.textContent.trim()} over/near ${evt.related ? evt.related.textContent.trim() : 'unknown'}`);
-        
-        // Add special class to ALL empty lists to make them visible as potential drop targets
-        document.querySelectorAll('.task-list:empty').forEach(list => {
-          if (list !== evt.to) { // Don't double-highlight the current target
-            list.classList.add('drop-target-hint');
-          }
-        });
+        // This was the problematic part - don't show ALL empty lists
+        // Only show the list the user is directly interacting with
         
         return true;
       },
@@ -294,6 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clean up drag item classes
         evt.item.classList.remove('drag-compact');
         evt.clone && evt.clone.classList.remove('drag-compact');
+        
+        // Remove dragging state from body
+        document.body.classList.remove('is-dragging');
         
         // Log the result of the drag
         const parentItem = evt.to.closest('.task-item');
@@ -353,20 +351,17 @@ document.addEventListener('DOMContentLoaded', () => {
       filter: '[data-no-drag]',
       
       onMove(evt) {
-        // Inherit the same dotted box behavior
-        document.querySelectorAll('.drop-target-active')
-                .forEach(el => el.classList.remove('drop-target-active'));
-                
+        // First, hide ALL drop targets
+        document.querySelectorAll('.task-list:empty')
+                .forEach(el => {
+                  el.classList.remove('drop-target-active');
+                  el.classList.remove('drop-target-hint');
+                });
+        
+        // Only show the active drop target we're directly hovering over
         if (evt.to.children.length === 0) {
           evt.to.classList.add('drop-target-active');
         }
-        
-        // Add special class to ALL empty lists to make them visible as potential drop targets
-        document.querySelectorAll('.task-list:empty').forEach(list => {
-          if (list !== evt.to) {
-            list.classList.add('drop-target-hint');
-          }
-        });
         
         return true;
       },
@@ -382,6 +377,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clean up drag item classes
         evt.item.classList.remove('drag-compact');
         evt.clone && evt.clone.classList.remove('drag-compact');
+        
+        // Remove dragging state from body
+        document.body.classList.remove('is-dragging');
       },
       
       onStart(evt) {
