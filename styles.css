@@ -9,7 +9,7 @@ h1 { color: #00cef7; font-size: 22px; margin-bottom: 8px; }
 #task-tree { width: 100%; }
 .task-list {
   list-style: none;
-  padding-left: 24px; /* Increased indent for child items */
+  padding-left: 16px;
   margin: 0;
 }
 
@@ -63,7 +63,7 @@ li::before {
 
 /* ===== Children Container ===== */
 .task-children {
-  margin-left: 24px; /* Increased indent for children container */
+  margin-left: 16px;
   padding-left: 0;
 }
 
@@ -163,4 +163,59 @@ body > .sortable-drag {
 /* Show the right-arrow when hovering over a task */
 .task-item:hover::after {
   border-color: transparent transparent transparent rgba(0, 206, 247, 0.15);
+}
+
+/* ===== Section Headers ===== */
+.section-header {
+  margin-top: 16px !important;
+}
+
+.section-header:first-child {
+  margin-top: 0 !important;
+}
+
+.section-header > .task-content {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-left: 3px solid #00CEF7;
+  margin-left: -10px;
+  padding-left: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.section-header > .task-content .task-text {
+  color: #00CEF7;
+}
+
+.section-header > .task-children {
+  margin-left: 8px;
+  margin-top: 8px;
+}
+
+/* ===== Task Completion ===== */
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #00CEF7;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #00CEF7;
+  transition: background-color 0.2s;
+}
+
+.task-completed .task-checkbox {
+  background-color: #00CEF7;
+  color: #212121;
+}
+
+.task-completed .task-text {
+  text-decoration: line-through;
+  color: #7F7F7F;
+  opacity: 0.8;
 }
