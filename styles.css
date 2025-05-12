@@ -307,6 +307,21 @@ li::before {
   position: relative;
 }
 
+/* ===== Drag Handle ===== */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  cursor: grab;
+  opacity: 0.3;
+  color: var(--accent-color);
+}
+
+.task-item:hover .drag-handle {
+  opacity: 0.7;
+}
+
 /* ===== Text ===== */
 .task-text {
   flex: 1;

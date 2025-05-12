@@ -523,10 +523,20 @@ document.addEventListener('DOMContentLoaded', () => {
       /* chevron */
       const chevron = document.createElement('span');
       chevron.className = 'toggle-btn';
-      chevron.textContent = '▸';
+      
+      // Use SVG triangle instead of text character
+      const isExpanded = task.isSection ? true : false; // Sections start expanded
+      chevron.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+        <path d="${isExpanded ? 'M7 10l5 5 5-5z' : 'M10 17l5-5-5-5v10z'}"/>
+      </svg>`;
+      
       // Always show chevron for sections, otherwise only if it has children
       chevron.style.display = 
         (task.isSection || task.children?.length) ? 'inline-block' : 'none';
+      
+      if (isExpanded) {
+        chevron.classList.add('expanded');
+      }
 
       const toggleArea = document.createElement('div');
       toggleArea.className = 'toggle-area';
@@ -538,10 +548,31 @@ document.addEventListener('DOMContentLoaded', () => {
       toggleArea.addEventListener('click', e => {
         e.stopPropagation();
         const open = chevron.classList.toggle('expanded');
-        chevron.textContent = open ? '▾' : '▸';
+        
+        // Update SVG path based on expanded state
+        chevron.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+          <path d="${open ? 'M7 10l5 5 5-5z' : 'M10 17l5-5-5-5v10z'}"/>
+        </svg>`;
+        
         childContainer.style.display = open ? 'block' : 'none';
       });
 
+      /* Drag handle (dots) for non-section items */
+      if (!task.isSection) {
+        const dragHandle = document.createElement('span');
+        dragHandle.className = 'drag-handle';
+        dragHandle.setAttribute('data-drag-handle', 'true');
+        dragHandle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="6" cy="6" r="2"/>
+          <circle cx="6" cy="12" r="2"/>
+          <circle cx="6" cy="18" r="2"/>
+          <circle cx="18" cy="6" r="2"/>
+          <circle cx="18" cy="12" r="2"/>
+          <circle cx="18" cy="18" r="2"/>
+        </svg>`;
+        row.appendChild(dragHandle);
+      }
+      
       /* text */
       const txt = document.createElement('span');
       txt.className = 'task-text';
