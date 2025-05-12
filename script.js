@@ -536,6 +536,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (isExpanded) {
         chevron.classList.add('expanded');
+        // For sections, we always start with children expanded
+        if (task.isSection && childContainer) {
+          childContainer.style.display = 'block';
+        }
       }
 
       const toggleArea = document.createElement('div');
@@ -554,7 +558,18 @@ document.addEventListener('DOMContentLoaded', () => {
           <path d="${open ? 'M7 10l5 5 5-5z' : 'M10 17l5-5-5-5v10z'}"/>
         </svg>`;
         
-        childContainer.style.display = open ? 'block' : 'none';
+        // If this is a section header, we need special animation
+        if (task.isSection) {
+          // Always keep section open but animate the children's height
+          childContainer.style.display = 'block';
+          childContainer.style.height = open ? 'auto' : '0';
+          childContainer.style.overflow = open ? 'visible' : 'hidden';
+          childContainer.style.opacity = open ? '1' : '0';
+          childContainer.style.transition = 'opacity 0.3s ease';
+        } else {
+          // Normal toggle for regular tasks
+          childContainer.style.display = open ? 'block' : 'none';
+        }
       });
 
       /* Drag handle (dots) for non-section items */
@@ -1034,6 +1049,48 @@ document.addEventListener('DOMContentLoaded', () => {
       if (flagsHidden) {
         document.body.classList.add('flags-hidden');
       }
+      
+      // Sort button functionality
+      const sortBtn = document.getElementById('sort-btn');
+      if (sortBtn) {
+        sortBtn.addEventListener('click', () => {
+          sortTasks();
+          clearAndRebuildTree();
+          
+          // Show toast notification
+          createToast('Tasks sorted by priority', 'success', 3000);
+        });
+      }
+    }
+    
+    // Sort tasks by priority and completion status
+    function sortTasks() {
+      const tasksCopy = [...tasks];
+      
+      // For each section, sort its children
+      tasksCopy.forEach(section => {
+        if (section.children && section.children.length > 0) {
+          section.children.sort((a, b) => {
+            // Completed tasks go to the bottom
+            if (a.completed && !b.completed) return 1;
+            if (!a.completed && b.completed) return -1;
+            
+            // Then sort by priority flags (fire, fast, flow, fear, first)
+            const priorityOrder = ['fire', 'fast', 'flow', 'fear', 'first'];
+            
+            // Count active flags for each task
+            const aFlagCount = priorityOrder.filter(flag => a.flags && a.flags[flag]).length;
+            const bFlagCount = priorityOrder.filter(flag => b.flags && b.flags[flag]).length;
+            
+            // More flags = higher priority
+            return bFlagCount - aFlagCount;
+          });
+        }
+      });
+      
+      // Save the sorted tasks
+      tasks = tasksCopy;
+      saveTasks();
     }
   }
   
