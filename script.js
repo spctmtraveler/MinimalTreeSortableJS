@@ -1047,6 +1047,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new Sortable(list, {
       group: { name: 'nested', pull: true, put: true },
       animation: 150,
+      handle: '.drag-handle',
       fallbackOnBody: true,
       forceFallback: true,
       swapThreshold: 0.65,
@@ -1139,6 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
       },
       animation: 150,
+      handle: '.drag-handle',
       fallbackOnBody: true,
       forceFallback: true,
       swapThreshold: 0.65,
