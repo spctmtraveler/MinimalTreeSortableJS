@@ -615,13 +615,6 @@ body > .sortable-drag {
   gap: 1rem;
 }
 
-/* ===== Priority Toggle States ===== */
-body.hide-priorities .task-flags,
-body.hide-priorities .priority-header,
-body.hide-priorities .priority-columns {
-  display: none !important;
-}
-
 /* ===== Toast Notifications ===== */
 #toast-container {
   position: fixed;
