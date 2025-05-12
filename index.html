@@ -5,158 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>DUN - Task Management</title>
+    <title>Task Tree - Drag & Drop Demo</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Load Sortable.js library for drag-and-drop functionality -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body>
-    <!-- App Wrapper -->
-    <div id="dun-app">
-        <!-- Top Banner -->
-        <header class="app-header">
-            <div class="header-logo">
-                <h1>DUN</h1>
-            </div>
-            
-            <div class="quick-add">
-                <input type="text" id="quick-add-input" placeholder="Enter task">
-                <button id="quick-add-btn">Add</button>
-            </div>
-            
-            <div class="header-controls">
-                <div class="filter-dropdown">
-                    <select id="filter-select">
-                        <option value="all">All</option>
-                        <option value="triage">Triage</option>
-                        <option value="today">Today</option>
-                        <option value="tomorrow">Tomorrow</option>
-                        <option value="this-week">This Week</option>
-                        <option value="next-week">Next Week</option>
-                        <option value="this-month">This Month</option>
-                        <option value="next-month">Next Month</option>
-                    </select>
-                </div>
-                
-                <button id="toggle-priority" class="icon-btn" title="Toggle Priority Flags">
-                    <i class="fas fa-eye"></i>
-                </button>
-            </div>
-        </header>
+    <div class="container">
+        <h1>Task Tree</h1>
+        <p class="description">A collapsible, nested task tree with drag-and-drop functionality.</p>
         
-        <!-- Main Content Area -->
-        <main class="app-content">
-            <!-- Tasks panel with header -->
-            <div class="panel-header">
-                <div class="panel-title">
-                    <i class="fas fa-tasks"></i>
-                    <h2>Tasks</h2>
-                </div>
-                
-                <div class="priority-header">
-                    <i class="fas fa-star"></i>
-                    <h2>Priority</h2>
-                </div>
-            </div>
-            
-            <!-- Priority column headers -->
-            <div class="priority-columns">
-                <div class="priority-labels">
-                    <span>Fire</span>
-                    <span>Fast</span>
-                    <span>Flow</span>
-                    <span>Fear</span>
-                    <span>First</span>
-                </div>
-            </div>
-            
-            <!-- Task tree container (preserved from original) -->
-            <div id="task-tree"></div>
-        </main>
-        
-        <!-- Task View Modal (hidden by default) -->
-        <div id="task-view" class="task-modal hidden">
-            <div class="task-modal-content">
-                <div class="task-modal-header">
-                    <h3>Task Details</h3>
-                    <button class="close-modal">&times;</button>
-                </div>
-                
-                <div class="task-modal-body">
-                    <div class="form-group">
-                        <label for="task-title">Title</label>
-                        <input type="text" id="task-title" name="title">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="task-revisit">Revisit Date</label>
-                        <input type="date" id="task-revisit" name="revisitDate">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="task-scheduled">Scheduled Time</label>
-                        <input type="time" id="task-scheduled" name="scheduledTime">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="task-overview">Overview</label>
-                        <textarea id="task-overview" name="overview" rows="2"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="task-details">Details</label>
-                        <textarea id="task-details" name="details" rows="4"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="task-time-estimate">Overall Time Estimate</label>
-                        <input type="text" id="task-time-estimate" name="timeEstimate">
-                    </div>
-                    
-                    <div class="priority-flags">
-                        <h4>Priority Flags</h4>
-                        <div class="flag-toggles">
-                            <button class="flag-btn" data-flag="fire" title="Is this task urgent and needs immediate attention?">
-                                <i class="fas fa-fire"></i>
-                            </button>
-                            <button class="flag-btn" data-flag="fast" title="Can this task be completed in under three minutes?">
-                                <i class="fas fa-rabbit-fast"></i>
-                            </button>
-                            <button class="flag-btn" data-flag="flow" title="Am I at risk of overindulging in this task instead of maintaining balance?">
-                                <i class="fas fa-water"></i>
-                            </button>
-                            <button class="flag-btn" data-flag="fear" title="Is this task something I should avoid due to potential negative outcomes?">
-                                <i class="fas fa-skull"></i>
-                            </button>
-                            <button class="flag-btn" data-flag="first" title="Does this task offer an 80% result with minimal effort?">
-                                <i class="fas fa-trophy"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="task-modal-footer">
-                    <div class="left-actions">
-                        <button id="task-delete" class="danger-btn">Delete</button>
-                        <label class="checkbox-container">
-                            <input type="checkbox" id="task-complete">
-                            <span class="checkmark"></span>
-                            <span>Completed</span>
-                        </label>
-                    </div>
-                    <div class="right-actions">
-                        <button id="task-start" class="action-btn">Start</button>
-                        <button id="task-save" class="primary-btn">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Toast notifications -->
-        <div id="toast-container"></div>
+        <!-- Task tree container -->
+        <div id="task-tree"></div>
     </div>
 
     <script src="script.js"></script>

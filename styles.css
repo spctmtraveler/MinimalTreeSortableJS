@@ -1,219 +1,12 @@
 /* ===== Reset & Base ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-  font-family: 'Inter', sans-serif; 
-  background: #212121; 
-  color: #dddddd; 
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ===== Core Layout ===== */
-#dun-app {
-  margin: 0 auto;
-  max-width: 960px;
-  padding: 0 1.5rem;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* ===== Header Styles ===== */
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background: #212121;
-  padding: 1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.header-logo h1 {
-  color: #00CEF7;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.quick-add {
-  display: flex;
-  flex: 1;
-  max-width: 400px;
-  margin: 0 1.5rem;
-}
-
-#quick-add-input {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #dddddd;
-  padding: 0.5rem 1rem;
-  border-radius: 4px 0 0 4px;
-  font-size: 0.9rem;
-}
-
-#quick-add-btn {
-  background: #00CEF7;
-  color: #212121;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 0 4px 4px 0;
-  transition: all 0.2s;
-}
-
-#quick-add-btn:hover {
-  background: #33d8ff;
-}
-
-.header-controls {
-  display: flex;
-  align-items: center;
-}
-
-.filter-dropdown select {
-  background: rgba(255, 255, 255, 0.1);
-  color: #dddddd;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.5rem 2rem 0.5rem 1rem;
-  border-radius: 4px;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23dddddd%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.7rem top 50%;
-  background-size: 0.65rem auto;
-  cursor: pointer;
-  margin-right: 1rem;
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  color: rgba(0, 206, 247, 0.5);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: color 0.2s;
-  padding: 0.25rem;
-}
-
-.icon-btn:hover {
-  color: rgba(0, 206, 247, 0.75);
-}
-
-.icon-btn.active {
-  color: #00CEF7;
-}
-
-/* ===== Main Content Area ===== */
-.app-content {
-  margin-top: 70px; /* Space for fixed header */
-  padding: 1.5rem 0;
-  flex: 1;
-}
-
-/* ===== Panel Headers ===== */
-.panel-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.panel-title {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
-.panel-title h2, .priority-header h2 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-left: 0.5rem;
-  color: #00CEF7;
-}
-
-.panel-title i, .priority-header i {
-  color: #00CEF7;
-}
-
-.priority-header {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-
-/* ===== Priority Columns ===== */
-.priority-columns {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.priority-labels {
-  display: flex;
-  margin-left: auto;
-  width: 250px;
-}
-
-.priority-labels span {
-  flex: 1;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #aaa;
-}
-
-/* ===== Task Priority Flags ===== */
-.task-flags {
-  display: flex;
-  width: 250px;
-  margin-left: auto;
-}
-
-.flag-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1px solid rgba(0, 206, 247, 0.5);
-  color: rgba(0, 206, 247, 0.4);
-  cursor: pointer;
-  transition: all 0.2s;
-  margin: 0 4px;
-  font-size: 0.85rem;
-}
-
-.flag-btn.active {
-  background: #00CEF7;
-  color: #212121;
-  border-color: #00CEF7;
-}
-
-.flag-btn:hover {
-  border-color: rgba(0, 206, 247, 0.8);
-  color: rgba(0, 206, 247, 0.8);
-}
-
-.flag-btn.active:hover {
-  background: #33d8ff;
-}
+body { font-family: 'Inter', sans-serif; background: #212121; color: #ccc; padding: 24px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { color: #00cef7; font-size: 22px; margin-bottom: 8px; }
+.description { font-size: 14px; color: #888; margin-bottom: 24px; }
 
 /* ===== Tree & List ===== */
-#task-tree { 
-  width: 100%; 
-  margin-top: 1rem;
-}
-
+#task-tree { width: 100%; }
 .task-list {
   list-style: none;
   padding-left: 16px;
@@ -229,74 +22,20 @@ li::before {
 }
 
 /* ===== Items ===== */
-.task-item { 
-  margin: 4px 0; 
-  display: flex;
-  align-items: center;
-}
-
+.task-item { margin: 4px 0; }
 .task-content {
   display: flex;
   align-items: center;
-  padding: 6px 8px;
+  padding: 4px 8px;
   border-radius: 4px;
   cursor: grab;
   user-select: none;
   background: transparent;
-  flex: 1;
-  position: relative;
 }
 
-/* Item number/dots */
-.task-item::before {
-  content: ":::";
-  display: inline-block;
-  width: 24px;
-  color: #555;
-  font-size: 0.8rem;
-  text-align: center;
-}
-
-/* Add revisit date display */
-.revisit-date {
-  color: #888;
-  font-size: 0.8rem;
-  margin-left: auto;
-  margin-right: 16px;
-  opacity: 0.8;
-}
-
-/* Task Controls */
-.task-controls {
-  display: flex;
-  align-items: center;
-  margin-left: 16px;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.task-item:hover .task-controls {
-  opacity: 1;
-}
-
-.task-control-btn {
-  background: none;
-  border: none;
-  color: rgba(0, 206, 247, 0.7);
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 4px;
-  margin: 0 2px;
-  transition: color 0.2s;
-}
-
-.task-control-btn:hover {
-  color: #00CEF7;
-}
-
-/* Hover effect */
+/* No hover highlight */
 .task-item:hover .task-content {
-  background: rgba(255, 255, 255, 0.03);
+  background: transparent;
 }
 
 /* ===== Toggle (Chevron) ===== */
@@ -418,252 +157,29 @@ body > .sortable-drag {
   padding: 2px 8px !important;
 }
 
-/* ===== Task Modal Dialog ===== */
-.task-modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 450px;
-  height: 100vh;
-  background: #2c2c2c;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-  z-index: 1100;
-  transform: translateX(100%);
-  transition: transform 0.3s ease-out;
-}
-
-.task-modal.open {
-  transform: translateX(0);
-}
-
-.task-modal.hidden {
-  display: none;
-}
-
-.task-modal-content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-}
-
-.task-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.task-modal-header h3 {
-  color: #00CEF7;
-  font-weight: 500;
-  font-size: 1.2rem;
-}
-
-.close-modal {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #aaa;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.close-modal:hover {
-  color: #fff;
-}
-
-.task-modal-body {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-}
-
-.task-modal-footer {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.form-group {
-  margin-bottom: 1.2rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #aaa;
-  font-size: 0.9rem;
-}
-
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group input[type="time"],
-.form-group textarea {
-  width: 100%;
-  padding: 0.7rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  color: #ddd;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-}
-
-.form-group textarea {
-  resize: vertical;
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.checkbox-container input {
-  position: absolute;
-  opacity: 0;
-  height: 0;
-  width: 0;
-}
-
-.checkmark {
+/* Add a "right-indent" visual indicator for drag targets */
+.task-item {
   position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  margin-right: 8px;
 }
 
-.checkbox-container input:checked ~ .checkmark:after {
+/* Create a visual right-arrow indicator to show indent */
+.task-item::after {
   content: '';
   position: absolute;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid #00CEF7;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  right: 8px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 8px;
+  border-color: transparent transparent transparent rgba(0, 206, 247, 0);
+  transform: translateY(-50%);
+  transition: border-color 0.2s;
 }
 
-.primary-btn {
-  background: #00CEF7;
-  color: #222;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  font-weight: 500;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.primary-btn:hover {
-  background: #33d8ff;
-}
-
-.action-btn {
-  background: rgba(0, 206, 247, 0.2);
-  color: #00CEF7;
-  border: 1px solid rgba(0, 206, 247, 0.5);
-  padding: 0.6rem 1.2rem;
-  font-weight: 500;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-right: 0.5rem;
-}
-
-.action-btn:hover {
-  background: rgba(0, 206, 247, 0.3);
-}
-
-.danger-btn {
-  background: rgba(255, 77, 77, 0.2);
-  color: #ff4d4d;
-  border: 1px solid rgba(255, 77, 77, 0.5);
-  padding: 0.6rem 1.2rem;
-  font-weight: 500;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.danger-btn:hover {
-  background: rgba(255, 77, 77, 0.3);
-}
-
-/* Modal priority flags section */
-.priority-flags {
-  margin: 1.5rem 0;
-}
-
-.priority-flags h4 {
-  margin-bottom: 0.8rem;
-  color: #aaa;
-  font-size: 0.9rem;
-  font-weight: normal;
-}
-
-.flag-toggles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-/* ===== Toast Notifications ===== */
-#toast-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1500;
-}
-
-.toast {
-  background: #2c2c2c;
-  color: #ddd;
-  padding: 0.8rem 1rem;
-  border-left: 4px solid #00CEF7;
-  margin-top: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 250px;
-  max-width: 350px;
-  animation: slideIn 0.3s, fadeOut 0.5s 4.5s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-}
-
-.toast.error {
-  border-color: #ff4d4d;
-}
-
-.toast-action {
-  color: #00CEF7;
-  background: none;
-  border: none;
-  padding: 0;
-  margin-left: 10px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+/* Show the right-arrow when hovering over a task */
+.task-item:hover::after {
+  border-color: transparent transparent transparent rgba(0, 206, 247, 0.15);
 }
 
 /* ===== Section Headers ===== */
