@@ -15,15 +15,14 @@
     <!-- Top Banner - Fixed at the top -->
     <header class="app-banner">
         <div class="banner-content">
-            <!-- Logo and Product Name -->
+            <!-- Logo -->
             <div class="logo-container">
                 <span class="logo">DUN</span>
-                <span class="product-name">Task Management</span>
             </div>
             
             <!-- New Task Input -->
             <div class="task-input-container">
-                <input type="text" id="new-task-input" placeholder="Add a new task..." autocomplete="off">
+                <input type="text" id="new-task-input" placeholder="Enter task" autocomplete="off">
                 <button id="add-task-btn">Add</button>
             </div>
             
@@ -41,10 +40,43 @@
                 </select>
             </div>
             
-            <!-- Toggle Priority Flags Button -->
-            <div class="toggle-flags-container">
-                <button id="toggle-flags-btn" title="Toggle Priority Flags">
-                    <span class="eye-icon">👁️</span>
+            <!-- App Icons -->
+            <div class="app-icons">
+                <button class="icon-btn" title="Focus mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="View as list" id="toggle-view-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                    </svg>
+                </button>
+                <button id="toggle-flags-btn" class="icon-btn" title="Toggle Priority Flags">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Time view">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Settings">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Analytics">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20v-6M6 20V10M18 20V4"></path>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -54,8 +86,25 @@
     <div id="dun-app">
         <!-- Tasks View Panel - Always visible -->
         <div class="tasks-panel">
+            <!-- Tasks Header -->
+            <div class="tasks-header">
+                <h2>
+                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                    </svg>
+                    Tasks
+                </h2>
+            </div>
+            
             <!-- Task tree container (using our existing implementation) -->
             <div id="task-tree"></div>
+            
+            <!-- Sort Button -->
+            <div class="sort-container">
+                <button id="sort-btn">SORT</button>
+            </div>
         </div>
         
         <!-- Task View Modal/Drawer - Hidden by default -->

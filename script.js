@@ -563,18 +563,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Create each flag
         const flagTypes = ['fire', 'fast', 'flow', 'fear', 'first'];
-        const flagIcons = {
-          fire: '🔥',
-          fast: '⚡',
-          flow: '🌊',
-          fear: '⚠️',
-          first: '1️⃣'
-        };
         
         flagTypes.forEach(flagType => {
           const flag = document.createElement('span');
-          flag.className = `priority-flag flag-${flagType} ${task.flags[flagType] ? 'active' : ''}`;
-          flag.textContent = flagIcons[flagType];
+          flag.className = `priority-flag ${task.flags[flagType] ? 'active' : ''}`;
           flag.title = getPriorityFlagTooltip(flagType);
           
           flag.addEventListener('click', (e) => {
@@ -614,7 +606,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Edit button
         const editBtn = document.createElement('button');
         editBtn.className = 'btn-edit';
-        editBtn.innerHTML = '✏️'; // Pencil emoji
+        editBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>`;
         editBtn.title = 'Edit Task';
         editBtn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -624,7 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Play/Start button
         const playBtn = document.createElement('button');
         playBtn.className = 'btn-play';
-        playBtn.innerHTML = '▶️'; // Play emoji
+        playBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>`;
         playBtn.title = 'Start Task';
         playBtn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -634,7 +631,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Delete button
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn-delete';
-        deleteBtn.innerHTML = '❌'; // X emoji
+        deleteBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>`;
         deleteBtn.title = 'Delete Task';
         deleteBtn.addEventListener('click', (e) => {
           e.stopPropagation();
