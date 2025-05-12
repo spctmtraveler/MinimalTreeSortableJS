@@ -1,13 +1,17 @@
-// -------------  Task Tree Demo  ------------------
-// Minimalist visuals • accurate indent • compact drag preview
-// Updated: 2025‑05‑12 04:30
-//  ✱ Implemented section headers according to mockup
+// -------------  DUN Task Management Application  ------------------
+// A task management application with collapsible tree and priority flags
+// Updated: 2025‑05‑12 05:40
+//  ✱ Implemented the DUN application UI according to mockup
 //  ✱ Four sections: Triage, A, B, C with special styling
-//  ✱ Added completed task status with styling
+//  ✱ Added priority flags (Fire, Fast, Flow, Fear, First)
+//  ✱ Added Task Modal for editing details
 // ---------------------------------------------------
 
+// Global debug flag for logging
+const debug = true;
+
 document.addEventListener('DOMContentLoaded', () => {
-  /* ---------- Sample Data with Sections ----------- */
+  /* ---------- Sample Data with Sections & Priorities ----------- */
   const sampleTasks = [
     {
       id: 'section-triage',
@@ -18,12 +22,36 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 'task-triage-1',
           content: 'Mail check',
           completed: true,
+          revisitDate: '2025-05-07',
+          flags: {
+            fire: true,
+            fast: false,
+            flow: false,
+            fear: false,
+            first: false
+          },
+          overview: 'Check mail daily for important deliveries',
+          details: 'Remember to bring any important documents to office',
+          timeEstimate: '5min',
+          scheduledTime: '09:00',
           children: []
         },
         {
           id: 'task-triage-2',
           content: 'Clean Kitchen',
           completed: true,
+          revisitDate: null,
+          flags: {
+            fire: false,
+            fast: true,
+            flow: true,
+            fear: false,
+            first: false
+          },
+          overview: 'Clean kitchen surfaces',
+          details: 'Wipe counters, clean stove, take out trash',
+          timeEstimate: '15min',
+          scheduledTime: null,
           children: []
         }
       ]
@@ -37,22 +65,62 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 'task-a-1',
           content: 'Make Cake',
           completed: false,
+          revisitDate: getFutureDateString(0), // Today
+          flags: {
+            fire: true,
+            fast: false,
+            flow: true,
+            fear: false,
+            first: false
+          },
+          overview: 'Bake cake for birthday party',
+          details: 'Vanilla cake with chocolate frosting',
+          timeEstimate: '2hr',
+          scheduledTime: '14:00',
           children: [
             {
               id: 'task-a-1-1',
               content: 'Buy Ingredients',
               completed: false,
+              revisitDate: getFutureDateString(1), // Tomorrow
+              flags: {
+                fire: false,
+                fast: true,
+                flow: false,
+                fear: true,
+                first: false
+              },
+              overview: 'Get all ingredients needed for cake',
+              details: 'Flour, sugar, eggs, butter, vanilla, chocolate',
+              timeEstimate: '30min',
+              scheduledTime: null,
               children: [
                 {
                   id: 'task-a-1-1-1',
                   content: 'Make a list',
                   completed: false,
+                  revisitDate: getFutureDateString(0), // Today
+                  flags: {
+                    fire: false,
+                    fast: false,
+                    flow: true,
+                    fear: false,
+                    first: false
+                  },
                   children: []
                 },
                 {
                   id: 'task-a-1-1-2',
                   content: 'Go shopping',
                   completed: false,
+                  revisitDate: getFutureDateString(7), // Next week
+                  flags: {
+                    fire: false,
+                    fast: false,
+                    flow: false,
+                    fear: false,
+                    first: true
+                  },
                   children: []
                 }
               ]
@@ -61,12 +129,28 @@ document.addEventListener('DOMContentLoaded', () => {
               id: 'task-a-1-2',
               content: 'Mix Ingredients',
               completed: false,
+              revisitDate: '2025-04-22',
+              flags: {
+                fire: true,
+                fast: false,
+                flow: true,
+                fear: false,
+                first: false
+              },
               children: []
             },
             {
               id: 'task-a-1-3',
               content: 'Bake',
               completed: false,
+              revisitDate: '2025-03-12',
+              flags: {
+                fire: false,
+                fast: true,
+                flow: false,
+                fear: true,
+                first: false
+              },
               children: []
             }
           ]
@@ -82,12 +166,28 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 'task-b-1',
           content: 'Mail check',
           completed: true,
+          revisitDate: getFutureDateString(0), // Today
+          flags: {
+            fire: false,
+            fast: false,
+            flow: false,
+            fear: true,
+            first: true
+          },
           children: []
         },
         {
           id: 'task-b-2',
           content: 'Shower',
           completed: true,
+          revisitDate: getFutureDateString(1), // Tomorrow
+          flags: {
+            fire: false,
+            fast: true,
+            flow: true,
+            fear: false,
+            first: false
+          },
           children: []
         }
       ]
@@ -101,23 +201,81 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 'task-c-1',
           content: 'Oil Change',
           completed: true,
+          revisitDate: getFutureDateString(7), // Next week
+          flags: {
+            fire: false,
+            fast: false,
+            flow: false,
+            fear: false,
+            first: true
+          },
           children: []
         },
         {
           id: 'task-c-2',
           content: 't17',
           completed: false,
+          revisitDate: '2025-04-22',
+          flags: {
+            fire: true,
+            fast: false,
+            flow: true,
+            fear: false,
+            first: false
+          },
           children: []
         },
         {
           id: 'task-c-3',
           content: 'Test task from SQL',
           completed: false,
+          revisitDate: '2025-03-12',
+          flags: {
+            fire: false,
+            fast: true,
+            flow: false,
+            fear: true,
+            first: false
+          },
           children: []
         }
       ]
     }
   ];
+  
+  // Helper function to get formatted date strings
+  function getFutureDateString(daysInFuture) {
+    const date = new Date();
+    date.setDate(date.getDate() + daysInFuture);
+    return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+  }
+  
+  // Format revisit date for display
+  function formatRevisitDate(dateString) {
+    if (!dateString) return '-';
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const nextWeekStart = new Date(today);
+    nextWeekStart.setDate(nextWeekStart.getDate() + (7 - today.getDay()));
+    
+    const date = new Date(dateString);
+    
+    if (date.toDateString() === today.toDateString()) {
+      return 'today';
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      return 'tomorrow';
+    } else if (date >= nextWeekStart && date < new Date(nextWeekStart.getTime() + 7 * 24 * 60 * 60 * 1000)) {
+      return 'Next week';
+    } else {
+      // Return MM/DD format
+      return `${date.getMonth() + 1}/${date.getDate()}`;
+    }
+  }
 
   const root = document.getElementById('task-tree');
   buildTree(sampleTasks, root);
@@ -140,6 +298,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.className = 'task-item';
       li.dataset.id = task.id;
+      
+      // Store task data reference for modal editing
+      li.taskData = task;
       
       // Mark section headers to style differently
       if (task.isSection) {
@@ -200,6 +361,80 @@ document.addEventListener('DOMContentLoaded', () => {
       txt.className = 'task-text';
       txt.textContent = task.content;
       row.appendChild(txt);
+      
+      /* revisit date (if it exists) for non-section tasks */
+      if (!task.isSection && task.revisitDate) {
+        const revisitEl = document.createElement('span');
+        revisitEl.className = 'revisit-date';
+        revisitEl.textContent = formatRevisitDate(task.revisitDate);
+        row.appendChild(revisitEl);
+      }
+      
+      /* task controls for non-section tasks */
+      if (!task.isSection) {
+        const controlsContainer = document.createElement('div');
+        controlsContainer.className = 'task-controls';
+        controlsContainer.setAttribute('data-no-drag', 'true');
+        
+        // Edit button
+        const editBtn = document.createElement('button');
+        editBtn.className = 'task-control-btn';
+        editBtn.innerHTML = '<i class="fas fa-pencil-alt"></i>';
+        editBtn.title = 'Edit Task';
+        editBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openTaskModal(task);
+        });
+        
+        // Play button 
+        const playBtn = document.createElement('button');
+        playBtn.className = 'task-control-btn';
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        playBtn.title = 'Start Task';
+        playBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openTaskModal(task);
+        });
+        
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'task-control-btn';
+        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteBtn.title = 'Delete Task';
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (confirm('Are you sure you want to delete this task?')) {
+            li.remove();
+            showToast('Task deleted', 'Undo', () => {
+              // Re-add task (undo functionality)
+              createSortable(ul);
+              ul.appendChild(li);
+            });
+          }
+        });
+        
+        controlsContainer.appendChild(editBtn);
+        controlsContainer.appendChild(playBtn);
+        controlsContainer.appendChild(deleteBtn);
+        
+        row.appendChild(controlsContainer);
+      }
+      
+      /* Priority flags for regular tasks */
+      if (!task.isSection) {
+        const flagsContainer = document.createElement('div');
+        flagsContainer.className = 'task-flags';
+        flagsContainer.setAttribute('data-no-drag', 'true');
+        
+        // Create flag buttons
+        createFlagButton('fire', 'Is this task urgent and needs immediate attention?', 'fa-fire', task.flags, flagsContainer);
+        createFlagButton('fast', 'Can this task be completed in under three minutes?', 'fa-rabbit-fast', task.flags, flagsContainer);
+        createFlagButton('flow', 'Am I at risk of overindulging in this task instead of maintaining balance?', 'fa-water', task.flags, flagsContainer);
+        createFlagButton('fear', 'Is this task something I should avoid due to potential negative outcomes?', 'fa-skull', task.flags, flagsContainer);
+        createFlagButton('first', 'Does this task offer an 80% result with minimal effort?', 'fa-trophy', task.flags, flagsContainer);
+        
+        li.appendChild(flagsContainer);
+      }
 
       /* child container with empty ul */
       const childContainer = document.createElement('div');
@@ -225,6 +460,13 @@ document.addEventListener('DOMContentLoaded', () => {
       row.addEventListener('dragleave', () => {
         childList.classList.remove('drop-target-active');
       });
+      
+      /* Open task modal on click if not a section header */
+      if (!task.isSection) {
+        txt.addEventListener('click', () => {
+          openTaskModal(task);
+        });
+      }
 
       /* recurse */
       if (task.children?.length) {
@@ -240,6 +482,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (parent.id === 'task-tree') {
       createRootSortable(ul);
     }
+  }
+  
+  // Helper function to create flag buttons
+  function createFlagButton(flagName, tooltip, iconClass, flags, container) {
+    const btn = document.createElement('button');
+    btn.className = `flag-btn ${flags && flags[flagName] ? 'active' : ''}`;
+    btn.title = tooltip;
+    btn.setAttribute('data-flag', flagName);
+    btn.setAttribute('data-no-drag', 'true');
+    
+    const icon = document.createElement('i');
+    icon.className = `fas ${iconClass}`;
+    btn.appendChild(icon);
+    
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (flags) {
+        flags[flagName] = !flags[flagName];
+        btn.classList.toggle('active', flags[flagName]);
+        if (debug) console.log(`Flag "${flagName}" set to ${flags[flagName]}`);
+      }
+    });
+    
+    container.appendChild(btn);
+    return btn;
   }
 
   /* ---------- Sortable Factory ----------- */
