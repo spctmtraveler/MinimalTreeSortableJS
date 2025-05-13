@@ -362,20 +362,28 @@ document.addEventListener('DOMContentLoaded', () => {
       txt.textContent = task.content;
       row.appendChild(txt);
 
-      /* Add task revisit date (except for section headers) */
-      if (!task.isSection && task.revisitDate) {
-        const date = document.createElement('span');
-        date.className = 'task-date';
-        date.textContent = formatRevisitDate(task.revisitDate);
-        date.setAttribute('data-no-drag', 'true');
-        row.appendChild(date);
-      }
-
-      /* Add control buttons (except for section headers) */
+      /* Add a container for date and controls (except for section headers) */
       if (!task.isSection) {
+        const controlContainer = document.createElement('div');
+        controlContainer.className = 'task-control-container';
+        controlContainer.setAttribute('data-no-drag', 'true');
+        
+        /* Add task revisit date if present */
+        if (task.revisitDate) {
+          const date = document.createElement('span');
+          date.className = 'task-date';
+          date.textContent = formatRevisitDate(task.revisitDate);
+          date.setAttribute('data-no-drag', 'true');
+          controlContainer.appendChild(date);
+        }
+        
+        /* Add control buttons */
         const controlBar = document.createElement('div');
         controlBar.className = 'task-control-bar';
         controlBar.setAttribute('data-no-drag', 'true');
+        controlContainer.appendChild(controlBar);
+        
+        row.appendChild(controlContainer);
         
         // Edit button
         const editBtn = document.createElement('button');
@@ -414,8 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
           deleteTask(task, li);
         });
         controlBar.appendChild(deleteBtn);
-        
-        row.appendChild(controlBar);
         
         // Priority flags
         const priorityFlags = document.createElement('div');
@@ -620,7 +626,13 @@ document.addEventListener('DOMContentLoaded', () => {
         revisitDateInput.value = task.revisitDate || '';
       }
       
-      scheduledTimeInput.value = task.scheduledTime || '';
+      // Set scheduled time to nearest hour by default
+      if (task.scheduledTime) {
+        scheduledTimeInput.value = task.scheduledTime;
+      } else {
+        // Default to 9:00 if no time is set
+        scheduledTimeInput.value = '09:00';
+      }
       overviewInput.value = task.overview || '';
       detailsInput.value = task.details || '';
       timeEstimateInput.value = task.timeEstimate || '';

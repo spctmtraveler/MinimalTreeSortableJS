@@ -160,6 +160,7 @@ button, input, select, textarea {
   color: var(--accent-color);
   display: flex;
   align-items: center;
+  margin-left: 30px; /* Center more within task column */
 }
 
 .priority-header {
@@ -168,7 +169,7 @@ button, input, select, textarea {
   color: var(--accent-color);
   display: flex;
   align-items: center;
-  margin-right: 70px; /* Align with priority flags */
+  margin-right: 100px; /* Align with priority flags better */
 }
 
 .section-title i, .priority-header i {
@@ -192,7 +193,7 @@ button, input, select, textarea {
 .priority-column {
   width: 250px;
   min-width: 250px;
-  margin-left: 12px;
+  margin-left: 40px; /* Increase space between task content and flags */
 }
 
 .priority-column-headers {
@@ -201,6 +202,7 @@ button, input, select, textarea {
   justify-content: space-between;
   padding: 0;
   margin-top: 8px;
+  padding-right: 12px; /* Ensure alignment with flags */
 }
 
 .priority-label {
@@ -249,16 +251,22 @@ li::before {
   background: rgba(255, 255, 255, 0.03);
 }
 
+/* ===== Task Controls Container ===== */
+.task-control-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 16px;
+  min-width: 120px; /* Reserve space for date + controls */
+}
+
 /* ===== Control Bar (buttons) ===== */
 .task-control-bar {
-  position: absolute;
-  right: 16px; /* Position within the task content */
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   z-index: 5;
+  margin-left: 8px;
 }
 
 .task-content:hover .task-control-bar {
@@ -317,7 +325,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 250px;
-  right: -260px; /* Position outside of task content */
+  right: -290px; /* Move further right to align with column headers */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
