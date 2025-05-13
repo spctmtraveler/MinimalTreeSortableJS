@@ -626,9 +626,38 @@ document.addEventListener('DOMContentLoaded', () => {
         revisitDateInput.value = task.revisitDate || '';
       }
       
-      // Set scheduled time to nearest hour by default
+      // Set time input to enforce 15-minute intervals
+      scheduledTimeInput.setAttribute('step', '900'); // 900 seconds = 15 minutes
+      
+      // Add event listener to enforce 15-minute intervals on change
+      if (!scheduledTimeInput.hasAttribute('data-interval-listener')) {
+        scheduledTimeInput.setAttribute('data-interval-listener', 'true');
+        scheduledTimeInput.addEventListener('change', function() {
+          const timeValue = this.value;
+          
+          if (timeValue) {
+            const [hours, minutes] = timeValue.split(':');
+            const totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
+            const roundedMinutes = Math.round(totalMinutes / 15) * 15;
+            
+            const newHours = Math.floor(roundedMinutes / 60);
+            const newMinutes = roundedMinutes % 60;
+            
+            // Format with leading zeros
+            const formattedHours = String(newHours).padStart(2, '0');
+            const formattedMinutes = String(newMinutes).padStart(2, '0');
+            
+            // Update the input value
+            this.value = `${formattedHours}:${formattedMinutes}`;
+          }
+        });
+      }
+      
+      // Set scheduled time to nearest 15-minute interval
       if (task.scheduledTime) {
         scheduledTimeInput.value = task.scheduledTime;
+        // Trigger change event to round to nearest 15 minutes
+        scheduledTimeInput.dispatchEvent(new Event('change'));
       } else {
         // Default to 9:00 if no time is set
         scheduledTimeInput.value = '09:00';
@@ -1003,20 +1032,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
-      // Find the task list inside the Triage section's children container
-      // This ensures we add tasks at the proper level (1 level deeper than the section header)
-      const triageChildrenContainer = triageSection.querySelector('.task-children');
-      if (!triageChildrenContainer) {
-        showToast('Error', 'Triage children container not found.');
-        if (debug) console.error('Triage children container not found');
+      // Use the correct approach - get the direct next element sibling
+      // which should be the children container for the section
+      const triageChildrenContainer = triageSection.nextElementSibling;
+      if (!triageChildrenContainer || !triageChildrenContainer.classList.contains('task-children')) {
+        showToast('Error', 'Triage children container not found correctly.');
+        if (debug) console.error('Triage children container not found correctly');
         return;
       }
       
-      const triageChildList = triageChildrenContainer.querySelector('.task-list');
+      // Get the first-level task list inside the container
+      // Using :scope > .task-list to ensure we get the direct child
+      const triageChildList = triageChildrenContainer.querySelector(':scope > .task-list');
       if (!triageChildList) {
         showToast('Error', 'Triage children task list not found.');
         if (debug) console.error('Triage children task list not found');
         return;
+      }
+      
+      // Log info about what we found
+      if (debug) {
+        console.log('Triage section:', triageSection);
+        console.log('Triage children container:', triageChildrenContainer);
+        console.log('Triage child list:', triageChildList);
       }
       
       // Create temporary parent for buildTree
@@ -1030,6 +1068,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (debug) console.error('Failed to create new task element');
         return;
       }
+      
+      // Ensure task has the correct indentation class to match other tasks
+      newTaskElement.classList.add('task-item');
+      
+      // Check if li has task-header but not section-header, which is correct
+      if (!newTaskElement.classList.contains('task-header')) {
+        newTaskElement.classList.add('task-header');
+      }
+      
+      // Make sure it doesn't accidentally have section-header
+      newTaskElement.classList.remove('section-header');
       
       triageChildList.appendChild(newTaskElement);
       
