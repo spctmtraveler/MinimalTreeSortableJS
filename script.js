@@ -543,183 +543,278 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Open the task modal for editing
   function openTaskModal(task, taskElement) {
-    const modal = document.getElementById('task-view-modal');
-    const titleInput = document.getElementById('task-title');
-    const revisitDateInput = document.getElementById('revisit-date');
-    const scheduledTimeInput = document.getElementById('scheduled-time');
-    const overviewInput = document.getElementById('task-overview');
-    const detailsInput = document.getElementById('task-details');
-    const timeEstimateInput = document.getElementById('time-estimate');
-    
-    // Set the current task data
-    titleInput.value = task.content || '';
-    
-    // Handle special date formats
-    if (task.revisitDate === 'today' || task.revisitDate === 'tomorrow' || task.revisitDate === 'next week') {
-      revisitDateInput.value = formatDateForInput(task.revisitDate);
-    } else {
-      revisitDateInput.value = task.revisitDate || '';
-    }
-    
-    scheduledTimeInput.value = task.scheduledTime || '';
-    overviewInput.value = task.overview || '';
-    detailsInput.value = task.details || '';
-    timeEstimateInput.value = task.timeEstimate || '';
-    
-    // Set priority flags
-    document.querySelectorAll('.flag-btn').forEach(btn => {
-      const priority = btn.getAttribute('data-priority');
-      btn.classList.toggle('active', task[priority] === true);
-    });
-    
-    // Show the modal
-    modal.style.display = 'block';
-    titleInput.focus();
-    
-    // Save button handler
-    document.getElementById('save-task-btn').onclick = () => {
-      saveTaskFromModal(task, taskElement);
-    };
-    
-    // Close modal handler
-    document.querySelector('.close-modal').onclick = () => {
-      modal.style.display = 'none';
-    };
-    
-    // Click outside to close
-    window.onclick = (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
+    try {
+      if (!task || !taskElement) {
+        console.error('Invalid task or task element');
+        return;
       }
-    };
-    
-    if (debug) console.log(`Opened modal for task "${task.content}"`);
+      
+      const modal = document.getElementById('task-view-modal');
+      if (!modal) {
+        console.error('Task modal not found');
+        return;
+      }
+      
+      const titleInput = document.getElementById('task-title');
+      const revisitDateInput = document.getElementById('revisit-date');
+      const scheduledTimeInput = document.getElementById('scheduled-time');
+      const overviewInput = document.getElementById('task-overview');
+      const detailsInput = document.getElementById('task-details');
+      const timeEstimateInput = document.getElementById('time-estimate');
+      
+      if (!titleInput || !revisitDateInput || !scheduledTimeInput || 
+          !overviewInput || !detailsInput || !timeEstimateInput) {
+        console.error('One or more modal form fields not found');
+        return;
+      }
+      
+      // Set the current task data
+      titleInput.value = task.content || '';
+      
+      // Handle special date formats
+      if (task.revisitDate === 'today' || task.revisitDate === 'tomorrow' || task.revisitDate === 'next week') {
+        revisitDateInput.value = formatDateForInput(task.revisitDate);
+      } else {
+        revisitDateInput.value = task.revisitDate || '';
+      }
+      
+      scheduledTimeInput.value = task.scheduledTime || '';
+      overviewInput.value = task.overview || '';
+      detailsInput.value = task.details || '';
+      timeEstimateInput.value = task.timeEstimate || '';
+      
+      // Set priority flags
+      document.querySelectorAll('.flag-btn').forEach(btn => {
+        const priority = btn.getAttribute('data-priority');
+        btn.classList.toggle('active', task[priority] === true);
+      });
+      
+      // Show the modal
+      modal.style.display = 'block';
+      titleInput.focus();
+      
+      // Save button handler
+      const saveBtn = document.getElementById('save-task-btn');
+      if (saveBtn) {
+        saveBtn.onclick = () => {
+          saveTaskFromModal(task, taskElement);
+        };
+      }
+      
+      // Close modal handler
+      const closeBtn = document.querySelector('.close-modal');
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          modal.style.display = 'none';
+        };
+      }
+      
+      // Click outside to close
+      window.onclick = (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+      
+      if (debug) console.log(`Opened modal for task "${task.content}"`);
+    } catch (error) {
+      console.error('Error opening task modal:', error);
+      showToast('Error', 'Failed to open task details.');
+    }
   }
   
   // Save task data from modal
   function saveTaskFromModal(task, taskElement) {
-    const modal = document.getElementById('task-view-modal');
-    const titleInput = document.getElementById('task-title');
-    const revisitDateInput = document.getElementById('revisit-date');
-    const scheduledTimeInput = document.getElementById('scheduled-time');
-    const overviewInput = document.getElementById('task-overview');
-    const detailsInput = document.getElementById('task-details');
-    const timeEstimateInput = document.getElementById('time-estimate');
-    
-    // Update task data
-    task.content = titleInput.value;
-    task.revisitDate = revisitDateInput.value;
-    task.scheduledTime = scheduledTimeInput.value;
-    task.overview = overviewInput.value;
-    task.details = detailsInput.value;
-    task.timeEstimate = parseFloat(timeEstimateInput.value) || 0;
-    
-    // Update priority flags
-    document.querySelectorAll('.flag-btn').forEach(btn => {
-      const priority = btn.getAttribute('data-priority');
-      task[priority] = btn.classList.contains('active');
-    });
-    
-    // Update the task element
-    taskElement.dataset.taskData = JSON.stringify(task);
-    taskElement.querySelector('.task-text').textContent = task.content;
-    
-    // Update date display if present
-    const dateElement = taskElement.querySelector('.task-date');
-    if (dateElement) {
-      dateElement.textContent = formatRevisitDate(task.revisitDate);
+    try {
+      if (!task || !taskElement) {
+        console.error('Invalid task or task element for saving');
+        return;
+      }
+      
+      const modal = document.getElementById('task-view-modal');
+      const titleInput = document.getElementById('task-title');
+      const revisitDateInput = document.getElementById('revisit-date');
+      const scheduledTimeInput = document.getElementById('scheduled-time');
+      const overviewInput = document.getElementById('task-overview');
+      const detailsInput = document.getElementById('task-details');
+      const timeEstimateInput = document.getElementById('time-estimate');
+      
+      if (!modal || !titleInput || !revisitDateInput || !scheduledTimeInput || 
+          !overviewInput || !detailsInput || !timeEstimateInput) {
+        console.error('One or more modal form fields not found for saving');
+        return;
+      }
+      
+      // Update task data
+      task.content = titleInput.value;
+      task.revisitDate = revisitDateInput.value;
+      task.scheduledTime = scheduledTimeInput.value;
+      task.overview = overviewInput.value;
+      task.details = detailsInput.value;
+      task.timeEstimate = parseFloat(timeEstimateInput.value) || 0;
+      
+      // Update priority flags
+      document.querySelectorAll('.flag-btn').forEach(btn => {
+        const priority = btn.getAttribute('data-priority');
+        if (priority) {
+          task[priority] = btn.classList.contains('active');
+        }
+      });
+      
+      try {
+        // Update the task element
+        taskElement.dataset.taskData = JSON.stringify(task);
+        
+        // Update text content
+        const textElement = taskElement.querySelector('.task-text');
+        if (textElement) {
+          textElement.textContent = task.content;
+        }
+        
+        // Update date display if present
+        const dateElement = taskElement.querySelector('.task-date');
+        if (dateElement) {
+          dateElement.textContent = formatRevisitDate(task.revisitDate);
+        }
+        
+        // Update priority flags in the task list
+        const flags = taskElement.querySelectorAll('.priority-flag');
+        flags.forEach(flag => {
+          const priority = flag.getAttribute('data-priority');
+          if (priority) {
+            flag.classList.toggle('active', task[priority] === true);
+          }
+        });
+      } catch (updateError) {
+        console.error('Error updating task element:', updateError);
+      }
+      
+      // Close the modal
+      modal.style.display = 'none';
+      
+      // Show confirmation toast
+      showToast('Task Updated', 'The task has been successfully updated.');
+      
+      if (debug) console.log(`Saved changes to task "${task.content}"`);
+    } catch (error) {
+      console.error('Error saving task from modal:', error);
+      showToast('Error', 'Failed to save task details.');
     }
-    
-    // Update priority flags in the task list
-    const flags = taskElement.querySelectorAll('.priority-flag');
-    flags.forEach(flag => {
-      const priority = flag.getAttribute('data-priority');
-      flag.classList.toggle('active', task[priority] === true);
-    });
-    
-    // Close the modal
-    modal.style.display = 'none';
-    
-    // Show confirmation toast
-    showToast('Task Updated', 'The task has been successfully updated.');
-    
-    if (debug) console.log(`Saved changes to task "${task.content}"`);
   }
   
   // Delete a task
   function deleteTask(task, taskElement) {
-    // Find parent task list
-    const parentList = taskElement.parentNode;
-    
-    // Store task data for undo
-    const taskData = JSON.parse(JSON.stringify(task));
-    
-    // Remove task from DOM
-    parentList.removeChild(taskElement);
-    
-    // Show confirmation toast with undo option
-    showToast('Task Deleted', 'The task has been deleted.', 'Undo', () => {
-      // Recreate the task in the same position
-      const newTaskElement = document.createElement('li');
-      parentList.appendChild(newTaskElement);
+    try {
+      if (!task || !taskElement) {
+        if (debug) console.error('Invalid task or element for deletion');
+        return;
+      }
       
-      // Rebuild the task with original data
-      buildTree([taskData], parentList);
+      // Find parent task list
+      const parentList = taskElement.parentNode;
+      if (!parentList) {
+        if (debug) console.error('Parent list not found for deletion');
+        return;
+      }
       
-      // Show confirmation toast
-      showToast('Task Restored', 'The task has been restored.');
+      // Store task data for undo
+      let taskData;
+      try {
+        taskData = JSON.parse(JSON.stringify(task));
+      } catch (e) {
+        console.error('Error cloning task data:', e);
+        taskData = { content: task.content || 'Unknown task' };
+      }
       
-      if (debug) console.log(`Restored deleted task "${taskData.content}"`);
-    });
-    
-    if (debug) console.log(`Deleted task "${task.content}"`);
+      // Remove task from DOM
+      parentList.removeChild(taskElement);
+      
+      // Show confirmation toast with undo option
+      showToast('Task Deleted', 'The task has been deleted.', 'Undo', () => {
+        try {
+          // Recreate the task in the same position
+          const newTaskElement = document.createElement('li');
+          parentList.appendChild(newTaskElement);
+          
+          // Rebuild the task with original data
+          buildTree([taskData], parentList);
+          
+          // Show confirmation toast
+          showToast('Task Restored', 'The task has been restored.');
+          
+          if (debug) console.log(`Restored deleted task "${taskData.content}"`);
+        } catch (error) {
+          console.error('Error restoring task:', error);
+          showToast('Error', 'Failed to restore the task.');
+        }
+      });
+      
+      if (debug) console.log(`Deleted task "${task.content}"`);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      showToast('Error', 'An error occurred while deleting the task.');
+    }
   }
   
   // Show a toast notification
   function showToast(title, message, actionText, actionCallback) {
-    const container = document.getElementById('toast-container');
-    
-    // Create toast element
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    
-    // Create toast content
-    const content = document.createElement('div');
-    content.className = 'toast-content';
-    
-    const toastTitle = document.createElement('div');
-    toastTitle.className = 'toast-title';
-    toastTitle.textContent = title;
-    content.appendChild(toastTitle);
-    
-    const toastMessage = document.createElement('div');
-    toastMessage.className = 'toast-message';
-    toastMessage.textContent = message;
-    content.appendChild(toastMessage);
-    
-    toast.appendChild(content);
-    
-    // Create action button if provided
-    if (actionText && actionCallback) {
-      const actionBtn = document.createElement('button');
-      actionBtn.className = 'toast-action';
-      actionBtn.textContent = actionText;
-      actionBtn.addEventListener('click', () => {
-        actionCallback();
-        container.removeChild(toast);
-      });
-      toast.appendChild(actionBtn);
-    }
-    
-    // Add to container
-    container.appendChild(toast);
-    
-    // Remove after delay
-    setTimeout(() => {
-      if (container.contains(toast)) {
-        container.removeChild(toast);
+    try {
+      const container = document.getElementById('toast-container');
+      if (!container) {
+        console.error('Toast container not found');
+        return;
       }
-    }, 5000);
+      
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      
+      // Create toast content
+      const content = document.createElement('div');
+      content.className = 'toast-content';
+      
+      const toastTitle = document.createElement('div');
+      toastTitle.className = 'toast-title';
+      toastTitle.textContent = title || 'Notification';
+      content.appendChild(toastTitle);
+      
+      const toastMessage = document.createElement('div');
+      toastMessage.className = 'toast-message';
+      toastMessage.textContent = message || '';
+      content.appendChild(toastMessage);
+      
+      toast.appendChild(content);
+      
+      // Create action button if provided
+      if (actionText && actionCallback) {
+        const actionBtn = document.createElement('button');
+        actionBtn.className = 'toast-action';
+        actionBtn.textContent = actionText;
+        actionBtn.addEventListener('click', () => {
+          try {
+            actionCallback();
+          } catch (e) {
+            console.error('Error in toast action callback:', e);
+          }
+          if (container.contains(toast)) {
+            container.removeChild(toast);
+          }
+        });
+        toast.appendChild(actionBtn);
+      }
+      
+      // Add to container
+      container.appendChild(toast);
+      
+      // Remove after delay
+      setTimeout(() => {
+        if (container.contains(toast)) {
+          container.removeChild(toast);
+        }
+      }, 5000);
+    } catch (error) {
+      console.error('Error showing toast:', error);
+    }
   }
   
   // Format date for input element
@@ -760,19 +855,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function initUI() {
     // Toggle priority flags visibility
     const togglePriorityBtn = document.getElementById('toggle-priority');
-    togglePriorityBtn.addEventListener('click', () => {
-      document.querySelectorAll('.task-priority-flags').forEach(el => {
-        el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+    if (togglePriorityBtn) {
+      togglePriorityBtn.addEventListener('click', () => {
+        document.querySelectorAll('.task-priority-flags').forEach(el => {
+          el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+        });
+        
+        const headersElement = document.querySelector('.priority-column-headers');
+        if (headersElement) {
+          headersElement.style.display = headersElement.style.display === 'none' ? 'flex' : 'none';
+        }
+        
+        const priorityHeader = document.querySelector('.priority-header');
+        if (priorityHeader) {
+          priorityHeader.style.display = priorityHeader.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        togglePriorityBtn.classList.toggle('active');
+        
+        if (debug) console.log('Toggled priority flags visibility');
       });
-      document.querySelector('.priority-column-headers').style.display = 
-        document.querySelector('.priority-column-headers').style.display === 'none' ? 'flex' : 'none';
-      document.querySelector('.priority-header').style.display = 
-        document.querySelector('.priority-header').style.display === 'none' ? 'block' : 'none';
-      
-      togglePriorityBtn.classList.toggle('active');
-      
-      if (debug) console.log('Toggled priority flags visibility');
-    });
+    }
     
     // Make priority flags active in the modal
     document.querySelectorAll('.flag-btn').forEach(btn => {
@@ -785,23 +888,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const addTaskBtn = document.getElementById('add-task-btn');
     const newTaskInput = document.getElementById('new-task-input');
     
-    addTaskBtn.addEventListener('click', () => {
-      addNewTask();
-    });
-    
-    newTaskInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+    if (addTaskBtn && newTaskInput) {
+      addTaskBtn.addEventListener('click', () => {
         addNewTask();
-      }
-    });
+      });
+      
+      newTaskInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          addNewTask();
+        }
+      });
+    }
     
     // Set active state for task view button
-    document.querySelector('.view-toggle-btn:nth-child(2)').classList.add('active');
+    const taskViewBtn = document.querySelector('.view-toggle-btn:nth-child(2)');
+    if (taskViewBtn) {
+      taskViewBtn.classList.add('active');
+    }
   }
   
   // Add a new task to the Triage section
   function addNewTask() {
     const newTaskInput = document.getElementById('new-task-input');
+    if (!newTaskInput) {
+      if (debug) console.error('New task input field not found');
+      return;
+    }
+    
     const taskText = newTaskInput.value.trim();
     
     if (!taskText) {
@@ -827,10 +940,44 @@ document.addEventListener('DOMContentLoaded', () => {
       scheduledTime: null
     };
     
-    // Find the Triage section
-    const triageSection = document.querySelector('.section-header[data-id="section-triage"]');
-    if (triageSection) {
+    try {
+      // Find the Triage section
+      const triageSection = document.querySelector('.section-header[data-id="section-triage"]');
+      if (!triageSection) {
+        // Try to find any root level task list - for testing
+        const mainTaskList = document.querySelector('#task-tree > .task-list');
+        if (mainTaskList) {
+          // Create temporary parent for buildTree
+          const tempParent = document.createElement('div');
+          buildTree([newTask], tempParent);
+          
+          // Get the created li element and append to root list
+          const newTaskElement = tempParent.querySelector('li');
+          if (newTaskElement) {
+            mainTaskList.appendChild(newTaskElement);
+            
+            // Show confirmation toast
+            showToast('Task Added', 'New task added.');
+            
+            // Clear input
+            newTaskInput.value = '';
+            
+            if (debug) console.log(`Added new task "${taskText}" to root level`);
+            return;
+          }
+        }
+        
+        showToast('Error', 'Triage section not found.');
+        if (debug) console.error('Triage section not found');
+        return;
+      }
+      
       const triageList = triageSection.querySelector('.task-list');
+      if (!triageList) {
+        showToast('Error', 'Triage task list not found.');
+        if (debug) console.error('Triage task list not found');
+        return;
+      }
       
       // Create temporary parent for buildTree
       const tempParent = document.createElement('div');
@@ -838,6 +985,12 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Get the created li element and append to Triage
       const newTaskElement = tempParent.querySelector('li');
+      if (!newTaskElement) {
+        showToast('Error', 'Failed to create new task element.');
+        if (debug) console.error('Failed to create new task element');
+        return;
+      }
+      
       triageList.appendChild(newTaskElement);
       
       // Show confirmation toast
@@ -847,8 +1000,9 @@ document.addEventListener('DOMContentLoaded', () => {
       newTaskInput.value = '';
       
       if (debug) console.log(`Added new task "${taskText}" to Triage`);
-    } else {
-      showToast('Error', 'Triage section not found.');
+    } catch (error) {
+      console.error('Error adding new task:', error);
+      showToast('Error', 'An error occurred while adding the new task.');
     }
   }
 
