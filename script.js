@@ -789,7 +789,7 @@ const sampleTasks = [
   }
   
   // Delete a task
-  function deleteTask(task, taskElement) {
+  async function deleteTask(task, taskElement) {
     try {
       if (!task || !taskElement) {
         if (debug) console.error('Invalid task or element for deletion');
@@ -815,8 +815,17 @@ const sampleTasks = [
       // Remove task from DOM
       parentList.removeChild(taskElement);
       
+      // Delete from database
+      try {
+        await db.deleteTask(task.id);
+        if (debug) console.log('Task deleted from database:', task.id);
+      } catch (dbError) {
+        console.error('Error deleting task from database:', dbError);
+        // Continue with UI removal even if database deletion fails
+      }
+      
       // Show confirmation toast with undo option
-      showToast('Task Deleted', 'The task has been deleted.', 'Undo', () => {
+      showToast('Task Deleted', 'The task has been deleted.', 'Undo', async () => {
         try {
           // Recreate the task in the same position
           const newTaskElement = document.createElement('li');
@@ -824,6 +833,14 @@ const sampleTasks = [
           
           // Rebuild the task with original data
           buildTree([taskData], parentList);
+          
+          // Add back to database
+          try {
+            await db.saveTask(taskData.id, taskData);
+            if (debug) console.log('Task restored in database:', taskData.id);
+          } catch (dbError) {
+            console.error('Error restoring task to database:', dbError);
+          }
           
           // Show confirmation toast
           showToast('Task Restored', 'The task has been restored.');
@@ -1505,12 +1522,69 @@ const sampleTasks = [
         // Remove dragging state from body
         document.body.classList.remove('is-dragging');
         
+        // Get the moved task data
+        const taskElement = evt.item;
+        let taskData;
+        try {
+          taskData = JSON.parse(taskElement.dataset.taskData);
+        } catch (e) {
+          console.error('Error parsing task data for saving after drag:', e);
+          return;
+        }
+        
         // Log the result of the drag
         const parentItem = evt.to.closest('.task-item');
+        let parentId = null;
+        
         if (parentItem) {
-          console.log(`Dropped into: ${parentItem.querySelector('.task-text').textContent.trim()}`);
+          if (debug) console.log(`Dropped into: ${parentItem.querySelector('.task-text').textContent.trim()}`);
+          
+          // Get the parent task data for updating relationships
+          try {
+            const parentData = JSON.parse(parentItem.dataset.taskData);
+            parentId = parentData.id;
+            
+            // Update task's parent reference
+            taskData.parent = parentId;
+            
+            // Save updated task to database
+            db.saveTask(taskData.id, taskData).catch(error => {
+              console.error('Error saving task parent relationship to database:', error);
+            });
+          } catch (e) {
+            console.error('Error updating parent-child relationship:', e);
+          }
         } else {
-          console.log('Dropped at root level');
+          if (debug) console.log('Dropped at root level');
+          
+          // If dropped at root level, use section id as parent
+          const sectionHeader = evt.to.closest('li')?.querySelector('.section-header');
+          if (sectionHeader && sectionHeader.dataset.id) {
+            taskData.parent = sectionHeader.dataset.id;
+            
+            // Save updated task to database
+            db.saveTask(taskData.id, taskData).catch(error => {
+              console.error('Error saving task parent relationship to database:', error);
+            });
+          }
+        }
+        
+        // Save the entire task tree periodically (not on every drag to reduce database writes)
+        const now = Date.now();
+        if (!window.lastFullSave || now - window.lastFullSave > 10000) {
+          window.lastFullSave = now;
+          
+          // Get all tasks from the DOM and save to database
+          const rootElement = document.getElementById('task-tree');
+          if (rootElement) {
+            const allTasks = getAllTasksFromDOM(rootElement);
+            
+            if (allTasks && allTasks.length > 0) {
+              db.saveTasks(allTasks).catch(error => {
+                console.error('Error saving full task tree to database:', error);
+              });
+            }
+          }
         }
       },
 
