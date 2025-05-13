@@ -191,8 +191,8 @@ button, input, select, textarea {
 }
 
 .priority-column {
-  width: 250px;
-  min-width: 250px;
+  width: 150px;
+  min-width: 150px;
   margin-left: 40px; /* Increase space between task content and flags */
 }
 
@@ -271,19 +271,28 @@ li::before {
   color: var(--accent-color);
   font-size: 12px;
   margin-right: 8px;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 2s ease-out; /* Match control bar fade out */
+}
+
+/* Show date on hover */
+.task-content:hover .task-date {
+  opacity: 1;
+  transition: opacity 0.5s ease-in; /* Match control bar fade in */
 }
 
 /* ===== Control Bar (buttons) ===== */
 .task-control-bar {
   display: flex;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 2s ease-out; /* Fade out longer (2 seconds) */
   z-index: 5;
   margin-left: 8px;
 }
 
 .task-content:hover .task-control-bar {
   opacity: 1;
+  transition: opacity 0.5s ease-in; /* Fade in quicker (0.5 seconds) */
 }
 
 .control-btn {
@@ -337,7 +346,7 @@ li::before {
 .task-priority-flags {
   position: absolute;
   display: flex;
-  width: 250px;
+  width: 150px;
   right: -290px; /* Move further right to align with column headers */
   top: 50%;
   transform: translateY(-50%);
@@ -424,7 +433,7 @@ li::before {
   flex: 1;
   font-size: 14px;
   color: var(--text-color);
-  min-width: 0;
+  min-width: 200px; /* Doubled from implicit 0/auto */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -561,9 +570,9 @@ body > .sortable-drag {
 }
 
 /* Show the right-arrow when hovering over a task */
-.task-item:hover::after {
+/*.task-item:hover::after {
   border-color: transparent transparent transparent rgba(0, 206, 247, 0.15);
-}
+}*/
 
 /* ===== Section Headers ===== */
 .section-header {
