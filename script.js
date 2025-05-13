@@ -1163,29 +1163,152 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Triage child list:', triageChildList);
       }
       
-      // Create temporary parent for buildTree
-      const tempParent = document.createElement('div');
-      buildTree([newTask], tempParent);
+      // Instead of using buildTree which can create inconsistent structures,
+      // we'll manually create the new task element with the same structure as existing tasks
       
-      // Get the created li element and append to Triage's children list
-      const newTaskElement = tempParent.querySelector('li');
-      if (!newTaskElement) {
-        showToast('Error', 'Failed to create new task element.');
-        if (debug) console.error('Failed to create new task element');
-        return;
-      }
+      // Create the list item
+      const newTaskElement = document.createElement('li');
+      newTaskElement.className = 'task-item';
+      newTaskElement.dataset.id = newTask.id;
       
-      // Ensure task has the correct indentation class to match other tasks
-      newTaskElement.classList.add('task-item');
+      // Store task data
+      newTaskElement.dataset.taskData = JSON.stringify(newTask);
       
-      // Check if li has task-header but not section-header, which is correct
-      if (!newTaskElement.classList.contains('task-header')) {
-        newTaskElement.classList.add('task-header');
-      }
+      // Create content row
+      const row = document.createElement('div');
+      row.className = 'task-content';
       
-      // Make sure it doesn't accidentally have section-header
-      newTaskElement.classList.remove('section-header');
+      // Create grip icon
+      const grip = document.createElement('span');
+      grip.className = 'task-grip';
+      grip.innerHTML = '<i class="fa-solid fa-grip-lines"></i>';
+      row.appendChild(grip);
       
+      // Create checkbox
+      const checkbox = document.createElement('span');
+      checkbox.className = 'task-checkbox';
+      checkbox.setAttribute('data-no-drag', 'true');
+      checkbox.addEventListener('click', (e) => {
+        e.stopPropagation();
+        newTask.completed = !newTask.completed;
+        checkbox.innerHTML = newTask.completed ? '<i class="fa-solid fa-check"></i>' : '';
+        newTaskElement.classList.toggle('task-completed', newTask.completed);
+      });
+      row.appendChild(checkbox);
+      
+      // Create expand/collapse chevron
+      const chevron = document.createElement('span');
+      chevron.className = 'toggle-btn';
+      chevron.textContent = '▸';
+      chevron.style.visibility = 'hidden'; // Hidden initially since there are no children
+      chevron.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const childrenContainer = newTaskElement.querySelector('.task-children');
+        if (childrenContainer) {
+          const isExpanded = childrenContainer.style.display !== 'none';
+          childrenContainer.style.display = isExpanded ? 'none' : 'block';
+          chevron.textContent = isExpanded ? '▸' : '▾';
+        }
+      });
+      row.appendChild(chevron);
+      
+      // Create task text
+      const taskText = document.createElement('span');
+      taskText.className = 'task-text';
+      taskText.textContent = newTask.content;
+      taskText.setAttribute('data-no-drag', 'true');
+      row.appendChild(taskText);
+      
+      // Create metadata container
+      const metaData = document.createElement('div');
+      metaData.className = 'task-metadata';
+      
+      // Create date display (empty for now)
+      const dateDisplay = document.createElement('span');
+      dateDisplay.className = 'task-date';
+      metaData.appendChild(dateDisplay);
+      
+      // Create control bar
+      const controlBar = document.createElement('div');
+      controlBar.className = 'task-control-bar';
+      
+      // Edit button
+      const editBtn = document.createElement('button');
+      editBtn.className = 'control-btn edit-btn';
+      editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
+      editBtn.setAttribute('data-no-drag', 'true');
+      editBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openTaskModal(newTask, newTaskElement);
+      });
+      controlBar.appendChild(editBtn);
+      
+      // Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'control-btn delete-btn';
+      deleteBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
+      deleteBtn.setAttribute('data-no-drag', 'true');
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteTask(newTask, newTaskElement);
+      });
+      controlBar.appendChild(deleteBtn);
+      
+      metaData.appendChild(controlBar);
+      row.appendChild(metaData);
+      
+      // Create priority flags
+      const flagsContainer = document.createElement('div');
+      flagsContainer.className = 'task-priority-flags';
+      
+      // Add all 5 priority flags
+      ['fire', 'fast', 'flow', 'fear', 'first'].forEach(priority => {
+        const flagCircle = document.createElement('div');
+        flagCircle.className = 'flag-circle';
+        flagCircle.dataset.priority = priority;
+        
+        // Add appropriate icon based on priority
+        let iconClass = '';
+        switch(priority) {
+          case 'fire': iconClass = 'fa-fire'; break;
+          case 'fast': iconClass = 'fa-bolt'; break;
+          case 'flow': iconClass = 'fa-water'; break;
+          case 'fear': iconClass = 'fa-skull'; break;
+          case 'first': iconClass = 'fa-trophy'; break;
+        }
+        
+        flagCircle.innerHTML = `<i class="fas ${iconClass}"></i>`;
+        
+        // Add click handler to toggle the flag
+        flagCircle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isActive = flagCircle.classList.toggle('active');
+          const taskData = JSON.parse(newTaskElement.dataset.taskData);
+          taskData[priority] = isActive;
+          newTaskElement.dataset.taskData = JSON.stringify(taskData);
+        });
+        
+        flagsContainer.appendChild(flagCircle);
+      });
+      
+      row.appendChild(flagsContainer);
+      newTaskElement.appendChild(row);
+      
+      // Create hidden children container (even though it's empty)
+      const childrenContainer = document.createElement('div');
+      childrenContainer.className = 'task-children';
+      childrenContainer.style.display = 'none';
+      
+      // Create child task list (empty)
+      const childList = document.createElement('ul');
+      childList.className = 'task-list';
+      childrenContainer.appendChild(childList);
+      newTaskElement.appendChild(childrenContainer);
+      
+      // Make the child list sortable
+      createSortable(childList, chevron, childrenContainer);
+      
+      // Finally, append to the triage list
       triageChildList.appendChild(newTaskElement);
       
       // Show confirmation toast
