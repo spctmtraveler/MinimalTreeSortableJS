@@ -20,7 +20,7 @@ button, input, select, textarea {
   --header-height: 60px;
   --section-spacing: 24px;
   --task-indent: 24px;
-  --container-width: 700px;
+  --container-width: 960px;
 }
 
 /* ===== Top Banner ===== */
@@ -36,10 +36,11 @@ button, input, select, textarea {
 }
 
 .banner-container {
-  width: var(--container-width);
+  max-width: 90vw;
+  max-width: 700px;
   height: 100%;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -131,9 +132,10 @@ button, input, select, textarea {
 
 /* ===== Main Content Area ===== */
 #dun-app {
-  width: var(--container-width);
+  max-width: 90vw;
+  max-width: 700px; /* Match design spec */
   margin: 0 auto;
-  padding: 0;
+  padding: 0 1.5rem;
   margin-top: calc(var(--header-height) + 20px); /* Space for fixed header */
 }
 
@@ -243,15 +245,13 @@ li::before {
 .task-content {
   display: flex;
   align-items: center;
-  padding: 8px 40px 8px 8px; /* Add extra padding on the right for buttons */
+  padding: 8px;
   border-radius: 4px;
   cursor: grab;
   user-select: none;
   background: transparent;
   position: relative;
   margin-right: 300px; /* Reserve space for priority flags */
-  min-height: 36px; /* Ensure minimum height for control buttons */
-  overflow: visible; /* Ensure buttons overflow is visible */
 }
 
 .task-item:hover .task-content {
@@ -260,46 +260,45 @@ li::before {
 
 /* ===== Control Bar (buttons) ===== */
 .task-control-bar {
-  display: flex;
   position: absolute;
-  right: 12px; /* Position within the task content */
+  right: 16px; /* Position within the task content */
   top: 50%;
   transform: translateY(-50%);
-  gap: 6px;
+  display: flex;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  z-index: 100;
-  pointer-events: auto;
+  z-index: 5;
 }
 
 .task-content:hover .task-control-bar {
   opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .task-content:not(:hover) .task-control-bar {
-  opacity: 0;
   transition: opacity 2s ease-in-out;
 }
 
 .control-btn {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
+  margin-left: 6px;
   background: transparent;
   color: var(--inactive-color);
   border: none;
-  border-radius: 50%;
+  border-radius: 50%; /* Make buttons circular */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  font-size: 12px;
-  padding: 0;
+  font-size: 14px;
 }
 
 .control-btn:hover {
   color: var(--accent-color);
-  transform: scale(1.1);
+  background: rgba(0, 206, 247, 0.1);
+  transform: scale(1.1); /* Subtle grow effect on hover */
 }
 
 /* Specific control button styles */
@@ -341,8 +340,8 @@ li::before {
 
 /* Individual priority flag */
 .priority-flag {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 2px solid var(--inactive-color);
   background: transparent;
@@ -353,7 +352,7 @@ li::before {
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  font-size: 12px;
+  font-size: 14px;
   z-index: 10;
   margin: 0 2px;
   padding: 0;
