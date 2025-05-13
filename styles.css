@@ -243,7 +243,7 @@ li::before {
 .task-content {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 8px 40px 8px 8px; /* Add extra padding on the right for buttons */
   border-radius: 4px;
   cursor: grab;
   user-select: none;
@@ -251,6 +251,7 @@ li::before {
   position: relative;
   margin-right: 300px; /* Reserve space for priority flags */
   min-height: 36px; /* Ensure minimum height for control buttons */
+  overflow: visible; /* Ensure buttons overflow is visible */
 }
 
 .task-item:hover .task-content {
@@ -259,45 +260,46 @@ li::before {
 
 /* ===== Control Bar (buttons) ===== */
 .task-control-bar {
+  display: flex;
   position: absolute;
-  right: 16px; /* Position within the task content */
+  right: 12px; /* Position within the task content */
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
+  gap: 6px;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  z-index: 5;
+  z-index: 100;
+  pointer-events: auto;
 }
 
 .task-content:hover .task-control-bar {
   opacity: 1;
-  transition: opacity 0.5s ease-in-out;
 }
 
 .task-content:not(:hover) .task-control-bar {
+  opacity: 0;
   transition: opacity 2s ease-in-out;
 }
 
 .control-btn {
-  width: 32px;
-  height: 32px;
-  margin-left: 6px;
+  width: 24px;
+  height: 24px;
   background: transparent;
   color: var(--inactive-color);
   border: none;
-  border-radius: 50%; /* Make buttons circular */
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  font-size: 14px;
+  font-size: 12px;
+  padding: 0;
 }
 
 .control-btn:hover {
   color: var(--accent-color);
-  background: rgba(0, 206, 247, 0.1);
-  transform: scale(1.1); /* Subtle grow effect on hover */
+  transform: scale(1.1);
 }
 
 /* Specific control button styles */

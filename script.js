@@ -376,6 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const controlBar = document.createElement('div');
         controlBar.className = 'task-control-bar';
         controlBar.setAttribute('data-no-drag', 'true');
+        controlBar.style.position = 'absolute';
         
         // Edit button
         const editBtn = document.createElement('button');
