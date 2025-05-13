@@ -145,7 +145,7 @@ button, input, select, textarea {
   display: flex;
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: none; /* Remove bottom border */
 }
 
 .section-title-container {
@@ -160,7 +160,7 @@ button, input, select, textarea {
   color: var(--accent-color);
   display: flex;
   align-items: center;
-  margin-left: 30px; /* Center more within task column */
+  margin-left: 150px; /* Center more within task column */
 }
 
 .priority-header {
@@ -169,7 +169,7 @@ button, input, select, textarea {
   color: var(--accent-color);
   display: flex;
   align-items: center;
-  margin-right: 100px; /* Align with priority flags better */
+  margin-right: 15px; /* Align directly above priority flags */
 }
 
 .section-title i, .priority-header i {
@@ -206,12 +206,12 @@ button, input, select, textarea {
 }
 
 .priority-label {
-  width: 30px;
+  width: 21px;
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-color);
   opacity: 0.8;
-  margin: 0 5px;
+  margin: 0 1.5px;
 }
 
 /* ===== Task Tree & List ===== */
@@ -219,6 +219,12 @@ button, input, select, textarea {
   list-style: none;
   padding-left: var(--task-indent);
   margin: 0;
+  border: none; /* Remove any borders */
+}
+
+/* Remove all borders from list items */
+.task-list li {
+  border: none;
 }
 
 /* Remove any stray pseudo-elements */
@@ -258,6 +264,13 @@ li::before {
   margin-left: auto;
   margin-right: 16px;
   min-width: 120px; /* Reserve space for date + controls */
+}
+
+/* Task date display */
+.task-date {
+  color: var(--accent-color);
+  font-size: 12px;
+  margin-right: 8px;
 }
 
 /* ===== Control Bar (buttons) ===== */
@@ -334,8 +347,8 @@ li::before {
 
 /* Individual priority flag */
 .priority-flag {
-  width: 30px;
-  height: 30px;
+  width: 21px; /* 30% smaller */
+  height: 21px; /* 30% smaller */
   border-radius: 50%;
   border: 2px solid var(--inactive-color);
   background: transparent;
@@ -346,9 +359,9 @@ li::before {
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  font-size: 12px;
+  font-size: 9px; /* Also reduce font size */
   z-index: 10;
-  margin: 0 5px;
+  margin: 0 1.5px; /* 70% reduced spacing */
   padding: 0;
 }
 
@@ -557,7 +570,7 @@ body > .sortable-drag {
   margin-top: 20px !important;
   margin-bottom: 10px !important;
   position: relative;
-  border-left: 3px solid var(--accent-color);
+  border-left: 0; /* Remove blue left border */
   padding-left: 5px;
   display: block;
   width: 100%;
@@ -568,12 +581,12 @@ body > .sortable-drag {
 }
 
 .section-header > .task-content {
-  background: rgba(0, 0, 0, 0.3) !important;
+  background: transparent !important; /* Remove dark background */
   padding: 10px 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  border-radius: 4px;
-  margin-right: 0 !important; /* Override the margin-right for section headers */
+  border-radius: 0;
+  margin-right: 0 !important;
 }
 
 .section-header > .task-content .task-text {
@@ -590,6 +603,7 @@ body > .sortable-drag {
 /* Section content indentation */
 .section-header > .task-children > .task-list {
   padding-left: 0; /* Remove left padding to align with section label */
+  border-left: 0; /* Remove any left borders */
 }
 
 /* Task icons/grip */
