@@ -397,7 +397,9 @@ document.addEventListener('DOMContentLoaded', () => {
         playBtn.setAttribute('data-no-drag', 'true');
         playBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          openTaskModal(task, li);
+          showToast('Start Task', `Started: ${task.content}`, 'Stop', () => {
+            showToast('Task Stopped', `Stopped: ${task.content}`);
+          });
         });
         controlBar.appendChild(playBtn);
         

@@ -225,6 +225,7 @@ li::before {
   user-select: none;
   background: transparent;
   position: relative;
+  margin-right: 300px; /* Reserve space for priority flags */
 }
 
 .task-item:hover .task-content {
@@ -234,7 +235,7 @@ li::before {
 /* ===== Control Bar (buttons) ===== */
 .task-control-bar {
   position: absolute;
-  right: 10px; /* Position within the task content */
+  right: 16px; /* Position within the task content */
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -248,9 +249,9 @@ li::before {
 }
 
 .control-btn {
-  width: 28px;
-  height: 28px;
-  margin-left: 4px;
+  width: 32px;
+  height: 32px;
+  margin-left: 6px;
   background: transparent;
   color: var(--inactive-color);
   border: none;
@@ -260,6 +261,7 @@ li::before {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  font-size: 14px;
 }
 
 .control-btn:hover {
@@ -268,13 +270,41 @@ li::before {
   transform: scale(1.1); /* Subtle grow effect on hover */
 }
 
+/* Specific control button styles */
+.edit-btn {
+  color: var(--inactive-color);
+}
+
+.play-btn {
+  color: var(--inactive-color);
+}
+
+.delete-btn {
+  color: var(--inactive-color);
+}
+
+.edit-btn:hover {
+  color: var(--accent-color);
+}
+
+.play-btn:hover {
+  color: #4CAF50; /* Green */
+}
+
+.delete-btn:hover {
+  color: var(--danger-color);
+}
+
 /* ===== Priority Flags Container ===== */
 .task-priority-flags {
+  position: absolute;
   display: flex;
   width: 300px;
-  margin-left: -300px; /* Position outside of task content */
+  right: -310px; /* Position outside of task content */
+  top: 50%;
+  transform: translateY(-50%);
   justify-content: space-around;
-  pointer-events: none; /* Allow clicks to pass through to underlying elements */
+  z-index: 5;
 }
 
 /* Individual priority flag */
@@ -290,11 +320,11 @@ li::before {
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
-  pointer-events: auto; /* Re-enable clicks on the buttons */
   position: relative;
   font-size: 14px;
   z-index: 10;
   margin: 0 2px;
+  padding: 0;
 }
 
 /* Active priority flag */
@@ -500,10 +530,12 @@ body > .sortable-drag {
 /* ===== Section Headers ===== */
 .section-header {
   margin-top: 20px !important;
-  margin-bottom: 4px !important;
+  margin-bottom: 10px !important;
   position: relative;
   border-left: 3px solid var(--accent-color);
   padding-left: 5px;
+  display: block;
+  width: 100%;
 }
 
 .section-header:first-child {
@@ -516,16 +548,18 @@ body > .sortable-drag {
   font-weight: 600;
   letter-spacing: 0.5px;
   border-radius: 4px;
+  margin-right: 0 !important; /* Override the margin-right for section headers */
 }
 
 .section-header > .task-content .task-text {
   color: var(--accent-color);
   font-size: 16px;
+  text-transform: uppercase;
 }
 
 .section-header > .task-children {
   margin-left: 8px;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 /* Section content indentation */
