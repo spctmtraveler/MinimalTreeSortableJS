@@ -1108,6 +1108,52 @@ const sampleTasks = [
     if (debug) console.log("Priority sorting complete");
   }
   
+  // Helper function to collect all tasks for database saving
+  function getAllTasksFromDOM(rootElement) {
+    if (!rootElement) return [];
+    
+    // Array to hold all task objects
+    const allTasks = [];
+    
+    // Find all task items
+    const taskElements = rootElement.querySelectorAll('.task-item');
+    
+    // Process each task element
+    taskElements.forEach(taskElement => {
+      try {
+        // Get task data from dataset
+        if (taskElement.dataset.taskData) {
+          const taskData = JSON.parse(taskElement.dataset.taskData);
+          
+          // Get parent information
+          const parentList = taskElement.parentElement;
+          if (parentList) {
+            // Get parent task or section
+            const parentItem = parentList.closest('.task-item');
+            if (parentItem && parentItem.dataset.taskData) {
+              // If parent is a task, get its ID
+              const parentData = JSON.parse(parentItem.dataset.taskData);
+              taskData.parent = parentData.id;
+            } else {
+              // If no parent task, check for section header
+              const sectionHeader = parentList.closest('li')?.querySelector('.section-header');
+              if (sectionHeader && sectionHeader.dataset.id) {
+                taskData.parent = sectionHeader.dataset.id;
+              }
+            }
+          }
+          
+          // Add to collection
+          allTasks.push(taskData);
+        }
+      } catch (error) {
+        console.error('Error processing task element for database save:', error);
+      }
+    });
+    
+    return allTasks;
+  }
+  
   // Initialize UI event handlers
   function initUI() {
     // Toggle priority flags visibility
