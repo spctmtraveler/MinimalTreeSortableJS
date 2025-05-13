@@ -323,12 +323,22 @@ const sampleTasks = [
         checkbox.className = 'task-checkbox';
         checkbox.setAttribute('data-no-drag', 'true');
         checkbox.innerHTML = task.completed ? '<i class="fa-solid fa-check"></i>' : '';
-        checkbox.addEventListener('click', (e) => {
+        checkbox.addEventListener('click', async (e) => {
           e.stopPropagation();
           task.completed = !task.completed;
           checkbox.innerHTML = task.completed ? '<i class="fa-solid fa-check"></i>' : '';
           li.classList.toggle('task-completed', task.completed);
-          if (debug) console.log(`Task "${task.content}" marked as ${task.completed ? 'completed' : 'incomplete'}`);
+          
+          // Update task data in DOM
+          li.dataset.taskData = JSON.stringify(task);
+          
+          // Save updated completion status to database
+          try {
+            await db.saveTask(task.id, task);
+            if (debug) console.log(`Task "${task.content}" marked as ${task.completed ? 'completed' : 'incomplete'} and saved to database`);
+          } catch (error) {
+            console.error('Error saving task completion status to database:', error);
+          }
         });
         row.appendChild(checkbox);
       }
@@ -1197,6 +1207,8 @@ const sampleTasks = [
     }
     
     // Make priority flags active in the modal
+    // These flag buttons are in the UI, not directly connected to a specific task
+    // Task-specific flag state is handled in the modal via saveTaskFromModal
     document.querySelectorAll('.flag-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         btn.classList.toggle('active');
@@ -1381,11 +1393,22 @@ const sampleTasks = [
       const checkbox = document.createElement('span');
       checkbox.className = 'task-checkbox';
       checkbox.setAttribute('data-no-drag', 'true');
-      checkbox.addEventListener('click', (e) => {
+      checkbox.addEventListener('click', async (e) => {
         e.stopPropagation();
         newTask.completed = !newTask.completed;
         checkbox.innerHTML = newTask.completed ? '<i class="fa-solid fa-check"></i>' : '';
         newTaskElement.classList.toggle('task-completed', newTask.completed);
+        
+        // Update task data in DOM
+        newTaskElement.dataset.taskData = JSON.stringify(newTask);
+        
+        // Save updated completion status to database
+        try {
+          await db.saveTask(newTask.id, newTask);
+          if (debug) console.log(`New task completion status updated and saved to database`);
+        } catch (error) {
+          console.error('Error saving new task completion status to database:', error);
+        }
       });
       row.appendChild(checkbox);
       
@@ -1792,6 +1815,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (rootList) {
       createRootSortable(rootList);
     }
+    
+    // Set up periodic saving of all tasks (every 30 seconds)
+    window.lastFullSave = Date.now();
+    setInterval(async () => {
+      try {
+        const rootElement = document.getElementById('task-tree');
+        if (rootElement) {
+          const allTasks = getAllTasksFromDOM(rootElement);
+          
+          if (allTasks && allTasks.length > 0) {
+            await db.saveTasks(allTasks);
+            window.lastFullSave = Date.now();
+            if (debug) console.log('Auto-saved all tasks to database');
+          }
+        }
+      } catch (error) {
+        console.error('Error during auto-save:', error);
+      }
+    }, 30000); // 30 seconds
     
     if (debug) console.log('Application initialized successfully');
   } catch (error) {
