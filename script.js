@@ -1164,7 +1164,7 @@ const sampleTasks = [
   }
   
   // Add a new task to the Triage section
-  function addNewTask() {
+  async function addNewTask() {
     const newTaskInput = document.getElementById('new-task-input');
     if (!newTaskInput) {
       if (debug) console.error('New task input field not found');
@@ -1205,58 +1205,92 @@ const sampleTasks = [
         return;
       }
       
-      // Find the children container for the Triage section by looking for the task-children class
-      // This is more reliable than using nextElementSibling
+      // Creating a simpler approach to find the Triage container
       let triageChildrenContainer = null;
+      let triageChildList = null;
       
-      // First check if the section has any direct children with the task-children class
-      const taskChildren = document.querySelectorAll('.task-children');
-      for (const container of taskChildren) {
-        // Check if this container belongs to the triageSection by walking up the DOM
-        let parent = container.parentElement;
-        while (parent) {
-          if (parent === triageSection.parentElement) {
-            triageChildrenContainer = container;
+      // First approach - find inside the parent li element
+      const triageLi = triageSection.closest('li');
+      if (triageLi) {
+        triageChildrenContainer = triageLi.querySelector('.task-children');
+        if (triageChildrenContainer) {
+          triageChildList = triageChildrenContainer.querySelector('.task-list');
+          if (debug) console.log('Found triage task list inside parent li');
+        }
+      }
+      
+      // Second approach - check next sibling of section header
+      if (!triageChildList && triageSection.nextElementSibling) {
+        if (triageSection.nextElementSibling.classList.contains('task-children')) {
+          triageChildrenContainer = triageSection.nextElementSibling;
+          triageChildList = triageChildrenContainer.querySelector('.task-list');
+          if (debug) console.log('Found triage list through next sibling');
+        }
+      }
+      
+      // Third approach - search specifically using ID and class attributes
+      if (!triageChildList) {
+        // Try direct query using the ID of the section header to find nearby task list
+        const allTriageElements = document.querySelectorAll('[data-id="section-triage"], [data-section="triage"]');
+        for (const elem of allTriageElements) {
+          // Check parent element
+          if (elem.parentElement) {
+            const container = elem.parentElement.querySelector('.task-children');
+            if (container) {
+              triageChildrenContainer = container;
+              triageChildList = container.querySelector('.task-list');
+              if (triageChildList) {
+                if (debug) console.log('Found triage list through ID attribute');
+                break;
+              }
+            }
+          }
+        }
+      }
+      
+      // Last resort - just search for any Triage-related elements
+      if (!triageChildList) {
+        const taskLists = document.querySelectorAll('.task-list');
+        for (const list of taskLists) {
+          // Look for the nearest section header
+          const nearestHeader = list.closest('li')?.querySelector('.section-header');
+          if (nearestHeader && nearestHeader.textContent.includes('TRIAGE')) {
+            triageChildList = list;
+            if (debug) console.log('Found triage list through text content match');
             break;
           }
-          parent = parent.parentElement;
-        }
-        if (triageChildrenContainer) break;
-      }
-      
-      // If not found by traversal, try another approach
-      if (!triageChildrenContainer) {
-        // Find all children elements within the triageSection's parent
-        const triageParent = triageSection.parentElement;
-        if (triageParent) {
-          // Look for a task-children element near the section header
-          triageChildrenContainer = triageParent.querySelector('.task-children');
         }
       }
       
-      if (!triageChildrenContainer) {
-        showToast('Error', 'Triage children container not found.');
-        if (debug) {
-          console.error('Triage children container not found');
-          console.log('Triage section:', triageSection);
-        }
-        return;
-      }
-      
-      // Get the first-level task list inside the container
-      // Using :scope > .task-list to ensure we get the direct child
-      const triageChildList = triageChildrenContainer.querySelector(':scope > .task-list');
+      // If all else fails, use the first available task list
       if (!triageChildList) {
-        showToast('Error', 'Triage children task list not found.');
-        if (debug) console.error('Triage children task list not found');
+        triageChildList = document.querySelector('.task-list');
+        if (debug) console.log('Using first task list as fallback');
+      }
+      
+      if (!triageChildList) {
+        showToast('Error', 'Triage task list not found');
+        if (debug) console.error('No task list found for new task');
         return;
+      }
+      
+      // Save task to database before adding to DOM
+      try {
+        // The parent should be the ID of the triage section
+        newTask.parent = 'section-triage';
+        
+        // Save to Replit Database
+        await db.saveTask(newTask.id, newTask);
+        if (debug) console.log('New task saved to database:', newTask);
+      } catch (dbError) {
+        console.error('Error saving task to database:', dbError);
+        // Continue to display in UI even if database save fails
       }
       
       // Log info about what we found
       if (debug) {
         console.log('Triage section:', triageSection);
-        console.log('Triage children container:', triageChildrenContainer);
-        console.log('Triage child list:', triageChildList);
+        console.log('Triage child list found:', triageChildList);
       }
       
       // Instead of using buildTree which can create inconsistent structures,
