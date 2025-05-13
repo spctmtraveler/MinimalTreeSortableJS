@@ -9,183 +9,8 @@
 // Debug mode - set to true to enable console logging
 const debug = true;
 
-// Database module using localStorage
-const db = {
-  // Save the entire task tree
-  saveTasks: function(tasks) {
-    try {
-      localStorage.setItem('dun_tasks', JSON.stringify(tasks));
-      if (debug) console.log('Tasks saved to localStorage');
-      return true;
-    } catch (error) {
-      console.error('Error saving tasks to localStorage:', error);
-      return false;
-    }
-  },
-  
-  // Load the entire task tree
-  loadTasks: function() {
-    try {
-      const tasks = localStorage.getItem('dun_tasks');
-      if (!tasks) {
-        if (debug) console.log('No tasks found in localStorage, using default tasks');
-        return null;
-      }
-      
-      const parsedTasks = JSON.parse(tasks);
-      if (debug) console.log('Tasks loaded from localStorage');
-      return parsedTasks;
-    } catch (error) {
-      console.error('Error loading tasks from localStorage:', error);
-      return null;
-    }
-  },
-  
-  // Save a single task
-  saveTask: function(taskId, taskData) {
-    try {
-      // Get the current tasks
-      const tasks = this.loadTasks() || sampleTasks;
-      
-      // Find and update the task (recursive function)
-      const updateTask = (taskList, id, newData) => {
-        for (let i = 0; i < taskList.length; i++) {
-          if (taskList[i].id === id) {
-            // Update the task data
-            Object.assign(taskList[i], newData);
-            return true;
-          }
-          
-          // Check children
-          if (taskList[i].children && taskList[i].children.length > 0) {
-            if (updateTask(taskList[i].children, id, newData)) {
-              return true;
-            }
-          }
-        }
-        return false;
-      };
-      
-      // Try to update the task
-      if (updateTask(tasks, taskId, taskData)) {
-        // Save the updated tasks
-        this.saveTasks(tasks);
-        if (debug) console.log(`Task ${taskId} updated in localStorage`);
-        return true;
-      } else {
-        console.error(`Task ${taskId} not found in task tree`);
-        return false;
-      }
-    } catch (error) {
-      console.error('Error saving task to localStorage:', error);
-      return false;
-    }
-  },
-  
-  // Delete a task
-  deleteTask: function(taskId) {
-    try {
-      // Get the current tasks
-      const tasks = this.loadTasks() || sampleTasks;
-      
-      // Find and delete the task (recursive function)
-      const removeTask = (taskList, id) => {
-        for (let i = 0; i < taskList.length; i++) {
-          if (taskList[i].id === id) {
-            // Remove the task
-            taskList.splice(i, 1);
-            return true;
-          }
-          
-          // Check children
-          if (taskList[i].children && taskList[i].children.length > 0) {
-            if (removeTask(taskList[i].children, id)) {
-              return true;
-            }
-          }
-        }
-        return false;
-      };
-      
-      // Try to delete the task
-      if (removeTask(tasks, taskId)) {
-        // Save the updated tasks
-        this.saveTasks(tasks);
-        if (debug) console.log(`Task ${taskId} deleted from localStorage`);
-        return true;
-      } else {
-        console.error(`Task ${taskId} not found in task tree`);
-        return false;
-      }
-    } catch (error) {
-      console.error('Error deleting task from localStorage:', error);
-      return false;
-    }
-  },
-  
-  // Add a new task
-  addTask: function(parentId, taskData) {
-    try {
-      // Get the current tasks
-      const tasks = this.loadTasks() || sampleTasks;
-      
-      // If parentId is null, add to root level
-      if (!parentId) {
-        tasks.push(taskData);
-        this.saveTasks(tasks);
-        return true;
-      }
-      
-      // Find parent and add task (recursive function)
-      const addToParent = (taskList, id, newTask) => {
-        for (let i = 0; i < taskList.length; i++) {
-          if (taskList[i].id === id) {
-            // Add to parent's children
-            if (!taskList[i].children) {
-              taskList[i].children = [];
-            }
-            taskList[i].children.push(newTask);
-            return true;
-          }
-          
-          // Check children
-          if (taskList[i].children && taskList[i].children.length > 0) {
-            if (addToParent(taskList[i].children, id, newTask)) {
-              return true;
-            }
-          }
-        }
-        return false;
-      };
-      
-      // Try to add the task
-      if (addToParent(tasks, parentId, taskData)) {
-        // Save the updated tasks
-        this.saveTasks(tasks);
-        if (debug) console.log(`Task added to parent ${parentId} in localStorage`);
-        return true;
-      } else {
-        console.error(`Parent task ${parentId} not found in task tree`);
-        return false;
-      }
-    } catch (error) {
-      console.error('Error adding task to localStorage:', error);
-      return false;
-    }
-  },
-  
-  // Clear all tasks (for testing)
-  clearTasks: function() {
-    try {
-      localStorage.removeItem('dun_tasks');
-      if (debug) console.log('All tasks cleared from localStorage');
-      return true;
-    } catch (error) {
-      console.error('Error clearing tasks from localStorage:', error);
-      return false;
-    }
-  }
-};
+// Import database module from db.js
+const db = require('./db.js');
 
 // Task model properties
 // id: unique identifier
@@ -882,7 +707,7 @@ const sampleTasks = [
   }
   
   // Save task data from modal
-  function saveTaskFromModal(task, taskElement) {
+  async function saveTaskFromModal(task, taskElement) {
     try {
       if (!task || !taskElement) {
         console.error('Invalid task or task element for saving');
@@ -922,6 +747,9 @@ const sampleTasks = [
       try {
         // Update the task element
         taskElement.dataset.taskData = JSON.stringify(task);
+        
+        // Save to database
+        await db.saveTask(task.id, task);
         
         // Update text content
         const textElement = taskElement.querySelector('.task-text');
@@ -1784,31 +1612,36 @@ const sampleTasks = [
   }
 
 // Initialize the application when the DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize event handlers for UI components
-  initUI();
-  
-  // Try to load tasks from localStorage
-  const loadedTasks = db.loadTasks();
-  
-  // Build the task tree with either loaded tasks or sample tasks
-  const root = document.getElementById('task-tree');
-  if (loadedTasks) {
-    if (debug) console.log('Using tasks from localStorage');
-    buildTree(loadedTasks, root);
-  } else {
-    if (debug) console.log('Using sample tasks');
-    buildTree(sampleTasks, root);
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    // Initialize event handlers for UI components
+    initUI();
     
-    // Save sample tasks to localStorage for future use
-    db.saveTasks(sampleTasks);
+    // Try to load tasks from Replit Database
+    const loadedTasks = await db.loadTasks();
+    
+    // Build the task tree with either loaded tasks or sample tasks
+    const root = document.getElementById('task-tree');
+    if (loadedTasks) {
+      if (debug) console.log('Using tasks from Replit Database');
+      buildTree(loadedTasks, root);
+    } else {
+      if (debug) console.log('Using sample tasks');
+      buildTree(sampleTasks, root);
+      
+      // Save sample tasks to Replit Database for future use
+      await db.saveTasks(sampleTasks);
+    }
+    
+    // Create root sortable
+    const rootList = root.querySelector(':scope > .task-list');
+    if (rootList) {
+      createRootSortable(rootList);
+    }
+    
+    if (debug) console.log('Application initialized successfully');
+  } catch (error) {
+    console.error('Error initializing application:', error);
+    showToast('Error', 'Failed to initialize application. Please refresh the page.');
   }
-  
-  // Create root sortable
-  const rootList = root.querySelector(':scope > .task-list');
-  if (rootList) {
-    createRootSortable(rootList);
-  }
-  
-  if (debug) console.log('Application initialized');
 });
