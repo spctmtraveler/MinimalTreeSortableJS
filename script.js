@@ -427,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
         priorityFlags.appendChild(fireFlag);
         
         // Fast flag
-        const fastFlag = createPriorityFlag('fast', 'fa-rabbit-fast', task.fast, 'Quick task that can be completed rapidly');
+        const fastFlag = createPriorityFlag('fast', 'fa-bolt', task.fast, 'Quick task that can be completed rapidly');
         priorityFlags.appendChild(fastFlag);
         
         // Flow flag
@@ -439,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
         priorityFlags.appendChild(fearFlag);
         
         // First flag
-        const firstFlag = createPriorityFlag('first', 'fa-trophy', task.first, 'High priority task to be done first');
+        const firstFlag = createPriorityFlag('first', 'fa-flag', task.first, 'High priority task to be done first');
         priorityFlags.appendChild(firstFlag);
         
         row.appendChild(priorityFlags);

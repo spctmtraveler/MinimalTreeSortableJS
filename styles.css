@@ -20,7 +20,7 @@ button, input, select, textarea {
   --header-height: 60px;
   --section-spacing: 24px;
   --task-indent: 24px;
-  --container-width: 960px;
+  --container-width: 700px;
 }
 
 /* ===== Top Banner ===== */
@@ -36,11 +36,10 @@ button, input, select, textarea {
 }
 
 .banner-container {
-  max-width: 90vw;
-  max-width: 700px;
+  width: var(--container-width);
   height: 100%;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -132,10 +131,9 @@ button, input, select, textarea {
 
 /* ===== Main Content Area ===== */
 #dun-app {
-  max-width: 90vw;
-  max-width: 700px; /* Match design spec */
+  width: var(--container-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0;
   margin-top: calc(var(--header-height) + 20px); /* Space for fixed header */
 }
 
@@ -252,6 +250,7 @@ li::before {
   background: transparent;
   position: relative;
   margin-right: 300px; /* Reserve space for priority flags */
+  min-height: 36px; /* Ensure minimum height for control buttons */
 }
 
 .task-item:hover .task-content {
@@ -340,8 +339,8 @@ li::before {
 
 /* Individual priority flag */
 .priority-flag {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 2px solid var(--inactive-color);
   background: transparent;
@@ -352,7 +351,7 @@ li::before {
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  font-size: 14px;
+  font-size: 12px;
   z-index: 10;
   margin: 0 2px;
   padding: 0;
