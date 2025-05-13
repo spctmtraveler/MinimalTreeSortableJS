@@ -998,38 +998,24 @@ document.addEventListener('DOMContentLoaded', () => {
       // Find the Triage section
       const triageSection = document.querySelector('.section-header[data-id="section-triage"]');
       if (!triageSection) {
-        // Try to find any root level task list - for testing
-        const mainTaskList = document.querySelector('#task-tree > .task-list');
-        if (mainTaskList) {
-          // Create temporary parent for buildTree
-          const tempParent = document.createElement('div');
-          buildTree([newTask], tempParent);
-          
-          // Get the created li element and append to root list
-          const newTaskElement = tempParent.querySelector('li');
-          if (newTaskElement) {
-            mainTaskList.appendChild(newTaskElement);
-            
-            // Show confirmation toast
-            showToast('Task Added', 'New task added.');
-            
-            // Clear input
-            newTaskInput.value = '';
-            
-            if (debug) console.log(`Added new task "${taskText}" to root level`);
-            return;
-          }
-        }
-        
         showToast('Error', 'Triage section not found.');
         if (debug) console.error('Triage section not found');
         return;
       }
       
-      const triageList = triageSection.querySelector('.task-list');
-      if (!triageList) {
-        showToast('Error', 'Triage task list not found.');
-        if (debug) console.error('Triage task list not found');
+      // Find the task list inside the Triage section's children container
+      // This ensures we add tasks at the proper level (1 level deeper than the section header)
+      const triageChildrenContainer = triageSection.querySelector('.task-children');
+      if (!triageChildrenContainer) {
+        showToast('Error', 'Triage children container not found.');
+        if (debug) console.error('Triage children container not found');
+        return;
+      }
+      
+      const triageChildList = triageChildrenContainer.querySelector('.task-list');
+      if (!triageChildList) {
+        showToast('Error', 'Triage children task list not found.');
+        if (debug) console.error('Triage children task list not found');
         return;
       }
       
@@ -1037,7 +1023,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const tempParent = document.createElement('div');
       buildTree([newTask], tempParent);
       
-      // Get the created li element and append to Triage
+      // Get the created li element and append to Triage's children list
       const newTaskElement = tempParent.querySelector('li');
       if (!newTaskElement) {
         showToast('Error', 'Failed to create new task element.');
@@ -1045,7 +1031,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
-      triageList.appendChild(newTaskElement);
+      triageChildList.appendChild(newTaskElement);
       
       // Show confirmation toast
       showToast('Task Added', 'New task added to Triage section.');
