@@ -500,17 +500,57 @@ document.addEventListener('DOMContentLoaded', () => {
     flag.className = `priority-flag ${isActive ? 'active' : ''}`;
     flag.setAttribute('data-priority', type);
     flag.setAttribute('data-no-drag', 'true');
-    flag.setAttribute('title', tooltip);
-    flag.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+    
+    // Determine the correct icon and tooltip based on flag type
+    let icon, title;
+    
+    switch(type) {
+      case 'fire':
+        icon = 'fa-fire';
+        title = 'Urgent (Fire)';
+        break;
+      case 'fast':
+        icon = 'fa-bolt';
+        title = 'Quick win (Fast)';
+        break;
+      case 'flow':
+        icon = 'fa-water';
+        title = 'In the flow (Flow)';
+        break;
+      case 'fear':
+        icon = 'fa-skull';
+        title = 'Challenging (Fear)';
+        break;
+      case 'first':
+        icon = 'fa-flag';
+        title = 'Do first (First)';
+        break;
+      default:
+        icon = iconClass || 'fa-circle';
+        title = tooltip || type;
+    }
+    
+    flag.setAttribute('title', title);
+    flag.innerHTML = `<i class="fa-solid ${icon}"></i>`;
     
     flag.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const taskItem = flag.closest('.task-item');
-      const taskData = JSON.parse(taskItem.dataset.taskData);
-      taskData[type] = !taskData[type];
-      taskItem.dataset.taskData = JSON.stringify(taskData);
-      flag.classList.toggle('active');
-      if (debug) console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]}`);
+      try {
+        e.stopPropagation();
+        const taskItem = flag.closest('.task-item');
+        if (!taskItem) return;
+        
+        try {
+          const taskData = JSON.parse(taskItem.dataset.taskData);
+          taskData[type] = !taskData[type];
+          taskItem.dataset.taskData = JSON.stringify(taskData);
+          flag.classList.toggle('active');
+          if (debug) console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]}`);
+        } catch (parseError) {
+          console.error('Error updating task data for priority flag:', parseError);
+        }
+      } catch (error) {
+        console.error('Error in priority flag click handler:', error);
+      }
     });
     
     return flag;
