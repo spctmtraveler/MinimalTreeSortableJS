@@ -36,7 +36,8 @@ button, input, select, textarea {
 }
 
 .banner-container {
-  max-width: var(--container-width);
+  max-width: 90vw;
+  max-width: 700px;
   height: 100%;
   margin: 0 auto;
   padding: 0 1.5rem;
@@ -131,7 +132,8 @@ button, input, select, textarea {
 
 /* ===== Main Content Area ===== */
 #dun-app {
-  max-width: var(--container-width);
+  max-width: 90vw;
+  max-width: 700px; /* Match design spec */
   margin: 0 auto;
   padding: 0 1.5rem;
   margin-top: calc(var(--header-height) + 20px); /* Space for fixed header */
@@ -179,6 +181,18 @@ button, input, select, textarea {
   margin-left: 12px;
 }
 
+.priority-column-header {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent-color);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.priority-column-header i {
+  margin-right: 6px;
+}
+
 .priority-column-headers {
   display: flex;
   width: 100%;
@@ -188,9 +202,21 @@ button, input, select, textarea {
 }
 
 .priority-label {
-  width: 36px;
-  text-align: center;
-  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 48px;
+  margin-bottom: 12px;
+}
+
+.priority-label i {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--accent-color);
+}
+
+.priority-label span {
+  font-size: 11px;
   color: var(--text-color);
   opacity: 0.7;
 }
@@ -229,7 +255,7 @@ li::before {
 }
 
 .task-item:hover .task-content {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.01); /* Very subtle hover effect */
 }
 
 /* ===== Control Bar (buttons) ===== */
@@ -240,12 +266,17 @@ li::before {
   transform: translateY(-50%);
   display: flex;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
   z-index: 5;
 }
 
 .task-content:hover .task-control-bar {
   opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.task-content:not(:hover) .task-control-bar {
+  transition: opacity 2s ease-in-out;
 }
 
 .control-btn {
@@ -433,8 +464,8 @@ li::before {
   min-height: 32px; /* Larger target area */
   height: auto;
   margin-left: 24px; /* Increased indent for active drop targets */
-  background: rgba(0, 206, 247, 0.1); /* Accent color to match theme */
-  border: 1px dashed rgba(0, 206, 247, 0.5); /* Accent color border */
+  background: rgba(0, 206, 247, 0.07); /* Very subtle accent color */
+  border: 1px dashed rgba(0, 206, 247, 0.3); /* Subtle accent color border */
   border-radius: 4px;
 }
 
@@ -445,8 +476,8 @@ li::before {
   min-height: 20px; /* Smaller than active */
   height: auto;
   margin-left: 24px; /* Same indent */
-  background: rgba(0, 206, 247, 0.03); /* Subtler background */
-  border: 1px dotted rgba(0, 206, 247, 0.2); /* Subtler border */
+  background: transparent; /* No background */
+  border: 1px dotted rgba(0, 206, 247, 0.1); /* Almost invisible border */
   border-radius: 4px;
 }
 
