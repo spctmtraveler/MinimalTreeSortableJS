@@ -1,30 +1,68 @@
-// -------------  Task Tree Demo  ------------------
-// Minimalist visuals • accurate indent • compact drag preview
-// Updated: 2025‑05‑12 04:30
-//  ✱ Implemented section headers according to mockup
-//  ✱ Four sections: Triage, A, B, C with special styling
-//  ✱ Added completed task status with styling
+// -------------  DUN Task Management  ------------------
+// Updated: 2025‑05‑12 18:30
+//  ✱ Redesigned UI according to mockup
+//  ✱ Added priority flags (Fire, Fast, Flow, Fear, First)
+//  ✱ Added task modal and actions
+//  ✱ Maintained drag-and-drop functionality
 // ---------------------------------------------------
 
+// Debug mode - set to true to enable console logging
+const debug = true;
+
+// Task model properties
+// id: unique identifier
+// content: task title/text
+// isSection: boolean indicating if this is a section header
+// completed: boolean indicating completion status
+// children: array of child tasks
+// revisitDate: date for revisiting the task
+// fire, fast, flow, fear, first: boolean priority flags
+// timeEstimate: number of hours estimated for task
+// overview: text describing task overview
+// details: detailed task description
+// scheduledTime: specific time for task
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize event handlers for UI components
+  initUI();
   /* ---------- Sample Data with Sections ----------- */
   const sampleTasks = [
     {
       id: 'section-triage',
-      content: 'Triage',
+      content: 'TRIAGE',
       isSection: true, // Special flag for section headers
       children: [
         {
           id: 'task-triage-1',
           content: 'Mail check',
           completed: true,
-          children: []
+          children: [],
+          revisitDate: '2025-03-07',
+          fire: true,
+          fast: false,
+          flow: false,
+          fear: false,
+          first: false,
+          timeEstimate: 0.5,
+          overview: 'Check mail for important documents',
+          details: 'Need to sort through mail and check for bills and other important documents.',
+          scheduledTime: '10:00'
         },
         {
           id: 'task-triage-2',
           content: 'Clean Kitchen',
           completed: true,
-          children: []
+          children: [],
+          revisitDate: null,
+          fire: false,
+          fast: true,
+          flow: true,
+          fear: false,
+          first: false,
+          timeEstimate: 1,
+          overview: 'Clean the kitchen thoroughly',
+          details: 'Do the dishes, wipe down counters, sweep and mop the floor.',
+          scheduledTime: null
         }
       ]
     },
@@ -37,22 +75,62 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 'task-a-1',
           content: 'Make Cake',
           completed: false,
+          revisitDate: 'today',
+          fire: true,
+          fast: true,
+          flow: false,
+          fear: false,
+          first: false,
+          timeEstimate: 3,
+          overview: 'Bake a cake for the party',
+          details: 'Need to make a chocolate cake for the weekend party.',
+          scheduledTime: '14:00',
           children: [
             {
               id: 'task-a-1-1',
               content: 'Buy Ingredients',
               completed: false,
+              revisitDate: 'tomorrow',
+              fire: false,
+              fast: true,
+              flow: false,
+              fear: true,
+              first: false,
+              timeEstimate: 1,
+              overview: 'Get all necessary ingredients',
+              details: 'Buy flour, sugar, eggs, chocolate, and butter.',
+              scheduledTime: null,
               children: [
                 {
                   id: 'task-a-1-1-1',
                   content: 'Make a list',
                   completed: false,
+                  revisitDate: 'today',
+                  fire: false,
+                  fast: false,
+                  flow: true,
+                  fear: false,
+                  first: false,
+                  timeEstimate: 0.25,
+                  overview: 'Write down all needed ingredients',
+                  details: 'Check recipe and pantry, make shopping list.',
+                  scheduledTime: null,
                   children: []
                 },
                 {
                   id: 'task-a-1-1-2',
                   content: 'Go shopping',
                   completed: false,
+                  revisitDate: 'today',
+                  fire: false,
+                  fast: false,
+                  flow: true,
+                  fear: false,
+                  first: false,
+                  timeEstimate: 0.75,
+                  overview: 'Go to the grocery store',
+                  details: 'Visit the supermarket to buy all ingredients on the list.',
+                  scheduledTime: null,
                   children: []
                 }
               ]
@@ -61,12 +139,32 @@ document.addEventListener('DOMContentLoaded', () => {
               id: 'task-a-1-2',
               content: 'Mix Ingredients',
               completed: false,
+              revisitDate: null,
+              fire: true,
+              fast: true,
+              flow: true,
+              fear: false,
+              first: false,
+              timeEstimate: 0.5,
+              overview: 'Prepare the cake batter',
+              details: 'Mix all ingredients according to the recipe instructions.',
+              scheduledTime: null,
               children: []
             },
             {
               id: 'task-a-1-3',
               content: 'Bake',
               completed: false,
+              revisitDate: null,
+              fire: false,
+              fast: false,
+              flow: false,
+              fear: false,
+              first: true,
+              timeEstimate: 1.5,
+              overview: 'Bake the cake in the oven',
+              details: 'Preheat oven, prepare pan, bake for required time.',
+              scheduledTime: null,
               children: []
             }
           ]
@@ -82,12 +180,32 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 'task-b-1',
           content: 'Mail check',
           completed: true,
+          revisitDate: 'today',
+          fire: false,
+          fast: false,
+          flow: false,
+          fear: true,
+          first: false,
+          timeEstimate: 0.25,
+          overview: 'Check mail for bills',
+          details: 'Sort through mail and check for bills and payment notices.',
+          scheduledTime: null,
           children: []
         },
         {
           id: 'task-b-2',
           content: 'Shower',
           completed: true,
+          revisitDate: 'tomorrow',
+          fire: false,
+          fast: true,
+          flow: true,
+          fear: false,
+          first: false,
+          timeEstimate: 0.5,
+          overview: 'Take a shower',
+          details: 'Morning routine, shower and get ready for the day.',
+          scheduledTime: null,
           children: []
         }
       ]
@@ -101,18 +219,48 @@ document.addEventListener('DOMContentLoaded', () => {
           id: 'task-c-1',
           content: 'Oil Change',
           completed: true,
+          revisitDate: 'next week',
+          fire: true,
+          fast: false,
+          flow: false,
+          fear: false,
+          first: true,
+          timeEstimate: 1,
+          overview: 'Change car oil',
+          details: 'Take car to mechanic or DIY oil change.',
+          scheduledTime: null,
           children: []
         },
         {
           id: 'task-c-2',
           content: 't17',
           completed: false,
+          revisitDate: '4/22',
+          fire: true,
+          fast: false,
+          flow: true,
+          fear: false,
+          first: false,
+          timeEstimate: 2,
+          overview: 'Task 17 from project list',
+          details: 'Special task #17 from the project requirements.',
+          scheduledTime: null,
           children: []
         },
         {
           id: 'task-c-3',
           content: 'Test task from SQL',
           completed: false,
+          revisitDate: '3/12',
+          fire: false,
+          fast: true,
+          flow: false,
+          fear: true,
+          first: false,
+          timeEstimate: 1.5,
+          overview: 'Test SQL integration',
+          details: 'Verify that SQL integration is working properly.',
+          scheduledTime: '15:30',
           children: []
         }
       ]
@@ -141,6 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
       li.className = 'task-item';
       li.dataset.id = task.id;
       
+      // Store task data for easy access
+      li.dataset.taskData = JSON.stringify(task);
+      
       // Mark section headers to style differently
       if (task.isSection) {
         li.classList.add('section-header');
@@ -158,17 +309,26 @@ document.addEventListener('DOMContentLoaded', () => {
       row.className = 'task-content';
       li.appendChild(row);
 
+      /* grip icon for dragging (for non-section items) */
+      if (!task.isSection) {
+        const grip = document.createElement('span');
+        grip.className = 'task-grip';
+        grip.innerHTML = '<i class="fa-solid fa-grip-lines"></i>';
+        row.appendChild(grip);
+      }
+
       /* checkbox for completed state (except for section headers) */
       if (!task.isSection) {
         const checkbox = document.createElement('span');
         checkbox.className = 'task-checkbox';
         checkbox.setAttribute('data-no-drag', 'true');
-        checkbox.innerHTML = task.completed ? '✓' : '';
+        checkbox.innerHTML = task.completed ? '<i class="fa-solid fa-check"></i>' : '';
         checkbox.addEventListener('click', (e) => {
           e.stopPropagation();
           task.completed = !task.completed;
-          checkbox.innerHTML = task.completed ? '✓' : '';
+          checkbox.innerHTML = task.completed ? '<i class="fa-solid fa-check"></i>' : '';
           li.classList.toggle('task-completed', task.completed);
+          if (debug) console.log(`Task "${task.content}" marked as ${task.completed ? 'completed' : 'incomplete'}`);
         });
         row.appendChild(checkbox);
       }
@@ -193,6 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const open = chevron.classList.toggle('expanded');
         chevron.textContent = open ? '▾' : '▸';
         childContainer.style.display = open ? 'block' : 'none';
+        if (debug) console.log(`${open ? 'Expanded' : 'Collapsed'} task "${task.content}"`);
       });
 
       /* text */
@@ -200,6 +361,95 @@ document.addEventListener('DOMContentLoaded', () => {
       txt.className = 'task-text';
       txt.textContent = task.content;
       row.appendChild(txt);
+
+      /* Add task revisit date (except for section headers) */
+      if (!task.isSection && task.revisitDate) {
+        const date = document.createElement('span');
+        date.className = 'task-date';
+        date.textContent = formatRevisitDate(task.revisitDate);
+        date.setAttribute('data-no-drag', 'true');
+        row.appendChild(date);
+      }
+
+      /* Add control buttons (except for section headers) */
+      if (!task.isSection) {
+        const controlBar = document.createElement('div');
+        controlBar.className = 'task-control-bar';
+        controlBar.setAttribute('data-no-drag', 'true');
+        
+        // Edit button
+        const editBtn = document.createElement('button');
+        editBtn.className = 'control-btn edit-btn';
+        editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
+        editBtn.title = 'Edit task';
+        editBtn.setAttribute('data-no-drag', 'true');
+        editBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openTaskModal(task, li);
+        });
+        controlBar.appendChild(editBtn);
+        
+        // Play button
+        const playBtn = document.createElement('button');
+        playBtn.className = 'control-btn play-btn';
+        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        playBtn.title = 'Start task';
+        playBtn.setAttribute('data-no-drag', 'true');
+        playBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openTaskModal(task, li);
+        });
+        controlBar.appendChild(playBtn);
+        
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'control-btn delete-btn';
+        deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        deleteBtn.title = 'Delete task';
+        deleteBtn.setAttribute('data-no-drag', 'true');
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteTask(task, li);
+        });
+        controlBar.appendChild(deleteBtn);
+        
+        row.appendChild(controlBar);
+        
+        // Priority flags
+        const priorityFlags = document.createElement('div');
+        priorityFlags.className = 'task-priority-flags';
+        priorityFlags.setAttribute('data-no-drag', 'true');
+        
+        // Fire flag
+        const fireFlag = createPriorityFlag('fire', 'fa-fire', task.fire, 'High urgency task that needs immediate attention');
+        priorityFlags.appendChild(fireFlag);
+        
+        // Fast flag
+        const fastFlag = createPriorityFlag('fast', 'fa-rabbit-fast', task.fast, 'Quick task that can be completed rapidly');
+        priorityFlags.appendChild(fastFlag);
+        
+        // Flow flag
+        const flowFlag = createPriorityFlag('flow', 'fa-water', task.flow, 'Task that requires focus and flow state');
+        priorityFlags.appendChild(flowFlag);
+        
+        // Fear flag
+        const fearFlag = createPriorityFlag('fear', 'fa-skull', task.fear, 'Task that causes anxiety or resistance');
+        priorityFlags.appendChild(fearFlag);
+        
+        // First flag
+        const firstFlag = createPriorityFlag('first', 'fa-trophy', task.first, 'High priority task to be done first');
+        priorityFlags.appendChild(firstFlag);
+        
+        row.appendChild(priorityFlags);
+      }
+
+      /* Task click opens the modal */
+      if (!task.isSection) {
+        txt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openTaskModal(task, li);
+        });
+      }
 
       /* child container with empty ul */
       const childContainer = document.createElement('div');
@@ -239,6 +489,366 @@ document.addEventListener('DOMContentLoaded', () => {
     // Special handling for the root level container
     if (parent.id === 'task-tree') {
       createRootSortable(ul);
+    }
+  }
+  
+  /* ---------- Helper Functions ----------- */
+  
+  // Create a priority flag element
+  function createPriorityFlag(type, iconClass, isActive, tooltip) {
+    const flag = document.createElement('button');
+    flag.className = `priority-flag ${isActive ? 'active' : ''}`;
+    flag.setAttribute('data-priority', type);
+    flag.setAttribute('data-no-drag', 'true');
+    flag.setAttribute('title', tooltip);
+    flag.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+    
+    flag.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const taskItem = flag.closest('.task-item');
+      const taskData = JSON.parse(taskItem.dataset.taskData);
+      taskData[type] = !taskData[type];
+      taskItem.dataset.taskData = JSON.stringify(taskData);
+      flag.classList.toggle('active');
+      if (debug) console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]}`);
+    });
+    
+    return flag;
+  }
+  
+  // Format revisit date for display
+  function formatRevisitDate(dateStr) {
+    if (!dateStr) return '';
+    
+    // Handle special cases
+    if (dateStr === 'today') return 'today';
+    if (dateStr === 'tomorrow') return 'tomorrow';
+    if (dateStr === 'next week') return 'Next week';
+    
+    // Handle simple MM/DD format (4/22)
+    if (/^\d{1,2}\/\d{1,2}$/.test(dateStr)) return dateStr;
+    
+    // Try to parse as a date
+    try {
+      const date = new Date(dateStr);
+      if (!isNaN(date.getTime())) {
+        return `${date.getMonth() + 1}/${date.getDate()}`;
+      }
+    } catch (e) {
+      console.error('Error parsing date:', e);
+    }
+    
+    return dateStr;
+  }
+  
+  // Open the task modal for editing
+  function openTaskModal(task, taskElement) {
+    const modal = document.getElementById('task-view-modal');
+    const titleInput = document.getElementById('task-title');
+    const revisitDateInput = document.getElementById('revisit-date');
+    const scheduledTimeInput = document.getElementById('scheduled-time');
+    const overviewInput = document.getElementById('task-overview');
+    const detailsInput = document.getElementById('task-details');
+    const timeEstimateInput = document.getElementById('time-estimate');
+    
+    // Set the current task data
+    titleInput.value = task.content || '';
+    
+    // Handle special date formats
+    if (task.revisitDate === 'today' || task.revisitDate === 'tomorrow' || task.revisitDate === 'next week') {
+      revisitDateInput.value = formatDateForInput(task.revisitDate);
+    } else {
+      revisitDateInput.value = task.revisitDate || '';
+    }
+    
+    scheduledTimeInput.value = task.scheduledTime || '';
+    overviewInput.value = task.overview || '';
+    detailsInput.value = task.details || '';
+    timeEstimateInput.value = task.timeEstimate || '';
+    
+    // Set priority flags
+    document.querySelectorAll('.flag-btn').forEach(btn => {
+      const priority = btn.getAttribute('data-priority');
+      btn.classList.toggle('active', task[priority] === true);
+    });
+    
+    // Show the modal
+    modal.style.display = 'block';
+    titleInput.focus();
+    
+    // Save button handler
+    document.getElementById('save-task-btn').onclick = () => {
+      saveTaskFromModal(task, taskElement);
+    };
+    
+    // Close modal handler
+    document.querySelector('.close-modal').onclick = () => {
+      modal.style.display = 'none';
+    };
+    
+    // Click outside to close
+    window.onclick = (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    };
+    
+    if (debug) console.log(`Opened modal for task "${task.content}"`);
+  }
+  
+  // Save task data from modal
+  function saveTaskFromModal(task, taskElement) {
+    const modal = document.getElementById('task-view-modal');
+    const titleInput = document.getElementById('task-title');
+    const revisitDateInput = document.getElementById('revisit-date');
+    const scheduledTimeInput = document.getElementById('scheduled-time');
+    const overviewInput = document.getElementById('task-overview');
+    const detailsInput = document.getElementById('task-details');
+    const timeEstimateInput = document.getElementById('time-estimate');
+    
+    // Update task data
+    task.content = titleInput.value;
+    task.revisitDate = revisitDateInput.value;
+    task.scheduledTime = scheduledTimeInput.value;
+    task.overview = overviewInput.value;
+    task.details = detailsInput.value;
+    task.timeEstimate = parseFloat(timeEstimateInput.value) || 0;
+    
+    // Update priority flags
+    document.querySelectorAll('.flag-btn').forEach(btn => {
+      const priority = btn.getAttribute('data-priority');
+      task[priority] = btn.classList.contains('active');
+    });
+    
+    // Update the task element
+    taskElement.dataset.taskData = JSON.stringify(task);
+    taskElement.querySelector('.task-text').textContent = task.content;
+    
+    // Update date display if present
+    const dateElement = taskElement.querySelector('.task-date');
+    if (dateElement) {
+      dateElement.textContent = formatRevisitDate(task.revisitDate);
+    }
+    
+    // Update priority flags in the task list
+    const flags = taskElement.querySelectorAll('.priority-flag');
+    flags.forEach(flag => {
+      const priority = flag.getAttribute('data-priority');
+      flag.classList.toggle('active', task[priority] === true);
+    });
+    
+    // Close the modal
+    modal.style.display = 'none';
+    
+    // Show confirmation toast
+    showToast('Task Updated', 'The task has been successfully updated.');
+    
+    if (debug) console.log(`Saved changes to task "${task.content}"`);
+  }
+  
+  // Delete a task
+  function deleteTask(task, taskElement) {
+    // Find parent task list
+    const parentList = taskElement.parentNode;
+    
+    // Store task data for undo
+    const taskData = JSON.parse(JSON.stringify(task));
+    
+    // Remove task from DOM
+    parentList.removeChild(taskElement);
+    
+    // Show confirmation toast with undo option
+    showToast('Task Deleted', 'The task has been deleted.', 'Undo', () => {
+      // Recreate the task in the same position
+      const newTaskElement = document.createElement('li');
+      parentList.appendChild(newTaskElement);
+      
+      // Rebuild the task with original data
+      buildTree([taskData], parentList);
+      
+      // Show confirmation toast
+      showToast('Task Restored', 'The task has been restored.');
+      
+      if (debug) console.log(`Restored deleted task "${taskData.content}"`);
+    });
+    
+    if (debug) console.log(`Deleted task "${task.content}"`);
+  }
+  
+  // Show a toast notification
+  function showToast(title, message, actionText, actionCallback) {
+    const container = document.getElementById('toast-container');
+    
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    
+    // Create toast content
+    const content = document.createElement('div');
+    content.className = 'toast-content';
+    
+    const toastTitle = document.createElement('div');
+    toastTitle.className = 'toast-title';
+    toastTitle.textContent = title;
+    content.appendChild(toastTitle);
+    
+    const toastMessage = document.createElement('div');
+    toastMessage.className = 'toast-message';
+    toastMessage.textContent = message;
+    content.appendChild(toastMessage);
+    
+    toast.appendChild(content);
+    
+    // Create action button if provided
+    if (actionText && actionCallback) {
+      const actionBtn = document.createElement('button');
+      actionBtn.className = 'toast-action';
+      actionBtn.textContent = actionText;
+      actionBtn.addEventListener('click', () => {
+        actionCallback();
+        container.removeChild(toast);
+      });
+      toast.appendChild(actionBtn);
+    }
+    
+    // Add to container
+    container.appendChild(toast);
+    
+    // Remove after delay
+    setTimeout(() => {
+      if (container.contains(toast)) {
+        container.removeChild(toast);
+      }
+    }, 5000);
+  }
+  
+  // Format date for input element
+  function formatDateForInput(dateStr) {
+    if (!dateStr) return '';
+    
+    const today = new Date();
+    let date;
+    
+    if (dateStr === 'today') {
+      date = today;
+    } else if (dateStr === 'tomorrow') {
+      date = new Date(today);
+      date.setDate(date.getDate() + 1);
+    } else if (dateStr === 'next week') {
+      date = new Date(today);
+      date.setDate(date.getDate() + 7);
+    } else {
+      try {
+        date = new Date(dateStr);
+        if (isNaN(date.getTime())) {
+          return '';
+        }
+      } catch (e) {
+        console.error('Error parsing date:', e);
+        return '';
+      }
+    }
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
+  
+  // Initialize UI event handlers
+  function initUI() {
+    // Toggle priority flags visibility
+    const togglePriorityBtn = document.getElementById('toggle-priority');
+    togglePriorityBtn.addEventListener('click', () => {
+      document.querySelectorAll('.task-priority-flags').forEach(el => {
+        el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+      });
+      document.querySelector('.priority-column-headers').style.display = 
+        document.querySelector('.priority-column-headers').style.display === 'none' ? 'flex' : 'none';
+      document.querySelector('.priority-header').style.display = 
+        document.querySelector('.priority-header').style.display === 'none' ? 'block' : 'none';
+      
+      togglePriorityBtn.classList.toggle('active');
+      
+      if (debug) console.log('Toggled priority flags visibility');
+    });
+    
+    // Make priority flags active in the modal
+    document.querySelectorAll('.flag-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+      });
+    });
+    
+    // Add new task
+    const addTaskBtn = document.getElementById('add-task-btn');
+    const newTaskInput = document.getElementById('new-task-input');
+    
+    addTaskBtn.addEventListener('click', () => {
+      addNewTask();
+    });
+    
+    newTaskInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        addNewTask();
+      }
+    });
+    
+    // Set active state for task view button
+    document.querySelector('.view-toggle-btn:nth-child(2)').classList.add('active');
+  }
+  
+  // Add a new task to the Triage section
+  function addNewTask() {
+    const newTaskInput = document.getElementById('new-task-input');
+    const taskText = newTaskInput.value.trim();
+    
+    if (!taskText) {
+      showToast('Error', 'Please enter a task name.');
+      return;
+    }
+    
+    // Create new task object
+    const newTask = {
+      id: 'task-' + Date.now(),
+      content: taskText,
+      completed: false,
+      children: [],
+      revisitDate: null,
+      fire: false,
+      fast: false,
+      flow: false,
+      fear: false,
+      first: false,
+      timeEstimate: 0,
+      overview: '',
+      details: '',
+      scheduledTime: null
+    };
+    
+    // Find the Triage section
+    const triageSection = document.querySelector('.section-header[data-id="section-triage"]');
+    if (triageSection) {
+      const triageList = triageSection.querySelector('.task-list');
+      
+      // Create temporary parent for buildTree
+      const tempParent = document.createElement('div');
+      buildTree([newTask], tempParent);
+      
+      // Get the created li element and append to Triage
+      const newTaskElement = tempParent.querySelector('li');
+      triageList.appendChild(newTaskElement);
+      
+      // Show confirmation toast
+      showToast('Task Added', 'New task added to Triage section.');
+      
+      // Clear input
+      newTaskInput.value = '';
+      
+      if (debug) console.log(`Added new task "${taskText}" to Triage`);
+    } else {
+      showToast('Error', 'Triage section not found.');
     }
   }
 
