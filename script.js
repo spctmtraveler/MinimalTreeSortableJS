@@ -1120,14 +1120,39 @@ const sampleTasks = [
       const sectionId = sectionHeader.getAttribute('data-id');
       if (debug) console.log(`Sorting section: ${sectionId}`);
       
-      // Get the task list inside the section's children container
-      const childrenContainer = sectionHeader.nextElementSibling;
-      if (!childrenContainer || !childrenContainer.classList.contains('task-children')) {
+      // Find the children container more reliably
+      let childrenContainer = null;
+      
+      // Try to find the closest task-children element within the same parent
+      const parentElement = sectionHeader.parentElement;
+      if (parentElement) {
+        // First look for siblings
+        const siblings = Array.from(parentElement.children);
+        for (let i = 0; i < siblings.length; i++) {
+          if (siblings[i] === sectionHeader) {
+            // Look for the next sibling that has the task-children class
+            for (let j = i + 1; j < siblings.length; j++) {
+              if (siblings[j].classList.contains('task-children')) {
+                childrenContainer = siblings[j];
+                break;
+              }
+            }
+            break;
+          }
+        }
+        
+        // If not found as a sibling, look for any task-children in the parent
+        if (!childrenContainer) {
+          childrenContainer = parentElement.querySelector('.task-children');
+        }
+      }
+      
+      if (!childrenContainer) {
         if (debug) console.log(`No children container found for section: ${sectionId}`);
         return;
       }
       
-      const taskList = childrenContainer.querySelector(':scope > .task-list');
+      const taskList = childrenContainer.querySelector('.task-list');
       if (!taskList) {
         if (debug) console.log(`No task list found for section: ${sectionId}`);
         return;
@@ -1148,22 +1173,61 @@ const sampleTasks = [
       
       // Sort non-completed tasks by priority (Fast -> First -> Fire -> Fear -> Flow)
       nonCompletedTasks.sort((a, b) => {
+        // Helper function to check if an element has a specific priority flag active
+        const hasPriorityFlag = (element, flagName) => {
+          try {
+            // First try looking for the flag-circle elements
+            const flagCircles = element.querySelectorAll(`.flag-circle[data-priority="${flagName}"]`);
+            for (const circle of flagCircles) {
+              if (circle.classList.contains('active')) {
+                return true;
+              }
+            }
+            
+            // If not found, check within the task-priority-flags container
+            const flagsContainer = element.querySelector('.task-priority-flags');
+            if (flagsContainer) {
+              const flag = flagsContainer.querySelector(`[data-priority="${flagName}"]`);
+              if (flag && flag.classList.contains('active')) {
+                return true;
+              }
+            }
+            
+            // If still not found, try to get the task data
+            try {
+              const taskData = JSON.parse(element.dataset.taskData || '{}');
+              return taskData[flagName] === true;
+            } catch (e) {
+              if (debug) console.error('Error parsing task data:', e);
+            }
+          } catch (error) {
+            console.error(`Error checking ${flagName} flag:`, error);
+          }
+          
+          return false;
+        };
+        
         // Get priority flags for each task
         const aFlags = {
-          fast: a.querySelector('.flag-circle[data-priority="fast"]')?.classList.contains('active') || false,
-          first: a.querySelector('.flag-circle[data-priority="first"]')?.classList.contains('active') || false,
-          fire: a.querySelector('.flag-circle[data-priority="fire"]')?.classList.contains('active') || false,
-          fear: a.querySelector('.flag-circle[data-priority="fear"]')?.classList.contains('active') || false,
-          flow: a.querySelector('.flag-circle[data-priority="flow"]')?.classList.contains('active') || false
+          fast: hasPriorityFlag(a, 'fast'),
+          first: hasPriorityFlag(a, 'first'),
+          fire: hasPriorityFlag(a, 'fire'),
+          fear: hasPriorityFlag(a, 'fear'),
+          flow: hasPriorityFlag(a, 'flow')
         };
         
         const bFlags = {
-          fast: b.querySelector('.flag-circle[data-priority="fast"]')?.classList.contains('active') || false,
-          first: b.querySelector('.flag-circle[data-priority="first"]')?.classList.contains('active') || false,
-          fire: b.querySelector('.flag-circle[data-priority="fire"]')?.classList.contains('active') || false,
-          fear: b.querySelector('.flag-circle[data-priority="fear"]')?.classList.contains('active') || false,
-          flow: b.querySelector('.flag-circle[data-priority="flow"]')?.classList.contains('active') || false
+          fast: hasPriorityFlag(b, 'fast'),
+          first: hasPriorityFlag(b, 'first'),
+          fire: hasPriorityFlag(b, 'fire'),
+          fear: hasPriorityFlag(b, 'fear'),
+          flow: hasPriorityFlag(b, 'flow')
         };
+        
+        if (debug) {
+          console.log('Task A flags:', a.querySelector('.task-text')?.textContent, aFlags);
+          console.log('Task B flags:', b.querySelector('.task-text')?.textContent, bFlags);
+        }
         
         // Priority order: Fast -> First -> Fire -> Fear -> Flow
         // If a has priority that b doesn't, a comes first
@@ -1313,12 +1377,41 @@ const sampleTasks = [
         return;
       }
       
-      // Use the correct approach - get the direct next element sibling
-      // which should be the children container for the section
-      const triageChildrenContainer = triageSection.nextElementSibling;
-      if (!triageChildrenContainer || !triageChildrenContainer.classList.contains('task-children')) {
-        showToast('Error', 'Triage children container not found correctly.');
-        if (debug) console.error('Triage children container not found correctly');
+      // Find the children container for the Triage section by looking for the task-children class
+      // This is more reliable than using nextElementSibling
+      let triageChildrenContainer = null;
+      
+      // First check if the section has any direct children with the task-children class
+      const taskChildren = document.querySelectorAll('.task-children');
+      for (const container of taskChildren) {
+        // Check if this container belongs to the triageSection by walking up the DOM
+        let parent = container.parentElement;
+        while (parent) {
+          if (parent === triageSection.parentElement) {
+            triageChildrenContainer = container;
+            break;
+          }
+          parent = parent.parentElement;
+        }
+        if (triageChildrenContainer) break;
+      }
+      
+      // If not found by traversal, try another approach
+      if (!triageChildrenContainer) {
+        // Find all children elements within the triageSection's parent
+        const triageParent = triageSection.parentElement;
+        if (triageParent) {
+          // Look for a task-children element near the section header
+          triageChildrenContainer = triageParent.querySelector('.task-children');
+        }
+      }
+      
+      if (!triageChildrenContainer) {
+        showToast('Error', 'Triage children container not found.');
+        if (debug) {
+          console.error('Triage children container not found');
+          console.log('Triage section:', triageSection);
+        }
         return;
       }
       
