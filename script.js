@@ -934,6 +934,96 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${year}-${month}-${day}`;
   }
   
+  // Sort tasks within each section according to priority
+  function sortTasksByPriority() {
+    if (debug) console.log("Starting priority sorting");
+    
+    // Define the sections (Triage, A, B, C)
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    
+    sectionHeaders.forEach(sectionHeader => {
+      const sectionId = sectionHeader.getAttribute('data-id');
+      if (debug) console.log(`Sorting section: ${sectionId}`);
+      
+      // Get the task list inside the section's children container
+      const childrenContainer = sectionHeader.nextElementSibling;
+      if (!childrenContainer || !childrenContainer.classList.contains('task-children')) {
+        if (debug) console.log(`No children container found for section: ${sectionId}`);
+        return;
+      }
+      
+      const taskList = childrenContainer.querySelector(':scope > .task-list');
+      if (!taskList) {
+        if (debug) console.log(`No task list found for section: ${sectionId}`);
+        return;
+      }
+      
+      // Get all non-section-header tasks
+      const tasks = Array.from(taskList.querySelectorAll(':scope > li.task-item:not(.section-header)'));
+      if (tasks.length <= 1) {
+        if (debug) console.log(`Not enough tasks to sort in section: ${sectionId}`);
+        return; // Nothing to sort
+      }
+      
+      if (debug) console.log(`Found ${tasks.length} tasks to sort in section: ${sectionId}`);
+      
+      // Split into completed and non-completed tasks
+      const completedTasks = tasks.filter(task => task.classList.contains('task-completed'));
+      const nonCompletedTasks = tasks.filter(task => !task.classList.contains('task-completed'));
+      
+      // Sort non-completed tasks by priority (Fast -> First -> Fire -> Fear -> Flow)
+      nonCompletedTasks.sort((a, b) => {
+        // Get priority flags for each task
+        const aFlags = {
+          fast: a.querySelector('.flag-circle[data-priority="fast"]')?.classList.contains('active') || false,
+          first: a.querySelector('.flag-circle[data-priority="first"]')?.classList.contains('active') || false,
+          fire: a.querySelector('.flag-circle[data-priority="fire"]')?.classList.contains('active') || false,
+          fear: a.querySelector('.flag-circle[data-priority="fear"]')?.classList.contains('active') || false,
+          flow: a.querySelector('.flag-circle[data-priority="flow"]')?.classList.contains('active') || false
+        };
+        
+        const bFlags = {
+          fast: b.querySelector('.flag-circle[data-priority="fast"]')?.classList.contains('active') || false,
+          first: b.querySelector('.flag-circle[data-priority="first"]')?.classList.contains('active') || false,
+          fire: b.querySelector('.flag-circle[data-priority="fire"]')?.classList.contains('active') || false,
+          fear: b.querySelector('.flag-circle[data-priority="fear"]')?.classList.contains('active') || false,
+          flow: b.querySelector('.flag-circle[data-priority="flow"]')?.classList.contains('active') || false
+        };
+        
+        // Priority order: Fast -> First -> Fire -> Fear -> Flow
+        // If a has priority that b doesn't, a comes first
+        if (aFlags.fast && !bFlags.fast) return -1;
+        if (!aFlags.fast && bFlags.fast) return 1;
+        
+        if (aFlags.first && !bFlags.first) return -1;
+        if (!aFlags.first && bFlags.first) return 1;
+        
+        if (aFlags.fire && !bFlags.fire) return -1;
+        if (!aFlags.fire && bFlags.fire) return 1;
+        
+        if (aFlags.fear && !bFlags.fear) return -1;
+        if (!aFlags.fear && bFlags.fear) return 1;
+        
+        if (aFlags.flow && !bFlags.flow) return -1;
+        if (!aFlags.flow && bFlags.flow) return 1;
+        
+        // If equal priority, maintain original order
+        return 0;
+      });
+      
+      // Combine the sorted lists: non-completed tasks followed by completed tasks
+      const sortedTasks = [...nonCompletedTasks, ...completedTasks];
+      
+      // Reorder the DOM
+      if (debug) console.log(`Reordering ${sortedTasks.length} tasks in section: ${sectionId}`);
+      sortedTasks.forEach(task => {
+        taskList.appendChild(task);
+      });
+    });
+    
+    if (debug) console.log("Priority sorting complete");
+  }
+  
   // Initialize UI event handlers
   function initUI() {
     // Toggle priority flags visibility
@@ -957,6 +1047,22 @@ document.addEventListener('DOMContentLoaded', () => {
         togglePriorityBtn.classList.toggle('active');
         
         if (debug) console.log('Toggled priority flags visibility');
+      });
+    }
+    
+    // Priority sorting button
+    const prioritySortBtn = document.getElementById('priority-sort-btn');
+    if (prioritySortBtn) {
+      prioritySortBtn.addEventListener('click', () => {
+        sortTasksByPriority();
+        prioritySortBtn.classList.add('active');
+        
+        // Remove active class after animation
+        setTimeout(() => {
+          prioritySortBtn.classList.remove('active');
+        }, 1000);
+        
+        showToast('Tasks Sorted', 'Tasks have been sorted by priority order.');
       });
     }
     
