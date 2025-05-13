@@ -1,8 +1,5 @@
 // DUN Task Management Application
-// Database module using Replit Database
-
-const Database = require('@replit/database');
-const db = new Database();
+// Database module using localStorage with async API for compatibility
 
 // Debug flag to enable/disable console logging
 const debug = true;
@@ -15,11 +12,12 @@ const dbModule = {
   // Save the entire task tree
   saveTasks: async function(tasks) {
     try {
-      await db.set(TASKS_KEY, tasks);
-      if (debug) console.log('Tasks saved to Replit Database');
+      // Convert tasks to string for localStorage
+      localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+      if (debug) console.log('Tasks saved to localStorage');
       return true;
     } catch (error) {
-      console.error('Error saving tasks to Replit Database:', error);
+      console.error('Error saving tasks to localStorage:', error);
       return false;
     }
   },
@@ -27,16 +25,17 @@ const dbModule = {
   // Load the entire task tree
   loadTasks: async function() {
     try {
-      const tasks = await db.get(TASKS_KEY);
-      if (!tasks) {
-        if (debug) console.log('No tasks found in Replit Database, will use default tasks');
+      const tasksJson = localStorage.getItem(TASKS_KEY);
+      if (!tasksJson) {
+        if (debug) console.log('No tasks found in localStorage, will use default tasks');
         return null;
       }
       
-      if (debug) console.log('Tasks loaded from Replit Database');
+      const tasks = JSON.parse(tasksJson);
+      if (debug) console.log('Tasks loaded from localStorage');
       return tasks;
     } catch (error) {
-      console.error('Error loading tasks from Replit Database:', error);
+      console.error('Error loading tasks from localStorage:', error);
       return null;
     }
   },
@@ -190,15 +189,15 @@ const dbModule = {
   // Clear all tasks (for testing/reset)
   clearTasks: async function() {
     try {
-      await db.delete(TASKS_KEY);
-      if (debug) console.log('All tasks cleared from Replit Database');
+      localStorage.removeItem(TASKS_KEY);
+      if (debug) console.log('All tasks cleared from localStorage');
       return true;
     } catch (error) {
-      console.error('Error clearing tasks from Replit Database:', error);
+      console.error('Error clearing tasks from localStorage:', error);
       return false;
     }
   }
 };
 
-// Export the database module
-module.exports = dbModule;
+// Make database module available globally for browser use
+window.db = dbModule;

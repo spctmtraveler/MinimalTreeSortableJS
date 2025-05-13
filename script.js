@@ -9,8 +9,7 @@
 // Debug mode - set to true to enable console logging
 const debug = true;
 
-// Import database module from db.js
-const db = require('./db.js');
+// Database module is loaded from db.js and available as window.db
 
 // Task model properties
 // id: unique identifier
