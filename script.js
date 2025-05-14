@@ -562,52 +562,85 @@ const sampleTasks = [
         }
         
         const taskId = taskItem.dataset.id;
-        console.log(`Clicked ${type} flag for task ID ${taskId}`);
+        console.log(`🚩 FLAG CLICK: ${type} flag for task ID ${taskId}`);
         
+        if (!taskItem.dataset.taskData) {
+          console.error('No task data found in element', taskItem);
+          return;
+        }
+        
+        // Get the current task data
+        let taskData;
         try {
-          if (!taskItem.dataset.taskData) {
-            console.error('No task data found in element', taskItem);
-            return;
-          }
-          
-          const taskData = JSON.parse(taskItem.dataset.taskData);
-          if (!taskData.id) {
-            console.error('Task data missing ID:', taskData);
-            return;
-          }
-          
-          // Toggle the flag value
-          const oldValue = taskData[type] || false;
-          const newValue = !oldValue;
-          console.log(`Changing ${type} from ${oldValue} to ${newValue} for task "${taskData.content}"`);
-          
-          // Update task data
-          taskData[type] = newValue;
-          taskItem.dataset.taskData = JSON.stringify(taskData);
-          
-          // Update visual state
-          flag.classList.toggle('active', newValue);
-          
-          // Log detailed data for debugging
-          console.log(`Updated task data:`, JSON.stringify(taskData));
-          
-          // Save updated flag status to database
-          try {
-            await db.saveTask(taskData.id, taskData);
-            console.log(`✓ SAVED ${type}=${newValue} for task "${taskData.content}" (${taskData.id}) to database`);
+          taskData = JSON.parse(taskItem.dataset.taskData);
+        } catch (parseError) {
+          console.error('Error parsing task data:', parseError);
+          console.log('Raw data that failed to parse:', taskItem.dataset.taskData);
+          return;
+        }
+        
+        if (!taskData.id) {
+          console.error('Task data missing ID:', taskData);
+          return;
+        }
+        
+        // Toggle the flag value
+        const oldValue = taskData[type] === true;
+        const newValue = !oldValue;
+        console.log(`Setting ${type}=${newValue} (was ${oldValue}) for "${taskData.content}"`);
+        
+        // Update the flag data explicitly with a boolean
+        taskData[type] = newValue;
+        
+        // Update visual state immediately
+        flag.classList.toggle('active', newValue);
+        
+        // Save the updated task data back to the DOM element
+        taskItem.dataset.taskData = JSON.stringify(taskData);
+        
+        // Create a clean copy of task data for database save
+        // This ensures we don't have circular references or unexpected properties
+        const cleanTaskData = {
+          id: taskData.id,
+          content: taskData.content,
+          completed: taskData.completed === true,
+          children: taskData.children || [],
+          revisitDate: taskData.revisitDate || '',
+          fire: taskData.fire === true,
+          fast: taskData.fast === true, 
+          flow: taskData.flow === true,
+          fear: taskData.fear === true,
+          first: taskData.first === true,
+          timeEstimate: taskData.timeEstimate || 0,
+          overview: taskData.overview || '',
+          details: taskData.details || '',
+          scheduledTime: taskData.scheduledTime || '',
+          parent: taskData.parent || null
+        };
+        
+        // Specific flag was updated, ensure it's set correctly
+        cleanTaskData[type] = newValue;
+        
+        console.log(`Sending to database:`, JSON.stringify(cleanTaskData));
+        
+        // Save updated flag status to database
+        try {
+          const saveResult = await db.saveTask(taskData.id, cleanTaskData);
+          if (saveResult) {
+            console.log(`✅ DATABASE UPDATED: ${type}=${newValue} for "${taskData.content}"`);
             
             // Dispatch event to update all instances of this flag
             document.dispatchEvent(new CustomEvent('task-flag-updated', {
               detail: { taskId: taskData.id, flagType: type, isActive: newValue }
             }));
-          } catch (dbError) {
-            console.error('Error saving priority flag change to database:', dbError);
+          } else {
+            console.error(`❌ FAILED to save ${type}=${newValue} to database`);
           }
-        } catch (parseError) {
-          console.error('Error parsing task data for priority flag:', parseError, 'Raw data:', taskItem.dataset.taskData);
+        } catch (dbError) {
+          console.error('Error saving flag change to database:', dbError);
         }
       } catch (error) {
-        console.error('Error in priority flag click handler:', error);
+        console.error('Error in flag click handler:', error);
       }
     });
     
