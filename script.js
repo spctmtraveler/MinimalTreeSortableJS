@@ -592,11 +592,25 @@ const sampleTasks = [
     // Handle simple MM/DD format (4/22)
     if (/^\d{1,2}\/\d{1,2}$/.test(dateStr)) return dateStr;
     
-    // Try to parse as a date
+    // Try to parse as a date - fixing timezone issues
     try {
-      const date = new Date(dateStr);
-      if (!isNaN(date.getTime())) {
-        return `${date.getMonth() + 1}/${date.getDate()}`;
+      // Force midnight UTC to avoid timezone issues
+      if (dateStr.includes('-')) {
+        // For ISO format dates (YYYY-MM-DD)
+        const [year, month, day] = dateStr.split('-').map(Number);
+        
+        // Create date and fix the day to match the user's expected date
+        const dateObj = new Date(Date.UTC(year, month - 1, day));
+        if (!isNaN(dateObj.getTime())) {
+          return `${dateObj.getUTCMonth() + 1}/${dateObj.getUTCDate()}`;
+        }
+      } else {
+        // For other date formats
+        const date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+          // Use UTC methods to avoid timezone issues
+          return `${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
+        }
       }
     } catch (e) {
       console.error('Error parsing date:', e);
@@ -970,12 +984,57 @@ const sampleTasks = [
     return `${year}-${month}-${day}`;
   }
   
+  // Helper function to parse a revisit date string into a Date object
+  function parseRevisitDate(dateStr) {
+    if (!dateStr) return null;
+    
+    // Handle special cases
+    if (dateStr === 'today') {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return today;
+    }
+    
+    if (dateStr === 'tomorrow') {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      return tomorrow;
+    }
+    
+    // Parse ISO format YYYY-MM-DD
+    if (dateStr.includes('-')) {
+      const [year, month, day] = dateStr.split('-').map(Number);
+      const date = new Date(Date.UTC(year, month - 1, day));
+      return date;
+    }
+    
+    // Parse MM/DD format
+    if (dateStr.includes('/')) {
+      const [month, day] = dateStr.split('/').map(Number);
+      const date = new Date();
+      date.setMonth(month - 1);
+      date.setDate(day);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+    
+    // Default date parsing
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      throw new Error(`Invalid date format: ${dateStr}`);
+    }
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+  
   // Function to apply filters based on revisit dates
   function applyFilter(filterValue) {
     if (debug) console.log(`Applying filter: ${filterValue}`);
     
     // Helper to check if two dates are the same day
     const isSameDay = (date1, date2) => {
+      if (!date1 || !date2) return false;
       return date1.getFullYear() === date2.getFullYear() &&
              date1.getMonth() === date2.getMonth() &&
              date1.getDate() === date2.getDate();
@@ -1114,29 +1173,70 @@ const sampleTasks = [
         
         // Check if task has a revisit date
         if (taskData.revisitDate) {
-          // Handle special values
-          if (taskData.revisitDate === 'today') {
-            // Always show tasks marked for today
-            display = '';
-            matchCount++;
-          } else if (taskData.revisitDate === 'tomorrow') {
-            // For tomorrow filter, show tomorrow tasks
-            if (filterValue === 'tomorrow' || filterValue === 'this-week' || filterValue === 'this-month') {
+          // Only process dates when we have a filter that's not 'all'
+          if (filterValue === 'today') {
+            // Special handling for today filter
+            if (taskData.revisitDate === 'today') {
               display = '';
               matchCount++;
-            }
-          } else {
-            // Parse the date string
-            try {
-              const revisitDate = new Date(taskData.revisitDate);
-              revisitDate.setHours(0, 0, 0, 0); // Normalize to midnight
-              
-              // Check if the revisit date is within the filter range
-              if (startDate && endDate) {
-                if (revisitDate >= startDate && revisitDate <= endDate) {
+            } else {
+              try {
+                // Try to parse the date and check if it's today
+                const revisitDate = parseRevisitDate(taskData.revisitDate);
+                const todayDate = new Date();
+                todayDate.setHours(0, 0, 0, 0);
+                
+                if (isSameDay(revisitDate, todayDate)) {
                   display = '';
                   matchCount++;
                 }
+              } catch (error) {
+                if (debug) console.error(`Error checking today date: ${taskData.revisitDate}`, error);
+              }
+            }
+          } else if (filterValue === 'tomorrow') {
+            // Special handling for tomorrow filter
+            if (taskData.revisitDate === 'tomorrow') {
+              display = '';
+              matchCount++;
+            } else {
+              try {
+                // Try to parse the date and check if it's tomorrow
+                const revisitDate = parseRevisitDate(taskData.revisitDate);
+                const tomorrowDate = new Date();
+                tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+                tomorrowDate.setHours(0, 0, 0, 0);
+                
+                if (isSameDay(revisitDate, tomorrowDate)) {
+                  display = '';
+                  matchCount++;
+                }
+              } catch (error) {
+                if (debug) console.error(`Error checking tomorrow date: ${taskData.revisitDate}`, error);
+              }
+            }
+          } else if (startDate && endDate) {
+            // For date range filters (this-week, next-week, etc.)
+            try {
+              let revisitDate;
+              
+              // Handle special strings
+              if (taskData.revisitDate === 'today') {
+                revisitDate = new Date();
+                revisitDate.setHours(0, 0, 0, 0);
+              } else if (taskData.revisitDate === 'tomorrow') {
+                revisitDate = new Date();
+                revisitDate.setDate(revisitDate.getDate() + 1);
+                revisitDate.setHours(0, 0, 0, 0);
+              } else {
+                revisitDate = parseRevisitDate(taskData.revisitDate);
+              }
+              
+              // Check if the revisit date is within the filter range
+              if (revisitDate >= startDate && revisitDate <= endDate) {
+                display = '';
+                matchCount++;
+                if (debug) console.log(`Task "${taskData.content}" matches date range: ${revisitDate.toDateString()}`);
               }
             } catch (parseError) {
               console.error(`Error parsing date: ${taskData.revisitDate}`, parseError);
