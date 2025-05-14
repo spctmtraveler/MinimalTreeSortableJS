@@ -1,0 +1,201 @@
+Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=true
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=true
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=true
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=true
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=true
+script.js:516 Creating priority flag: first, isActive=false
+script.js:2465 🚀 Application initializing...
+script.js:2473 Loading tasks from database...
+db.js:55 Attempting to load tasks from API...
+db.js:69 ✅ Tasks loaded from Replit Database API
+script.js:2476 Database response received: data found
+script.js:2516 No valid tasks in database, using sample tasks
+script.js:2520 Saving sample tasks to database for first use
+db.js:31 ✅ Tasks saved to Replit Database API
+script.js:2543 Building tree with tasks: Array(4)
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=true
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=true
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=true
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=true
+script.js:516 Creating priority flag: fire, isActive=true
+script.js:516 Creating priority flag: fast, isActive=false
+script.js:516 Creating priority flag: flow, isActive=true
+script.js:516 Creating priority flag: fear, isActive=false
+script.js:516 Creating priority flag: first, isActive=false
+script.js:516 Creating priority flag: fire, isActive=false
+script.js:516 Creating priority flag: fast, isActive=true
+script.js:516 Creating priority flag: flow, isActive=false
+script.js:516 Creating priority flag: fear, isActive=true
+script.js:516 Creating priority flag: first, isActive=false
+script.js:2571 Application initialized successfully
+script.js:565 🚩 FLAG CLICK: flow flag for task ID task-triage-1
+script.js:590 Setting flow=true (was false) for "Mail check"
+script.js:624 Sending to database: {"id":"task-triage-1","content":"Mail check","completed":true,"children":[],"revisitDate":"2025-03-07","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":0.5,"overview":"Check mail for important documents","details":"Need to sort through mail and check for bills and other important documents.","scheduledTime":"10:00","parent":null}
+db.js:123 ✅ Task task-triage-1 updated via API
+script.js:630 ✅ DATABASE UPDATED: flow=true for "Mail check"
+script.js:2376 📢 FLAG UPDATE EVENT: Task task-triage-1, flow=true
+script.js:2380 Updating 1 instances of task task-triage-1 to set flow=true
+script.js:2409 Updating task element: Mail check
+script.js:2423 Found 1 flag elements with type flow
+script.js:697 Opening modal for task: task-triage-1 - Mail check
+script.js:804 Opened modal for task "Mail check"
+script.js:1658 Sort button clicked, starting priority sort
+script.js:1425 ------------------------
+script.js:1426 🔄 STARTING PRIORITY SORTING
+script.js:1427 ------------------------
+script.js:1431 Found 5 section headers to process
+script.js:1435 Section 1: id=undefined, text=undefined
+script.js:1435 Section 2: id=section-triage, text=TRIAGE
+script.js:1435 Section 3: id=section-a, text=A
+script.js:1435 Section 4: id=section-b, text=B
+script.js:1435 Section 5: id=section-c, text=C
+script.js:1443 
+🔶 SORTING SECTION: "Unknown" () [1/5]
+script.js:1448 ❌ ERROR: Cannot find parent task-item for section 
+script.js:1449 Section HTML: <div class="section-header">
+                <div class="section-title-container">
+                    <div class="section-title">
+                        <i class="fa-solid fa-list"></i> Tasks
+                    </div>
+                </div>
+            </div>
+script.js:1443 
+🔶 SORTING SECTION: "TRIAGE" (section-triage) [2/5]
+script.js:1453 Found section container: task-item section-header
+script.js:1471 Total child elements in list: 1
+script.js:1478 Found 0 actual tasks to sort in section "TRIAGE"
+script.js:1481 Not enough tasks to sort in section "TRIAGE"
+script.js:1443 
+🔶 SORTING SECTION: "A" (section-a) [3/5]
+script.js:1453 Found section container: task-item section-header
+script.js:1471 Total child elements in list: 1
+script.js:1478 Found 0 actual tasks to sort in section "A"
+script.js:1481 Not enough tasks to sort in section "A"
+script.js:1443 
+🔶 SORTING SECTION: "B" (section-b) [4/5]
+script.js:1453 Found section container: task-item section-header
+script.js:1471 Total child elements in list: 1
+script.js:1478 Found 0 actual tasks to sort in section "B"
+script.js:1481 Not enough tasks to sort in section "B"
+script.js:1443 
+🔶 SORTING SECTION: "C" (section-c) [5/5]
+script.js:1453 Found section container: task-item section-header
+script.js:1471 Total child elements in list: 1
+script.js:1478 Found 0 actual tasks to sort in section "C"
+script.js:1481 Not enough tasks to sort in section "C"
+script.js:1577 ------------------------
+script.js:1578 ✅ PRIORITY SORTING COMPLETE
+script.js:1579 ------------------------
+db.js:331 Auto-saved 17 tasks to localStorage
+db.js:31 ✅ Tasks saved to Replit Database API
+script.js:2563 Auto-saved all tasks to database

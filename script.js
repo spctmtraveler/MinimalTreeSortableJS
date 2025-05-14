@@ -1426,61 +1426,127 @@ const sampleTasks = [
     console.log("🔄 STARTING PRIORITY SORTING");
     console.log("------------------------");
     
-    // Use getElementsByClassName for a live collection
-    const sectionHeaders = document.querySelectorAll('.section-header');
-    console.log(`Found ${sectionHeaders.length} section headers to process`);
+    // The primary task container 
+    const mainContainer = document.getElementById('task-tree');
+    if (!mainContainer) {
+      console.error('Main task container not found!');
+      return;
+    }
+
+    // Get all top-level sections within the main container
+    const sections = Array.from(mainContainer.querySelectorAll(':scope > ul > li.task-item.section-header'));
     
-    // Debug all sections first
-    Array.from(sectionHeaders).forEach((section, i) => {
-      console.log(`Section ${i+1}: id=${section.dataset.id}, text=${section.querySelector('.task-text')?.textContent}`);
-    });
+    console.log(`Found ${sections.length} top-level sections to process`);
     
-    // Process each section with detailed logging
-    Array.from(sectionHeaders).forEach((sectionHeader, index) => {
-      // Get section ID
-      const sectionId = sectionHeader.getAttribute('data-id') || '';
-      const sectionText = sectionHeader.querySelector('.task-text')?.textContent || 'Unknown';
-      console.log(`\n🔶 SORTING SECTION: "${sectionText}" (${sectionId}) [${index+1}/${sectionHeaders.length}]`);
+    if (sections.length === 0) {
+      console.warn('No sections found, looking for alternate section structure');
       
-      // Find the parent task item
-      const sectionItem = sectionHeader.closest('.task-item');
-      if (!sectionItem) {
-        console.log(`❌ ERROR: Cannot find parent task-item for section ${sectionId}`);
-        console.log(`Section HTML:`, sectionHeader.outerHTML);
+      // Try alternate search for sections
+      const alternateSections = document.querySelectorAll('.section-header');
+      console.log(`Found ${alternateSections.length} sections with alternate search`);
+      
+      if (alternateSections.length === 0) {
+        console.error('No sections found at all. Cannot continue sorting.');
         return;
       }
+    }
+    
+    // Process each section
+    sections.forEach((sectionHeader, index) => {
+      // Get section name
+      const sectionName = sectionHeader.querySelector('.task-text')?.textContent || 
+                          sectionHeader.textContent || 
+                          `Section ${index+1}`;
+                          
+      const sectionId = sectionHeader.dataset.id || sectionHeader.getAttribute('data-id') || '';
       
-      console.log(`Found section container: ${sectionItem.classList.toString()}`);
+      console.log(`\n🔶 SORTING SECTION: "${sectionName}" (${sectionId}) [${index+1}/${sections.length}]`);
       
-      // Find the children container
-      const childrenContainer = sectionItem.querySelector('.task-children');
-      if (!childrenContainer) {
-        console.log(`❌ ERROR: No children container (.task-children) found for section ${sectionId}`);
-        return;
+      // Find all tasks in this section (direct children only)
+      let tasks = [];
+      
+      // First check if there's a task-children container
+      const childrenContainer = sectionHeader.querySelector('.task-children');
+      
+      if (childrenContainer) {
+        // Get the task list inside the children container
+        const taskList = childrenContainer.querySelector('.task-list');
+        
+        if (taskList) {
+          // Get all direct child task items that aren't section headers
+          tasks = Array.from(taskList.children).filter(item => 
+            item.classList.contains('task-item') && !item.classList.contains('section-header')
+          );
+          
+          console.log(`Found ${tasks.length} tasks in section "${sectionName}" via children container`);
+        }
       }
       
-      // Find the task list
-      const taskList = childrenContainer.querySelector('.task-list');
-      if (!taskList) {
-        console.log(`❌ ERROR: No task list (.task-list) found for section ${sectionId}`);
-        return;
+      // If we didn't find tasks, try alternate methods
+      if (tasks.length === 0) {
+        // Try to find the next sibling which should be a children container
+        const nextSibling = sectionHeader.nextElementSibling;
+        
+        if (nextSibling && nextSibling.classList.contains('task-children')) {
+          const taskList = nextSibling.querySelector('.task-list');
+          
+          if (taskList) {
+            tasks = Array.from(taskList.children).filter(item => 
+              item.classList.contains('task-item') && !item.classList.contains('section-header')
+            );
+            
+            console.log(`Found ${tasks.length} tasks in section "${sectionName}" via next sibling`);
+          }
+        }
       }
       
-      // Get all task elements (excluding section headers)
-      const allListItems = taskList.children;
-      console.log(`Total child elements in list: ${allListItems.length}`);
+      // If we still don't have tasks, try a broader search
+      if (tasks.length === 0) {
+        // This is a more desperate measure - might get tasks from wrong sections
+        const parentLi = sectionHeader.closest('li.task-item');
+        
+        if (parentLi) {
+          const allChildLists = parentLi.querySelectorAll('.task-list');
+          
+          if (allChildLists.length > 0) {
+            // Just take the first task list we find
+            const firstList = allChildLists[0];
+            
+            tasks = Array.from(firstList.children).filter(item => 
+              item.classList.contains('task-item') && !item.classList.contains('section-header')
+            );
+            
+            console.log(`Found ${tasks.length} tasks in section "${sectionName}" via broader search`);
+          }
+        }
+      }
       
-      // Convert to array and filter for actual tasks
-      const tasks = Array.from(allListItems).filter(item => 
-        item.classList.contains('task-item') && !item.classList.contains('section-header')
-      );
+      // Last resort - check direct HTML structure
+      if (tasks.length === 0 && sectionHeader.parentElement) {
+        const taskList = sectionHeader.parentElement;
+        
+        // Get sibling task items
+        let siblingTasks = [];
+        let currentElement = sectionHeader.nextElementSibling;
+        
+        while (currentElement && !currentElement.classList.contains('section-header')) {
+          if (currentElement.classList.contains('task-item')) {
+            siblingTasks.push(currentElement);
+          }
+          currentElement = currentElement.nextElementSibling;
+        }
+        
+        tasks = siblingTasks;
+        console.log(`Found ${tasks.length} tasks in section "${sectionName}" via sibling search`);
+      }
       
-      console.log(`Found ${tasks.length} actual tasks to sort in section "${sectionText}"`);
-      
+      // If we still have no tasks, we can't sort this section
       if (tasks.length <= 1) {
-        console.log(`Not enough tasks to sort in section "${sectionText}"`);
-        return; // Nothing to sort
+        console.log(`Not enough tasks to sort in section "${sectionName}"`);
+        return;
       }
+      
+      console.log(`Sorting ${tasks.length} tasks in section "${sectionName}"`);
       
       // Split into completed and non-completed tasks
       const completedTasks = tasks.filter(task => task.classList.contains('task-completed'));
@@ -1489,19 +1555,6 @@ const sampleTasks = [
       console.log(`${nonCompletedTasks.length} active tasks, ${completedTasks.length} completed tasks`);
       
       // Sort non-completed tasks by priority (Fast → First → Fire → Fear → Flow)
-      console.log(`Sorting ${nonCompletedTasks.length} active tasks...`);
-      
-      // Print all tasks with their data for debugging
-      nonCompletedTasks.forEach((task, i) => {
-        try {
-          const taskData = JSON.parse(task.dataset.taskData || '{}');
-          console.log(`Task ${i+1}: "${taskData.content}" - Flags:`, 
-            {fast: taskData.fast, first: taskData.first, fire: taskData.fire, fear: taskData.fear, flow: taskData.flow});
-        } catch (e) {
-          console.error(`Cannot parse data for task ${i+1}:`, e);
-        }
-      });
-      
       nonCompletedTasks.sort((a, b) => {
         // Parse task data for both tasks
         let aData, bData;
@@ -1528,55 +1581,67 @@ const sampleTasks = [
         const aScore = getPriorityScore(aData);
         const bScore = getPriorityScore(bData);
         
-        console.log(`Comparing: "${aData.content}" (${aScore}) vs "${bData.content}" (${bScore})`);
-        
         // Higher score comes first (descending order)
         return bScore - aScore;
       });
       
-      // Log sorted order for verification
-      console.log(`Sorted task order:`);
-      nonCompletedTasks.forEach((task, i) => {
-        try {
-          const taskData = JSON.parse(task.dataset.taskData || '{}');
-          console.log(`${i+1}. "${taskData.content}"`);
-        } catch (e) {
-          console.error(`Cannot parse data for sorted task ${i+1}:`, e);
-        }
-      });
-      
       // Combine sorted active tasks with completed tasks
       const sortedTasks = [...nonCompletedTasks, ...completedTasks];
-      console.log(`Total of ${sortedTasks.length} tasks to reorder in DOM`);
       
-      // Remove tasks from DOM first 
-      console.log(`Detaching ${sortedTasks.length} tasks from DOM`);
+      // Find the parent list that contains these tasks
+      const taskParent = tasks[0].parentNode;
+      if (!taskParent) {
+        console.error('Cannot find parent node for tasks, aborting sort');
+        return;
+      }
       
-      // Store references to the original tasks
-      const taskRefs = sortedTasks.map(task => ({
-        element: task,
-        data: JSON.parse(task.dataset.taskData || '{}')
-      }));
-      
-      // Remove all tasks from their parent
+      // Remove all tasks from the DOM
       sortedTasks.forEach(task => {
-        if (task.parentNode) {
-          task.parentNode.removeChild(task);
+        if (task.parentNode === taskParent) {
+          taskParent.removeChild(task);
         }
       });
       
-      // Then re-add them in order
-      console.log(`Re-appending ${taskRefs.length} tasks in sorted order`);
-      taskRefs.forEach(({element}) => {
-        taskList.appendChild(element);
+      // Re-add them in sorted order
+      sortedTasks.forEach(task => {
+        taskParent.appendChild(task);
       });
       
-      console.log(`✅ Successfully sorted ${sortedTasks.length} tasks in section "${sectionText}"`);
+      console.log(`✅ Successfully sorted ${sortedTasks.length} tasks in section "${sectionName}"`);
+      
+      // Get task names for verification
+      if (sortedTasks.length > 0) {
+        console.log('Sorted order:');
+        sortedTasks.forEach((task, idx) => {
+          try {
+            const data = JSON.parse(task.dataset.taskData || '{}');
+            const flags = [];
+            if (data.fast) flags.push('Fast');
+            if (data.first) flags.push('First');
+            if (data.fire) flags.push('Fire');
+            if (data.fear) flags.push('Fear');
+            if (data.flow) flags.push('Flow');
+            console.log(`  ${idx+1}. ${data.content} [${flags.join(', ')}]`);
+          } catch (e) {
+            console.log(`  ${idx+1}. Unknown task`);
+          }
+        });
+      }
     });
     
     console.log("------------------------");
     console.log("✅ PRIORITY SORTING COMPLETE");
     console.log("------------------------");
+    
+    // Save the sorted tasks
+    try {
+      const tasksFromDOM = getAllTasksFromDOM(document.getElementById('task-tree'));
+      db.saveTasks(tasksFromDOM);
+      localStorage.setItem('dun_tasks', JSON.stringify(tasksFromDOM));
+      console.log('Saved sorted tasks to storage');
+    } catch (err) {
+      console.error('Failed to save sorted tasks:', err);
+    }
   }
   
   // Helper function to collect all tasks for database saving
@@ -2475,12 +2540,28 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       console.log(`Database response received: ${loadedTasks ? 'data found' : 'no data'}`);
       
-      // Ensure loadedTasks is an array before using it
-      if (loadedTasks && Array.isArray(loadedTasks) && loadedTasks.length > 0) {
-        console.log(`Loaded ${loadedTasks.length} tasks from database`);
+      // Try to load tasks from localStorage directly first
+      const localData = localStorage.getItem('dun_tasks');
+      let localTasks = null;
+      
+      if (localData) {
+        try {
+          localTasks = JSON.parse(localData);
+          console.log(`Found saved tasks in localStorage: ${localTasks.length} tasks`);
+        } catch (e) {
+          console.error('Failed to parse localStorage data:', e);
+        }
+      }
+      
+      // If we have data from either source, use it
+      const tasksFromStorage = localTasks || loadedTasks;
+      
+      // Ensure tasks is an array before using it
+      if (tasksFromStorage && Array.isArray(tasksFromStorage) && tasksFromStorage.length > 0) {
+        console.log(`Using ${tasksFromStorage.length} tasks from storage`);
         
         // Validate and fix boolean flag values
-        loadedTasks.forEach(task => {
+        tasksFromStorage.forEach(task => {
           if (!task.children) task.children = [];
           
           // Fix flag properties to be explicit booleans
@@ -2510,15 +2591,21 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         });
         
-        console.log('Using tasks from database with fixed boolean values');
-        tasksToUse = loadedTasks;
+        console.log('Using tasks from storage with fixed boolean values');
+        tasksToUse = tasksFromStorage;
+        
+        // Save tasks to ensure they're in both storage locations
+        setTimeout(async () => {
+          await db.saveTasks(tasksToUse);
+        }, 1000);
       } else {
-        console.log('No valid tasks in database, using sample tasks');
+        console.log('No valid tasks in storage, using sample tasks');
         tasksToUse = sampleTasks;
         
-        // Save sample tasks to Replit Database for future use
-        console.log('Saving sample tasks to database for first use');
+        // Save sample tasks to both storage locations
+        console.log('Saving sample tasks for first use');
         await db.saveTasks(sampleTasks);
+        localStorage.setItem('dun_tasks', JSON.stringify(sampleTasks));
       }
     } catch (error) {
       console.error('Error loading tasks:', error);
