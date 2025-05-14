@@ -5,8 +5,7 @@
 // Use the current hostname but with the API port
 const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000/api`;
 
-// Debug flag to enable/disable console logging
-const debug = true;
+// Debug flag is defined in script.js, we'll reuse it
 
 // DB module with async/await methods for better error handling
 const dbModule = {
