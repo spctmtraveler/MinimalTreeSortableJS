@@ -2116,6 +2116,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Build the task tree with the tasks we determined to use
     const root = document.getElementById('task-tree');
+    
+    // Clear any existing content to prevent duplicate lists
+    root.innerHTML = '';
+    
     if (debug) console.log('Building tree with tasks:', tasksToUse);
     buildTree(tasksToUse, root);
     
