@@ -1288,91 +1288,44 @@ const sampleTasks = [
   
   // Sort tasks within each section according to priority
   function sortTasksByPriority() {
-    if (debug) console.log("Starting priority sorting");
+    console.log("Starting priority sorting");
     
     // Define the sections (Triage, A, B, C)
-    const sectionIds = ['section-triage', 'section-a', 'section-b', 'section-c'];
+    const sections = document.querySelectorAll('.section-header');
     
-    // Process each section by ID
-    sectionIds.forEach(sectionId => {
-      if (debug) console.log(`Sorting section: ${sectionId}`);
+    // Process each section
+    sections.forEach(sectionHeader => {
+      // Get section ID
+      const sectionId = sectionHeader.getAttribute('data-id') || '';
+      console.log(`Sorting section: ${sectionId}`);
       
-      // Find the section header element
-      const sectionHeader = document.querySelector(`.section-header[data-id="${sectionId}"]`);
-      if (!sectionHeader) {
-        if (debug) console.log(`Section header not found for: ${sectionId}`);
+      // Find the parent task item
+      const sectionItem = sectionHeader.closest('.task-item');
+      if (!sectionItem) {
+        console.log(`No parent task item found for section ${sectionId}`);
         return;
       }
       
-      if (debug) console.log(`Found section header:`, sectionHeader);
-      
-      // Find the children container (it should be immediately after the section header)
-      let childrenContainer = null;
-      
-      // Look for the section's task-children container
-      const taskItem = sectionHeader.closest('.task-item');
-      if (taskItem) {
-        if (debug) console.log(`Found parent task item for section:`, taskItem);
-        
-        // Get all children elements to inspect
-        const allChildren = Array.from(taskItem.children);
-        if (debug) console.log(`All children of task item:`, allChildren);
-        
-        // Get the task-children that's a direct child of this task-item
-        childrenContainer = taskItem.querySelector(':scope > .task-children');
-        if (debug) console.log(`Task children container directly found:`, childrenContainer);
-      } else {
-        if (debug) console.log(`No parent task item found for section`);
-      }
-      
+      // Find the children container
+      const childrenContainer = sectionItem.querySelector('.task-children');
       if (!childrenContainer) {
-        // Try alternative approaches to find the children container
-        if (debug) console.log(`Looking for children container alternative ways...`);
-        
-        // Try looking at siblings
-        const sectionParent = sectionHeader.parentElement;
-        if (sectionParent) {
-          if (debug) console.log(`Section parent:`, sectionParent);
-          const nextSibling = sectionHeader.nextElementSibling;
-          if (nextSibling && nextSibling.classList.contains('task-children')) {
-            childrenContainer = nextSibling;
-            if (debug) console.log(`Found children container as next sibling:`, childrenContainer);
-          } else {
-            if (debug) console.log(`Next sibling isn't a task-children:`, nextSibling);
-          }
-        }
-      }
-      
-      if (!childrenContainer) {
-        if (debug) console.log(`No children container found for section: ${sectionId}`);
+        console.log(`No children container found for section ${sectionId}`);
         return;
       }
       
+      // Find the task list
       const taskList = childrenContainer.querySelector('.task-list');
       if (!taskList) {
-        if (debug) console.log(`No task list found for section: ${sectionId}`);
+        console.log(`No task list found for section ${sectionId}`);
         return;
       }
       
-      if (debug) console.log(`Found task list:`, taskList);
-      
-      // Get all non-section-header tasks directly under this task list
-      const allChildElements = Array.from(taskList.children);
-      if (debug) console.log(`All children in task list (${allChildElements.length}):`, allChildElements);
-      
+      // Get all tasks (non-section headers)
       const tasks = Array.from(taskList.querySelectorAll(':scope > li.task-item:not(.section-header)'));
-      if (debug) {
-        console.log(`Found ${tasks.length} tasks to potentially sort in section: ${sectionId}`);
-        tasks.forEach((task, i) => {
-          const taskData = JSON.parse(task.dataset.taskData || '{}');
-          console.log(`Task ${i+1}: ${taskData.content} (flags:`, 
-            {fast: taskData.fast, first: taskData.first, fire: taskData.fire, 
-             fear: taskData.fear, flow: taskData.flow}, ')');
-        });
-      }
+      console.log(`Found ${tasks.length} tasks to sort in section ${sectionId}`);
       
       if (tasks.length <= 1) {
-        if (debug) console.log(`Not enough tasks to sort in section: ${sectionId}`);
+        console.log(`Not enough tasks to sort in section ${sectionId}`);
         return; // Nothing to sort
       }
       
@@ -1380,133 +1333,53 @@ const sampleTasks = [
       const completedTasks = tasks.filter(task => task.classList.contains('task-completed'));
       const nonCompletedTasks = tasks.filter(task => !task.classList.contains('task-completed'));
       
-      // Log for debugging
-      if (debug) {
-        console.log(`Found ${nonCompletedTasks.length} active tasks and ${completedTasks.length} completed tasks`);
-      }
+      console.log(`Section ${sectionId}: ${nonCompletedTasks.length} active tasks, ${completedTasks.length} completed tasks`);
       
-      // Sort non-completed tasks by priority (Fast -> First -> Fire -> Fear -> Flow)
+      // Sort non-completed tasks by priority (Fast → First → Fire → Fear → Flow)
       nonCompletedTasks.sort((a, b) => {
-        // Helper function to check if an element has a specific priority flag active
-        const hasPriorityFlag = (element, flagName) => {
-          try {
-            // The most reliable method: check the task data directly
-            try {
-              const taskData = JSON.parse(element.dataset.taskData || '{}');
-              if (taskData[flagName] === true) {
-                return true;
-              }
-            } catch (e) {
-              console.error('Error parsing task data:', e);
-            }
-            
-            // Fallback: check visual elements
-            // First try looking for the flag-circle elements
-            const flagCircles = element.querySelectorAll(`.flag-circle[data-priority="${flagName}"]`);
-            for (const circle of flagCircles) {
-              if (circle.classList.contains('active')) {
-                return true;
-              }
-            }
-            
-            // Also check within the task-priority-flags container
-            const flagsContainer = element.querySelector('.task-priority-flags');
-            if (flagsContainer) {
-              const flag = flagsContainer.querySelector(`[data-priority="${flagName}"]`);
-              if (flag && flag.classList.contains('active')) {
-                return true;
-              }
-            }
-          } catch (error) {
-            console.error(`Error checking ${flagName} flag:`, error);
-          }
-          
-          return false;
-        };
-        
-        // Get priority flags for each task
-        const aFlags = {
-          fast: hasPriorityFlag(a, 'fast'),
-          first: hasPriorityFlag(a, 'first'),
-          fire: hasPriorityFlag(a, 'fire'),
-          fear: hasPriorityFlag(a, 'fear'),
-          flow: hasPriorityFlag(a, 'flow')
-        };
-        
-        const bFlags = {
-          fast: hasPriorityFlag(b, 'fast'),
-          first: hasPriorityFlag(b, 'first'),
-          fire: hasPriorityFlag(b, 'fire'),
-          fear: hasPriorityFlag(b, 'fear'),
-          flow: hasPriorityFlag(b, 'flow')
-        };
-        
-        if (debug) {
-          console.log('Task A flags:', a.querySelector('.task-text')?.textContent, aFlags);
-          console.log('Task B flags:', b.querySelector('.task-text')?.textContent, bFlags);
+        // Parse task data for both tasks
+        let aData, bData;
+        try {
+          aData = JSON.parse(a.dataset.taskData || '{}');
+          bData = JSON.parse(b.dataset.taskData || '{}');
+        } catch (e) {
+          console.error('Error parsing task data for sorting:', e);
+          return 0;
         }
         
-        // Priority order: Fast → First → Fire → Fear → Flow
-        // Each priority is assigned a score, higher score = higher priority
-        const getPriorityScore = (flags) => {
+        // Calculate priority scores
+        // Fast (50) > First (40) > Fire (30) > Fear (20) > Flow (10)
+        const getPriorityScore = (data) => {
           let score = 0;
-          if (flags.fast) score += 50;
-          if (flags.first) score += 40;
-          if (flags.fire) score += 30;
-          if (flags.fear) score += 20;
-          if (flags.flow) score += 10;
+          if (data.fast === true) score += 50;
+          if (data.first === true) score += 40;
+          if (data.fire === true) score += 30;
+          if (data.fear === true) score += 20;
+          if (data.flow === true) score += 10;
           return score;
         };
         
-        const aScore = getPriorityScore(aFlags);
-        const bScore = getPriorityScore(bFlags);
+        const aScore = getPriorityScore(aData);
+        const bScore = getPriorityScore(bData);
         
-        if (debug) {
-          console.log(`Task A: ${a.querySelector('.task-text')?.textContent} - Score: ${aScore}`);
-          console.log(`Task B: ${b.querySelector('.task-text')?.textContent} - Score: ${bScore}`);
-        }
+        console.log(`Task "${aData.content}" (score ${aScore}) vs "${bData.content}" (score ${bScore})`);
         
-        // Higher score comes first
-        if (aScore > bScore) return -1;
-        if (aScore < bScore) return 1;
-        
-        // If equal priority, maintain original order
-        return 0;
+        // Higher score comes first (descending order)
+        return bScore - aScore;
       });
       
-      // Combine the sorted lists: non-completed tasks followed by completed tasks
+      // Combine sorted active tasks with completed tasks
       const sortedTasks = [...nonCompletedTasks, ...completedTasks];
       
-      // Reorder the DOM
-      if (debug) {
-        console.log(`Reordering ${sortedTasks.length} tasks in section: ${sectionId}`);
-        console.log(`Original order:`, tasks.map(t => {
-          const data = JSON.parse(t.dataset.taskData || '{}');
-          return data.content;
-        }));
-        console.log(`New order:`, sortedTasks.map(t => {
-          const data = JSON.parse(t.dataset.taskData || '{}');
-          return data.content;
-        }));
-      }
-      
-      // Actually move elements in the DOM
+      // Move tasks in the DOM
       sortedTasks.forEach(task => {
-        // Use append instead of appendChild to ensure the element is moved to the end
-        taskList.append(task);
+        taskList.appendChild(task);
       });
       
-      // Verify DOM order after sorting
-      if (debug) {
-        const afterSortTasks = Array.from(taskList.querySelectorAll(':scope > li.task-item:not(.section-header)'));
-        console.log(`Actual DOM order after sort:`, afterSortTasks.map(t => {
-          const data = JSON.parse(t.dataset.taskData || '{}');
-          return data.content;
-        }));
-      }
+      console.log(`Sorted ${sortedTasks.length} tasks in section ${sectionId}`);
     });
     
-    if (debug) console.log("Priority sorting complete");
+    console.log("Priority sorting complete");
   }
   
   // Helper function to collect all tasks for database saving
@@ -1915,14 +1788,28 @@ const sampleTasks = [
         flagCircle.addEventListener('click', async (e) => {
           e.stopPropagation();
           const isActive = flagCircle.classList.toggle('active');
-          const taskData = JSON.parse(newTaskElement.dataset.taskData);
+          
+          // Get latest task data from element
+          let taskData;
+          try {
+            taskData = JSON.parse(newTaskElement.dataset.taskData);
+          } catch (error) {
+            console.error('Error parsing task data:', error);
+            return;
+          }
+          
+          // Update the task data with new flag state
           taskData[priority] = isActive;
+          
+          // Save back to the DOM element
           newTaskElement.dataset.taskData = JSON.stringify(taskData);
+          
+          console.log(`Setting ${priority} flag to ${isActive} for task "${taskData.content}"`);
           
           // Save updated flag status to database
           try {
             await db.saveTask(taskData.id, taskData);
-            if (debug) console.log(`${priority} flag for new task "${taskData.content}" set to ${isActive} and saved to database`);
+            console.log(`${priority} flag for task "${taskData.content}" set to ${isActive} and saved to database`);
           } catch (error) {
             console.error('Error saving flag status to database:', error);
           }
