@@ -550,7 +550,7 @@ const sampleTasks = [
     flag.setAttribute('title', title);
     flag.innerHTML = `<i class="fa-solid ${icon}"></i>`;
     
-    flag.addEventListener('click', (e) => {
+    flag.addEventListener('click', async (e) => {
       try {
         e.stopPropagation();
         const taskItem = flag.closest('.task-item');
@@ -561,7 +561,14 @@ const sampleTasks = [
           taskData[type] = !taskData[type];
           taskItem.dataset.taskData = JSON.stringify(taskData);
           flag.classList.toggle('active');
-          if (debug) console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]}`);
+          
+          // Save updated flag status to database
+          try {
+            await db.saveTask(taskData.id, taskData);
+            if (debug) console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]} and saved to database`);
+          } catch (dbError) {
+            console.error('Error saving priority flag change to database:', dbError);
+          }
         } catch (parseError) {
           console.error('Error updating task data for priority flag:', parseError);
         }

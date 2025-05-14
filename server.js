@@ -111,6 +111,10 @@ app.put('/api/tasks/:id', async (req, res) => {
     } else {
       // If task not found, add it
       if (taskData.id === taskId) {
+        // Make sure tasks is an array
+        if (!Array.isArray(tasks)) {
+          tasks = [];
+        }
         // If it's a root task
         tasks.push(taskData);
         await db.set(TASKS_KEY, tasks);
