@@ -970,6 +970,197 @@ const sampleTasks = [
     return `${year}-${month}-${day}`;
   }
   
+  // Function to apply filters based on revisit dates
+  function applyFilter(filterValue) {
+    if (debug) console.log(`Applying filter: ${filterValue}`);
+    
+    // Helper to check if two dates are the same day
+    const isSameDay = (date1, date2) => {
+      return date1.getFullYear() === date2.getFullYear() &&
+             date1.getMonth() === date2.getMonth() &&
+             date1.getDate() === date2.getDate();
+    };
+    
+    // Helper to get today's date at midnight
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Helper to get tomorrow's date
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    // Get start and end of current week (Sunday-Saturday)
+    const getWeekRange = () => {
+      const currentDay = today.getDay(); // 0 = Sunday, 6 = Saturday
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - currentDay); // Go back to Sunday
+      
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6); // Go forward to Saturday
+      
+      return { start: startOfWeek, end: endOfWeek };
+    };
+    
+    // Get start and end of current month
+    const getMonthRange = () => {
+      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      return { start: startOfMonth, end: endOfMonth };
+    };
+    
+    // Set up date ranges based on filter
+    let startDate = null;
+    let endDate = null;
+    let showOnlySection = null;
+    
+    switch (filterValue) {
+      case 'all':
+        // Show all tasks
+        break;
+      case 'triage':
+        // Show only Triage section
+        showOnlySection = 'section-triage';
+        break;
+      case 'today':
+        startDate = today;
+        endDate = today;
+        break;
+      case 'tomorrow':
+        startDate = tomorrow;
+        endDate = tomorrow;
+        break;
+      case 'this-week':
+        const thisWeek = getWeekRange();
+        startDate = thisWeek.start;
+        endDate = thisWeek.end;
+        break;
+      case 'next-week':
+        const thisWeekEnd = getWeekRange().end;
+        const nextWeekStart = new Date(thisWeekEnd);
+        nextWeekStart.setDate(thisWeekEnd.getDate() + 1);
+        const nextWeekEnd = new Date(nextWeekStart);
+        nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+        startDate = nextWeekStart;
+        endDate = nextWeekEnd;
+        break;
+      case 'this-month':
+        const thisMonth = getMonthRange();
+        startDate = thisMonth.start;
+        endDate = thisMonth.end;
+        break;
+      case 'next-month':
+        const nextMonthStart = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        const nextMonthEnd = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+        startDate = nextMonthStart;
+        endDate = nextMonthEnd;
+        break;
+    }
+    
+    if (debug) {
+      console.log(`Filter date range: ${startDate ? startDate.toDateString() : 'all'} to ${endDate ? endDate.toDateString() : 'all'}`);
+      console.log(`Show only section: ${showOnlySection || 'all sections'}`);
+    }
+    
+    // Get all tasks
+    const allTasks = document.querySelectorAll('.task-item:not(.section-header)');
+    
+    // Get all sections
+    const allSections = document.querySelectorAll('.section-header');
+    
+    // If showing all tasks, make sure all sections are visible
+    if (filterValue === 'all') {
+      allTasks.forEach(task => {
+        task.style.display = '';
+      });
+      allSections.forEach(section => {
+        section.closest('.task-item').style.display = '';
+      });
+      showToast('Filter Applied', 'Showing all tasks');
+      return;
+    }
+    
+    // If showing only a specific section
+    if (showOnlySection) {
+      allSections.forEach(section => {
+        const sectionId = section.getAttribute('data-id');
+        const sectionItem = section.closest('.task-item');
+        
+        if (sectionId === showOnlySection) {
+          sectionItem.style.display = '';
+          // Show all tasks in this section
+          const tasksContainer = sectionItem.querySelector('.task-children');
+          if (tasksContainer) {
+            const sectionTasks = tasksContainer.querySelectorAll('.task-item');
+            sectionTasks.forEach(task => {
+              task.style.display = '';
+            });
+          }
+        } else {
+          sectionItem.style.display = 'none';
+        }
+      });
+      showToast('Filter Applied', 'Showing Triage tasks only');
+      return;
+    }
+    
+    // Count tasks that match the filter
+    let matchCount = 0;
+    
+    // For date filters, check each task
+    allTasks.forEach(task => {
+      try {
+        const taskData = JSON.parse(task.dataset.taskData || '{}');
+        let display = 'none'; // Default to hiding the task
+        
+        // Check if task has a revisit date
+        if (taskData.revisitDate) {
+          // Handle special values
+          if (taskData.revisitDate === 'today') {
+            // Always show tasks marked for today
+            display = '';
+            matchCount++;
+          } else if (taskData.revisitDate === 'tomorrow') {
+            // For tomorrow filter, show tomorrow tasks
+            if (filterValue === 'tomorrow' || filterValue === 'this-week' || filterValue === 'this-month') {
+              display = '';
+              matchCount++;
+            }
+          } else {
+            // Parse the date string
+            try {
+              const revisitDate = new Date(taskData.revisitDate);
+              revisitDate.setHours(0, 0, 0, 0); // Normalize to midnight
+              
+              // Check if the revisit date is within the filter range
+              if (startDate && endDate) {
+                if (revisitDate >= startDate && revisitDate <= endDate) {
+                  display = '';
+                  matchCount++;
+                }
+              }
+            } catch (parseError) {
+              console.error(`Error parsing date: ${taskData.revisitDate}`, parseError);
+            }
+          }
+        }
+        
+        // Apply the display setting
+        task.style.display = display;
+        
+      } catch (error) {
+        console.error('Error processing task during filtering:', error);
+      }
+    });
+    
+    // Make sure all sections are visible
+    allSections.forEach(section => {
+      section.closest('.task-item').style.display = '';
+    });
+    
+    // Show toast with results
+    showToast('Filter Applied', `Found ${matchCount} tasks with matching revisit dates`);
+  }
+  
   // Sort tasks within each section according to priority
   function sortTasksByPriority() {
     if (debug) console.log("Starting priority sorting");
@@ -988,14 +1179,43 @@ const sampleTasks = [
         return;
       }
       
+      if (debug) console.log(`Found section header:`, sectionHeader);
+      
       // Find the children container (it should be immediately after the section header)
       let childrenContainer = null;
       
       // Look for the section's task-children container
       const taskItem = sectionHeader.closest('.task-item');
       if (taskItem) {
+        if (debug) console.log(`Found parent task item for section:`, taskItem);
+        
+        // Get all children elements to inspect
+        const allChildren = Array.from(taskItem.children);
+        if (debug) console.log(`All children of task item:`, allChildren);
+        
         // Get the task-children that's a direct child of this task-item
         childrenContainer = taskItem.querySelector(':scope > .task-children');
+        if (debug) console.log(`Task children container directly found:`, childrenContainer);
+      } else {
+        if (debug) console.log(`No parent task item found for section`);
+      }
+      
+      if (!childrenContainer) {
+        // Try alternative approaches to find the children container
+        if (debug) console.log(`Looking for children container alternative ways...`);
+        
+        // Try looking at siblings
+        const sectionParent = sectionHeader.parentElement;
+        if (sectionParent) {
+          if (debug) console.log(`Section parent:`, sectionParent);
+          const nextSibling = sectionHeader.nextElementSibling;
+          if (nextSibling && nextSibling.classList.contains('task-children')) {
+            childrenContainer = nextSibling;
+            if (debug) console.log(`Found children container as next sibling:`, childrenContainer);
+          } else {
+            if (debug) console.log(`Next sibling isn't a task-children:`, nextSibling);
+          }
+        }
       }
       
       if (!childrenContainer) {
@@ -1009,14 +1229,27 @@ const sampleTasks = [
         return;
       }
       
+      if (debug) console.log(`Found task list:`, taskList);
+      
       // Get all non-section-header tasks directly under this task list
+      const allChildElements = Array.from(taskList.children);
+      if (debug) console.log(`All children in task list (${allChildElements.length}):`, allChildElements);
+      
       const tasks = Array.from(taskList.querySelectorAll(':scope > li.task-item:not(.section-header)'));
+      if (debug) {
+        console.log(`Found ${tasks.length} tasks to potentially sort in section: ${sectionId}`);
+        tasks.forEach((task, i) => {
+          const taskData = JSON.parse(task.dataset.taskData || '{}');
+          console.log(`Task ${i+1}: ${taskData.content} (flags:`, 
+            {fast: taskData.fast, first: taskData.first, fire: taskData.fire, 
+             fear: taskData.fear, flow: taskData.flow}, ')');
+        });
+      }
+      
       if (tasks.length <= 1) {
         if (debug) console.log(`Not enough tasks to sort in section: ${sectionId}`);
         return; // Nothing to sort
       }
-      
-      if (debug) console.log(`Found ${tasks.length} tasks to sort in section: ${sectionId}`);
       
       // Split into completed and non-completed tasks
       const completedTasks = tasks.filter(task => task.classList.contains('task-completed'));
@@ -1120,10 +1353,32 @@ const sampleTasks = [
       const sortedTasks = [...nonCompletedTasks, ...completedTasks];
       
       // Reorder the DOM
-      if (debug) console.log(`Reordering ${sortedTasks.length} tasks in section: ${sectionId}`);
+      if (debug) {
+        console.log(`Reordering ${sortedTasks.length} tasks in section: ${sectionId}`);
+        console.log(`Original order:`, tasks.map(t => {
+          const data = JSON.parse(t.dataset.taskData || '{}');
+          return data.content;
+        }));
+        console.log(`New order:`, sortedTasks.map(t => {
+          const data = JSON.parse(t.dataset.taskData || '{}');
+          return data.content;
+        }));
+      }
+      
+      // Actually move elements in the DOM
       sortedTasks.forEach(task => {
-        taskList.appendChild(task);
+        // Use append instead of appendChild to ensure the element is moved to the end
+        taskList.append(task);
       });
+      
+      // Verify DOM order after sorting
+      if (debug) {
+        const afterSortTasks = Array.from(taskList.querySelectorAll(':scope > li.task-item:not(.section-header)'));
+        console.log(`Actual DOM order after sort:`, afterSortTasks.map(t => {
+          const data = JSON.parse(t.dataset.taskData || '{}');
+          return data.content;
+        }));
+      }
     });
     
     if (debug) console.log("Priority sorting complete");
@@ -1231,6 +1486,14 @@ const sampleTasks = [
             }, 500);
           }
         }, 100);
+      });
+    }
+    
+    // Filter dropdown
+    const filterDropdown = document.getElementById('filter-dropdown');
+    if (filterDropdown) {
+      filterDropdown.addEventListener('change', () => {
+        applyFilter(filterDropdown.value);
       });
     }
     

@@ -92,7 +92,7 @@ button, input, select, textarea {
 #filter-dropdown {
   height: 36px;
   padding: 0 16px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(50, 50, 50);
   color: var(--text-color);
   border: 1px solid var(--border-color);
   border-radius: 4px;
