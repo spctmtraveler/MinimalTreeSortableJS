@@ -513,6 +513,8 @@ const sampleTasks = [
   
   // Create a priority flag element
   function createPriorityFlag(type, iconClass, isActive, tooltip) {
+    console.log(`Creating priority flag: ${type}, isActive=${isActive}`);
+    
     const flag = document.createElement('button');
     flag.className = `priority-flag ${isActive ? 'active' : ''}`;
     flag.setAttribute('data-priority', type);
@@ -554,21 +556,45 @@ const sampleTasks = [
       try {
         e.stopPropagation();
         const taskItem = flag.closest('.task-item');
-        if (!taskItem) return;
+        if (!taskItem) {
+          console.error('No parent task item found for flag');
+          return;
+        }
+        
+        const taskId = taskItem.dataset.id;
+        console.log(`Clicked ${type} flag for task ID ${taskId}`);
         
         try {
+          if (!taskItem.dataset.taskData) {
+            console.error('No task data found in element', taskItem);
+            return;
+          }
+          
           const taskData = JSON.parse(taskItem.dataset.taskData);
-          const newValue = !taskData[type];
+          if (!taskData.id) {
+            console.error('Task data missing ID:', taskData);
+            return;
+          }
+          
+          // Toggle the flag value
+          const oldValue = taskData[type] || false;
+          const newValue = !oldValue;
+          console.log(`Changing ${type} from ${oldValue} to ${newValue} for task "${taskData.content}"`);
+          
+          // Update task data
           taskData[type] = newValue;
           taskItem.dataset.taskData = JSON.stringify(taskData);
+          
+          // Update visual state
           flag.classList.toggle('active', newValue);
           
-          console.log(`Setting ${type} flag to ${newValue} for task "${taskData.content}"`);
+          // Log detailed data for debugging
+          console.log(`Updated task data:`, JSON.stringify(taskData));
           
           // Save updated flag status to database
           try {
             await db.saveTask(taskData.id, taskData);
-            console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]} and saved to database`);
+            console.log(`✓ SAVED ${type}=${newValue} for task "${taskData.content}" (${taskData.id}) to database`);
             
             // Dispatch event to update all instances of this flag
             document.dispatchEvent(new CustomEvent('task-flag-updated', {
@@ -578,7 +604,7 @@ const sampleTasks = [
             console.error('Error saving priority flag change to database:', dbError);
           }
         } catch (parseError) {
-          console.error('Error updating task data for priority flag:', parseError);
+          console.error('Error parsing task data for priority flag:', parseError, 'Raw data:', taskItem.dataset.taskData);
         }
       } catch (error) {
         console.error('Error in priority flag click handler:', error);
@@ -1296,44 +1322,63 @@ const sampleTasks = [
   
   // Sort tasks within each section according to priority
   function sortTasksByPriority() {
-    console.log("Starting priority sorting");
+    console.log("------------------------");
+    console.log("🔄 STARTING PRIORITY SORTING");
+    console.log("------------------------");
     
-    // Define the sections (Triage, A, B, C)
-    const sections = document.querySelectorAll('.section-header');
+    // Use getElementsByClassName for a live collection
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    console.log(`Found ${sectionHeaders.length} section headers to process`);
     
-    // Process each section
-    sections.forEach(sectionHeader => {
+    // Debug all sections first
+    Array.from(sectionHeaders).forEach((section, i) => {
+      console.log(`Section ${i+1}: id=${section.dataset.id}, text=${section.querySelector('.task-text')?.textContent}`);
+    });
+    
+    // Process each section with detailed logging
+    Array.from(sectionHeaders).forEach((sectionHeader, index) => {
       // Get section ID
       const sectionId = sectionHeader.getAttribute('data-id') || '';
-      console.log(`Sorting section: ${sectionId}`);
+      const sectionText = sectionHeader.querySelector('.task-text')?.textContent || 'Unknown';
+      console.log(`\n🔶 SORTING SECTION: "${sectionText}" (${sectionId}) [${index+1}/${sectionHeaders.length}]`);
       
       // Find the parent task item
       const sectionItem = sectionHeader.closest('.task-item');
       if (!sectionItem) {
-        console.log(`No parent task item found for section ${sectionId}`);
+        console.log(`❌ ERROR: Cannot find parent task-item for section ${sectionId}`);
+        console.log(`Section HTML:`, sectionHeader.outerHTML);
         return;
       }
+      
+      console.log(`Found section container: ${sectionItem.classList.toString()}`);
       
       // Find the children container
       const childrenContainer = sectionItem.querySelector('.task-children');
       if (!childrenContainer) {
-        console.log(`No children container found for section ${sectionId}`);
+        console.log(`❌ ERROR: No children container (.task-children) found for section ${sectionId}`);
         return;
       }
       
       // Find the task list
       const taskList = childrenContainer.querySelector('.task-list');
       if (!taskList) {
-        console.log(`No task list found for section ${sectionId}`);
+        console.log(`❌ ERROR: No task list (.task-list) found for section ${sectionId}`);
         return;
       }
       
-      // Get all tasks (non-section headers)
-      const tasks = Array.from(taskList.querySelectorAll(':scope > li.task-item:not(.section-header)'));
-      console.log(`Found ${tasks.length} tasks to sort in section ${sectionId}`);
+      // Get all task elements (excluding section headers)
+      const allListItems = taskList.children;
+      console.log(`Total child elements in list: ${allListItems.length}`);
+      
+      // Convert to array and filter for actual tasks
+      const tasks = Array.from(allListItems).filter(item => 
+        item.classList.contains('task-item') && !item.classList.contains('section-header')
+      );
+      
+      console.log(`Found ${tasks.length} actual tasks to sort in section "${sectionText}"`);
       
       if (tasks.length <= 1) {
-        console.log(`Not enough tasks to sort in section ${sectionId}`);
+        console.log(`Not enough tasks to sort in section "${sectionText}"`);
         return; // Nothing to sort
       }
       
@@ -1341,9 +1386,22 @@ const sampleTasks = [
       const completedTasks = tasks.filter(task => task.classList.contains('task-completed'));
       const nonCompletedTasks = tasks.filter(task => !task.classList.contains('task-completed'));
       
-      console.log(`Section ${sectionId}: ${nonCompletedTasks.length} active tasks, ${completedTasks.length} completed tasks`);
+      console.log(`${nonCompletedTasks.length} active tasks, ${completedTasks.length} completed tasks`);
       
       // Sort non-completed tasks by priority (Fast → First → Fire → Fear → Flow)
+      console.log(`Sorting ${nonCompletedTasks.length} active tasks...`);
+      
+      // Print all tasks with their data for debugging
+      nonCompletedTasks.forEach((task, i) => {
+        try {
+          const taskData = JSON.parse(task.dataset.taskData || '{}');
+          console.log(`Task ${i+1}: "${taskData.content}" - Flags:`, 
+            {fast: taskData.fast, first: taskData.first, fire: taskData.fire, fear: taskData.fear, flow: taskData.flow});
+        } catch (e) {
+          console.error(`Cannot parse data for task ${i+1}:`, e);
+        }
+      });
+      
       nonCompletedTasks.sort((a, b) => {
         // Parse task data for both tasks
         let aData, bData;
@@ -1370,31 +1428,53 @@ const sampleTasks = [
         const aScore = getPriorityScore(aData);
         const bScore = getPriorityScore(bData);
         
-        console.log(`Task "${aData.content}" (score ${aScore}) vs "${bData.content}" (score ${bScore})`);
+        console.log(`Comparing: "${aData.content}" (${aScore}) vs "${bData.content}" (${bScore})`);
         
         // Higher score comes first (descending order)
         return bScore - aScore;
       });
       
-      // Combine sorted active tasks with completed tasks
-      const sortedTasks = [...nonCompletedTasks, ...completedTasks];
-      
-      // First, detach all tasks from DOM
-      sortedTasks.forEach(task => {
-        if (task.parentNode === taskList) {
-          taskList.removeChild(task);
+      // Log sorted order for verification
+      console.log(`Sorted task order:`);
+      nonCompletedTasks.forEach((task, i) => {
+        try {
+          const taskData = JSON.parse(task.dataset.taskData || '{}');
+          console.log(`${i+1}. "${taskData.content}"`);
+        } catch (e) {
+          console.error(`Cannot parse data for sorted task ${i+1}:`, e);
         }
       });
-
-      // Then reattach them in the sorted order
+      
+      // Combine sorted active tasks with completed tasks
+      const sortedTasks = [...nonCompletedTasks, ...completedTasks];
+      console.log(`Total of ${sortedTasks.length} tasks to reorder in DOM`);
+      
+      // IMPORTANT: Create a document fragment for better performance
+      const fragment = document.createDocumentFragment();
+      
+      // First, append all tasks to the fragment in the sorted order
+      sortedTasks.forEach(task => {
+        fragment.appendChild(task.cloneNode(true));
+      });
+      
+      // Then, clear the task list and append the fragment
+      console.log(`Removing all ${taskList.children.length} children from task list`);
+      while (taskList.firstChild) {
+        taskList.removeChild(taskList.firstChild);
+      }
+      
+      // Finally, append the sorted tasks
+      console.log(`Appending ${sortedTasks.length} sorted tasks back to the DOM`);
       sortedTasks.forEach(task => {
         taskList.appendChild(task);
       });
       
-      console.log(`Sorted ${sortedTasks.length} tasks in section ${sectionId}`);
+      console.log(`✅ Successfully sorted ${sortedTasks.length} tasks in section "${sectionText}"`);
     });
     
-    console.log("Priority sorting complete");
+    console.log("------------------------");
+    console.log("✅ PRIORITY SORTING COMPLETE");
+    console.log("------------------------");
   }
   
   // Helper function to collect all tasks for database saving
@@ -1801,34 +1881,50 @@ const sampleTasks = [
         
         // Add click handler to toggle the flag
         flagCircle.addEventListener('click', async (e) => {
+          console.log(`▶️ Flag circle clicked: ${priority}`);
           try {
             e.stopPropagation();
             const isActive = flagCircle.classList.toggle('active');
+            console.log(`Toggle state: ${isActive}`);
+            
+            // Ensure task element has ID
+            if (!newTaskElement.dataset.id && newTask.id) {
+              console.log(`Setting missing data-id attribute to ${newTask.id}`);
+              newTaskElement.dataset.id = newTask.id;
+            }
             
             // Get latest task data from element
             let taskData;
             try {
+              if (!newTaskElement.dataset.taskData) {
+                console.error('No task data found in element', newTaskElement);
+                return;
+              }
+              
               taskData = JSON.parse(newTaskElement.dataset.taskData);
+              console.log(`Read task data for '${taskData.content}', current ${priority}=${taskData[priority]}`);
             } catch (error) {
-              console.error('Error parsing task data:', error);
+              console.error('Error parsing task data:', error, 'Raw data:', newTaskElement.dataset.taskData);
               return;
             }
             
             // Update the task data with new flag state
+            const oldValue = taskData[priority] || false;
+            console.log(`Changing flag from ${oldValue} to ${isActive}`);
             taskData[priority] = isActive;
             
             // Save back to the DOM element
             newTaskElement.dataset.taskData = JSON.stringify(taskData);
             
-            console.log(`Setting ${priority} flag to ${isActive} for task "${taskData.content}"`);
+            console.log(`Updated DOM with new task data for task "${taskData.content}"`);
             
             // Save updated flag status to database
             try {
               await db.saveTask(taskData.id, taskData);
-              console.log(`${priority} flag for task "${taskData.content}" set to ${isActive} and saved to database`);
+              console.log(`✅ DATABASE UPDATED: ${priority}=${isActive} for task "${taskData.content}" (ID: ${taskData.id})`);
               
               // Refresh the view to update all instances of flags
-              // This ensures flags in the task details modal and task list view stay in sync
+              console.log(`Broadcasting flag update event for task ${taskData.id}`);
               document.dispatchEvent(new CustomEvent('task-flag-updated', {
                 detail: { taskId: taskData.id, flagType: priority, isActive: isActive }
               }));
@@ -2128,26 +2224,66 @@ const sampleTasks = [
 document.addEventListener('task-flag-updated', (event) => {
   const { taskId, flagType, isActive } = event.detail;
   
+  console.log(`📢 FLAG UPDATE EVENT: Task ${taskId}, ${flagType}=${isActive}`);
+  
   // Find all task items with this ID
   const taskElements = document.querySelectorAll(`.task-item[data-id="${taskId}"]`);
   console.log(`Updating ${taskElements.length} instances of task ${taskId} to set ${flagType}=${isActive}`);
   
-  taskElements.forEach(taskElement => {
-    // Update priority flags in the task list
-    const flags = taskElement.querySelectorAll(`[data-priority="${flagType}"]`);
-    flags.forEach(flag => {
-      flag.classList.toggle('active', isActive);
+  if (taskElements.length === 0) {
+    console.warn(`No task elements found with ID ${taskId}. Searching without data-id attribute...`);
+    
+    // Try alternative lookup by iterating through all tasks
+    const allTasks = document.querySelectorAll('.task-item');
+    let matchCount = 0;
+    
+    allTasks.forEach(task => {
+      try {
+        const taskData = JSON.parse(task.dataset.taskData || '{}');
+        if (taskData.id === taskId) {
+          matchCount++;
+          console.log(`Found task by taskData ID: ${taskData.content}`);
+          
+          // Update task data and flags
+          updateTaskFlags(task, taskData, flagType, isActive);
+        }
+      } catch (e) {
+        // Ignore parse errors for this search
+      }
     });
     
-    // Also update the task data
+    console.log(`Found ${matchCount} tasks by taskData ID lookup`);
+    return;
+  }
+  
+  taskElements.forEach(taskElement => {
+    console.log(`Updating task element: ${taskElement.querySelector('.task-text')?.textContent || '[no text]'}`);
+    
     try {
       const taskData = JSON.parse(taskElement.dataset.taskData || '{}');
-      taskData[flagType] = isActive;
-      taskElement.dataset.taskData = JSON.stringify(taskData);
+      updateTaskFlags(taskElement, taskData, flagType, isActive);
     } catch (error) {
       console.error('Error updating task data during sync:', error);
     }
   });
+  
+  // Helper function to update flags in a task element
+  function updateTaskFlags(element, taskData, type, value) {
+    // Update priority flags in the task list
+    const flags = element.querySelectorAll(`[data-priority="${type}"]`);
+    console.log(`Found ${flags.length} flag elements with type ${type}`);
+    
+    flags.forEach(flag => {
+      const wasActive = flag.classList.contains('active');
+      flag.classList.toggle('active', value);
+      console.log(`Updated flag element: ${wasActive} → ${value}`);
+    });
+    
+    // Also update the task data
+    taskData[type] = value;
+    element.dataset.taskData = JSON.stringify(taskData);
+    console.log(`Updated task data for ${taskData.content}`);
+  }
 });
 
 // Initialize the application when the DOM is loaded
