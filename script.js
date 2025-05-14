@@ -661,11 +661,16 @@ const sampleTasks = [
         return;
       }
       
+      console.log(`Opening modal for task: ${task.id} - ${task.content}`);
+      
       const modal = document.getElementById('task-view-modal');
       if (!modal) {
         console.error('Task modal not found');
         return;
       }
+      
+      // Store the task ID in the modal for reference
+      modal.dataset.taskId = task.id;
       
       const titleInput = document.getElementById('task-title');
       const revisitDateInput = document.getElementById('revisit-date');
@@ -1449,24 +1454,26 @@ const sampleTasks = [
       const sortedTasks = [...nonCompletedTasks, ...completedTasks];
       console.log(`Total of ${sortedTasks.length} tasks to reorder in DOM`);
       
-      // IMPORTANT: Create a document fragment for better performance
-      const fragment = document.createDocumentFragment();
+      // Remove tasks from DOM first 
+      console.log(`Detaching ${sortedTasks.length} tasks from DOM`);
       
-      // First, append all tasks to the fragment in the sorted order
+      // Store references to the original tasks
+      const taskRefs = sortedTasks.map(task => ({
+        element: task,
+        data: JSON.parse(task.dataset.taskData || '{}')
+      }));
+      
+      // Remove all tasks from their parent
       sortedTasks.forEach(task => {
-        fragment.appendChild(task.cloneNode(true));
+        if (task.parentNode) {
+          task.parentNode.removeChild(task);
+        }
       });
       
-      // Then, clear the task list and append the fragment
-      console.log(`Removing all ${taskList.children.length} children from task list`);
-      while (taskList.firstChild) {
-        taskList.removeChild(taskList.firstChild);
-      }
-      
-      // Finally, append the sorted tasks
-      console.log(`Appending ${sortedTasks.length} sorted tasks back to the DOM`);
-      sortedTasks.forEach(task => {
-        taskList.appendChild(task);
+      // Then re-add them in order
+      console.log(`Re-appending ${taskRefs.length} tasks in sorted order`);
+      taskRefs.forEach(({element}) => {
+        taskList.appendChild(element);
       });
       
       console.log(`✅ Successfully sorted ${sortedTasks.length} tasks in section "${sectionText}"`);
@@ -1590,12 +1597,59 @@ const sampleTasks = [
       });
     }
     
-    // Make priority flags active in the modal
-    // These flag buttons are in the UI, not directly connected to a specific task
-    // Task-specific flag state is handled in the modal via saveTaskFromModal
+    // Make priority flags active in the modal and immediately save changes
+    // These flag buttons are in the UI for the task modal view
     document.querySelectorAll('.flag-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('active');
+      btn.addEventListener('click', async () => {
+        console.log('Modal flag button clicked:', btn.dataset.priority);
+        
+        // Toggle UI state
+        const isActive = btn.classList.toggle('active');
+        const priority = btn.getAttribute('data-priority');
+        
+        if (!priority) {
+          console.error('No priority attribute found on flag button');
+          return;
+        }
+        
+        // Get current task from modal
+        const modal = document.getElementById('task-view-modal');
+        const taskId = modal.dataset.taskId;
+        
+        if (!taskId) {
+          console.error('No task ID found in modal');
+          return;
+        }
+        
+        console.log(`Updating task ${taskId} in modal - setting ${priority}=${isActive}`);
+        
+        try {
+          // Find the task element
+          const taskElement = document.querySelector(`.task-item[data-id="${taskId}"]`);
+          
+          if (!taskElement) {
+            console.error(`Task element with ID ${taskId} not found in DOM`);
+            return;
+          }
+          
+          // Update the task data
+          const taskData = JSON.parse(taskElement.dataset.taskData || '{}');
+          taskData[priority] = isActive;
+          
+          // Save back to DOM
+          taskElement.dataset.taskData = JSON.stringify(taskData);
+          
+          // Save to database
+          await db.saveTask(taskId, taskData);
+          console.log(`✅ SAVED flag change from modal: ${priority}=${isActive} for task "${taskData.content}"`);
+          
+          // Update all instances via event
+          document.dispatchEvent(new CustomEvent('task-flag-updated', {
+            detail: { taskId, flagType: priority, isActive }
+          }));
+        } catch (error) {
+          console.error('Error updating task flag from modal:', error);
+        }
       });
     });
     
