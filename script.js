@@ -558,14 +558,22 @@ const sampleTasks = [
         
         try {
           const taskData = JSON.parse(taskItem.dataset.taskData);
-          taskData[type] = !taskData[type];
+          const newValue = !taskData[type];
+          taskData[type] = newValue;
           taskItem.dataset.taskData = JSON.stringify(taskData);
-          flag.classList.toggle('active');
+          flag.classList.toggle('active', newValue);
+          
+          console.log(`Setting ${type} flag to ${newValue} for task "${taskData.content}"`);
           
           // Save updated flag status to database
           try {
             await db.saveTask(taskData.id, taskData);
-            if (debug) console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]} and saved to database`);
+            console.log(`${type} flag for task "${taskData.content}" set to ${taskData[type]} and saved to database`);
+            
+            // Dispatch event to update all instances of this flag
+            document.dispatchEvent(new CustomEvent('task-flag-updated', {
+              detail: { taskId: taskData.id, flagType: type, isActive: newValue }
+            }));
           } catch (dbError) {
             console.error('Error saving priority flag change to database:', dbError);
           }
@@ -2115,6 +2123,32 @@ const sampleTasks = [
     list.dataset.sortable = '1';
     list.dataset.rootList = '1';
   }
+
+// Event handler for synchronizing flag status across all instances
+document.addEventListener('task-flag-updated', (event) => {
+  const { taskId, flagType, isActive } = event.detail;
+  
+  // Find all task items with this ID
+  const taskElements = document.querySelectorAll(`.task-item[data-id="${taskId}"]`);
+  console.log(`Updating ${taskElements.length} instances of task ${taskId} to set ${flagType}=${isActive}`);
+  
+  taskElements.forEach(taskElement => {
+    // Update priority flags in the task list
+    const flags = taskElement.querySelectorAll(`[data-priority="${flagType}"]`);
+    flags.forEach(flag => {
+      flag.classList.toggle('active', isActive);
+    });
+    
+    // Also update the task data
+    try {
+      const taskData = JSON.parse(taskElement.dataset.taskData || '{}');
+      taskData[flagType] = isActive;
+      taskElement.dataset.taskData = JSON.stringify(taskData);
+    } catch (error) {
+      console.error('Error updating task data during sync:', error);
+    }
+  });
+});
 
 // Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
