@@ -274,14 +274,14 @@ li::before {
 
 /* ===== Task Items ===== */
 .task-item {
-  margin: 4px 0;
+  margin: 2px 0; /* Reduced from 4px to 2px */
   position: relative;
 }
 
 .task-content {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 4px 8px; /* Reduced vertical padding from 8px to 4px */
   border-radius: 4px;
   cursor: grab;
   user-select: none;
