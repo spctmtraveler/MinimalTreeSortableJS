@@ -811,6 +811,8 @@ const sampleTasks = [
   // Save task data from modal
   async function saveTaskFromModal(task, taskElement) {
     try {
+      console.log(`💾 SAVING TASK FROM MODAL: ${task?.id} - ${task?.content}`);
+      
       if (!task || !taskElement) {
         console.error('Invalid task or task element for saving');
         return;
@@ -830,51 +832,113 @@ const sampleTasks = [
         return;
       }
       
-      // Update task data
-      task.content = titleInput.value;
-      task.revisitDate = revisitDateInput.value;
-      task.scheduledTime = scheduledTimeInput.value;
-      task.overview = overviewInput.value;
-      task.details = detailsInput.value;
-      task.timeEstimate = parseFloat(timeEstimateInput.value) || 0;
+      // Create a clean copy of the task to avoid reference issues
+      const updatedTask = {
+        // Preserve existing fields
+        id: task.id,
+        parent: task.parent,
+        children: task.children || [],
+        isSection: task.isSection || false,
+        completed: task.completed || false,
+        
+        // Update with form values
+        content: titleInput.value,
+        revisitDate: revisitDateInput.value,
+        scheduledTime: scheduledTimeInput.value,
+        overview: overviewInput.value,
+        details: detailsInput.value,
+        timeEstimate: parseFloat(timeEstimateInput.value) || 0,
+        
+        // Initialize flags with default values
+        fire: false,
+        fast: false,
+        flow: false,
+        fear: false,
+        first: false
+      };
       
-      // Update priority flags
-      document.querySelectorAll('.flag-btn').forEach(btn => {
+      // Get flag states from modal buttons
+      const flagBtns = document.querySelectorAll('.flag-btn');
+      console.log(`Found ${flagBtns.length} flag buttons in modal`);
+      
+      flagBtns.forEach(btn => {
         const priority = btn.getAttribute('data-priority');
-        if (priority) {
-          task[priority] = btn.classList.contains('active');
+        if (priority && priority in updatedTask) {
+          const isActive = btn.classList.contains('active');
+          updatedTask[priority] = isActive;
+          console.log(`Modal flag state: ${priority}=${isActive}`);
         }
       });
       
+      console.log('Saving task with flags:', 
+        `fire=${updatedTask.fire}`,
+        `fast=${updatedTask.fast}`,
+        `flow=${updatedTask.flow}`,
+        `fear=${updatedTask.fear}`,
+        `first=${updatedTask.first}`
+      );
+      
       try {
-        // Update the task element
-        taskElement.dataset.taskData = JSON.stringify(task);
+        // Update the task element with the new data
+        taskElement.dataset.taskData = JSON.stringify(updatedTask);
         
-        // Save to database
-        await db.saveTask(task.id, task);
+        // Save to database with explicit boolean flag values
+        const savedResult = await db.saveTask(updatedTask.id, updatedTask);
+        console.log(`Database save result: ${savedResult ? 'Success' : 'Failed'}`);
         
-        // Update text content
+        // Update text content in the UI
         const textElement = taskElement.querySelector('.task-text');
         if (textElement) {
-          textElement.textContent = task.content;
+          textElement.textContent = updatedTask.content;
         }
         
         // Update date display if present
         const dateElement = taskElement.querySelector('.task-date');
         if (dateElement) {
-          dateElement.textContent = formatRevisitDate(task.revisitDate);
+          const formattedDate = formatRevisitDate(updatedTask.revisitDate);
+          dateElement.textContent = formattedDate || '';
+          console.log(`Updated date display: ${formattedDate}`);
         }
         
-        // Update priority flags in the task list
+        // Update revisit date if present (it's sometimes named differently)
+        const revisitDateElement = taskElement.querySelector('.revisit-date');
+        if (revisitDateElement) {
+          const formattedDate = formatRevisitDate(updatedTask.revisitDate);
+          revisitDateElement.textContent = formattedDate || '';
+          console.log(`Updated revisit date display: ${formattedDate}`);
+        }
+        
+        // Update priority flags in the task list item
         const flags = taskElement.querySelectorAll('.priority-flag');
+        console.log(`Updating ${flags.length} flag elements in task`);
+        
         flags.forEach(flag => {
           const priority = flag.getAttribute('data-priority');
-          if (priority) {
-            flag.classList.toggle('active', task[priority] === true);
+          if (priority && priority in updatedTask) {
+            const wasActive = flag.classList.contains('active');
+            const shouldBeActive = updatedTask[priority] === true;
+            
+            if (wasActive !== shouldBeActive) {
+              flag.classList.toggle('active', shouldBeActive);
+              console.log(`Updated flag UI: ${priority}=${shouldBeActive} (was ${wasActive})`);
+            }
           }
         });
+        
+        // Broadcast flag updates to update any other instances of this task
+        ['fire', 'fast', 'flow', 'fear', 'first'].forEach(flagType => {
+          document.dispatchEvent(new CustomEvent('task-flag-updated', {
+            detail: { 
+              taskId: updatedTask.id, 
+              flagType: flagType, 
+              isActive: updatedTask[flagType] === true
+            }
+          }));
+        });
+        
+        console.log(`✅ SAVED: Task "${updatedTask.content}" updated successfully`);
       } catch (updateError) {
-        console.error('Error updating task element:', updateError);
+        console.error('Error updating task:', updateError);
       }
       
       // Close the modal
@@ -882,8 +946,6 @@ const sampleTasks = [
       
       // Show confirmation toast
       showToast('Task Updated', 'The task has been successfully updated.');
-      
-      if (debug) console.log(`Saved changes to task "${task.content}"`);
     } catch (error) {
       console.error('Error saving task from modal:', error);
       showToast('Error', 'Failed to save task details.');
