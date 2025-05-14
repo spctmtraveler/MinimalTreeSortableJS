@@ -1371,7 +1371,14 @@ const sampleTasks = [
       // Combine sorted active tasks with completed tasks
       const sortedTasks = [...nonCompletedTasks, ...completedTasks];
       
-      // Move tasks in the DOM
+      // First, detach all tasks from DOM
+      sortedTasks.forEach(task => {
+        if (task.parentNode === taskList) {
+          taskList.removeChild(task);
+        }
+      });
+
+      // Then reattach them in the sorted order
       sortedTasks.forEach(task => {
         taskList.appendChild(task);
       });
@@ -1786,32 +1793,42 @@ const sampleTasks = [
         
         // Add click handler to toggle the flag
         flagCircle.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const isActive = flagCircle.classList.toggle('active');
-          
-          // Get latest task data from element
-          let taskData;
           try {
-            taskData = JSON.parse(newTaskElement.dataset.taskData);
-          } catch (error) {
-            console.error('Error parsing task data:', error);
-            return;
-          }
-          
-          // Update the task data with new flag state
-          taskData[priority] = isActive;
-          
-          // Save back to the DOM element
-          newTaskElement.dataset.taskData = JSON.stringify(taskData);
-          
-          console.log(`Setting ${priority} flag to ${isActive} for task "${taskData.content}"`);
-          
-          // Save updated flag status to database
-          try {
-            await db.saveTask(taskData.id, taskData);
-            console.log(`${priority} flag for task "${taskData.content}" set to ${isActive} and saved to database`);
-          } catch (error) {
-            console.error('Error saving flag status to database:', error);
+            e.stopPropagation();
+            const isActive = flagCircle.classList.toggle('active');
+            
+            // Get latest task data from element
+            let taskData;
+            try {
+              taskData = JSON.parse(newTaskElement.dataset.taskData);
+            } catch (error) {
+              console.error('Error parsing task data:', error);
+              return;
+            }
+            
+            // Update the task data with new flag state
+            taskData[priority] = isActive;
+            
+            // Save back to the DOM element
+            newTaskElement.dataset.taskData = JSON.stringify(taskData);
+            
+            console.log(`Setting ${priority} flag to ${isActive} for task "${taskData.content}"`);
+            
+            // Save updated flag status to database
+            try {
+              await db.saveTask(taskData.id, taskData);
+              console.log(`${priority} flag for task "${taskData.content}" set to ${isActive} and saved to database`);
+              
+              // Refresh the view to update all instances of flags
+              // This ensures flags in the task details modal and task list view stay in sync
+              document.dispatchEvent(new CustomEvent('task-flag-updated', {
+                detail: { taskId: taskData.id, flagType: priority, isActive: isActive }
+              }));
+            } catch (error) {
+              console.error('Error saving flag status to database:', error);
+            }
+          } catch (flagError) {
+            console.error('Error in flag circle click handler:', flagError);
           }
         });
         
