@@ -975,37 +975,27 @@ const sampleTasks = [
     if (debug) console.log("Starting priority sorting");
     
     // Define the sections (Triage, A, B, C)
-    const sectionHeaders = document.querySelectorAll('.section-header');
+    const sectionIds = ['section-triage', 'section-a', 'section-b', 'section-c'];
     
-    sectionHeaders.forEach(sectionHeader => {
-      const sectionId = sectionHeader.getAttribute('data-id');
+    // Process each section by ID
+    sectionIds.forEach(sectionId => {
       if (debug) console.log(`Sorting section: ${sectionId}`);
       
-      // Find the children container more reliably
+      // Find the section header element
+      const sectionHeader = document.querySelector(`.section-header[data-id="${sectionId}"]`);
+      if (!sectionHeader) {
+        if (debug) console.log(`Section header not found for: ${sectionId}`);
+        return;
+      }
+      
+      // Find the children container (it should be immediately after the section header)
       let childrenContainer = null;
       
-      // Try to find the closest task-children element within the same parent
-      const parentElement = sectionHeader.parentElement;
-      if (parentElement) {
-        // First look for siblings
-        const siblings = Array.from(parentElement.children);
-        for (let i = 0; i < siblings.length; i++) {
-          if (siblings[i] === sectionHeader) {
-            // Look for the next sibling that has the task-children class
-            for (let j = i + 1; j < siblings.length; j++) {
-              if (siblings[j].classList.contains('task-children')) {
-                childrenContainer = siblings[j];
-                break;
-              }
-            }
-            break;
-          }
-        }
-        
-        // If not found as a sibling, look for any task-children in the parent
-        if (!childrenContainer) {
-          childrenContainer = parentElement.querySelector('.task-children');
-        }
+      // Look for the section's task-children container
+      const taskItem = sectionHeader.closest('.task-item');
+      if (taskItem) {
+        // Get the task-children that's a direct child of this task-item
+        childrenContainer = taskItem.querySelector(':scope > .task-children');
       }
       
       if (!childrenContainer) {
@@ -1019,7 +1009,7 @@ const sampleTasks = [
         return;
       }
       
-      // Get all non-section-header tasks
+      // Get all non-section-header tasks directly under this task list
       const tasks = Array.from(taskList.querySelectorAll(':scope > li.task-item:not(.section-header)'));
       if (tasks.length <= 1) {
         if (debug) console.log(`Not enough tasks to sort in section: ${sectionId}`);
@@ -1833,20 +1823,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     initUI();
     
     // Try to load tasks from Replit Database
-    const loadedTasks = await db.loadTasks();
-    
-    // Build the task tree with either loaded tasks or sample tasks
-    const root = document.getElementById('task-tree');
-    if (loadedTasks) {
-      if (debug) console.log('Using tasks from Replit Database');
-      buildTree(loadedTasks, root);
-    } else {
-      if (debug) console.log('Using sample tasks');
-      buildTree(sampleTasks, root);
+    let tasksToUse;
+    try {
+      const loadedTasks = await db.loadTasks();
       
-      // Save sample tasks to Replit Database for future use
-      await db.saveTasks(sampleTasks);
+      // Ensure loadedTasks is an array before using it
+      if (loadedTasks && Array.isArray(loadedTasks) && loadedTasks.length > 0) {
+        if (debug) console.log('Tasks loaded from Replit Database:', loadedTasks);
+        tasksToUse = loadedTasks;
+      } else {
+        if (debug) console.log('No valid tasks in database, using sample tasks');
+        tasksToUse = sampleTasks;
+        
+        // Save sample tasks to Replit Database for future use
+        await db.saveTasks(sampleTasks);
+      }
+    } catch (error) {
+      console.error('Error loading tasks:', error);
+      if (debug) console.log('Error occurred, using sample tasks');
+      tasksToUse = sampleTasks;
+      
+      // Attempt to save sample tasks
+      try {
+        await db.saveTasks(sampleTasks);
+      } catch (saveError) {
+        console.error('Failed to save sample tasks:', saveError);
+      }
     }
+    
+    // Build the task tree with the tasks we determined to use
+    const root = document.getElementById('task-tree');
+    if (debug) console.log('Building tree with tasks:', tasksToUse);
+    buildTree(tasksToUse, root);
     
     // Create root sortable
     const rootList = root.querySelector(':scope > .task-list');
