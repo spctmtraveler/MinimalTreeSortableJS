@@ -1887,12 +1887,20 @@ const sampleTasks = [
         flagCircle.innerHTML = `<i class="fas ${iconClass}"></i>`;
         
         // Add click handler to toggle the flag
-        flagCircle.addEventListener('click', (e) => {
+        flagCircle.addEventListener('click', async (e) => {
           e.stopPropagation();
           const isActive = flagCircle.classList.toggle('active');
           const taskData = JSON.parse(newTaskElement.dataset.taskData);
           taskData[priority] = isActive;
           newTaskElement.dataset.taskData = JSON.stringify(taskData);
+          
+          // Save updated flag status to database
+          try {
+            await db.saveTask(taskData.id, taskData);
+            if (debug) console.log(`${priority} flag for new task "${taskData.content}" set to ${isActive} and saved to database`);
+          } catch (error) {
+            console.error('Error saving flag status to database:', error);
+          }
         });
         
         flagsContainer.appendChild(flagCircle);
