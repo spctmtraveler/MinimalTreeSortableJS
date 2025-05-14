@@ -1032,11 +1032,27 @@ const sampleTasks = [
       const completedTasks = tasks.filter(task => task.classList.contains('task-completed'));
       const nonCompletedTasks = tasks.filter(task => !task.classList.contains('task-completed'));
       
+      // Log for debugging
+      if (debug) {
+        console.log(`Found ${nonCompletedTasks.length} active tasks and ${completedTasks.length} completed tasks`);
+      }
+      
       // Sort non-completed tasks by priority (Fast -> First -> Fire -> Fear -> Flow)
       nonCompletedTasks.sort((a, b) => {
         // Helper function to check if an element has a specific priority flag active
         const hasPriorityFlag = (element, flagName) => {
           try {
+            // The most reliable method: check the task data directly
+            try {
+              const taskData = JSON.parse(element.dataset.taskData || '{}');
+              if (taskData[flagName] === true) {
+                return true;
+              }
+            } catch (e) {
+              console.error('Error parsing task data:', e);
+            }
+            
+            // Fallback: check visual elements
             // First try looking for the flag-circle elements
             const flagCircles = element.querySelectorAll(`.flag-circle[data-priority="${flagName}"]`);
             for (const circle of flagCircles) {
@@ -1045,21 +1061,13 @@ const sampleTasks = [
               }
             }
             
-            // If not found, check within the task-priority-flags container
+            // Also check within the task-priority-flags container
             const flagsContainer = element.querySelector('.task-priority-flags');
             if (flagsContainer) {
               const flag = flagsContainer.querySelector(`[data-priority="${flagName}"]`);
               if (flag && flag.classList.contains('active')) {
                 return true;
               }
-            }
-            
-            // If still not found, try to get the task data
-            try {
-              const taskData = JSON.parse(element.dataset.taskData || '{}');
-              return taskData[flagName] === true;
-            } catch (e) {
-              if (debug) console.error('Error parsing task data:', e);
             }
           } catch (error) {
             console.error(`Error checking ${flagName} flag:`, error);
@@ -1090,22 +1098,29 @@ const sampleTasks = [
           console.log('Task B flags:', b.querySelector('.task-text')?.textContent, bFlags);
         }
         
-        // Priority order: Fast -> First -> Fire -> Fear -> Flow
-        // If a has priority that b doesn't, a comes first
-        if (aFlags.fast && !bFlags.fast) return -1;
-        if (!aFlags.fast && bFlags.fast) return 1;
+        // Priority order: Fast → First → Fire → Fear → Flow
+        // Each priority is assigned a score, higher score = higher priority
+        const getPriorityScore = (flags) => {
+          let score = 0;
+          if (flags.fast) score += 50;
+          if (flags.first) score += 40;
+          if (flags.fire) score += 30;
+          if (flags.fear) score += 20;
+          if (flags.flow) score += 10;
+          return score;
+        };
         
-        if (aFlags.first && !bFlags.first) return -1;
-        if (!aFlags.first && bFlags.first) return 1;
+        const aScore = getPriorityScore(aFlags);
+        const bScore = getPriorityScore(bFlags);
         
-        if (aFlags.fire && !bFlags.fire) return -1;
-        if (!aFlags.fire && bFlags.fire) return 1;
+        if (debug) {
+          console.log(`Task A: ${a.querySelector('.task-text')?.textContent} - Score: ${aScore}`);
+          console.log(`Task B: ${b.querySelector('.task-text')?.textContent} - Score: ${bScore}`);
+        }
         
-        if (aFlags.fear && !bFlags.fear) return -1;
-        if (!aFlags.fear && bFlags.fear) return 1;
-        
-        if (aFlags.flow && !bFlags.flow) return -1;
-        if (!aFlags.flow && bFlags.flow) return 1;
+        // Higher score comes first
+        if (aScore > bScore) return -1;
+        if (aScore < bScore) return 1;
         
         // If equal priority, maintain original order
         return 0;
@@ -1200,15 +1215,32 @@ const sampleTasks = [
     const prioritySortBtn = document.getElementById('priority-sort-btn');
     if (prioritySortBtn) {
       prioritySortBtn.addEventListener('click', () => {
-        sortTasksByPriority();
+        if (debug) console.log('Sort button clicked, starting priority sort');
+        
+        // Add visual feedback immediately
         prioritySortBtn.classList.add('active');
+        prioritySortBtn.setAttribute('disabled', 'disabled');
+        prioritySortBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
         
-        // Remove active class after animation
+        // Use setTimeout to allow UI to update before the sort (which can be CPU-intensive)
         setTimeout(() => {
-          prioritySortBtn.classList.remove('active');
-        }, 1000);
-        
-        showToast('Tasks Sorted', 'Tasks have been sorted by priority order.');
+          try {
+            sortTasksByPriority();
+            showToast('Tasks Sorted', 'Tasks have been sorted by priority order.');
+          } catch (error) {
+            console.error('Error during task sorting:', error);
+            showToast('Sorting Error', 'There was a problem sorting tasks.');
+          } finally {
+            // Restore button state
+            prioritySortBtn.removeAttribute('disabled');
+            prioritySortBtn.innerHTML = '<i class="fa-solid fa-arrow-down-wide-short"></i>';
+            
+            // Remove active class after animation
+            setTimeout(() => {
+              prioritySortBtn.classList.remove('active');
+            }, 500);
+          }
+        }, 100);
       });
     }
     
