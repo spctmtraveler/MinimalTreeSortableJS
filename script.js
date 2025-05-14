@@ -1040,6 +1040,9 @@ const sampleTasks = [
              date1.getDate() === date2.getDate();
     };
     
+    // Always show Triage section tasks regardless of filter
+    const triageShown = document.querySelectorAll('#section-triage .task-item');
+    
     // Helper to get today's date at midnight
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -1165,9 +1168,31 @@ const sampleTasks = [
     // Count tasks that match the filter
     let matchCount = 0;
     
+    // Find all tasks in Triage section to always show them
+    const triageSection = document.querySelector('.section-header[data-id="section-triage"]');
+    const triageTasks = new Set();
+    if (triageSection) {
+      const triageItem = triageSection.closest('.task-item');
+      if (triageItem) {
+        const triageChildrenContainer = triageItem.querySelector('.task-children');
+        if (triageChildrenContainer) {
+          const triageTaskElements = triageChildrenContainer.querySelectorAll('.task-item:not(.section-header)');
+          triageTaskElements.forEach(task => triageTasks.add(task));
+          if (debug) console.log(`Found ${triageTasks.size} tasks in Triage section to always show`);
+        }
+      }
+    }
+    
     // For date filters, check each task
     allTasks.forEach(task => {
       try {
+        // Always show tasks in the Triage section regardless of filter
+        if (triageTasks.has(task)) {
+          task.style.display = '';
+          matchCount++;
+          return; // Skip the rest of the filtering for Triage tasks
+        }
+        
         const taskData = JSON.parse(task.dataset.taskData || '{}');
         let display = 'none'; // Default to hiding the task
         
