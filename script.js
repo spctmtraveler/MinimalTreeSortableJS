@@ -2422,48 +2422,112 @@ document.addEventListener('task-flag-updated', (event) => {
     const flags = element.querySelectorAll(`[data-priority="${type}"]`);
     console.log(`Found ${flags.length} flag elements with type ${type}`);
     
+    // Ensure value is a boolean
+    const boolValue = value === true;
+    
+    // Update visual flag states
     flags.forEach(flag => {
       const wasActive = flag.classList.contains('active');
-      flag.classList.toggle('active', value);
-      console.log(`Updated flag element: ${wasActive} → ${value}`);
+      
+      if (wasActive !== boolValue) {
+        flag.classList.toggle('active', boolValue);
+        console.log(`Updated flag element UI: ${wasActive} → ${boolValue}`);
+      }
     });
     
-    // Also update the task data
-    taskData[type] = value;
-    element.dataset.taskData = JSON.stringify(taskData);
-    console.log(`Updated task data for ${taskData.content}`);
+    // Also update the task data (ensure it's a boolean)
+    const wasValueSet = taskData[type] === true;
+    
+    // Only update if value changed
+    if (wasValueSet !== boolValue) {
+      taskData[type] = boolValue;
+      console.log(`Updated task data: ${type}=${wasValueSet} → ${boolValue}`);
+      
+      // Save the updated task data back to the element
+      element.dataset.taskData = JSON.stringify(taskData);
+      
+      // Save to the database
+      (async () => {
+        try {
+          const saveResult = await db.saveTask(taskData.id, {...taskData});
+          console.log(`DB save for flag update ${type}=${boolValue}: ${saveResult ? 'Success' : 'Failed'}`);
+        } catch (err) {
+          console.error('Failed to save flag update to database:', err);
+        }
+      })();
+    }
   }
 });
 
 // Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
   try {
+    console.log('🚀 Application initializing...');
+    
     // Initialize event handlers for UI components
     initUI();
     
     // Try to load tasks from Replit Database
     let tasksToUse;
     try {
+      console.log('Loading tasks from database...');
       const loadedTasks = await db.loadTasks();
+      
+      console.log(`Database response received: ${loadedTasks ? 'data found' : 'no data'}`);
       
       // Ensure loadedTasks is an array before using it
       if (loadedTasks && Array.isArray(loadedTasks) && loadedTasks.length > 0) {
-        if (debug) console.log('Tasks loaded from Replit Database:', loadedTasks);
+        console.log(`Loaded ${loadedTasks.length} tasks from database`);
+        
+        // Validate and fix boolean flag values
+        loadedTasks.forEach(task => {
+          if (!task.children) task.children = [];
+          
+          // Fix flag properties to be explicit booleans
+          task.fire = task.fire === true;
+          task.fast = task.fast === true;
+          task.flow = task.flow === true;
+          task.fear = task.fear === true;
+          task.first = task.first === true;
+          
+          // Fix flag properties in children recursively
+          const fixFlagsRecursive = (items) => {
+            items.forEach(item => {
+              item.fire = item.fire === true;
+              item.fast = item.fast === true;
+              item.flow = item.flow === true;
+              item.fear = item.fear === true;
+              item.first = item.first === true;
+              
+              if (item.children && item.children.length > 0) {
+                fixFlagsRecursive(item.children);
+              }
+            });
+          };
+          
+          if (task.children.length > 0) {
+            fixFlagsRecursive(task.children);
+          }
+        });
+        
+        console.log('Using tasks from database with fixed boolean values');
         tasksToUse = loadedTasks;
       } else {
-        if (debug) console.log('No valid tasks in database, using sample tasks');
+        console.log('No valid tasks in database, using sample tasks');
         tasksToUse = sampleTasks;
         
         // Save sample tasks to Replit Database for future use
+        console.log('Saving sample tasks to database for first use');
         await db.saveTasks(sampleTasks);
       }
     } catch (error) {
       console.error('Error loading tasks:', error);
-      if (debug) console.log('Error occurred, using sample tasks');
+      console.log('Error occurred, using sample tasks');
       tasksToUse = sampleTasks;
       
       // Attempt to save sample tasks
       try {
+        console.log('Saving sample tasks to database after load error');
         await db.saveTasks(sampleTasks);
       } catch (saveError) {
         console.error('Failed to save sample tasks:', saveError);
