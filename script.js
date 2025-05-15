@@ -1430,22 +1430,14 @@ const sampleTasks = [
       return;
     }
 
-    // Get all top-level sections within the main container
-    const sections = Array.from(mainContainer.querySelectorAll(':scope > ul > li.task-item.section-header'));
+    // Use a simple direct query for all section headers - per instructions
+    const sections = document.querySelectorAll('.section-header');
     
-    console.log(`Found ${sections.length} top-level sections to process`);
+    console.log(`Found ${sections.length} section headers to process`);
     
     if (sections.length === 0) {
-      console.warn('No sections found, looking for alternate section structure');
-      
-      // Try alternate search for sections
-      const alternateSections = document.querySelectorAll('.section-header');
-      console.log(`Found ${alternateSections.length} sections with alternate search`);
-      
-      if (alternateSections.length === 0) {
-        console.error('No sections found at all. Cannot continue sorting.');
-        return;
-      }
+      console.error('No sections found at all. Cannot continue sorting.');
+      return;
     }
     
     // Process each section
@@ -2134,22 +2126,22 @@ const sampleTasks = [
             // Save updated flag status to database
             try {
               await db.saveTask(taskData.id, taskData);
-              console.log(`✅ DATABASE UPDATED: ${priority}=${isActive} for task "${taskData.content}" (ID: ${taskData.id})`);
+              console.log(`✅ DATABASE UPDATED: ${type}=${isActive} for task "${taskData.content}" (ID: ${taskData.id})`);
               
               // Refresh the view to update all instances of flags
               console.log(`Broadcasting flag update event for task ${taskData.id}`);
               document.dispatchEvent(new CustomEvent('task-flag-updated', {
-                detail: { taskId: taskData.id, flagType: priority, isActive: isActive }
+                detail: { taskId: taskData.id, flagType: type, isActive: isActive }
               }));
             } catch (error) {
               console.error('Error saving flag status to database:', error);
             }
           } catch (flagError) {
-            console.error('Error in flag circle click handler:', flagError);
+            console.error('Error in flag click handler:', flagError);
           }
         });
         
-        flagsContainer.appendChild(flagCircle);
+        flagsContainer.appendChild(flag);
       });
       
       row.appendChild(flagsContainer);
