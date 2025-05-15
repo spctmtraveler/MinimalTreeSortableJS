@@ -1453,100 +1453,70 @@ const sampleTasks = [
       return;
     }
     
+    // Dump all the sections so we can see what we're working with
+    sections.forEach((section, i) => {
+      const id = section.id || section.dataset.id || section.getAttribute('data-id');
+      const text = section.querySelector('.task-text')?.textContent;
+      console.log(`Section ${i+1}: id=${id}, text="${text}"`);
+    });
+    
     // Process each section
     sections.forEach((sectionHeader, index) => {
-      // Get section name
+      // Get section name from the text content or a fallback
       const sectionName = sectionHeader.querySelector('.task-text')?.textContent || 
                           sectionHeader.textContent || 
                           `Section ${index+1}`;
-                          
-      const sectionId = sectionHeader.dataset.id || sectionHeader.getAttribute('data-id') || '';
+      
+      // Try to get the section ID from multiple possible locations
+      const sectionId = sectionHeader.id || 
+                        sectionHeader.dataset.id || 
+                        sectionHeader.getAttribute('data-id') || 
+                        '';
       
       console.log(`\n🔶 SORTING SECTION: "${sectionName}" (${sectionId}) [${index+1}/${sections.length}]`);
       
-      // Find all tasks in this section (direct children only)
-      let tasks = [];
-      
-      // First check if there's a task-children container
-      const childrenContainer = sectionHeader.querySelector('.task-children');
-      
-      if (childrenContainer) {
-        // Get the task list inside the children container
-        const taskList = childrenContainer.querySelector('.task-list');
-        
-        if (taskList) {
-          // Get all direct child task items that aren't section headers
-          tasks = Array.from(taskList.children).filter(item => 
-            item.classList.contains('task-item') && !item.classList.contains('section-header')
-          );
-          
-          console.log(`Found ${tasks.length} tasks in section "${sectionName}" via children container`);
-        }
+      // Get the parent list item that contains this section header
+      const parentSection = sectionHeader.closest('li.task-item');
+      if (!parentSection) {
+        console.log(`Cannot find parent li.task-item for section "${sectionName}". Skipping.`);
+        return;
       }
       
-      // If we didn't find tasks, try alternate methods
-      if (tasks.length === 0) {
-        // Try to find the next sibling which should be a children container
-        const nextSibling = sectionHeader.nextElementSibling;
-        
-        if (nextSibling && nextSibling.classList.contains('task-children')) {
-          const taskList = nextSibling.querySelector('.task-list');
-          
-          if (taskList) {
-            tasks = Array.from(taskList.children).filter(item => 
-              item.classList.contains('task-item') && !item.classList.contains('section-header')
-            );
-            
-            console.log(`Found ${tasks.length} tasks in section "${sectionName}" via next sibling`);
-          }
-        }
+      console.log(`Found parent section container: ${parentSection.className}`);
+      
+      // Find the direct children container where tasks should be
+      const childrenContainer = parentSection.querySelector('.task-children');
+      if (!childrenContainer) {
+        console.log(`Cannot find .task-children container for section "${sectionName}". Skipping.`);
+        return;
       }
       
-      // If we still don't have tasks, try a broader search
-      if (tasks.length === 0) {
-        // This is a more desperate measure - might get tasks from wrong sections
-        const parentLi = sectionHeader.closest('li.task-item');
-        
-        if (parentLi) {
-          const allChildLists = parentLi.querySelectorAll('.task-list');
-          
-          if (allChildLists.length > 0) {
-            // Just take the first task list we find
-            const firstList = allChildLists[0];
-            
-            tasks = Array.from(firstList.children).filter(item => 
-              item.classList.contains('task-item') && !item.classList.contains('section-header')
-            );
-            
-            console.log(`Found ${tasks.length} tasks in section "${sectionName}" via broader search`);
-          }
-        }
+      // Get the task list from the children container
+      const taskList = childrenContainer.querySelector('.task-list');
+      if (!taskList) {
+        console.log(`Cannot find .task-list within children container for section "${sectionName}". Skipping.`);
+        return;
       }
       
-      // Last resort - check direct HTML structure
-      if (tasks.length === 0 && sectionHeader.parentElement) {
-        const taskList = sectionHeader.parentElement;
-        
-        // Get sibling task items
-        let siblingTasks = [];
-        let currentElement = sectionHeader.nextElementSibling;
-        
-        while (currentElement && !currentElement.classList.contains('section-header')) {
-          if (currentElement.classList.contains('task-item')) {
-            siblingTasks.push(currentElement);
-          }
-          currentElement = currentElement.nextElementSibling;
-        }
-        
-        tasks = siblingTasks;
-        console.log(`Found ${tasks.length} tasks in section "${sectionName}" via sibling search`);
-      }
+      // Get all direct child task items (LI elements) that aren't section headers
+      const tasks = Array.from(taskList.children).filter(item => 
+        item.classList.contains('task-item') && !item.classList.contains('section-header')
+      );
       
-      // If we still have no tasks, we can't sort this section
+      console.log(`Found ${tasks.length} tasks in section "${sectionName}"`);
+      
+      // If we have 1 or fewer tasks, no sorting needed
       if (tasks.length <= 1) {
         console.log(`Not enough tasks to sort in section "${sectionName}"`);
         return;
       }
+      
+      // Print the IDs of all tasks found to help with debugging
+      tasks.forEach((task, i) => {
+        const taskId = task.dataset.id || task.getAttribute('data-id');
+        const taskName = task.querySelector('.task-text')?.textContent || '[unnamed]';
+        console.log(`  Task ${i+1}: id=${taskId}, name="${taskName}"`);
+      });
       
       console.log(`Sorting ${tasks.length} tasks in section "${sectionName}"`);
       
@@ -1561,8 +1531,29 @@ const sampleTasks = [
         // Parse task data for both tasks
         let aData, bData;
         try {
-          aData = JSON.parse(a.dataset.taskData || '{}');
-          bData = JSON.parse(b.dataset.taskData || '{}');
+          // Try to get task data from dataset
+          const aDataStr = a.dataset.taskData || '{}';
+          const bDataStr = b.dataset.taskData || '{}';
+          
+          console.log(`Parsing task data for sorting:`);
+          console.log(`  Task A data: ${aDataStr.substring(0, 50)}...`);
+          console.log(`  Task B data: ${bDataStr.substring(0, 50)}...`);
+          
+          aData = JSON.parse(aDataStr);
+          bData = JSON.parse(bDataStr);
+          
+          // Ensure all flags are boolean
+          aData.fast = aData.fast === true;
+          aData.first = aData.first === true;
+          aData.fire = aData.fire === true;
+          aData.fear = aData.fear === true;
+          aData.flow = aData.flow === true;
+          
+          bData.fast = bData.fast === true;
+          bData.first = bData.first === true;
+          bData.fire = bData.fire === true;
+          bData.fear = bData.fear === true;
+          bData.flow = bData.flow === true;
         } catch (e) {
           console.error('Error parsing task data for sorting:', e);
           return 0;
@@ -1582,6 +1573,8 @@ const sampleTasks = [
         
         const aScore = getPriorityScore(aData);
         const bScore = getPriorityScore(bData);
+        
+        console.log(`Comparing "${aData.content}" (score: ${aScore}) vs "${bData.content}" (score: ${bScore})`);
         
         // Higher score comes first (descending order)
         return bScore - aScore;
