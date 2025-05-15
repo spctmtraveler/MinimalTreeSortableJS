@@ -1932,10 +1932,12 @@ const sampleTasks = [
         }
       }
       
-      // If all else fails, use the first available task list
+      // Last resort - give up if we can't find the triage list
       if (!triageChildList) {
-        triageChildList = document.querySelector('.task-list');
-        if (debug) console.log('Using first task list as fallback');
+        // Don't create in random places - log an error instead
+        console.error('Could not find triage section for new task. Cannot proceed.');
+        showToast('Error', 'Could not find Triage section. Please refresh the page.');
+        return; // Exit the function rather than adding to the wrong place
       }
       
       if (!triageChildList) {
@@ -2072,30 +2074,30 @@ const sampleTasks = [
       const flagsContainer = document.createElement('div');
       flagsContainer.className = 'task-priority-flags';
       
-      // Add all 5 priority flags
-      ['fire', 'fast', 'flow', 'fear', 'first'].forEach(priority => {
-        const flagCircle = document.createElement('div');
-        flagCircle.className = 'flag-circle';
-        flagCircle.dataset.priority = priority;
+      // Add all 5 priority flags using the helper function
+      ['fire', 'fast', 'flow', 'fear', 'first'].forEach(type => {
+        const iconMap = {
+          'fire': 'fa-fire',
+          'fast': 'fa-bolt',
+          'flow': 'fa-water',
+          'fear': 'fa-skull',
+          'first': 'fa-trophy'
+        };
         
-        // Add appropriate icon based on priority
-        let iconClass = '';
-        switch(priority) {
-          case 'fire': iconClass = 'fa-fire'; break;
-          case 'fast': iconClass = 'fa-bolt'; break;
-          case 'flow': iconClass = 'fa-water'; break;
-          case 'fear': iconClass = 'fa-skull'; break;
-          case 'first': iconClass = 'fa-trophy'; break;
-        }
+        // Create flag using the existing helper function
+        const flag = createPriorityFlag(
+          type,
+          iconMap[type],
+          false, // initially not active
+          null  // no custom tooltip
+        );
         
-        flagCircle.innerHTML = `<i class="fas ${iconClass}"></i>`;
-        
-        // Add click handler to toggle the flag
-        flagCircle.addEventListener('click', async (e) => {
-          console.log(`▶️ Flag circle clicked: ${priority}`);
+        // Replace the default click handler with our own
+        flag.addEventListener('click', async (e) => {
+          console.log(`▶️ Flag clicked: ${type}`);
           try {
             e.stopPropagation();
-            const isActive = flagCircle.classList.toggle('active');
+            const isActive = flag.classList.toggle('active');
             console.log(`Toggle state: ${isActive}`);
             
             // Ensure task element has ID
@@ -2113,16 +2115,16 @@ const sampleTasks = [
               }
               
               taskData = JSON.parse(newTaskElement.dataset.taskData);
-              console.log(`Read task data for '${taskData.content}', current ${priority}=${taskData[priority]}`);
+              console.log(`Read task data for '${taskData.content}', current ${type}=${taskData[type]}`);
             } catch (error) {
               console.error('Error parsing task data:', error, 'Raw data:', newTaskElement.dataset.taskData);
               return;
             }
             
             // Update the task data with new flag state
-            const oldValue = taskData[priority] || false;
+            const oldValue = taskData[type] || false;
             console.log(`Changing flag from ${oldValue} to ${isActive}`);
-            taskData[priority] = isActive;
+            taskData[type] = isActive;
             
             // Save back to the DOM element
             newTaskElement.dataset.taskData = JSON.stringify(taskData);
