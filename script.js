@@ -586,47 +586,60 @@ const sampleTasks = [
         const newValue = !oldValue;
         console.log(`Setting ${type}=${newValue} (was ${oldValue}) for "${taskData.content}"`);
         
-        // Update the flag data explicitly with a boolean
-        taskData[type] = newValue;
-        
-        // Update visual state immediately
+        // Update visual state immediately (this is immediate for the user before any database op)
         flag.classList.toggle('active', newValue);
+        
+        // **** IMPORTANT: Update the object property with explicit boolean ****
+        taskData[type] = newValue;
         
         // Save the updated task data back to the DOM element
         taskItem.dataset.taskData = JSON.stringify(taskData);
         
-        // Create a clean copy of task data for database save
-        // This ensures we don't have circular references or unexpected properties
-        const cleanTaskData = {
-          id: taskData.id,
-          content: taskData.content,
-          completed: taskData.completed === true,
-          children: taskData.children || [],
-          revisitDate: taskData.revisitDate || '',
-          fire: taskData.fire === true,
-          fast: taskData.fast === true, 
-          flow: taskData.flow === true,
-          fear: taskData.fear === true,
-          first: taskData.first === true,
-          timeEstimate: taskData.timeEstimate || 0,
-          overview: taskData.overview || '',
-          details: taskData.details || '',
-          scheduledTime: taskData.scheduledTime || '',
-          parent: taskData.parent || null
-        };
+        // Force all flags to be boolean to ensure consistent behavior
+        const cleanTaskData = { ...taskData };
+        cleanTaskData.fire = taskData.fire === true;
+        cleanTaskData.fast = taskData.fast === true;
+        cleanTaskData.flow = taskData.flow === true;
+        cleanTaskData.fear = taskData.fear === true;
+        cleanTaskData.first = taskData.first === true;
         
-        // Specific flag was updated, ensure it's set correctly
+        // Make sure the updated flag has the right type
         cleanTaskData[type] = newValue;
+
+        console.log(`Sending task with flags to database:`, 
+          JSON.stringify({
+            id: cleanTaskData.id,
+            content: cleanTaskData.content,
+            fire: cleanTaskData.fire,
+            fast: cleanTaskData.fast,
+            flow: cleanTaskData.flow,
+            fear: cleanTaskData.fear,
+            first: cleanTaskData.first
+          })
+        );
         
-        console.log(`Sending to database:`, JSON.stringify(cleanTaskData));
-        
-        // Save updated flag status to database
+        // Save updated flag status to database immediately
         try {
+          // Use direct database call to ensure the update happens
           const saveResult = await db.saveTask(taskData.id, cleanTaskData);
+          
           if (saveResult) {
             console.log(`✅ DATABASE UPDATED: ${type}=${newValue} for "${taskData.content}"`);
             
-            // Dispatch event to update all instances of this flag
+            // Save change to localStorage for redundancy
+            try {
+              const allTasks = JSON.parse(localStorage.getItem('dun_tasks') || '[]');
+              const taskIndex = allTasks.findIndex(t => t.id === taskData.id);
+              if (taskIndex >= 0) {
+                allTasks[taskIndex][type] = newValue;
+                localStorage.setItem('dun_tasks', JSON.stringify(allTasks));
+                console.log('Updated localStorage with flag change');
+              }
+            } catch (localError) {
+              console.error('Error updating localStorage:', localError);
+            }
+            
+            // Broadcast to all other instances of this task
             document.dispatchEvent(new CustomEvent('task-flag-updated', {
               detail: { taskId: taskData.id, flagType: type, isActive: newValue }
             }));
@@ -1930,12 +1943,6 @@ const sampleTasks = [
         console.error('Could not find triage section for new task. Cannot proceed.');
         showToast('Error', 'Could not find Triage section. Please refresh the page.');
         return; // Exit the function rather than adding to the wrong place
-      }
-      
-      if (!triageChildList) {
-        showToast('Error', 'Triage task list not found');
-        if (debug) console.error('No task list found for new task');
-        return;
       }
       
       // Save task to database before adding to DOM
