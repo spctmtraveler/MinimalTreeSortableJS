@@ -266,9 +266,6 @@ const sampleTasks = [
     }
   ];
 
-  const root = document.getElementById('task-tree');
-  buildTree(sampleTasks, root);
-
   /* ---------- Build Tree ----------- */
   function buildTree(tasks, parent) {
     const ul = document.createElement('ul');
