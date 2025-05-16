@@ -787,8 +787,84 @@ const sampleTasks = [
 
   // Initialize the application when the DOM is loaded
   document.addEventListener('DOMContentLoaded', async () => {
-    // ... load or sample tasks into tasksToUse ...
-    const root = document.getElementById('task-tree');
-    root.innerHTML = ''; 
-    buildTree(tasksToUse, root);
+    try {
+      console.log('Initializing application...');
+      
+      // Set up DOM event handlers first so they're ready
+      document.getElementById('add-task-btn')?.addEventListener('click', addNewTask);
+      document.getElementById('new-task-input')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addNewTask();
+      });
+      
+      // Set up priority sort button
+      document.getElementById('priority-sort-btn')?.addEventListener('click', sortTasksByPriority);
+      
+      // Load tasks from database
+      let tasksToUse = [];
+      try {
+        console.log('Loading tasks from database...');
+        const loadedTasks = await db.loadTasks();
+        
+        if (loadedTasks && Array.isArray(loadedTasks) && loadedTasks.length > 0) {
+          console.log(`Successfully loaded ${loadedTasks.length} tasks from database`);
+          tasksToUse = loadedTasks;
+        } else {
+          console.log('No tasks found in database, using sample tasks');
+          tasksToUse = sampleTasks;
+          
+          // Save sample tasks to database
+          try {
+            console.log('Saving sample tasks to database');
+            await db.saveTasks(sampleTasks);
+          } catch (saveError) {
+            console.error('Failed to save sample tasks to database:', saveError);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading tasks:', error);
+        console.log('Error occurred, using sample tasks');
+        tasksToUse = sampleTasks;
+        
+        // Attempt to save sample tasks
+        try {
+          console.log('Saving sample tasks to database after load error');
+          await db.saveTasks(sampleTasks);
+        } catch (saveError) {
+          console.error('Failed to save sample tasks:', saveError);
+        }
+      }
+      
+      // Build the task tree with the tasks we determined to use
+      const root = document.getElementById('task-tree');
+      
+      // Clear any existing content to prevent duplicate lists
+      root.innerHTML = '';
+      
+      if (debug) console.log('Building tree with tasks:', tasksToUse);
+      buildTree(tasksToUse, root);
+      
+      // Set up periodic saving of all tasks (every 30 seconds)
+      window.lastFullSave = Date.now();
+      setInterval(async () => {
+        try {
+          const rootElement = document.getElementById('task-tree');
+          if (rootElement) {
+            const allTasks = getAllTasksFromDOM(rootElement);
+            
+            if (allTasks && allTasks.length > 0) {
+              await db.saveTasks(allTasks);
+              window.lastFullSave = Date.now();
+              if (debug) console.log('Auto-saved all tasks to database');
+            }
+          }
+        } catch (error) {
+          console.error('Error during auto-save:', error);
+        }
+      }, 30000); // 30 seconds
+      
+      if (debug) console.log('Application initialized successfully');
+    } catch (error) {
+      console.error('Error initializing application:', error);
+      showToast('Error', 'Failed to initialize application. Please refresh the page.');
+    }
   });
