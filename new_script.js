@@ -660,8 +660,8 @@ const sampleTasks = [
     console.log("🔄 STARTING PRIORITY SORTING");
     console.log("------------------------");
     
-    // Use a simple direct query for all section headers - per instructions
-    const sections = document.querySelectorAll('.section-header');
+    // Use a simple direct query for all section headers
+    const sections = document.querySelectorAll('li.section-header');
     
     console.log(`Found ${sections.length} section headers to process`);
     
@@ -673,27 +673,13 @@ const sampleTasks = [
     // Process each section
     sections.forEach((sectionHeader, index) => {
       // Get section name from the text content or a fallback
-      const sectionName = sectionHeader.querySelector('.task-text')?.textContent || 
-                          sectionHeader.textContent || 
-                          `Section ${index+1}`;
+      const sectionText = sectionHeader.querySelector('.task-text');
+      const sectionName = sectionText ? sectionText.textContent : `Section ${index+1}`;
       
-      // Try to get the section ID from multiple possible locations
-      const sectionId = sectionHeader.id || 
-                        sectionHeader.dataset.id || 
-                        sectionHeader.getAttribute('data-id') || 
-                        '';
-      
-      console.log(`\n🔶 SORTING SECTION: "${sectionName}" (${sectionId}) [${index+1}/${sections.length}]`);
-      
-      // Get the parent list item that contains this section header
-      const parentSection = sectionHeader.closest('li.task-item');
-      if (!parentSection) {
-        console.log(`Cannot find parent li.task-item for section "${sectionName}". Skipping.`);
-        return;
-      }
+      console.log(`\n🔶 SORTING SECTION: "${sectionName}" [${index+1}/${sections.length}]`);
       
       // Find the direct children container where tasks should be
-      const childrenContainer = parentSection.querySelector('.task-children');
+      const childrenContainer = sectionHeader.querySelector('.task-children');
       if (!childrenContainer) {
         console.log(`Cannot find .task-children container for section "${sectionName}". Skipping.`);
         return;
@@ -750,7 +736,7 @@ const sampleTasks = [
           return 0;
         }
         
-        // Calculate priority scores
+        // Calculate priority scores - exact order specified in requirements
         // Fast (50) > First (40) > Fire (30) > Fear (20) > Flow (10)
         const getPriorityScore = (data) => {
           let score = 0;
