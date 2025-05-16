@@ -785,10 +785,105 @@ const sampleTasks = [
     console.log("------------------------");
   }
 
+  // Initialize UI elements and event handlers
+  function initUI() {
+    // Set up add task button
+    const addTaskBtn = document.getElementById('add-task-btn');
+    if (addTaskBtn) {
+      addTaskBtn.addEventListener('click', addNewTask);
+    }
+    
+    // Set up priority sort button
+    const sortBtn = document.getElementById('priority-sort-btn');
+    if (sortBtn) {
+      sortBtn.addEventListener('click', sortTasksByPriority);
+    }
+    
+    // Set up filter dropdown
+    const filterDropdown = document.getElementById('filter-dropdown');
+    if (filterDropdown) {
+      filterDropdown.addEventListener('change', () => {
+        applyFilter(filterDropdown.value);
+      });
+    }
+    
+    // Listen for task flag updates to keep all task instances in sync
+    document.addEventListener('task-flag-updated', (event) => {
+      const { taskId, flagType, isActive } = event.detail;
+      
+      // Find all instances of this task in the DOM and update them
+      const taskElements = document.querySelectorAll(`.task-item[data-id="${taskId}"]`);
+      
+      taskElements.forEach(element => {
+        try {
+          // Update the flag in the DOM
+          const flagElement = element.querySelector(`.priority-flag[data-priority="${flagType}"]`);
+          if (flagElement) {
+            if (isActive) {
+              flagElement.classList.add('active');
+            } else {
+              flagElement.classList.remove('active');
+            }
+          }
+          
+          // Update the task data attribute
+          if (element.dataset.taskData) {
+            const taskData = JSON.parse(element.dataset.taskData);
+            taskData[flagType] = isActive;
+            element.dataset.taskData = JSON.stringify(taskData);
+          }
+        } catch (error) {
+          console.error('Error syncing task flag state:', error);
+        }
+      });
+    });
+    
+    console.log('UI initialized successfully');
+  }
+  
+  // Apply filter to tasks
+  function applyFilter(filterValue) {
+    console.log('Applying filter:', filterValue);
+    // Filter implementation would go here
+  }
+
   // Initialize the application when the DOM is loaded
   document.addEventListener('DOMContentLoaded', async () => {
-    // ... load or sample tasks into tasksToUse ...
+    console.log('🔄 Application initializing...');
+    
+    // 1) Initialize your UI handlers
+    initUI();
+    
+    // 2) Declare tasksToUse up front
+    let tasksToUse;
+    
+    // 3) Try loading from your Replit DB
+    try {
+      const loaded = await db.loadTasks();    // returns array or null
+      console.log('Database tasks:', loaded);
+      
+      // Try localStorage next
+      const fromStorage = JSON.parse(localStorage.getItem('dun_tasks') || '[]');
+      console.log('LocalStorage tasks:', fromStorage);
+      
+      // Pick whichever has data, otherwise sampleTasks
+      if (Array.isArray(fromStorage) && fromStorage.length) {
+        tasksToUse = fromStorage;
+      } else if (Array.isArray(loaded) && loaded.length) {
+        tasksToUse = loaded;
+      } else {
+        tasksToUse = sampleTasks;
+      }
+    } catch (e) {
+      console.error('Error loading tasks, falling back to samples:', e);
+      tasksToUse = sampleTasks;
+    }
+    
+    // 4) Render the tree exactly once
     const root = document.getElementById('task-tree');
-    root.innerHTML = ''; 
+    root.innerHTML = '';
+    console.log('Building tree with', tasksToUse.length, 'tasks');
     buildTree(tasksToUse, root);
+    
+    // 5) (Optional) set up auto-save, etc.
   });
