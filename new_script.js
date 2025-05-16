@@ -477,11 +477,141 @@ const sampleTasks = [
       scheduledTime: null
     };
     
-    // Create task element (code to build task DOM element would be here)
+    // Create a DOM element for the new task
     const newTaskElement = document.createElement('li');
     newTaskElement.className = 'task-item';
     newTaskElement.dataset.id = newTask.id;
     newTaskElement.dataset.taskData = JSON.stringify(newTask);
+    
+    // Create row with task content
+    const row = document.createElement('div');
+    row.className = 'task-row';
+    
+    // Create check button
+    const checkBtn = document.createElement('div');
+    checkBtn.className = 'task-check';
+    checkBtn.innerHTML = '<input type="checkbox" class="task-checkbox">';
+    
+    // Add event listener to checkbox
+    const checkbox = checkBtn.querySelector('input');
+    checkbox.addEventListener('change', async (e) => {
+      e.stopPropagation();
+      
+      // Update task completion status
+      newTask.completed = checkbox.checked;
+      
+      // Update visual representation
+      if (checkbox.checked) {
+        newTaskElement.classList.add('task-completed');
+      } else {
+        newTaskElement.classList.remove('task-completed');
+      }
+      
+      // Save updated task to database
+      await db.saveTask(newTask.id, newTask);
+      
+      // Update data attribute
+      newTaskElement.dataset.taskData = JSON.stringify(newTask);
+    });
+    
+    row.appendChild(checkBtn);
+    
+    // Add chevron for expandability (even if initially empty)
+    const chevron = document.createElement('div');
+    chevron.className = 'task-chevron';
+    chevron.textContent = '▸';
+    chevron.style.visibility = 'hidden'; // Hide initially since no children
+    
+    const toggleArea = document.createElement('div');
+    toggleArea.className = 'toggle-area';
+    toggleArea.setAttribute('data-no-drag', 'true');
+    toggleArea.appendChild(chevron);
+    row.appendChild(toggleArea);
+    
+    // Add task text
+    const textSpan = document.createElement('span');
+    textSpan.className = 'task-text';
+    textSpan.textContent = taskText;
+    row.appendChild(textSpan);
+    
+    // Add control container
+    const metaData = document.createElement('div');
+    metaData.className = 'task-control-container';
+    metaData.setAttribute('data-no-drag', 'true');
+    
+    // Create control buttons
+    const controlBar = document.createElement('div');
+    controlBar.className = 'task-control-bar';
+    controlBar.setAttribute('data-no-drag', 'true');
+    
+    // Edit button
+    const editBtn = document.createElement('button');
+    editBtn.className = 'control-btn edit-btn';
+    editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
+    editBtn.setAttribute('data-no-drag', 'true');
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openTaskModal(newTask, newTaskElement);
+    });
+    controlBar.appendChild(editBtn);
+    
+    // Delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'control-btn delete-btn';
+    deleteBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
+    deleteBtn.setAttribute('data-no-drag', 'true');
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteTask(newTask, newTaskElement);
+    });
+    controlBar.appendChild(deleteBtn);
+    
+    metaData.appendChild(controlBar);
+    row.appendChild(metaData);
+    
+    // Create priority flags
+    const flagsContainer = document.createElement('div');
+    flagsContainer.className = 'task-priority-flags';
+    
+    // Add all 5 priority flags using the helper function
+    ['fire', 'fast', 'flow', 'fear', 'first'].forEach(type => {
+      const iconMap = {
+        'fire': 'fa-fire',
+        'fast': 'fa-bolt',
+        'flow': 'fa-water',
+        'fear': 'fa-skull',
+        'first': 'fa-trophy'
+      };
+      
+      // Create flag using the existing helper function
+      const flag = createPriorityFlag(
+        type,
+        iconMap[type],
+        false, // initially not active
+        null  // no custom tooltip
+      );
+      
+      flagsContainer.appendChild(flag);
+    });
+    
+    row.appendChild(flagsContainer);
+    newTaskElement.appendChild(row);
+    
+    // Create hidden children container (even though it's empty)
+    const childrenContainer = document.createElement('div');
+    childrenContainer.className = 'task-children';
+    childrenContainer.style.display = 'none';
+    
+    // Create child task list (empty)
+    const childList = document.createElement('ul');
+    childList.className = 'task-list';
+    childrenContainer.appendChild(childList);
+    newTaskElement.appendChild(childrenContainer);
+    
+    // Make the child list sortable
+    createSortable(childList, chevron, childrenContainer);
+    
+    // ---- FIND TRIAGE SECTION TO ADD NEW TASK ----
     
     // Right inside addNewTask(), instead of all the fallbacks:
     const triageList = document
@@ -510,9 +640,18 @@ const sampleTasks = [
     // now append your newTaskElement there
     triageList.appendChild(newTaskElement);
     
-    // Clear the input field and show confirmation
+    // Clear the input field
     newTaskInput.value = '';
+    
+    // Show confirmation
     showToast('Success', `Task "${taskText}" added to triage`);
+    
+    // Save all tasks to update the DOM structure
+    setTimeout(async () => {
+      const allTasks = getAllTasksFromDOM(document.getElementById('task-tree'));
+      await db.saveTasks(allTasks);
+      if (debug) console.log('All tasks saved after adding new task');
+    }, 500);
   }
 
   // Sort tasks by priority

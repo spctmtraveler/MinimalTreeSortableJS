@@ -1873,62 +1873,20 @@ const sampleTasks = [
         return;
       }
       
-      // Creating a simpler approach to find the Triage container
-      let triageChildrenContainer = null;
-      let triageChildList = null;
-      
-      // First approach - find inside the parent li element
-      const triageLi = triageSection.closest('li');
-      if (triageLi) {
-        triageChildrenContainer = triageLi.querySelector('.task-children');
-        if (triageChildrenContainer) {
-          triageChildList = triageChildrenContainer.querySelector('.task-list');
-          if (debug) console.log('Found triage task list inside parent li');
-        }
+      // Single direct selector for finding the triage list
+      const triageList = document
+        .querySelector('.section-header[data-id="section-triage"]')
+        .closest('li')
+        .querySelector('.task-children .task-list');
+    
+      if (!triageList) {
+        console.error('Triage list not found, aborting');
+        showToast('Error', 'Cannot find Triage');
+        return;
       }
       
-      // Second approach - check next sibling of section header
-      if (!triageChildList && triageSection.nextElementSibling) {
-        if (triageSection.nextElementSibling.classList.contains('task-children')) {
-          triageChildrenContainer = triageSection.nextElementSibling;
-          triageChildList = triageChildrenContainer.querySelector('.task-list');
-          if (debug) console.log('Found triage list through next sibling');
-        }
-      }
-      
-      // Third approach - search specifically using ID and class attributes
-      if (!triageChildList) {
-        // Try direct query using the ID of the section header to find nearby task list
-        const allTriageElements = document.querySelectorAll('[data-id="section-triage"], [data-section="triage"]');
-        for (const elem of allTriageElements) {
-          // Check parent element
-          if (elem.parentElement) {
-            const container = elem.parentElement.querySelector('.task-children');
-            if (container) {
-              triageChildrenContainer = container;
-              triageChildList = container.querySelector('.task-list');
-              if (triageChildList) {
-                if (debug) console.log('Found triage list through ID attribute');
-                break;
-              }
-            }
-          }
-        }
-      }
-      
-      // Last resort - just search for any Triage-related elements
-      if (!triageChildList) {
-        const taskLists = document.querySelectorAll('.task-list');
-        for (const list of taskLists) {
-          // Look for the nearest section header
-          const nearestHeader = list.closest('li')?.querySelector('.section-header');
-          if (nearestHeader && nearestHeader.textContent.includes('TRIAGE')) {
-            triageChildList = list;
-            if (debug) console.log('Found triage list through text content match');
-            break;
-          }
-        }
-      }
+      // Set triageChildList to our reliably selected list
+      const triageChildList = triageList;
       
       // Last resort - give up if we can't find the triage list
       if (!triageChildList) {
