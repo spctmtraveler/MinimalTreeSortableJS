@@ -21,8 +21,14 @@ app.get('/api/tasks', async (req, res) => {
     const keys = await db.list();
     const tasks = [];
     
-    // Filter for only task keys
-    const taskKeys = keys.filter(key => key.startsWith('task:'));
+    // Filter for only task keys - ensure keys is an array
+    let taskKeys = [];
+    if (Array.isArray(keys)) {
+      taskKeys = keys.filter(key => key.startsWith('task:'));
+    } else if (typeof keys === 'object') {
+      // Handle if keys is not an array but an object with keys
+      taskKeys = Object.keys(keys).filter(key => key.startsWith('task:'));
+    }
     
     // Retrieve each task
     for (const key of taskKeys) {
