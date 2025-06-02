@@ -533,7 +533,7 @@ function createPriorityFlag(type, iconClass, isActive, tooltip) {
   flag.title = title;
   flag.innerHTML = `<i class="fa-solid ${icon}"></i>`;
 
-  flag.addEventListener('click', e => {
+  flag.addEventListener('click', async e => {
     e.stopPropagation();
     const taskItem = flag.closest('.task-item');
     if (!taskItem) return;
@@ -542,7 +542,7 @@ function createPriorityFlag(type, iconClass, isActive, tooltip) {
       td[type] = !td[type];
       taskItem.dataset.taskData = JSON.stringify(td);
       flag.classList.toggle('active', td[type]);
-      db.saveTask(td.id, td);      // 📌 persist immediately
+      db.saveTask(td.id, td).catch(err => console.error('Save error:', err));      // 📌 persist immediately
       if (debug) console.log(`Flag ${type} for "${td.content}" → ${td[type]}`);
     } catch(err) {
       console.error('Error toggling flag:', err);
@@ -658,7 +658,7 @@ function saveTaskFromModal(task, taskElement) {
     });
 
     taskElement.dataset.taskData = JSON.stringify(task);
-    db.saveTask(task.id, task);     // 📌 persist
+    db.saveTask(task.id, task).catch(err => console.error('Save error:', err));     // 📌 persist
 
     const textEl = taskElement.querySelector('.task-text');
     if (textEl) textEl.textContent = task.content;
@@ -870,7 +870,7 @@ async function addNewTask() {
     newTask.completed = !newTask.completed;
     checkbox.innerHTML = newTask.completed?'<i class="fa-solid fa-check"></i>':'';
     li.classList.toggle('task-completed', newTask.completed);
-    db.saveTask(newTask.id, newTask);
+    db.saveTask(newTask.id, newTask).catch(err => console.error('Save error:', err));
   });
   row.appendChild(checkbox);
 
