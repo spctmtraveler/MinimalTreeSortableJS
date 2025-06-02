@@ -115,8 +115,64 @@
                     <span class="close-modal">&times;</span>
                 </div>
                 <div class="modal-body">
-                    <!-- same modal HTML as before -->
-                    <!-- … -->
+                    <div class="form-group">
+                        <label for="modal-task-name">Task Name:</label>
+                        <input type="text" id="modal-task-name" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modal-overview">Overview:</label>
+                        <textarea id="modal-overview" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modal-details">Details:</label>
+                        <textarea id="modal-details" rows="5"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="modal-time-estimate">Time Estimate (mins):</label>
+                            <input type="number" id="modal-time-estimate" min="0" step="15" />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="modal-scheduled-time">Scheduled Time:</label>
+                            <input type="time" id="modal-scheduled-time" step="900" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modal-revisit-date">Revisit Date:</label>
+                        <input type="date" id="modal-revisit-date" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Priority Flags:</label>
+                        <div class="priority-flags-modal">
+                            <button type="button" class="priority-flag-modal" data-priority="fire" title="Fire">
+                                <i class="fas fa-fire"></i>
+                            </button>
+                            <button type="button" class="priority-flag-modal" data-priority="fast" title="Fast">
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                            <button type="button" class="priority-flag-modal" data-priority="flow" title="Flow">
+                                <i class="fas fa-water"></i>
+                            </button>
+                            <button type="button" class="priority-flag-modal" data-priority="fear" title="Fear">
+                                <i class="fas fa-skull"></i>
+                            </button>
+                            <button type="button" class="priority-flag-modal" data-priority="first" title="First">
+                                <i class="fas fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button id="save-task-btn" class="btn-primary">Save</button>
+                        <button id="delete-task-btn" class="btn-danger">Delete</button>
+                        <button id="cancel-task-btn" class="btn-secondary">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>

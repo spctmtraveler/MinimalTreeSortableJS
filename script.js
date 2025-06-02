@@ -48,88 +48,45 @@ const db = {
       throw error;
     }
   },
-  saveTask(taskId, taskData) {
+  async saveTask(taskId, taskData) {
     try {
-      const tasks = this.loadTasks() || sampleTasks;
-      function recurse(list) {
-        for (let t of list) {
-          if (t.id === taskId) {
-            Object.assign(t, taskData);
-            return true;
-          }
-          if (t.children && recurse(t.children)) return true;
-        }
-        return false;
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(taskData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      if (recurse(tasks)) {
-        this.saveTasks(tasks);
-        if (debug) console.log(`Task ${taskId} saved to localStorage`);
-        return true;
-      } else {
-        console.error(`Task ${taskId} not found for saveTask`);
-        return false;
-      }
+      
+      if (debug) console.log(`Task ${taskId} saved to database`);
+      return true;
     } catch (error) {
       console.error('Error in saveTask:', error);
       return false;
     }
   },
-  deleteTask(taskId) {
+  async deleteTask(taskId) {
     try {
-      const tasks = this.loadTasks() || sampleTasks;
-      function recurse(list) {
-        for (let i = 0; i < list.length; i++) {
-          if (list[i].id === taskId) {
-            list.splice(i, 1);
-            return true;
-          }
-          if (list[i].children && recurse(list[i].children)) return true;
-        }
-        return false;
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      if (recurse(tasks)) {
-        this.saveTasks(tasks);
-        if (debug) console.log(`Task ${taskId} deleted from localStorage`);
-        return true;
-      } else {
-        console.error(`Task ${taskId} not found for deleteTask`);
-        return false;
-      }
+      
+      if (debug) console.log(`Task ${taskId} deleted from database`);
+      return true;
     } catch (error) {
       console.error('Error in deleteTask:', error);
       return false;
     }
   },
-  addTask(parentId, taskData) {
-    try {
-      const tasks = this.loadTasks() || sampleTasks;
-      if (!parentId) {
-        tasks.push(taskData);
-      } else {
-        function recurse(list) {
-          for (let t of list) {
-            if (t.id === parentId) {
-              t.children = t.children || [];
-              t.children.push(taskData);
-              return true;
-            }
-            if (t.children && recurse(t.children)) return true;
-          }
-          return false;
-        }
-        if (!recurse(tasks)) {
-          console.error(`Parent ${parentId} not found for addTask`);
-          return false;
-        }
-      }
-      this.saveTasks(tasks);
-      if (debug) console.log(`Task ${taskData.id} added under ${parentId}`);
-      return true;
-    } catch (error) {
-      console.error('Error in addTask:', error);
-      return false;
-    }
-  },
+
   clearTasks() {
     try {
       localStorage.removeItem('dun_tasks');
@@ -603,8 +560,14 @@ function formatRevisitDate(dateStr) {
   if (dateStr==='next week') return 'Next week';
   if (/^\d{1,2}\/\d{1,2}$/.test(dateStr)) return dateStr;
   try {
+    // Handle ISO date format from database (YYYY-MM-DD)
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      const [year, month, day] = dateStr.split('-').map(Number);
+      return `${month}/${day}`;
+    }
+    // Handle other formats
     const d = dateStr.includes('-')
-      ? new Date(Date.UTC(...dateStr.split('-').map(Number)))
+      ? new Date(dateStr + 'T00:00:00Z')
       : new Date(dateStr);
     if (!isNaN(d)) return `${d.getUTCMonth()+1}/${d.getUTCDate()}`;
   } catch(e){}
