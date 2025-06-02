@@ -109,6 +109,15 @@ app.put('/api/tasks/:id', async (req, res) => {
       timeEstimate, overview, details, scheduledTime
     } = req.body;
     
+    console.log('UPDATE REQUEST for task:', id);
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    
+    // Handle empty dates - convert empty strings to null for PostgreSQL
+    const cleanRevisitDate = revisitDate === '' || revisitDate === undefined ? null : revisitDate;
+    const cleanScheduledTime = scheduledTime === '' || scheduledTime === undefined ? null : scheduledTime;
+    
+    console.log('Cleaned dates:', { cleanRevisitDate, cleanScheduledTime });
+    
     const result = await pool.query(`
       UPDATE tasks SET
         content = $2,
@@ -127,8 +136,8 @@ app.put('/api/tasks/:id', async (req, res) => {
       WHERE id = $1
       RETURNING *
     `, [
-      id, content, completed, revisitDate, fire, fast, flow, fear, first,
-      timeEstimate, overview, details, scheduledTime
+      id, content, completed, cleanRevisitDate, fire, fast, flow, fear, first,
+      timeEstimate, overview, details, cleanScheduledTime
     ]);
     
     if (result.rows.length === 0) {

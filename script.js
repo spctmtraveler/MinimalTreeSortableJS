@@ -50,6 +50,9 @@ const db = {
   },
   async saveTask(taskId, taskData) {
     try {
+      console.log(`💾 DB SAVE: Attempting to save task ${taskId} to database`);
+      console.log('💾 DB SAVE: Data being sent:', JSON.stringify(taskData, null, 2));
+      
       const response = await fetch(`/api/tasks/${taskId}`, {
         method: 'PUT',
         headers: {
@@ -59,13 +62,17 @@ const db = {
       });
       
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`💾 DB SAVE ERROR: HTTP ${response.status} - ${errorText}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      if (debug) console.log(`Task ${taskId} saved to database`);
+      const result = await response.json();
+      console.log(`💾 DB SAVE SUCCESS: Task ${taskId} saved successfully`);
+      console.log('💾 DB SAVE: Server response:', result);
       return true;
     } catch (error) {
-      console.error('Error in saveTask:', error);
+      console.error('💾 DB SAVE ERROR:', error);
       return false;
     }
   },
@@ -539,9 +546,14 @@ function createPriorityFlag(type, iconClass, isActive, tooltip, isModal = false)
     if (!taskItem) return;
     try {
       const td = JSON.parse(taskItem.dataset.taskData);
+      const oldValue = td[type];
       td[type] = !td[type];
       taskItem.dataset.taskData = JSON.stringify(td);
       flag.classList.toggle('active', td[type]);
+      
+      console.log(`🔴 MAIN SCREEN FLAG CHANGE: ${type} for task "${td.content}" changed from ${oldValue} to ${td[type]}`);
+      console.log('🔴 About to save task data to DB:', JSON.stringify(td, null, 2));
+      
       db.saveTask(td.id, td).catch(err => console.error('Save error:', err));      // 📌 persist immediately
       if (debug) console.log(`Flag ${type} for "${td.content}" → ${td[type]}`);
     } catch(err) {
@@ -678,6 +690,8 @@ function openTaskModal(task, taskElement) {
 /* ---------- Save from Modal ----------- */
 function saveTaskFromModal(task, taskElement) {
   try {
+    console.log('🔵 MODAL SAVE: Starting save for task:', task.id);
+    
     task.content        = document.getElementById('modal-task-name').value;
     task.revisitDate    = document.getElementById('modal-revisit-date').value;
     task.scheduledTime  = document.getElementById('modal-scheduled-time').value;
@@ -685,10 +699,21 @@ function saveTaskFromModal(task, taskElement) {
     task.details        = document.getElementById('modal-details').value;
     task.timeEstimate   = parseFloat(document.getElementById('modal-time-estimate').value)||0;
 
+    console.log('🔵 MODAL SAVE: Priority flags before update:');
+    ['fire', 'fast', 'flow', 'fear', 'first'].forEach(p => {
+      console.log(`  ${p}: ${task[p]}`);
+    });
+
     document.querySelectorAll('.priority-flag-modal').forEach(btn=>{
       const p=btn.dataset.priority;
-      if (p) task[p]=btn.classList.contains('active');
+      if (p) {
+        const newValue = btn.classList.contains('active');
+        console.log(`🔵 MODAL SAVE: ${p} flag changed to ${newValue}`);
+        task[p] = newValue;
+      }
     });
+
+    console.log('🔵 MODAL SAVE: Final task data being saved:', JSON.stringify(task, null, 2));
 
     taskElement.dataset.taskData = JSON.stringify(task);
     db.saveTask(task.id, task).catch(err => console.error('Save error:', err));     // 📌 persist
