@@ -797,6 +797,38 @@ body > .sortable-drag {
   color: var(--text-color);
 }
 
+/* Modal Priority Flags - Match main screen styling */
+.priority-flags-modal {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.priority-flag-modal {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--inactive-color);
+  background: transparent;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.priority-flag-modal.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000;
+}
+
+.priority-flag-modal:hover {
+  border-color: var(--accent-hover);
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;

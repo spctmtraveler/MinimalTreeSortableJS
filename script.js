@@ -515,9 +515,9 @@ function buildTree(tasks, parent) {
 }
 
 /* ---------- Priority Flag Factory ----------- */
-function createPriorityFlag(type, iconClass, isActive, tooltip) {
+function createPriorityFlag(type, iconClass, isActive, tooltip, isModal = false) {
   const flag = document.createElement('button');
-  flag.className = `priority-flag ${isActive ? 'active' : ''}`;
+  flag.className = `${isModal ? 'priority-flag-modal' : 'priority-flag'} ${isActive ? 'active' : ''}`;
   flag.setAttribute('data-priority', type);
   flag.setAttribute('data-no-drag', 'true');
 
@@ -636,15 +636,29 @@ function openTaskModal(task, taskElement) {
     detailsInput.value = task.details||'';
     estimateInput.value = task.timeEstimate||'';
 
-    document.querySelectorAll('.priority-flag-modal').forEach(btn=>{
-      const p=btn.dataset.priority;
-      btn.classList.toggle('active', !!task[p]);
+    // Generate priority flags dynamically using the unified function
+    const modalFlagsContainer = document.getElementById('modal-priority-flags');
+    modalFlagsContainer.innerHTML = ''; // Clear existing flags
+    
+    const flagTypes = [
+      { type: 'fire', icon: 'fa-fire', title: 'Fire' },
+      { type: 'fast', icon: 'fa-bolt', title: 'Fast' },
+      { type: 'flow', icon: 'fa-water', title: 'Flow' },
+      { type: 'fear', icon: 'fa-skull', title: 'Fear' },
+      { type: 'first', icon: 'fa-star', title: 'First' }
+    ];
+    
+    flagTypes.forEach(flagDef => {
+      const isActive = !!task[flagDef.type];
+      const flag = createPriorityFlag(flagDef.type, flagDef.icon, isActive, flagDef.title, true);
       
       // Add click handler for modal flags
-      btn.onclick = (e) => {
+      flag.onclick = (e) => {
         e.preventDefault();
-        btn.classList.toggle('active');
+        flag.classList.toggle('active');
       };
+      
+      modalFlagsContainer.appendChild(flag);
     });
 
     modal.style.display='block';
