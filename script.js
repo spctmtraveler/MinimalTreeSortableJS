@@ -819,9 +819,99 @@ function showToast(title, message, actionText, actionCallback) {
   }
 }
 
+/* ---------- Filter Tasks ----------- */
+function handleFilterChange() {
+  const filterValue = document.getElementById('filter-dropdown').value;
+  console.log(`🔍 FILTER: Applying filter "${filterValue}"`);
+  
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  
+  const weekStart = new Date(today);
+  weekStart.setDate(today.getDate() - today.getDay());
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+  
+  const nextWeekStart = new Date(weekEnd);
+  nextWeekStart.setDate(weekEnd.getDate() + 1);
+  const nextWeekEnd = new Date(nextWeekStart);
+  nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+  
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  
+  const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+
+  document.querySelectorAll('.task-item').forEach(taskItem => {
+    if (taskItem.classList.contains('section-header')) {
+      // Always show section headers
+      taskItem.style.display = '';
+      return;
+    }
+    
+    let shouldShow = false;
+    
+    if (filterValue === 'all') {
+      shouldShow = true;
+    } else if (filterValue === 'triage') {
+      // Show tasks in triage section
+      const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
+      shouldShow = taskData.id && taskData.id.includes('triage');
+    } else {
+      // Date-based filters
+      const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
+      const revisitDate = taskData.revisitDate;
+      
+      if (revisitDate) {
+        let taskDate;
+        if (revisitDate === 'today') {
+          taskDate = today;
+        } else if (revisitDate === 'tomorrow') {
+          taskDate = tomorrow;
+        } else if (typeof revisitDate === 'string' && revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+          taskDate = new Date(revisitDate + 'T00:00:00');
+        }
+        
+        if (taskDate) {
+          switch (filterValue) {
+            case 'today':
+              shouldShow = taskDate.getTime() === today.getTime();
+              break;
+            case 'tomorrow':
+              shouldShow = taskDate.getTime() === tomorrow.getTime();
+              break;
+            case 'this-week':
+              shouldShow = taskDate >= weekStart && taskDate <= weekEnd;
+              break;
+            case 'next-week':
+              shouldShow = taskDate >= nextWeekStart && taskDate <= nextWeekEnd;
+              break;
+            case 'this-month':
+              shouldShow = taskDate >= monthStart && taskDate <= monthEnd;
+              break;
+            case 'next-month':
+              shouldShow = taskDate >= nextMonthStart && taskDate <= nextMonthEnd;
+              break;
+          }
+        }
+      }
+    }
+    
+    taskItem.style.display = shouldShow ? '' : 'none';
+  });
+  
+  console.log(`🔍 FILTER: Applied "${filterValue}" filter`);
+}
+
 /* ---------- Sort by Priority ----------- */
-function sortTasksByPriority() {
+async function sortTasksByPriority() {
   if (debug) console.log('🔄 Starting priority sort');
+  
+  const sortPromises = [];
+  
   document.querySelectorAll('.section-header').forEach(sectionHeader=>{
     const container = sectionHeader.nextElementSibling;
     if (!container || !container.classList.contains('task-children')) {
@@ -837,16 +927,52 @@ function sortTasksByPriority() {
     const completed    = items.filter(i=>i.classList.contains('task-completed'));
     const notCompleted = items.filter(i=>!i.classList.contains('task-completed'));
 
+    console.log(`🔄 SORT: Section ${sectionHeader.dataset.id} - ${notCompleted.length} incomplete, ${completed.length} completed`);
+
     notCompleted.sort((a,b)=>{
       const score = el=>['fast','first','fire','fear','flow']
         .reduce((s,p,i)=>s + (el.querySelector(`.priority-flag[data-priority="${p}"]`)?.classList.contains('active') ? (50-10*i) : 0),0);
       return score(b)-score(a);
     });
 
-    [...notCompleted, ...completed].forEach(li=>list.appendChild(li));
+    const sortedItems = [...notCompleted, ...completed];
+    
+    // Update DOM order
+    sortedItems.forEach(li=>list.appendChild(li));
+    
+    // Update database with new positions
+    sortedItems.forEach((li, index) => {
+      const taskData = JSON.parse(li.dataset.taskData || '{}');
+      if (taskData.id) {
+        console.log(`🔄 SORT: Updating ${taskData.id} to position ${index}`);
+        const updateData = {
+          ...taskData,
+          positionOrder: index
+        };
+        
+        // Save new position to database
+        const savePromise = db.saveTask(taskData.id, updateData)
+          .then(() => {
+            console.log(`✅ SORT: Saved position ${index} for ${taskData.id}`);
+          })
+          .catch(err => {
+            console.error(`❌ SORT: Failed to save position for ${taskData.id}:`, err);
+          });
+        
+        sortPromises.push(savePromise);
+      }
+    });
   });
-  showToast('Tasks Sorted','By priority.');
-  if (debug) console.log('✅ Priority sort complete');
+  
+  // Wait for all database updates to complete
+  try {
+    await Promise.all(sortPromises);
+    showToast('Tasks Sorted','By priority and saved to database.');
+    console.log('✅ Priority sort complete - all positions saved to database');
+  } catch (error) {
+    console.error('❌ Error saving sort order to database:', error);
+    showToast('Sort Warning','Tasks sorted but some positions may not be saved.');
+  }
 }
 
 /* ---------- UI Init ----------- */
@@ -863,6 +989,9 @@ function initUI() {
     btn.classList.add('active');
     setTimeout(()=>btn.classList.remove('active'), 800);
   });
+
+  // Filter dropdown functionality
+  document.getElementById('filter-dropdown')?.addEventListener('change', handleFilterChange);
 
   document.querySelectorAll('.flag-btn').forEach(btn=>{
     btn.addEventListener('click', e=>{
