@@ -25,6 +25,29 @@ const db = {
       return null;
     }
   },
+
+  async addTask(taskData) {
+    try {
+      const response = await fetch('/api/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(taskData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      if (debug) console.log(`Task ${taskData.id} added to database`);
+      return result;
+    } catch (error) {
+      console.error('Error adding task to database:', error);
+      throw error;
+    }
+  },
   saveTask(taskId, taskData) {
     try {
       const tasks = this.loadTasks() || sampleTasks;
@@ -825,9 +848,31 @@ function addNewTask() {
     overview:'', details:'', timeEstimate:0, scheduledTime:null
   };
 
-  // persist
-  if (!db.addTask('section-triage', newTask)) {
-    showToast('Error','Could not save new task.');
+  // persist to database
+  try {
+    const taskData = {
+      id: newTask.id,
+      content: newTask.content,
+      isSection: false,
+      completed: false,
+      parentId: 'section-triage',
+      positionOrder: 999, // Will be at the end
+      revisitDate: null,
+      fire: false,
+      fast: false,
+      flow: false,
+      fear: false,
+      first: false,
+      timeEstimate: 0,
+      overview: '',
+      details: '',
+      scheduledTime: null
+    };
+    
+    await db.addTask(taskData);
+  } catch (error) {
+    console.error('Error saving new task:', error);
+    showToast('Error','Could not save new task to database.');
     return;
   }
 
@@ -1035,18 +1080,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   const root = document.getElementById('task-tree');
   root.innerHTML = '';  // clear any previous
 
-  let tasksToUse = db.loadTasks();
-  if (tasksToUse) {
-    if (debug) console.log('Using tasks from localStorage');
-  } else {
-    if (debug) console.log('No saved tasks, loading sampleTasks');
-    tasksToUse = sampleTasks;
-    db.saveTasks(sampleTasks);
-  }
+  try {
+    let tasksToUse = await db.loadTasks();
+    if (tasksToUse && Array.isArray(tasksToUse) && tasksToUse.length > 0) {
+      if (debug) console.log('Using tasks from database');
+    } else {
+      if (debug) console.log('No tasks found in database, loading sampleTasks');
+      tasksToUse = sampleTasks;
+    }
 
-  buildTree(tasksToUse, root);
-  const rootList = root.querySelector(':scope > .task-list');
-  if (rootList) createRootSortable(rootList);
+    buildTree(tasksToUse, root);
+    const rootList = root.querySelector(':scope > .task-list');
+    if (rootList) createRootSortable(rootList);
+  } catch (error) {
+    console.error('Error initializing application:', error);
+    // Fallback to sample tasks if database fails
+    if (debug) console.log('Database error, using sample tasks as fallback');
+    buildTree(sampleTasks, root);
+    const rootList = root.querySelector(':scope > .task-list');
+    if (rootList) createRootSortable(rootList);
+  }
 
   if (debug) console.log('Application initialized');
 });
