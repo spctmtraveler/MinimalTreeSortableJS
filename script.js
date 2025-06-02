@@ -9,30 +9,19 @@
 // Debug mode - enable for console logs
 const debug = true;
 
-// Database module using localStorage
+// Database module using PostgreSQL API
 const db = {
-  saveTasks(tasks) {
+  async loadTasks() {
     try {
-      localStorage.setItem('dun_tasks', JSON.stringify(tasks));
-      if (debug) console.log('Tasks saved to localStorage');
-      return true;
-    } catch (error) {
-      console.error('Error saving tasks to localStorage:', error);
-      return false;
-    }
-  },
-  loadTasks() {
-    try {
-      const tasks = localStorage.getItem('dun_tasks');
-      if (!tasks) {
-        if (debug) console.log('No tasks found in localStorage');
-        return null;
+      const response = await fetch('/api/tasks');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const parsed = JSON.parse(tasks);
-      if (debug) console.log('Tasks loaded from localStorage');
-      return parsed;
+      const tasks = await response.json();
+      if (debug) console.log('Tasks loaded from database');
+      return tasks;
     } catch (error) {
-      console.error('Error loading tasks from localStorage:', error);
+      console.error('Error loading tasks from database:', error);
       return null;
     }
   },
