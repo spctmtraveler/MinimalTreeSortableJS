@@ -101,7 +101,7 @@ button, input, select, textarea {
 }
 
 #filter-dropdown option {
-  background: rgba(255, 255, 255, 0.03);
+  background: #212121;
   color: var(--text-color);
 }
 
