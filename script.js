@@ -94,6 +94,22 @@ const db = {
     }
   },
 
+  async fetchTask(taskId) {
+    try {
+      console.log(`🔍 DB FETCH: Getting fresh data for task ${taskId}`);
+      const response = await fetch(`/api/tasks/${taskId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const task = await response.json();
+      console.log(`🔍 DB FETCH SUCCESS: Fresh data retrieved for ${taskId}:`, task);
+      return task;
+    } catch (error) {
+      console.error(`🔍 DB FETCH ERROR: Failed to fetch task ${taskId}:`, error);
+      return null;
+    }
+  },
+
   clearTasks() {
     try {
       localStorage.removeItem('dun_tasks');
@@ -601,9 +617,20 @@ function formatDateForInput(dateStr) {
 }
 
 /* ---------- Open Task Modal ----------- */
-function openTaskModal(task, taskElement) {
+async function openTaskModal(task, taskElement) {
   try {
-    console.log('Opening modal for task:', task);
+    console.log('🟡 MODAL OPEN: Starting to open modal for task:', task.id);
+    
+    // Fetch fresh data from database to ensure we have the latest values
+    console.log('🟡 MODAL OPEN: Fetching fresh data from database...');
+    const freshTask = await db.fetchTask(task.id);
+    if (freshTask) {
+      console.log('🟡 MODAL OPEN: Got fresh data from DB:', freshTask);
+      task = freshTask;
+    } else {
+      console.log('🟡 MODAL OPEN: Using cached data (DB fetch failed)');
+    }
+    
     const modal = document.getElementById('task-view-modal');
     if (!modal) throw new Error('Modal not found');
     

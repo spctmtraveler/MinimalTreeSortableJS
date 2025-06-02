@@ -71,6 +71,33 @@ app.get('/api/tasks', async (req, res) => {
   }
 });
 
+// Get a single task by ID
+app.get('/api/tasks/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('FETCH REQUEST for single task:', id);
+    const result = await pool.query(`
+      SELECT 
+        id, content, is_section, completed, parent_id, position_order,
+        revisit_date, fire, fast, flow, fear, first, time_estimate,
+        overview, details, scheduled_time
+      FROM tasks 
+      WHERE id = $1
+    `, [id]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    
+    const task = result.rows[0];
+    console.log('FETCH SUCCESS: Found task:', task);
+    res.json(task);
+  } catch (error) {
+    console.error('Error fetching single task:', error);
+    res.status(500).json({ error: 'Failed to fetch task' });
+  }
+});
+
 // Create a new task
 app.post('/api/tasks', async (req, res) => {
   try {
