@@ -591,14 +591,27 @@ function formatDateForInput(dateStr) {
 /* ---------- Open Task Modal ----------- */
 function openTaskModal(task, taskElement) {
   try {
+    console.log('Opening modal for task:', task);
     const modal = document.getElementById('task-view-modal');
     if (!modal) throw new Error('Modal not found');
-    const titleInput = document.getElementById('task-title');
-    const revisitInput = document.getElementById('revisit-date');
-    const timeInput = document.getElementById('scheduled-time');
-    const overviewInput = document.getElementById('task-overview');
-    const detailsInput = document.getElementById('task-details');
-    const estimateInput = document.getElementById('time-estimate');
+    
+    // Use correct IDs that match the HTML
+    const titleInput = document.getElementById('modal-task-name');
+    const revisitInput = document.getElementById('modal-revisit-date');
+    const timeInput = document.getElementById('modal-scheduled-time');
+    const overviewInput = document.getElementById('modal-overview');
+    const detailsInput = document.getElementById('modal-details');
+    const estimateInput = document.getElementById('modal-time-estimate');
+    
+    console.log('Modal fields found:', {
+      titleInput: !!titleInput,
+      revisitInput: !!revisitInput,
+      timeInput: !!timeInput,
+      overviewInput: !!overviewInput,
+      detailsInput: !!detailsInput,
+      estimateInput: !!estimateInput
+    });
+    
     if (!titleInput||!revisitInput||!timeInput||!overviewInput||!detailsInput||!estimateInput){
       throw new Error('Modal fields missing');
     }
@@ -623,9 +636,15 @@ function openTaskModal(task, taskElement) {
     detailsInput.value = task.details||'';
     estimateInput.value = task.timeEstimate||'';
 
-    document.querySelectorAll('.flag-btn').forEach(btn=>{
+    document.querySelectorAll('.priority-flag-modal').forEach(btn=>{
       const p=btn.dataset.priority;
       btn.classList.toggle('active', !!task[p]);
+      
+      // Add click handler for modal flags
+      btn.onclick = (e) => {
+        e.preventDefault();
+        btn.classList.toggle('active');
+      };
     });
 
     modal.style.display='block';
@@ -645,14 +664,14 @@ function openTaskModal(task, taskElement) {
 /* ---------- Save from Modal ----------- */
 function saveTaskFromModal(task, taskElement) {
   try {
-    task.content        = document.getElementById('task-title').value;
-    task.revisitDate    = document.getElementById('revisit-date').value;
-    task.scheduledTime  = document.getElementById('scheduled-time').value;
-    task.overview       = document.getElementById('task-overview').value;
-    task.details        = document.getElementById('task-details').value;
-    task.timeEstimate   = parseFloat(document.getElementById('time-estimate').value)||0;
+    task.content        = document.getElementById('modal-task-name').value;
+    task.revisitDate    = document.getElementById('modal-revisit-date').value;
+    task.scheduledTime  = document.getElementById('modal-scheduled-time').value;
+    task.overview       = document.getElementById('modal-overview').value;
+    task.details        = document.getElementById('modal-details').value;
+    task.timeEstimate   = parseFloat(document.getElementById('modal-time-estimate').value)||0;
 
-    document.querySelectorAll('.flag-btn').forEach(btn=>{
+    document.querySelectorAll('.priority-flag-modal').forEach(btn=>{
       const p=btn.dataset.priority;
       if (p) task[p]=btn.classList.contains('active');
     });
