@@ -832,7 +832,7 @@ function initUI() {
 }
 
 /* ---------- Add New Task ----------- */
-function addNewTask() {
+async function addNewTask() {
   const input = document.getElementById('new-task-input');
   if (!input) return;
   const text = input.value.trim();
