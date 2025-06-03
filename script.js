@@ -908,9 +908,10 @@ function handleFilterChange() {
     if (filterValue === 'all') {
       shouldShow = true;
     } else if (filterValue === 'triage') {
-      // Show tasks in triage section
+      // Show tasks in triage section - check parent_id or if task id contains triage
       const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
-      shouldShow = taskData.id && taskData.id.includes('triage');
+      shouldShow = (taskData.parent_id === 'section-triage') || 
+                   (taskData.id && taskData.id.includes('triage'));
     } else {
       // Date-based filters
       const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
@@ -918,33 +919,45 @@ function handleFilterChange() {
       
       if (revisitDate) {
         let taskDate;
+        
+        // Handle different date formats
         if (revisitDate === 'today') {
           taskDate = today;
         } else if (revisitDate === 'tomorrow') {
           taskDate = tomorrow;
-        } else if (typeof revisitDate === 'string' && revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-          taskDate = new Date(revisitDate + 'T00:00:00');
+        } else if (typeof revisitDate === 'string') {
+          // Handle ISO date strings from database (YYYY-MM-DDTHH:MM:SS.SSSZ)
+          if (revisitDate.includes('T')) {
+            taskDate = new Date(revisitDate);
+          } else if (revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            taskDate = new Date(revisitDate + 'T00:00:00');
+          } else {
+            taskDate = new Date(revisitDate);
+          }
         }
         
-        if (taskDate) {
+        if (taskDate && !isNaN(taskDate)) {
+          // Convert to date-only for comparison
+          const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+          
           switch (filterValue) {
             case 'today':
-              shouldShow = taskDate.getTime() === today.getTime();
+              shouldShow = taskDateOnly.getTime() === today.getTime();
               break;
             case 'tomorrow':
-              shouldShow = taskDate.getTime() === tomorrow.getTime();
+              shouldShow = taskDateOnly.getTime() === tomorrow.getTime();
               break;
             case 'this-week':
-              shouldShow = taskDate >= weekStart && taskDate <= weekEnd;
+              shouldShow = taskDateOnly >= weekStart && taskDateOnly <= weekEnd;
               break;
             case 'next-week':
-              shouldShow = taskDate >= nextWeekStart && taskDate <= nextWeekEnd;
+              shouldShow = taskDateOnly >= nextWeekStart && taskDateOnly <= nextWeekEnd;
               break;
             case 'this-month':
-              shouldShow = taskDate >= monthStart && taskDate <= monthEnd;
+              shouldShow = taskDateOnly >= monthStart && taskDateOnly <= monthEnd;
               break;
             case 'next-month':
-              shouldShow = taskDate >= nextMonthStart && taskDate <= nextMonthEnd;
+              shouldShow = taskDateOnly >= nextMonthStart && taskDateOnly <= nextMonthEnd;
               break;
           }
         }
