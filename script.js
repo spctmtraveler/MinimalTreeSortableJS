@@ -991,15 +991,32 @@ async function sortTasksByPriority() {
       return;
     }
     
-    const allChildren = Array.from(list.children);
-    console.log(`🔄 SORT: All children in list:`, allChildren.length, allChildren);
+    // Look for tasks in nested ul structures - the actual tasks might be in a nested task-list
+    let taskItems = [];
     
-    const items = allChildren.filter(li => {
-      const isTaskItem = li.classList.contains('task-item');
-      const isSectionHeader = li.classList.contains('section-header');
-      console.log(`🔄 SORT: Child element:`, li, `task-item: ${isTaskItem}, section-header: ${isSectionHeader}`);
-      return isTaskItem && !isSectionHeader;
-    });
+    // First check direct children
+    const directChildren = Array.from(list.children).filter(li => 
+      li.classList.contains('task-item') && !li.classList.contains('section-header')
+    );
+    
+    // If no direct children, look in nested ul elements
+    if (directChildren.length === 0) {
+      const nestedLists = list.querySelectorAll(':scope > ul.task-list');
+      console.log(`🔄 SORT: Found ${nestedLists.length} nested lists`);
+      
+      nestedLists.forEach(nestedList => {
+        const nestedItems = Array.from(nestedList.children).filter(li => 
+          li.classList.contains('task-item') && !li.classList.contains('section-header')
+        );
+        taskItems.push(...nestedItems);
+        console.log(`🔄 SORT: Found ${nestedItems.length} items in nested list`);
+      });
+    } else {
+      taskItems = directChildren;
+    }
+    
+    const items = taskItems;
+    console.log(`🔄 SORT: Total task items found: ${items.length}`);
     
     console.log(`🔄 SORT: Found ${items.length} tasks in ${sectionId}`);
     
@@ -1018,8 +1035,15 @@ async function sortTasksByPriority() {
 
     const sortedItems = [...notCompleted, ...completed];
     
-    // Update DOM order
-    sortedItems.forEach(li=>list.appendChild(li));
+    // Update DOM order - append to the correct list (nested if applicable)
+    let targetList = list;
+    if (items.length > 0 && items[0].parentElement !== list) {
+      // Tasks are in a nested list, use that as the target
+      targetList = items[0].parentElement;
+      console.log(`🔄 SORT: Using nested list as target for ${sectionId}`);
+    }
+    
+    sortedItems.forEach(li=>targetList.appendChild(li));
     
     // Update database with new positions
     sortedItems.forEach((li, index) => {
