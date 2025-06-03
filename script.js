@@ -376,7 +376,14 @@ function buildTree(tasks, parent) {
     ul.dataset.isRoot = 'true';
   }
 
-  tasks.forEach(task => {
+  // Sort tasks by position_order to maintain saved sort order
+  const sortedTasks = [...tasks].sort((a, b) => {
+    const orderA = typeof a.positionOrder === 'number' ? a.positionOrder : (a.position_order || 999);
+    const orderB = typeof b.positionOrder === 'number' ? b.positionOrder : (b.position_order || 999);
+    return orderA - orderB;
+  });
+
+  sortedTasks.forEach(task => {
     const li = document.createElement('li');
     li.className = 'task-item';
     li.dataset.id = task.id;
@@ -587,18 +594,43 @@ function formatRevisitDate(dateStr) {
   if (dateStr==='tomorrow') return 'tomorrow';
   if (dateStr==='next week') return 'Next week';
   if (/^\d{1,2}\/\d{1,2}$/.test(dateStr)) return dateStr;
+  
   try {
-    // Handle ISO date format from database (YYYY-MM-DD)
-    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-      const [year, month, day] = dateStr.split('-').map(Number);
-      return `${month}/${day}`;
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    let taskDate;
+    
+    // Handle ISO date format from database (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS.SSSZ)
+    if (typeof dateStr === 'string') {
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+        taskDate = new Date(dateStr + 'T00:00:00');
+      } else if (dateStr.includes('T')) {
+        taskDate = new Date(dateStr);
+      } else {
+        taskDate = new Date(dateStr);
+      }
     }
-    // Handle other formats
-    const d = dateStr.includes('-')
-      ? new Date(dateStr + 'T00:00:00Z')
-      : new Date(dateStr);
-    if (!isNaN(d)) return `${d.getUTCMonth()+1}/${d.getUTCDate()}`;
-  } catch(e){}
+    
+    if (taskDate && !isNaN(taskDate)) {
+      const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+      
+      // Check if it's today or tomorrow
+      if (taskDateOnly.getTime() === today.getTime()) {
+        return 'today';
+      } else if (taskDateOnly.getTime() === tomorrow.getTime()) {
+        return 'tomorrow';
+      } else {
+        // Return simplified M/D format
+        return `${taskDate.getMonth() + 1}/${taskDate.getDate()}`;
+      }
+    }
+  } catch(e) {
+    console.error('Date formatting error:', e, 'for dateStr:', dateStr);
+  }
+  
   return dateStr;
 }
 
@@ -747,8 +779,27 @@ function saveTaskFromModal(task, taskElement) {
 
     const textEl = taskElement.querySelector('.task-text');
     if (textEl) textEl.textContent = task.content;
-    const dateEl = taskElement.querySelector('.task-date');
-    if (dateEl) dateEl.textContent = formatRevisitDate(task.revisitDate);
+    
+    // Update or create date element
+    let dateEl = taskElement.querySelector('.task-date');
+    const controlContainer = taskElement.querySelector('.task-control-container');
+    
+    if (task.revisitDate) {
+      if (!dateEl && controlContainer) {
+        // Create date element if it doesn't exist
+        dateEl = document.createElement('span');
+        dateEl.className = 'task-date';
+        dateEl.setAttribute('data-no-drag', 'true');
+        controlContainer.insertBefore(dateEl, controlContainer.firstChild);
+      }
+      if (dateEl) {
+        dateEl.textContent = formatRevisitDate(task.revisitDate);
+      }
+    } else if (dateEl) {
+      // Remove date element if no date
+      dateEl.remove();
+    }
+    
     taskElement.querySelectorAll('.priority-flag').forEach(f=>{
       const p=f.dataset.priority;
       f.classList.toggle('active', !!task[p]);
@@ -913,15 +964,28 @@ async function sortTasksByPriority() {
   const sortPromises = [];
   
   document.querySelectorAll('.section-header').forEach(sectionHeader=>{
-    const container = sectionHeader.nextElementSibling;
-    if (!container || !container.classList.contains('task-children')) {
-      if (debug) console.log('Missing children for', sectionHeader.dataset.id);
+    console.log(`🔄 SORT: Processing section ${sectionHeader.dataset.id}`);
+    
+    // Find the task-children container within this section header's parent
+    const sectionLi = sectionHeader.closest('.task-item');
+    const container = sectionLi?.querySelector('.task-children');
+    
+    if (!container) {
+      console.log(`❌ SORT: No task-children container found for ${sectionHeader.dataset.id}`);
       return;
     }
-    const list = container.querySelector(':scope>.task-list');
-    if (!list) return;
+    
+    const list = container.querySelector('.task-list');
+    if (!list) {
+      console.log(`❌ SORT: No task-list found for ${sectionHeader.dataset.id}`);
+      return;
+    }
+    
     const items = Array.from(list.children)
-      .filter(li=>!li.classList.contains('section-header'));
+      .filter(li=>li.classList.contains('task-item') && !li.classList.contains('section-header'));
+    
+    console.log(`🔄 SORT: Found ${items.length} tasks in ${sectionHeader.dataset.id}`);
+    
     if (items.length<=1) return;
 
     const completed    = items.filter(i=>i.classList.contains('task-completed'));
@@ -967,8 +1031,13 @@ async function sortTasksByPriority() {
   // Wait for all database updates to complete
   try {
     await Promise.all(sortPromises);
-    showToast('Tasks Sorted','By priority and saved to database.');
-    console.log('✅ Priority sort complete - all positions saved to database');
+    if (sortPromises.length > 0) {
+      showToast('Tasks Sorted','By priority and saved to database.');
+      console.log('✅ Priority sort complete - all positions saved to database');
+    } else {
+      showToast('Sort Notice','No tasks found to sort. Make sure sections are expanded.');
+      console.log('⚠️ No sortable tasks found in any section');
+    }
   } catch (error) {
     console.error('❌ Error saving sort order to database:', error);
     showToast('Sort Warning','Tasks sorted but some positions may not be saved.');
