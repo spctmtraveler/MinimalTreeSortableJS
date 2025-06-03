@@ -964,27 +964,44 @@ async function sortTasksByPriority() {
   const sortPromises = [];
   
   document.querySelectorAll('.section-header').forEach(sectionHeader=>{
-    console.log(`🔄 SORT: Processing section ${sectionHeader.dataset.id}`);
+    const sectionId = sectionHeader.dataset.id;
+    console.log(`🔄 SORT: Processing section ${sectionId}`);
+    
+    // Debug: Log the section header element structure
+    console.log(`🔄 SORT: Section header element:`, sectionHeader);
+    console.log(`🔄 SORT: Section header parent:`, sectionHeader.parentElement);
     
     // Find the task-children container within this section header's parent
     const sectionLi = sectionHeader.closest('.task-item');
+    console.log(`🔄 SORT: Section LI found:`, sectionLi);
+    
     const container = sectionLi?.querySelector('.task-children');
+    console.log(`🔄 SORT: Container found:`, container);
     
     if (!container) {
-      console.log(`❌ SORT: No task-children container found for ${sectionHeader.dataset.id}`);
+      console.log(`❌ SORT: No task-children container found for ${sectionId}`);
       return;
     }
     
     const list = container.querySelector('.task-list');
+    console.log(`🔄 SORT: List found:`, list);
+    
     if (!list) {
-      console.log(`❌ SORT: No task-list found for ${sectionHeader.dataset.id}`);
+      console.log(`❌ SORT: No task-list found for ${sectionId}`);
       return;
     }
     
-    const items = Array.from(list.children)
-      .filter(li=>li.classList.contains('task-item') && !li.classList.contains('section-header'));
+    const allChildren = Array.from(list.children);
+    console.log(`🔄 SORT: All children in list:`, allChildren.length, allChildren);
     
-    console.log(`🔄 SORT: Found ${items.length} tasks in ${sectionHeader.dataset.id}`);
+    const items = allChildren.filter(li => {
+      const isTaskItem = li.classList.contains('task-item');
+      const isSectionHeader = li.classList.contains('section-header');
+      console.log(`🔄 SORT: Child element:`, li, `task-item: ${isTaskItem}, section-header: ${isSectionHeader}`);
+      return isTaskItem && !isSectionHeader;
+    });
+    
+    console.log(`🔄 SORT: Found ${items.length} tasks in ${sectionId}`);
     
     if (items.length<=1) return;
 
