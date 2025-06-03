@@ -395,7 +395,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: -290px; /* Move further right to align with column headers */
+  right: -180px; /* Much closer to action buttons */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
