@@ -1,0 +1,211 @@
+script.js:1160 🔄 Starting consolidation to Triage
+script.js:1177 🔄 CONSOLIDATE: Found 9 tasks to move to Triage
+script.js:53 💾 DB SAVE: Attempting to save task task-1748925409339 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-1748925409339",
+  "content": "taks4",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-08T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "09:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1000
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-triage-2 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-triage-2",
+  "content": "Clean Kitchen",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-06-09T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "Quick kitchen cleanup",
+  "details": "Wash dishes, wipe counters, sweep floor",
+  "scheduledTime": "09:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1001
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-1748980200277 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-1748980200277",
+  "content": "Reply to mark V",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1002
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-1748979774630 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-1748979774630",
+  "content": "Send email to Gautam",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1003
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-1748980194895 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-1748980194895",
+  "content": "Reply to Bruce",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1004
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-triage-1 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-triage-1",
+  "content": "Mail check",
+  "isSection": false,
+  "completed": true,
+  "children": [],
+  "revisitDate": "2025-06-03T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "Check and respond to important emails",
+  "details": "Go through inbox and prioritize responses",
+  "scheduledTime": "09:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1005
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-a-1 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-a-1",
+  "content": "Review Budget2",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-06-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "Monthly budget review2",
+  "details": "Analyze spending patterns and adjust categories2",
+  "scheduledTime": "09:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1006
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-b-1 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-b-1",
+  "content": "Exercise Routine like a really long one like run for 10 hours and stuff so we",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "Daily workout",
+  "details": "Complete 30-minute cardio and strength training",
+  "scheduledTime": "09:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1007
+}
+script.js:53 💾 DB SAVE: Attempting to save task task-c-1 to database
+script.js:54 💾 DB SAVE: Data being sent: {
+  "id": "task-c-1",
+  "content": "Read Book",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 0.5,
+  "overview": "Continue reading current book",
+  "details": "Read at least one chapter of current novel",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1008
+}
+script.js:71 💾 DB SAVE SUCCESS: Task task-1748980200277 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-1748980200277', content: 'Reply to mark V', is_section: false, completed: false, parent_id: 'section-triage', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-1748980200277 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-1748925409339 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-1748925409339', content: 'taks4', is_section: false, completed: false, parent_id: 'section-triage', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-1748925409339 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-1748980194895 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-1748980194895', content: 'Reply to Bruce', is_section: false, completed: false, parent_id: 'section-triage', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-1748980194895 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-triage-2 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-triage-2', content: 'Clean Kitchen', is_section: false, completed: false, parent_id: 'section-triage', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-triage-2 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-1748979774630 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-1748979774630', content: 'Send email to Gautam', is_section: false, completed: false, parent_id: 'section-triage', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-1748979774630 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-triage-1 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-triage-1', content: 'Mail check', is_section: false, completed: true, parent_id: 'section-triage', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-triage-1 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-a-1 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-a-1', content: 'Review Budget2', is_section: false, completed: false, parent_id: 'section-a', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-a-1 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-b-1 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-b-1', content: 'Exercise Routine like a really long one like run for 10 hours and stuff so we', is_section: false, completed: false, parent_id: 'section-b', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-b-1 to Triage
+script.js:71 💾 DB SAVE SUCCESS: Task task-c-1 saved successfully
+script.js:72 💾 DB SAVE: Server response: {id: 'task-c-1', content: 'Read Book', is_section: false, completed: false, parent_id: 'section-c', …}
+script.js:1194 ✅ CONSOLIDATE: Moved task-c-1 to Triage
+script.js:21 Tasks loaded from database
+script.js:1210 ✅ Consolidation complete - all tasks moved to Triage

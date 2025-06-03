@@ -448,8 +448,8 @@ function buildTree(tasks, parent) {
 
     const txt = document.createElement('span');
     txt.className = 'task-text';
-    // Truncate text to ~30 characters with ellipsis
-    const maxLength = 30;
+    // Truncate text to ~26 characters with ellipsis
+    const maxLength = 26;
     if (task.content.length > maxLength) {
       txt.textContent = task.content.substring(0, maxLength) + '...';
     } else {

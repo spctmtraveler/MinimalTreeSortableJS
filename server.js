@@ -133,7 +133,7 @@ app.put('/api/tasks/:id', async (req, res) => {
     const { id } = req.params;
     const {
       content, completed, revisitDate, fire, fast, flow, fear, first,
-      timeEstimate, overview, details, scheduledTime
+      timeEstimate, overview, details, scheduledTime, parent_id, positionOrder
     } = req.body;
     
     console.log('UPDATE REQUEST for task:', id);
@@ -159,12 +159,14 @@ app.put('/api/tasks/:id', async (req, res) => {
         overview = $11,
         details = $12,
         scheduled_time = $13,
+        parent_id = COALESCE($14, parent_id),
+        position_order = COALESCE($15, position_order),
         updated_at = CURRENT_TIMESTAMP
       WHERE id = $1
       RETURNING *
     `, [
       id, content, completed, cleanRevisitDate, fire, fast, flow, fear, first,
-      timeEstimate, overview, details, cleanScheduledTime
+      timeEstimate, overview, details, cleanScheduledTime, parent_id, positionOrder
     ]);
     
     if (result.rows.length === 0) {

@@ -297,8 +297,8 @@ li::before {
   user-select: none;
   background: transparent;
   position: relative;
-  margin-right: 260px; /* Reserve space for priority flags */
-  gap: 12px; /* Space between elements */
+  margin-right: 240px; /* Reserve space for priority flags */
+  gap: 6px; /* Reduced space between elements */
 }
 
 .task-content:hover {
@@ -480,9 +480,9 @@ li::before {
 .task-text {
   font-size: 14px;
   color: var(--text-color);
-  width: 240px; /* Fixed width for ~30 characters */
-  min-width: 240px;
-  max-width: 240px;
+  width: 210px; /* Reduced width for ~26 characters */
+  min-width: 210px;
+  max-width: 210px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -523,11 +523,17 @@ li::before {
   border-radius: 2px;
   transition: all 0.2s ease;
   font-size: 12px;
+  opacity: 0; /* Hidden by default like other controls */
 }
 
 .task-date-icon:hover {
   color: var(--accent-color);
   background: rgba(0, 206, 247, 0.1);
+}
+
+/* Show calendar icon on task hover */
+.task-content:hover .task-date-icon {
+  opacity: 1;
 }
 
 /* ===== Children Container ===== */
