@@ -297,8 +297,8 @@ li::before {
   user-select: none;
   background: transparent;
   position: relative;
-  margin-right: 240px; /* Reserve space for priority flags */
-  gap: 6px; /* Reduced space between elements */
+  margin-right: 200px; /* Reduced space for priority flags */
+  gap: 4px; /* Further reduced space between elements */
 }
 
 .task-content:hover {
@@ -310,8 +310,8 @@ li::before {
   display: flex;
   align-items: center;
   margin-left: auto;
-  margin-right: 16px;
-  min-width: 120px; /* Reserve space for date + controls */
+  margin-right: 8px; /* Reduced space before priority flags */
+  min-width: 80px; /* Reduced width */
 }
 
 /* Task date display */
@@ -335,7 +335,7 @@ li::before {
   opacity: 0;
   transition: opacity 2s ease-out; /* Fade out longer (2 seconds) */
   z-index: 5;
-  margin-left: 8px;
+  margin-left: 2px; /* Reduced gap between date and buttons */
 }
 
 .task-content:hover .task-control-bar {
@@ -344,9 +344,9 @@ li::before {
 }
 
 .control-btn {
-  width: 32px;
-  height: 32px;
-  margin-left: 6px;
+  width: 28px;
+  height: 28px;
+  margin-left: 2px; /* Much tighter spacing */
   background: transparent;
   color: var(--inactive-color);
   border: none;
@@ -356,7 +356,7 @@ li::before {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  font-size: 14px;
+  font-size: 12px; /* Slightly smaller */
 }
 
 .control-btn:hover {
