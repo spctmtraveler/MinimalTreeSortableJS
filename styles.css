@@ -309,7 +309,7 @@ li::before {
 .task-control-container {
   display: flex;
   align-items: center;
-  margin-left: auto;
+  margin-left: 0; /* Remove auto margin to align left */
   margin-right: 8px; /* Reduced space before priority flags */
   min-width: 80px; /* Reduced width */
 }
