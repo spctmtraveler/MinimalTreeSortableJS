@@ -215,6 +215,7 @@ button, input, select, textarea {
   bottom: 20px;
   display: flex;
   justify-content: center;
+  gap: 8px;
   width: 100%;
   margin-top: 20px;
 }
@@ -223,7 +224,7 @@ button, input, select, textarea {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: var(--bg-color);
+  background-color: var(--primary-bg);
   border: 2px solid var(--accent-color);
   color: var(--accent-color);
   display: flex;
@@ -297,6 +298,7 @@ li::before {
   background: transparent;
   position: relative;
   margin-right: 260px; /* Reserve space for priority flags */
+  gap: 12px; /* Space between elements */
 }
 
 .task-content:hover {

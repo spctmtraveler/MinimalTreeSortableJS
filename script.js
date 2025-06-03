@@ -448,21 +448,47 @@ function buildTree(tasks, parent) {
 
     const txt = document.createElement('span');
     txt.className = 'task-text';
-    txt.textContent = task.content;
+    // Truncate text to ~30 characters with ellipsis
+    const maxLength = 30;
+    if (task.content.length > maxLength) {
+      txt.textContent = task.content.substring(0, maxLength) + '...';
+    } else {
+      txt.textContent = task.content;
+    }
+    txt.title = task.content; // Show full text on hover
     row.appendChild(txt);
 
     if (!task.isSection) {
-      const controlContainer = document.createElement('div');
-      controlContainer.className = 'task-control-container';
-      controlContainer.setAttribute('data-no-drag', 'true');
-
+      // Fixed-width date field (always present)
+      const dateContainer = document.createElement('div');
+      dateContainer.className = 'task-date-container';
+      dateContainer.setAttribute('data-no-drag', 'true');
+      
       if (task.revisitDate) {
         const date = document.createElement('span');
         date.className = 'task-date';
         date.textContent = formatRevisitDate(task.revisitDate);
-        date.setAttribute('data-no-drag', 'true');
-        controlContainer.appendChild(date);
+        date.addEventListener('click', e => {
+          e.stopPropagation();
+          openTaskModal(task, li);
+        });
+        dateContainer.appendChild(date);
+      } else {
+        const calendarIcon = document.createElement('button');
+        calendarIcon.className = 'task-date-icon';
+        calendarIcon.innerHTML = '<i class="fa-solid fa-calendar"></i>';
+        calendarIcon.title = 'Set date';
+        calendarIcon.addEventListener('click', e => {
+          e.stopPropagation();
+          openTaskModal(task, li);
+        });
+        dateContainer.appendChild(calendarIcon);
       }
+      row.appendChild(dateContainer);
+
+      const controlContainer = document.createElement('div');
+      controlContainer.className = 'task-control-container';
+      controlContainer.setAttribute('data-no-drag', 'true');
 
       const controlBar = document.createElement('div');
       controlBar.className = 'task-control-bar';
@@ -1129,6 +1155,67 @@ async function sortTasksByPriority() {
   }
 }
 
+/* ---------- Consolidate to Triage ----------- */
+async function consolidateToTriage() {
+  console.log('🔄 Starting consolidation to Triage');
+  
+  try {
+    // Get all tasks from sections A, B, and C
+    const tasksToMove = [];
+    const sectionsToConsolidate = ['section-a', 'section-b', 'section-c'];
+    
+    document.querySelectorAll('.task-item').forEach(taskItem => {
+      if (taskItem.classList.contains('section-header')) return;
+      
+      const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
+      if (sectionsToConsolidate.includes(taskData.parent_id) || 
+          sectionsToConsolidate.some(section => taskData.id && taskData.id.includes(section.replace('section-', '')))) {
+        tasksToMove.push(taskData);
+      }
+    });
+    
+    console.log(`🔄 CONSOLIDATE: Found ${tasksToMove.length} tasks to move to Triage`);
+    
+    if (tasksToMove.length === 0) {
+      showToast('Consolidation Complete', 'No tasks found in A, B, or C sections to move.');
+      return;
+    }
+    
+    // Update all tasks to have parent_id = 'section-triage'
+    const updatePromises = tasksToMove.map((task, index) => {
+      const updatedTask = {
+        ...task,
+        parent_id: 'section-triage',
+        positionOrder: 1000 + index // Place at end of triage
+      };
+      
+      return db.saveTask(task.id, updatedTask)
+        .then(() => {
+          console.log(`✅ CONSOLIDATE: Moved ${task.id} to Triage`);
+        })
+        .catch(err => {
+          console.error(`❌ CONSOLIDATE: Failed to move ${task.id}:`, err);
+        });
+    });
+    
+    await Promise.all(updatePromises);
+    
+    // Reload tasks to reflect changes
+    const tasks = await db.loadTasks();
+    if (tasks) {
+      const taskTree = document.getElementById('task-tree');
+      taskTree.innerHTML = '';
+      buildTree(tasks, taskTree);
+      showToast('Consolidation Complete', `Moved ${tasksToMove.length} tasks to Triage for aggressive sorting.`);
+      console.log('✅ Consolidation complete - all tasks moved to Triage');
+    }
+    
+  } catch (error) {
+    console.error('❌ Error during consolidation:', error);
+    showToast('Consolidation Error', 'Failed to move some tasks to Triage.');
+  }
+}
+
 /* ---------- UI Init ----------- */
 function initUI() {
   document.getElementById('toggle-priority')?.addEventListener('click', ()=>{
@@ -1140,6 +1227,13 @@ function initUI() {
   document.getElementById('priority-sort-btn')?.addEventListener('click', ()=>{
     sortTasksByPriority();
     const btn = document.getElementById('priority-sort-btn');
+    btn.classList.add('active');
+    setTimeout(()=>btn.classList.remove('active'), 800);
+  });
+
+  document.getElementById('consolidate-btn')?.addEventListener('click', ()=>{
+    consolidateToTriage();
+    const btn = document.getElementById('consolidate-btn');
     btn.classList.add('active');
     setTimeout(()=>btn.classList.remove('active'), 800);
   });
