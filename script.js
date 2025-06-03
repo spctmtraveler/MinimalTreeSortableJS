@@ -1207,104 +1207,23 @@ async function addNewTask() {
     return;
   }
 
-  // insert under TRIAGE
-  const sectionLi = document.querySelector('.section-header[data-id="section-triage"]');
-  const childCont = sectionLi?.querySelector('.task-children');
-  const ul = childCont?.querySelector(':scope>.task-list');
-  if (!ul) {
-    showToast('Error','Triage container missing');
-    return;
+  // Reload tasks from database to use the proper display logic
+  try {
+    const tasks = await db.loadTasks();
+    if (tasks) {
+      const taskTree = document.getElementById('task-tree');
+      taskTree.innerHTML = '';
+      buildTree(tasks, taskTree);
+      showToast('Task Added','Added to TRIAGE');
+      input.value = '';
+      if (debug) console.log(`Added new task "${text}"`);
+    } else {
+      showToast('Error','Could not reload tasks after adding new task.');
+    }
+  } catch (error) {
+    console.error('Error reloading tasks after adding new task:', error);
+    showToast('Error','Could not reload tasks after adding new task.');
   }
-
-  // build the DOM for the new task (similar to buildTree leaf)
-  const li = document.createElement('li');
-  li.className = 'task-item';
-  li.dataset.id = newTask.id;
-  li.dataset.taskData = JSON.stringify(newTask);
-
-  const row = document.createElement('div');
-  row.className = 'task-content';
-
-  const grip = document.createElement('span');
-  grip.className='task-grip';
-  grip.innerHTML='<i class="fa-solid fa-grip-lines"></i>';
-  row.appendChild(grip);
-
-  const checkbox = document.createElement('span');
-  checkbox.className='task-checkbox';
-  checkbox.setAttribute('data-no-drag','true');
-  checkbox.addEventListener('click', e=>{
-    e.stopPropagation();
-    newTask.completed = !newTask.completed;
-    checkbox.innerHTML = newTask.completed?'<i class="fa-solid fa-check"></i>':'';
-    li.classList.toggle('task-completed', newTask.completed);
-    db.saveTask(newTask.id, newTask).catch(err => console.error('Save error:', err));
-  });
-  row.appendChild(checkbox);
-
-  const chevron = document.createElement('span');
-  chevron.className='toggle-btn';
-  chevron.textContent='▸';
-  chevron.style.visibility='hidden';
-  row.appendChild(chevron);
-
-  const txt = document.createElement('span');
-  txt.className='task-text';
-  txt.textContent=newTask.content;
-  row.appendChild(txt);
-
-  const meta = document.createElement('div');
-  meta.className='task-control-container';
-  row.appendChild(meta);
-
-  const controlBar=document.createElement('div');
-  controlBar.className='task-control-bar';
-  controlBar.setAttribute('data-no-drag','true');
-  meta.appendChild(controlBar);
-
-  const editBtn=document.createElement('button');
-  editBtn.className='control-btn edit-btn';
-  editBtn.innerHTML='<i class="fa-solid fa-pencil"></i>';
-  editBtn.addEventListener('click', e=>{
-    e.stopPropagation();
-    openTaskModal(newTask, li);
-  });
-  controlBar.appendChild(editBtn);
-
-  const deleteBtn=document.createElement('button');
-  deleteBtn.className='control-btn delete-btn';
-  deleteBtn.innerHTML='<i class="fa-solid fa-trash"></i>';
-  deleteBtn.addEventListener('click', e=>{
-    e.stopPropagation();
-    deleteTask(newTask, li);
-  });
-  controlBar.appendChild(deleteBtn);
-
-  const flagsWrap=document.createElement('div');
-  flagsWrap.className='task-priority-flags';
-  ['fire','fast','flow','fear','first'].forEach(p=>{
-    const f=createPriorityFlag(p, p==='fire'?'fa-fire':p==='fast'?'fa-bolt':p==='flow'?'fa-water':p==='fear'?'fa-skull':'fa-flag',false);
-    flagsWrap.appendChild(f);
-  });
-  row.appendChild(flagsWrap);
-
-  li.appendChild(row);
-
-  const childrenWrap=document.createElement('div');
-  childrenWrap.className='task-children';
-  childrenWrap.style.display='none';
-  const childUl=document.createElement('ul');
-  childUl.className='task-list';
-  childrenWrap.appendChild(childUl);
-  li.appendChild(childrenWrap);
-
-  createSortable(childUl, chevron, childrenWrap);
-
-  ul.appendChild(li);
-
-  showToast('Task Added','Added to TRIAGE');
-  input.value='';
-  if (debug) console.log(`Added new task "${text}"`);
 }
 
 /* ---------- Sortable Factories ----------- */
