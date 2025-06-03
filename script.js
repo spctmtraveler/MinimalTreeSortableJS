@@ -637,15 +637,41 @@ function formatRevisitDate(dateStr) {
 /* ---------- Format for input[type=date] ----------- */
 function formatDateForInput(dateStr) {
   if (!dateStr) return '';
-  const today = new Date();
-  let d;
-  if (dateStr==='today')      d=today;
-  else if (dateStr==='tomorrow'){ d=new Date(today); d.setDate(d.getDate()+1);}
-  else if (dateStr==='next week'){ d=new Date(today); d.setDate(d.getDate()+7);}
-  else d=new Date(dateStr);
-  if (isNaN(d)) return '';
-  const yy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
-  return `${yy}-${mm}-${dd}`;
+  
+  try {
+    const today = new Date();
+    let d;
+    
+    if (dateStr === 'today') {
+      d = today;
+    } else if (dateStr === 'tomorrow') {
+      d = new Date(today);
+      d.setDate(d.getDate() + 1);
+    } else if (dateStr === 'next week') {
+      d = new Date(today);
+      d.setDate(d.getDate() + 7);
+    } else if (typeof dateStr === 'string') {
+      // Handle ISO date strings from database (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      if (dateStr.includes('T')) {
+        d = new Date(dateStr);
+      } else if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        d = new Date(dateStr + 'T00:00:00');
+      } else {
+        d = new Date(dateStr);
+      }
+    } else {
+      d = new Date(dateStr);
+    }
+    
+    if (isNaN(d)) return '';
+    const yy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yy}-${mm}-${dd}`;
+  } catch (e) {
+    console.error('Error formatting date for input:', e, 'for dateStr:', dateStr);
+    return '';
+  }
 }
 
 /* ---------- Open Task Modal ----------- */
@@ -688,9 +714,14 @@ async function openTaskModal(task, taskElement) {
     }
 
     titleInput.value = task.content||'';
-    revisitInput.value = (['today','tomorrow','next week'].includes(task.revisitDate))
-      ? formatDateForInput(task.revisitDate)
-      : (task.revisitDate||'');
+    
+    // Handle date formatting for modal input - convert all dates to YYYY-MM-DD format
+    let dateValue = '';
+    if (task.revisitDate) {
+      dateValue = formatDateForInput(task.revisitDate);
+    }
+    revisitInput.value = dateValue;
+    
     timeInput.setAttribute('step','900');
     if (!timeInput.hasAttribute('data-interval-listener')) {
       timeInput.setAttribute('data-interval-listener','true');
