@@ -794,7 +794,7 @@ async function openTaskModal(task, taskElement) {
 
     document.getElementById('save-task-btn').onclick = () => saveTaskFromModal(task, taskElement);
     document.querySelector('.close-modal').onclick = () => modal.style.display='none';
-    window.onclick = e => { if (e.target===modal) modal.style.display='none'; };
+    // Remove click-outside-to-close functionality
 
     if (debug) console.log(`Opened modal for "${task.content}"`);
   } catch(err){

@@ -212,7 +212,7 @@ button, input, select, textarea {
 /* Priority Sort Button */
 #priority-sort-container {
   position: absolute;
-  right: -130px; /* Align with priority flags position */
+  right: 380px; /* Align with priority flags position */
   top: 0;
   display: flex;
   justify-content: center;
@@ -396,7 +396,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: -120px; /* Even closer to action buttons */
+  right: 50px; /* Even closer to action buttons */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
@@ -751,7 +751,7 @@ body > .sortable-drag {
 .close-modal {
   font-size: 24px;
   cursor: pointer;
-  color: var(--inactive-color);
+  color: #ffffff;
   transition: color 0.2s;
 }
 
@@ -909,6 +909,16 @@ body > .sortable-drag {
 
 #delete-task-btn:hover {
   background-color: rgba(255, 77, 77, 0.1);
+}
+
+.btn-outline-danger {
+  background-color: transparent !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--text-color) !important;
+}
+
+.btn-outline-danger:hover {
+  background-color: rgba(127, 127, 127, 0.1) !important;
 }
 
 /* Toast Notifications */
