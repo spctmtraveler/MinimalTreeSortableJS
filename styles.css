@@ -211,13 +211,14 @@ button, input, select, textarea {
 
 /* Priority Sort Button */
 #priority-sort-container {
-  position: sticky;
-  bottom: 20px;
+  position: absolute;
+  right: -130px; /* Align with priority flags position */
+  top: 0;
   display: flex;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  margin-top: 20px;
+  width: 150px;
+  margin-top: 0;
 }
 
 .sort-btn {
