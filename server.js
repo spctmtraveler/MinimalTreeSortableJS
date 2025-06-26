@@ -1,246 +1,376 @@
 const express = require('express');
-const { Pool } = require('pg');
+const { google } = require('googleapis');
 const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// PostgreSQL connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+// Google Sheets setup
+let privateKey = process.env.GOOGLE_PRIVATE_KEY;
+if (privateKey) {
+  // Handle various formats of private key input
+  privateKey = privateKey.replace(/^["']|["']$/g, ''); // Remove surrounding quotes
+  privateKey = privateKey.replace(/\\n/g, '\n'); // Replace literal \n with actual newlines
+  
+  // Ensure proper format
+  if (!privateKey.startsWith('-----BEGIN PRIVATE KEY-----')) {
+    console.error('Private key format error: Key should start with -----BEGIN PRIVATE KEY-----');
+  }
+  if (!privateKey.endsWith('-----END PRIVATE KEY-----')) {
+    console.error('Private key format error: Key should end with -----END PRIVATE KEY-----');
+  }
+}
+
+console.log('Private key length:', privateKey ? privateKey.length : 'undefined');
+console.log('Service account email:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
+console.log('Spreadsheet ID:', process.env.GOOGLE_SHEETS_SPREADSHEET_ID);
+
+const auth = new google.auth.GoogleAuth({
+  credentials: {
+    type: "service_account",
+    project_id: "replit-task-manager",
+    private_key_id: "key-id",
+    private_key: privateKey,
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    client_id: "client-id",
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${encodeURIComponent(process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL)}`
+  },
+  scopes: ['https://www.googleapis.com/auth/spreadsheets']
 });
+
+const sheets = google.sheets({ version: 'v4', auth });
+const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+const SHEET_NAME = 'Tasks';
 
 // Middleware
 app.use(express.json());
 app.use(express.static('.'));
 
-// API Routes
+// Helper function to convert sheet row to task object
+function rowToTask(row) {
+  if (!row || row.length === 0) return null;
+  
+  return {
+    id: row[0] || '',
+    content: row[1] || '',
+    isSection: row[2] === 'true',
+    completed: row[3] === 'true',
+    parentId: row[4] || null,
+    positionOrder: parseInt(row[5]) || 0,
+    revisitDate: row[6] || null,
+    fire: row[7] === 'true',
+    fast: row[8] === 'true',
+    flow: row[9] === 'true',
+    fear: row[10] === 'true',
+    first: row[11] === 'true',
+    timeEstimate: parseFloat(row[12]) || 0,
+    overview: row[13] || '',
+    details: row[14] || '',
+    scheduledTime: row[15] || null
+  };
+}
 
-// Get all tasks
-app.get('/api/tasks', async (req, res) => {
+// Helper function to convert task object to sheet row
+function taskToRow(task) {
+  return [
+    task.id || '',
+    task.content || '',
+    task.isSection ? 'true' : 'false',
+    task.completed ? 'true' : 'false',
+    task.parentId || '',
+    task.positionOrder || 0,
+    task.revisitDate || '',
+    task.fire ? 'true' : 'false',
+    task.fast ? 'true' : 'false',
+    task.flow ? 'true' : 'false',
+    task.fear ? 'true' : 'false',
+    task.first ? 'true' : 'false',
+    task.timeEstimate || 0,
+    task.overview || '',
+    task.details || '',
+    task.scheduledTime || ''
+  ];
+}
+
+// Initialize sheet with headers if needed
+async function initializeSheet() {
   try {
-    const result = await pool.query(`
-      SELECT 
-        id, content, is_section, completed, parent_id, position_order,
-        revisit_date, fire, fast, flow, fear, first, time_estimate,
-        overview, details, scheduled_time
-      FROM tasks 
-      ORDER BY position_order ASC
-    `);
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A1:P1`
+    });
+
+    if (!response.data.values || response.data.values.length === 0) {
+      // Add headers
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `${SHEET_NAME}!A1:P1`,
+        valueInputOption: 'USER_ENTERED',
+        resource: {
+          values: [[
+            'id', 'content', 'isSection', 'completed', 'parentId', 'positionOrder',
+            'revisitDate', 'fire', 'fast', 'flow', 'fear', 'first',
+            'timeEstimate', 'overview', 'details', 'scheduledTime'
+          ]]
+        }
+      });
+      console.log('Sheet initialized with headers');
+    }
+  } catch (error) {
+    console.error('Error initializing sheet:', error);
+  }
+}
+
+// Get all tasks from Google Sheets
+async function getAllTasks() {
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A2:P`
+    });
+
+    if (!response.data.values) {
+      return [];
+    }
+
+    const tasks = response.data.values.map(rowToTask).filter(task => task && task.id);
     
     // Convert flat structure to nested tree
     const tasksMap = new Map();
     const rootTasks = [];
     
     // First pass: create all task objects
-    result.rows.forEach(row => {
-      const task = {
-        id: row.id,
-        content: row.content,
-        isSection: row.is_section,
-        completed: row.completed,
-        children: [],
-        revisitDate: row.revisit_date,
-        fire: row.fire,
-        fast: row.fast,
-        flow: row.flow,
-        fear: row.fear,
-        first: row.first,
-        timeEstimate: parseFloat(row.time_estimate) || 0,
-        overview: row.overview || '',
-        details: row.details || '',
-        scheduledTime: row.scheduled_time
-      };
-      tasksMap.set(row.id, task);
+    tasks.forEach(task => {
+      task.children = [];
+      tasksMap.set(task.id, task);
     });
     
-    // Second pass: build the tree structure
-    result.rows.forEach(row => {
-      const task = tasksMap.get(row.id);
-      if (row.parent_id && tasksMap.has(row.parent_id)) {
-        tasksMap.get(row.parent_id).children.push(task);
+    // Second pass: build tree structure
+    tasks.forEach(task => {
+      if (task.parentId && tasksMap.has(task.parentId)) {
+        tasksMap.get(task.parentId).children.push(task);
       } else {
         rootTasks.push(task);
       }
     });
     
-    res.json(rootTasks);
+    return rootTasks;
+  } catch (error) {
+    console.error('Error getting tasks:', error);
+    return [];
+  }
+}
+
+// Find task row in sheet
+async function findTaskRow(taskId) {
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A:A`
+    });
+
+    if (!response.data.values) {
+      return -1;
+    }
+
+    for (let i = 1; i < response.data.values.length; i++) {
+      if (response.data.values[i][0] === taskId) {
+        return i + 1; // Sheet rows are 1-indexed
+      }
+    }
+    
+    return -1;
+  } catch (error) {
+    console.error('Error finding task row:', error);
+    return -1;
+  }
+}
+
+// Add task to Google Sheets
+async function addTask(task) {
+  try {
+    const row = taskToRow(task);
+    
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A:P`,
+      valueInputOption: 'USER_ENTERED',
+      resource: {
+        values: [row]
+      }
+    });
+    
+    return task;
+  } catch (error) {
+    console.error('Error adding task:', error);
+    throw error;
+  }
+}
+
+// Update task in Google Sheets
+async function updateTask(taskId, task) {
+  try {
+    const rowIndex = await findTaskRow(taskId);
+    if (rowIndex === -1) {
+      throw new Error('Task not found');
+    }
+    
+    const row = taskToRow(task);
+    
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A${rowIndex}:P${rowIndex}`,
+      valueInputOption: 'USER_ENTERED',
+      resource: {
+        values: [row]
+      }
+    });
+    
+    return task;
+  } catch (error) {
+    console.error('Error updating task:', error);
+    throw error;
+  }
+}
+
+// Delete task from Google Sheets
+async function deleteTask(taskId) {
+  try {
+    const rowIndex = await findTaskRow(taskId);
+    if (rowIndex === -1) {
+      throw new Error('Task not found');
+    }
+    
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId: SPREADSHEET_ID,
+      resource: {
+        requests: [{
+          deleteDimension: {
+            range: {
+              sheetId: 0,
+              dimension: 'ROWS',
+              startIndex: rowIndex - 1,
+              endIndex: rowIndex
+            }
+          }
+        }]
+      }
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    throw error;
+  }
+}
+
+// API Routes
+
+// Get all tasks
+app.get('/api/tasks', async (req, res) => {
+  try {
+    const tasks = await getAllTasks();
+    res.json(tasks);
   } catch (error) {
     console.error('Error fetching tasks:', error);
     res.status(500).json({ error: 'Failed to fetch tasks' });
   }
 });
 
-// Get a single task by ID
+// Get single task
 app.get('/api/tasks/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    console.log('FETCH REQUEST for single task:', id);
-    const result = await pool.query(`
-      SELECT 
-        id, content, is_section, completed, parent_id, position_order,
-        revisit_date, fire, fast, flow, fear, first, time_estimate,
-        overview, details, scheduled_time
-      FROM tasks 
-      WHERE id = $1
-    `, [id]);
+    const taskId = req.params.id;
+    console.log('FETCH REQUEST for single task:', taskId);
     
-    if (result.rows.length === 0) {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A2:P`
+    });
+
+    if (!response.data.values) {
       return res.status(404).json({ error: 'Task not found' });
     }
+
+    const taskRow = response.data.values.find(row => row[0] === taskId);
     
-    const task = result.rows[0];
+    if (!taskRow) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    const task = rowToTask(taskRow);
     console.log('FETCH SUCCESS: Found task:', task);
+    
     res.json(task);
   } catch (error) {
-    console.error('Error fetching single task:', error);
+    console.error('Error fetching task:', error);
     res.status(500).json({ error: 'Failed to fetch task' });
   }
 });
 
-// Create a new task
+// Create new task
 app.post('/api/tasks', async (req, res) => {
   try {
-    const {
-      id, content, isSection, completed, parentId, positionOrder,
-      revisitDate, fire, fast, flow, fear, first, timeEstimate,
-      overview, details, scheduledTime
-    } = req.body;
+    console.log('CREATE REQUEST:', req.body);
     
-    const result = await pool.query(`
-      INSERT INTO tasks (
-        id, content, is_section, completed, parent_id, position_order,
-        revisit_date, fire, fast, flow, fear, first, time_estimate,
-        overview, details, scheduled_time
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-      RETURNING *
-    `, [
-      id, content, isSection || false, completed || false, parentId, positionOrder || 0,
-      revisitDate, fire || false, fast || false, flow || false, fear || false, first || false,
-      timeEstimate || 0, overview || '', details || '', scheduledTime
-    ]);
+    const task = await addTask(req.body);
+    console.log('CREATE SUCCESS:', task);
     
-    res.status(201).json(result.rows[0]);
+    res.status(201).json(task);
   } catch (error) {
     console.error('Error creating task:', error);
     res.status(500).json({ error: 'Failed to create task' });
   }
 });
 
-// Update a task
+// Update task
 app.put('/api/tasks/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const {
-      content, completed, revisitDate, fire, fast, flow, fear, first,
-      timeEstimate, overview, details, scheduledTime, parent_id, positionOrder
-    } = req.body;
+    const taskId = req.params.id;
+    console.log('UPDATE REQUEST for task:', taskId);
+    console.log('Request body:', req.body);
     
-    console.log('UPDATE REQUEST for task:', id);
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    const task = await updateTask(taskId, req.body);
+    console.log('UPDATE SUCCESS:', task);
     
-    // Handle empty dates - convert empty strings to null for PostgreSQL
-    const cleanRevisitDate = revisitDate === '' || revisitDate === undefined ? null : revisitDate;
-    const cleanScheduledTime = scheduledTime === '' || scheduledTime === undefined ? null : scheduledTime;
-    
-    console.log('Cleaned dates:', { cleanRevisitDate, cleanScheduledTime });
-    
-    const result = await pool.query(`
-      UPDATE tasks SET
-        content = $2,
-        completed = $3,
-        revisit_date = $4,
-        fire = $5,
-        fast = $6,
-        flow = $7,
-        fear = $8,
-        first = $9,
-        time_estimate = $10,
-        overview = $11,
-        details = $12,
-        scheduled_time = $13,
-        parent_id = COALESCE($14, parent_id),
-        position_order = COALESCE($15, position_order),
-        updated_at = CURRENT_TIMESTAMP
-      WHERE id = $1
-      RETURNING *
-    `, [
-      id, content, completed, cleanRevisitDate, fire, fast, flow, fear, first,
-      timeEstimate, overview, details, cleanScheduledTime, parent_id, positionOrder
-    ]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Task not found' });
-    }
-    
-    res.json(result.rows[0]);
+    res.json(task);
   } catch (error) {
     console.error('Error updating task:', error);
     res.status(500).json({ error: 'Failed to update task' });
   }
 });
 
-// Delete a task
+// Delete task
 app.delete('/api/tasks/:id', async (req, res) => {
   try {
-    const { id } = req.params;
+    const taskId = req.params.id;
+    console.log('DELETE REQUEST for task:', taskId);
     
-    const result = await pool.query('DELETE FROM tasks WHERE id = $1 RETURNING *', [id]);
+    await deleteTask(taskId);
+    console.log('DELETE SUCCESS for task:', taskId);
     
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Task not found' });
-    }
-    
-    res.json({ message: 'Task deleted successfully' });
+    res.json({ success: true });
   } catch (error) {
     console.error('Error deleting task:', error);
     res.status(500).json({ error: 'Failed to delete task' });
   }
 });
 
-// Update task positions (for drag and drop)
-app.put('/api/tasks/reorder', async (req, res) => {
-  try {
-    const { updates } = req.body; // Array of {id, parentId, positionOrder}
-    
-    const client = await pool.connect();
-    try {
-      await client.query('BEGIN');
-      
-      for (const update of updates) {
-        await client.query(
-          'UPDATE tasks SET parent_id = $2, position_order = $3 WHERE id = $1',
-          [update.id, update.parentId, update.positionOrder]
-        );
-      }
-      
-      await client.query('COMMIT');
-      res.json({ message: 'Tasks reordered successfully' });
-    } catch (error) {
-      await client.query('ROLLBACK');
-      throw error;
-    } finally {
-      client.release();
-    }
-  } catch (error) {
-    console.error('Error reordering tasks:', error);
-    res.status(500).json({ error: 'Failed to reorder tasks' });
-  }
-});
-
-// Serve the main HTML file
+// Serve static files
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Start server
-app.listen(port, '0.0.0.0', () => {
-  console.log(`DUN Task Management server running on port ${port}`);
-});
+// Initialize and start server
+async function startServer() {
+  await initializeSheet();
+  
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`DUN Task Management server running on port ${port}`);
+  });
+}
 
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  console.log('Shutting down server...');
-  await pool.end();
-  process.exit(0);
-});
+startServer().catch(console.error);
