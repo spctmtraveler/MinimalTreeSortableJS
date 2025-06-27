@@ -793,6 +793,7 @@ async function openTaskModal(task, taskElement) {
     titleInput.focus();
 
     document.getElementById('save-task-btn').onclick = () => saveTaskFromModal(task, taskElement);
+    document.getElementById('delete-task-btn').onclick = () => deleteTask(task, taskElement);
     document.querySelector('.close-modal').onclick = () => modal.style.display='none';
     // Remove click-outside-to-close functionality
 
@@ -808,16 +809,25 @@ function saveTaskFromModal(task, taskElement) {
   try {
     console.log('🔵 MODAL SAVE: Starting save for task:', task.id);
     
-    task.content        = document.getElementById('modal-task-name').value;
-    task.revisitDate    = document.getElementById('modal-revisit-date').value;
-    task.scheduledTime  = document.getElementById('modal-scheduled-time').value;
-    task.overview       = document.getElementById('modal-overview').value;
-    task.details        = document.getElementById('modal-details').value;
-    task.timeEstimate   = parseFloat(document.getElementById('modal-time-estimate').value)||0;
+    // Create a clean task object with modal form data
+    const updatedTask = {
+      ...task,
+      content: document.getElementById('modal-task-name').value,
+      revisitDate: document.getElementById('modal-revisit-date').value,
+      scheduledTime: document.getElementById('modal-scheduled-time').value,
+      overview: document.getElementById('modal-overview').value,
+      details: document.getElementById('modal-details').value,
+      timeEstimate: parseFloat(document.getElementById('modal-time-estimate').value) || 0
+    };
+    
+    // Remove any conflicting properties
+    delete updatedTask.revisit_date;
+    delete updatedTask.scheduled_time;
+    delete updatedTask.time_estimate;
 
     console.log('🔵 MODAL SAVE: Priority flags before update:');
     ['fire', 'fast', 'flow', 'fear', 'first'].forEach(p => {
-      console.log(`  ${p}: ${task[p]}`);
+      console.log(`  ${p}: ${updatedTask[p]}`);
     });
 
     document.querySelectorAll('.priority-flag-modal').forEach(btn=>{
@@ -825,23 +835,23 @@ function saveTaskFromModal(task, taskElement) {
       if (p) {
         const newValue = btn.classList.contains('active');
         console.log(`🔵 MODAL SAVE: ${p} flag changed to ${newValue}`);
-        task[p] = newValue;
+        updatedTask[p] = newValue;
       }
     });
 
-    console.log('🔵 MODAL SAVE: Final task data being saved:', JSON.stringify(task, null, 2));
+    console.log('🔵 MODAL SAVE: Final task data being saved:', JSON.stringify(updatedTask, null, 2));
 
-    taskElement.dataset.taskData = JSON.stringify(task);
-    db.saveTask(task.id, task).catch(err => console.error('Save error:', err));     // 📌 persist
+    taskElement.dataset.taskData = JSON.stringify(updatedTask);
+    db.saveTask(updatedTask.id, updatedTask).catch(err => console.error('Save error:', err));     // 📌 persist
 
     const textEl = taskElement.querySelector('.task-text');
-    if (textEl) textEl.textContent = task.content;
+    if (textEl) textEl.textContent = updatedTask.content;
     
     // Update or create date element
     let dateEl = taskElement.querySelector('.task-date');
     const controlContainer = taskElement.querySelector('.task-control-container');
     
-    if (task.revisitDate) {
+    if (updatedTask.revisitDate) {
       if (!dateEl && controlContainer) {
         // Create date element if it doesn't exist
         dateEl = document.createElement('span');
@@ -850,7 +860,7 @@ function saveTaskFromModal(task, taskElement) {
         controlContainer.insertBefore(dateEl, controlContainer.firstChild);
       }
       if (dateEl) {
-        dateEl.textContent = formatRevisitDate(task.revisitDate);
+        dateEl.textContent = formatRevisitDate(updatedTask.revisitDate);
       }
     } else if (dateEl) {
       // Remove date element if no date
@@ -859,12 +869,12 @@ function saveTaskFromModal(task, taskElement) {
     
     taskElement.querySelectorAll('.priority-flag').forEach(f=>{
       const p=f.dataset.priority;
-      f.classList.toggle('active', !!task[p]);
+      f.classList.toggle('active', !!updatedTask[p]);
     });
 
     document.getElementById('task-view-modal').style.display='none';
     showToast('Task Updated','Saved changes.');
-    if (debug) console.log(`Saved modal edits for "${task.content}"`);
+    if (debug) console.log(`Saved modal edits for "${updatedTask.content}"`);
   } catch(err){
     console.error('Error saving from modal:', err);
     showToast('Error','Failed to save task.');
