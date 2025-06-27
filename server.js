@@ -239,6 +239,139 @@ app.get('/debug/tasks', async (req, res) => {
   }
 });
 
+// Formatted debug endpoint for easier reading
+app.get('/debug/formatted', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tasks ORDER BY position_order ASC');
+    
+    let html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>DUN Tasks Database Debug</title>
+      <style>
+        body { font-family: 'Courier New', monospace; background: #1a1a1a; color: #ddd; margin: 20px; }
+        .section { background: #2a2a2a; margin: 20px 0; padding: 15px; border-radius: 8px; border-left: 4px solid #00CEF7; }
+        .task { background: #333; margin: 10px 0; padding: 10px; border-radius: 4px; border-left: 2px solid #666; }
+        .completed { opacity: 0.6; text-decoration: line-through; }
+        .flags { margin: 5px 0; }
+        .flag { display: inline-block; margin: 2px; padding: 2px 6px; border-radius: 3px; font-size: 10px; }
+        .flag.active { background: #00CEF7; color: #000; }
+        .flag.inactive { background: #444; color: #888; }
+        .meta { font-size: 11px; color: #888; margin-top: 5px; }
+        h1 { color: #00CEF7; }
+        h2 { color: #00CEF7; margin-top: 30px; }
+        .parent-info { color: #0f8; font-size: 11px; }
+      </style>
+    </head>
+    <body>
+      <h1>🔍 DUN Tasks Database Debug View</h1>
+      <p>Total tasks: ${result.rows.length}</p>
+    `;
+
+    // Group tasks by parent
+    const sections = result.rows.filter(t => t.is_section);
+    const tasks = result.rows.filter(t => !t.is_section);
+    
+    // Show sections first
+    sections.forEach(section => {
+      html += `
+        <div class="section">
+          <h2>📁 SECTION: ${section.content} (${section.id})</h2>
+          <div class="meta">Position: ${section.position_order} | Created: ${new Date(section.created_at).toLocaleString()}</div>
+      `;
+      
+      // Find tasks in this section
+      const sectionTasks = tasks.filter(t => t.parent_id === section.id);
+      html += `<p>📋 Tasks in section: ${sectionTasks.length}</p>`;
+      
+      sectionTasks.forEach(task => {
+        const flags = ['fire', 'fast', 'flow', 'fear', 'first'];
+        const activeFlags = flags.filter(f => task[f]);
+        
+        html += `
+          <div class="task ${task.completed ? 'completed' : ''}">
+            <strong>${task.content}</strong>
+            <div class="parent-info">ID: ${task.id} | Parent: ${task.parent_id} | Position: ${task.position_order}</div>
+            <div class="flags">
+              ${flags.map(f => `<span class="flag ${task[f] ? 'active' : 'inactive'}">${f.toUpperCase()}</span>`).join('')}
+            </div>
+            ${task.revisit_date ? `<div>📅 Due: ${new Date(task.revisit_date).toLocaleDateString()}</div>` : ''}
+            ${task.scheduled_time ? `<div>⏰ Time: ${task.scheduled_time}</div>` : ''}
+            ${task.time_estimate && task.time_estimate !== '0.00' ? `<div>⏱️ Estimate: ${task.time_estimate}h</div>` : ''}
+            ${task.overview ? `<div>📝 Overview: ${task.overview}</div>` : ''}
+            ${task.details ? `<div>📄 Details: ${task.details}</div>` : ''}
+            <div class="meta">
+              Status: ${task.completed ? '✅ Complete' : '⏳ Pending'} | 
+              Created: ${new Date(task.created_at).toLocaleString()} | 
+              Updated: ${new Date(task.updated_at).toLocaleString()}
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `</div>`;
+    });
+    
+    // Show orphaned tasks (no parent or invalid parent)
+    const orphanedTasks = tasks.filter(t => !t.parent_id || !sections.find(s => s.id === t.parent_id));
+    if (orphanedTasks.length > 0) {
+      html += `
+        <div class="section">
+          <h2>⚠️ ORPHANED TASKS (${orphanedTasks.length})</h2>
+          <p>Tasks without valid parent sections:</p>
+      `;
+      
+      orphanedTasks.forEach(task => {
+        const flags = ['fire', 'fast', 'flow', 'fear', 'first'];
+        
+        html += `
+          <div class="task ${task.completed ? 'completed' : ''}">
+            <strong>${task.content}</strong>
+            <div class="parent-info">ID: ${task.id} | Parent: ${task.parent_id || 'NULL'} | Position: ${task.position_order}</div>
+            <div class="flags">
+              ${flags.map(f => `<span class="flag ${task[f] ? 'active' : 'inactive'}">${f.toUpperCase()}</span>`).join('')}
+            </div>
+            <div class="meta">
+              Status: ${task.completed ? '✅ Complete' : '⏳ Pending'} | 
+              Created: ${new Date(task.created_at).toLocaleString()}
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `</div>`;
+    }
+    
+    html += `
+      <h2>📊 Database Statistics</h2>
+      <div class="section">
+        <p><strong>Sections:</strong> ${sections.length}</p>
+        <p><strong>Total Tasks:</strong> ${tasks.length}</p>
+        <p><strong>Completed Tasks:</strong> ${tasks.filter(t => t.completed).length}</p>
+        <p><strong>Pending Tasks:</strong> ${tasks.filter(t => !t.completed).length}</p>
+        <p><strong>Tasks with Dates:</strong> ${tasks.filter(t => t.revisit_date).length}</p>
+        <p><strong>Tasks with Time Estimates:</strong> ${tasks.filter(t => t.time_estimate && t.time_estimate !== '0.00').length}</p>
+        <p><strong>Orphaned Tasks:</strong> ${orphanedTasks.length}</p>
+      </div>
+      
+      <div style="margin-top: 40px; padding: 20px; background: #2a2a2a; border-radius: 8px;">
+        <h3>🔗 Debug Links</h3>
+        <p><a href="/debug/tasks" style="color: #00CEF7;">Raw JSON Data</a></p>
+        <p><a href="/debug/formatted" style="color: #00CEF7;">This Formatted View</a></p>
+        <p><a href="/" style="color: #00CEF7;">Back to Main App</a></p>
+      </div>
+    </body>
+    </html>
+    `;
+    
+    res.send(html);
+  } catch (error) {
+    console.error('Error fetching formatted debug:', error);
+    res.status(500).json({ error: 'Failed to fetch formatted debug' });
+  }
+});
+
 // Serve the main HTML file
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
