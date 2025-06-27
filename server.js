@@ -239,6 +239,114 @@ app.get('/debug/tasks', async (req, res) => {
   }
 });
 
+// Simple table debug endpoint
+app.get('/debug/table', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tasks ORDER BY position_order ASC');
+    
+    let html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>DUN Tasks Database Table</title>
+      <style>
+        body { font-family: Arial, sans-serif; background: #1a1a1a; color: #ddd; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; background: #2a2a2a; }
+        th, td { border: 1px solid #444; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #333; color: #00CEF7; position: sticky; top: 0; }
+        tr:nth-child(even) { background: #252525; }
+        .true { color: #0f8; }
+        .false { color: #888; }
+        .null { color: #888; font-style: italic; }
+        .section { background: #003366 !important; }
+        h1 { color: #00CEF7; }
+        .nav { margin: 20px 0; }
+        .nav a { color: #00CEF7; margin-right: 15px; text-decoration: none; }
+        .nav a:hover { text-decoration: underline; }
+      </style>
+    </head>
+    <body>
+      <h1>📊 DUN Tasks Database Table</h1>
+      <div class="nav">
+        <a href="/debug/tasks">Raw JSON</a>
+        <a href="/debug/table">Table View</a>
+        <a href="/">Back to App</a>
+      </div>
+      <p>Total records: ${result.rows.length}</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Content</th>
+            <th>Section</th>
+            <th>Complete</th>
+            <th>Parent ID</th>
+            <th>Position</th>
+            <th>Due Date</th>
+            <th>Fire</th>
+            <th>Fast</th>
+            <th>Flow</th>
+            <th>Fear</th>
+            <th>First</th>
+            <th>Time Est</th>
+            <th>Overview</th>
+            <th>Details</th>
+            <th>Sched Time</th>
+            <th>Created</th>
+            <th>Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    result.rows.forEach(row => {
+      const formatValue = (val) => {
+        if (val === null || val === undefined) return '<span class="null">null</span>';
+        if (typeof val === 'boolean') return `<span class="${val}">${val}</span>`;
+        if (val instanceof Date) return val.toLocaleString();
+        if (typeof val === 'string' && val.length > 50) return val.substring(0, 50) + '...';
+        return val;
+      };
+      
+      html += `
+        <tr ${row.is_section ? 'class="section"' : ''}>
+          <td>${row.id}</td>
+          <td>${formatValue(row.content)}</td>
+          <td>${formatValue(row.is_section)}</td>
+          <td>${formatValue(row.completed)}</td>
+          <td>${formatValue(row.parent_id)}</td>
+          <td>${formatValue(row.position_order)}</td>
+          <td>${formatValue(row.revisit_date ? new Date(row.revisit_date).toLocaleDateString() : null)}</td>
+          <td>${formatValue(row.fire)}</td>
+          <td>${formatValue(row.fast)}</td>
+          <td>${formatValue(row.flow)}</td>
+          <td>${formatValue(row.fear)}</td>
+          <td>${formatValue(row.first)}</td>
+          <td>${formatValue(row.time_estimate)}</td>
+          <td>${formatValue(row.overview)}</td>
+          <td>${formatValue(row.details)}</td>
+          <td>${formatValue(row.scheduled_time)}</td>
+          <td>${formatValue(new Date(row.created_at).toLocaleString())}</td>
+          <td>${formatValue(new Date(row.updated_at).toLocaleString())}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+        </tbody>
+      </table>
+    </body>
+    </html>
+    `;
+    
+    res.send(html);
+  } catch (error) {
+    console.error('Error fetching table debug:', error);
+    res.status(500).json({ error: 'Failed to fetch table debug' });
+  }
+});
+
 // Formatted debug endpoint for easier reading
 app.get('/debug/formatted', async (req, res) => {
   try {
@@ -262,10 +370,19 @@ app.get('/debug/formatted', async (req, res) => {
         h1 { color: #00CEF7; }
         h2 { color: #00CEF7; margin-top: 30px; }
         .parent-info { color: #0f8; font-size: 11px; }
+        .nav { margin: 20px 0; }
+        .nav a { color: #00CEF7; margin-right: 15px; text-decoration: none; }
+        .nav a:hover { text-decoration: underline; }
       </style>
     </head>
     <body>
       <h1>🔍 DUN Tasks Database Debug View</h1>
+      <div class="nav">
+        <a href="/debug/tasks">Raw JSON</a>
+        <a href="/debug/table">Table View</a>
+        <a href="/debug/formatted">Formatted View</a>
+        <a href="/">Back to App</a>
+      </div>
       <p>Total tasks: ${result.rows.length}</p>
     `;
 
@@ -353,13 +470,6 @@ app.get('/debug/formatted', async (req, res) => {
         <p><strong>Tasks with Dates:</strong> ${tasks.filter(t => t.revisit_date).length}</p>
         <p><strong>Tasks with Time Estimates:</strong> ${tasks.filter(t => t.time_estimate && t.time_estimate !== '0.00').length}</p>
         <p><strong>Orphaned Tasks:</strong> ${orphanedTasks.length}</p>
-      </div>
-      
-      <div style="margin-top: 40px; padding: 20px; background: #2a2a2a; border-radius: 8px;">
-        <h3>🔗 Debug Links</h3>
-        <p><a href="/debug/tasks" style="color: #00CEF7;">Raw JSON Data</a></p>
-        <p><a href="/debug/formatted" style="color: #00CEF7;">This Formatted View</a></p>
-        <p><a href="/" style="color: #00CEF7;">Back to Main App</a></p>
       </div>
     </body>
     </html>
