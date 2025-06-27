@@ -228,6 +228,17 @@ app.put('/api/tasks/reorder', async (req, res) => {
   }
 });
 
+// Debug endpoint to view raw database data
+app.get('/debug/tasks', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tasks ORDER BY position_order ASC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching debug tasks:', error);
+    res.status(500).json({ error: 'Failed to fetch tasks' });
+  }
+});
+
 // Serve the main HTML file
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
