@@ -32,6 +32,8 @@ app.get('/api/tasks', async (req, res) => {
     const tasksMap = new Map();
     const rootTasks = [];
     
+    console.log(`🌳 TREE BUILD: Processing ${result.rows.length} database rows`);
+    
     // First pass: create all task objects
     result.rows.forEach(row => {
       const task = {
@@ -58,10 +60,21 @@ app.get('/api/tasks', async (req, res) => {
     result.rows.forEach(row => {
       const task = tasksMap.get(row.id);
       if (row.parent_id && tasksMap.has(row.parent_id)) {
-        tasksMap.get(row.parent_id).children.push(task);
-      } else {
+        const parent = tasksMap.get(row.parent_id);
+        parent.children.push(task);
+        console.log(`🌳 TREE BUILD: Added "${row.content}" as child of "${parent.content}"`);
+      } else if (row.is_section || !row.parent_id) {
+        // Only sections or tasks without parents go to root
         rootTasks.push(task);
+        console.log(`🌳 TREE BUILD: Added "${row.content}" to root (is_section: ${row.is_section})`);
+      } else {
+        console.log(`🌳 TREE BUILD: ORPHANED "${row.content}" - parent_id "${row.parent_id}" not found`);
       }
+    });
+    
+    console.log(`🌳 TREE BUILD: Final tree has ${rootTasks.length} root items`);
+    rootTasks.forEach(item => {
+      console.log(`🌳 ROOT: "${item.content}" with ${item.children.length} children`);
     });
     
     res.json(rootTasks);
