@@ -388,6 +388,7 @@ function buildTree(tasks, parent) {
     li.className = 'task-item';
     li.dataset.id = task.id;
     li.dataset.taskData = JSON.stringify(task);
+    li.dataset.taskId = task.id; // Add task ID for centralized state management
 
     if (task.isSection) {
       li.classList.add('section-header');
@@ -411,12 +412,11 @@ function buildTree(tasks, parent) {
       checkbox.className = 'task-checkbox';
       checkbox.setAttribute('data-no-drag', 'true');
       checkbox.innerHTML = task.completed ? '<i class="fa-solid fa-check"></i>' : '';
-      checkbox.addEventListener('click', e => {
+      checkbox.addEventListener('click', async e => {
         e.stopPropagation();
-        task.completed = !task.completed;
-        checkbox.innerHTML = task.completed ? '<i class="fa-solid fa-check"></i>' : '';
-        li.classList.toggle('task-completed', task.completed);
-        if (debug) console.log(`Task "${task.content}" marked ${task.completed}`);
+        const newCompleted = !task.completed;
+        await updateTaskState(task.id, { completed: newCompleted });
+        if (debug) console.log(`Task "${task.content}" marked ${newCompleted ? 'completed' : 'incomplete'}`);
       });
       row.appendChild(checkbox);
     }
@@ -805,13 +805,12 @@ async function openTaskModal(task, taskElement) {
 }
 
 /* ---------- Save from Modal ----------- */
-function saveTaskFromModal(task, taskElement) {
+async function saveTaskFromModal(task, taskElement) {
   try {
     console.log('🔵 MODAL SAVE: Starting save for task:', task.id);
     
-    // Create a clean task object with modal form data
-    const updatedTask = {
-      ...task,
+    // Create updates object with modal form data
+    const updates = {
       content: document.getElementById('modal-task-name').value,
       revisitDate: document.getElementById('modal-revisit-date').value,
       scheduledTime: document.getElementById('modal-scheduled-time').value,
@@ -819,62 +818,25 @@ function saveTaskFromModal(task, taskElement) {
       details: document.getElementById('modal-details').value,
       timeEstimate: parseFloat(document.getElementById('modal-time-estimate').value) || 0
     };
-    
-    // Remove any conflicting properties
-    delete updatedTask.revisit_date;
-    delete updatedTask.scheduled_time;
-    delete updatedTask.time_estimate;
 
-    console.log('🔵 MODAL SAVE: Priority flags before update:');
-    ['fire', 'fast', 'flow', 'fear', 'first'].forEach(p => {
-      console.log(`  ${p}: ${updatedTask[p]}`);
-    });
-
+    // Update priority flags
     document.querySelectorAll('.priority-flag-modal').forEach(btn=>{
       const p=btn.dataset.priority;
       if (p) {
         const newValue = btn.classList.contains('active');
         console.log(`🔵 MODAL SAVE: ${p} flag changed to ${newValue}`);
-        updatedTask[p] = newValue;
+        updates[p] = newValue;
       }
     });
 
-    console.log('🔵 MODAL SAVE: Final task data being saved:', JSON.stringify(updatedTask, null, 2));
+    console.log('🔵 MODAL SAVE: Updates being applied:', JSON.stringify(updates, null, 2));
 
-    taskElement.dataset.taskData = JSON.stringify(updatedTask);
-    db.saveTask(updatedTask.id, updatedTask).catch(err => console.error('Save error:', err));     // 📌 persist
-
-    const textEl = taskElement.querySelector('.task-text');
-    if (textEl) textEl.textContent = updatedTask.content;
-    
-    // Update or create date element
-    let dateEl = taskElement.querySelector('.task-date');
-    const controlContainer = taskElement.querySelector('.task-control-container');
-    
-    if (updatedTask.revisitDate) {
-      if (!dateEl && controlContainer) {
-        // Create date element if it doesn't exist
-        dateEl = document.createElement('span');
-        dateEl.className = 'task-date';
-        dateEl.setAttribute('data-no-drag', 'true');
-        controlContainer.insertBefore(dateEl, controlContainer.firstChild);
-      }
-      if (dateEl) {
-        dateEl.textContent = formatRevisitDate(updatedTask.revisitDate);
-      }
-    } else if (dateEl) {
-      // Remove date element if no date
-      dateEl.remove();
-    }
-    
-    taskElement.querySelectorAll('.priority-flag').forEach(f=>{
-      const p=f.dataset.priority;
-      f.classList.toggle('active', !!updatedTask[p]);
-    });
+    // Use centralized state management
+    await updateTaskState(task.id, updates);
 
     document.getElementById('task-view-modal').style.display='none';
     showToast('Task Updated','Saved changes.');
-    if (debug) console.log(`Saved modal edits for "${updatedTask.content}"`);
+    if (debug) console.log(`Saved modal edits for "${updates.content}"`);
   } catch(err){
     console.error('Error saving from modal:', err);
     showToast('Error','Failed to save task.');
@@ -1226,6 +1188,181 @@ async function consolidateToTriage() {
   }
 }
 
+/* ---------- Centralized Task State Management (DRY) ----------- */
+async function updateTaskState(taskId, updates) {
+  try {
+    console.log(`🔄 Updating task ${taskId}:`, updates);
+    
+    // Find the task element
+    const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+    if (!taskElement) {
+      console.error('Task element not found for:', taskId);
+      return false;
+    }
+    
+    // Get current task data
+    let taskData = JSON.parse(taskElement.dataset.taskData || '{}');
+    
+    // Apply updates
+    taskData = { ...taskData, ...updates };
+    
+    // Update element's dataset
+    taskElement.dataset.taskData = JSON.stringify(taskData);
+    
+    // Update visual elements based on state changes
+    if (updates.hasOwnProperty('completed')) {
+      const checkbox = taskElement.querySelector('.task-checkbox');
+      if (checkbox) {
+        checkbox.innerHTML = taskData.completed ? '<i class="fa-solid fa-check"></i>' : '';
+        taskElement.classList.toggle('task-completed', taskData.completed);
+      }
+    }
+    
+    if (updates.hasOwnProperty('content')) {
+      const textEl = taskElement.querySelector('.task-text');
+      if (textEl) {
+        const maxLength = 26;
+        if (taskData.content.length > maxLength) {
+          textEl.textContent = taskData.content.substring(0, maxLength) + '...';
+        } else {
+          textEl.textContent = taskData.content;
+        }
+        textEl.title = taskData.content;
+      }
+    }
+    
+    if (updates.hasOwnProperty('revisitDate')) {
+      const dateContainer = taskElement.querySelector('.task-date-container');
+      if (dateContainer) {
+        dateContainer.innerHTML = '';
+        if (taskData.revisitDate) {
+          const date = document.createElement('span');
+          date.className = 'task-date';
+          date.textContent = formatRevisitDate(taskData.revisitDate);
+          date.addEventListener('click', e => {
+            e.stopPropagation();
+            openTaskModal(taskData, taskElement);
+          });
+          dateContainer.appendChild(date);
+        } else {
+          const calendarIcon = document.createElement('button');
+          calendarIcon.className = 'task-date-icon';
+          calendarIcon.innerHTML = '<i class="fa-solid fa-calendar"></i>';
+          calendarIcon.title = 'Set date';
+          calendarIcon.addEventListener('click', e => {
+            e.stopPropagation();
+            openTaskModal(taskData, taskElement);
+          });
+          dateContainer.appendChild(calendarIcon);
+        }
+      }
+    }
+    
+    // Update priority flags
+    ['fire', 'fast', 'flow', 'fear', 'first'].forEach(flag => {
+      if (updates.hasOwnProperty(flag)) {
+        const flagEl = taskElement.querySelector(`[data-priority="${flag}"]`);
+        if (flagEl) {
+          flagEl.classList.toggle('active', !!taskData[flag]);
+        }
+      }
+    });
+    
+    // Persist to database
+    await db.saveTask(taskId, taskData);
+    console.log(`✅ Task ${taskId} updated successfully`);
+    return true;
+    
+  } catch (error) {
+    console.error(`❌ Failed to update task ${taskId}:`, error);
+    return false;
+  }
+}
+
+/* ---------- Drag and Drop Persistence ----------- */
+async function handleDragEnd(evt) {
+  try {
+    const draggedElement = evt.item;
+    const taskId = draggedElement.dataset.taskId;
+    
+    if (!taskId) {
+      console.warn('No task ID found on dragged element');
+      return;
+    }
+    
+    // Determine new parent
+    let newParentId = null;
+    const parentTaskItem = evt.to.closest('.task-item');
+    if (parentTaskItem) {
+      newParentId = parentTaskItem.dataset.taskId;
+    } else {
+      // Dropped at root level - find section
+      const section = evt.to.closest('.section-header');
+      if (section) {
+        newParentId = section.dataset.taskId;
+      }
+    }
+    
+    // Calculate new position
+    const newPosition = evt.newIndex;
+    
+    console.log(`🔄 DRAG: Moving task ${taskId} to parent ${newParentId} at position ${newPosition}`);
+    
+    // Update task with new parent and position
+    const updates = {
+      parent_id: newParentId,
+      positionOrder: newPosition
+    };
+    
+    await updateTaskState(taskId, updates);
+    
+    // Update positions of other tasks in the same container
+    await updateSiblingPositions(evt.to);
+    
+  } catch (error) {
+    console.error('❌ Error handling drag end:', error);
+    showToast('Error', 'Failed to save task position');
+  }
+}
+
+/* ---------- Update Sibling Positions ----------- */
+async function updateSiblingPositions(container) {
+  try {
+    const taskItems = container.querySelectorAll(':scope > .task-item');
+    const updates = [];
+    
+    taskItems.forEach((item, index) => {
+      const taskId = item.dataset.taskId;
+      if (taskId) {
+        updates.push({
+          id: taskId,
+          positionOrder: index
+        });
+      }
+    });
+    
+    if (updates.length > 0) {
+      console.log('🔄 Updating sibling positions:', updates);
+      
+      // Use batch update API
+      const response = await fetch('/api/tasks/reorder', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to update positions: ${response.status}`);
+      }
+      
+      console.log('✅ Sibling positions updated successfully');
+    }
+    
+  } catch (error) {
+    console.error('❌ Failed to update sibling positions:', error);
+  }
+}
+
 /* ---------- UI Init ----------- */
 function initUI() {
   document.getElementById('toggle-priority')?.addEventListener('click', ()=>{
@@ -1352,6 +1489,10 @@ function createSortable(list, chevron=null, container=null) {
       evt.item.classList.remove('drag-compact');
       if (evt.clone) evt.clone.classList.remove('drag-compact');
       document.body.classList.remove('is-dragging');
+      
+      // Persist drag and drop changes to database
+      handleDragEnd(evt);
+      
       const parent = evt.to.closest('.task-item');
       if (debug) console.log(parent ? `Dropped into: ${parent.querySelector('.task-text').textContent.trim()}` : 'Dropped at root');
     },
@@ -1395,6 +1536,9 @@ function createSectionSortable(list, chevron=null, container=null) {
       evt.item.classList.remove('drag-compact');
       if (evt.clone) evt.clone.classList.remove('drag-compact');
       document.body.classList.remove('is-dragging');
+      
+      // Persist drag and drop changes to database
+      handleDragEnd(evt);
     },
     onStart(evt){ evt.item.classList.add('drag-compact'); if(evt.clone) evt.clone.classList.add('drag-compact'); },
     onAdd() {
