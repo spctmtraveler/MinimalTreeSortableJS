@@ -699,11 +699,21 @@ function formatDateForInput(dateStr) {
       d = new Date(today);
       d.setDate(d.getDate() + 7);
     } else if (typeof dateStr === 'string') {
+      console.log('🗓️ FORMAT INPUT: Processing string date:', dateStr);
       // Handle ISO date strings from database (YYYY-MM-DDTHH:MM:SS.SSSZ)
       if (dateStr.includes('T')) {
-        d = new Date(dateStr);
+        // For ISO strings, extract just the date part to avoid timezone issues
+        const datePart = dateStr.split('T')[0];
+        console.log('🗓️ FORMAT INPUT: Extracted date part from ISO:', datePart);
+        // Return the date part directly since it's already in YYYY-MM-DD format
+        if (datePart.match(/^\d{4}-\d{2}-\d{2}$/)) {
+          return datePart;
+        }
+        d = new Date(datePart + 'T00:00:00');
       } else if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        d = new Date(dateStr + 'T00:00:00');
+        // Already in YYYY-MM-DD format
+        console.log('🗓️ FORMAT INPUT: Date already in correct format:', dateStr);
+        return dateStr;
       } else {
         d = new Date(dateStr);
       }
