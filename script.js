@@ -101,8 +101,30 @@ const db = {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const task = await response.json();
-      console.log(`🔍 DB FETCH SUCCESS: Fresh data retrieved for ${taskId}:`, task);
+      const dbTask = await response.json();
+      console.log(`🔍 DB FETCH SUCCESS: Raw database data for ${taskId}:`, dbTask);
+      
+      // Transform database fields to match frontend expectations
+      const task = {
+        id: dbTask.id,
+        content: dbTask.content,
+        isSection: dbTask.is_section,
+        completed: dbTask.completed,
+        parent_id: dbTask.parent_id,
+        positionOrder: dbTask.position_order,
+        revisitDate: dbTask.revisit_date,
+        fire: dbTask.fire,
+        fast: dbTask.fast,
+        flow: dbTask.flow,
+        fear: dbTask.fear,
+        first: dbTask.first,
+        timeEstimate: parseFloat(dbTask.time_estimate) || 0,
+        overview: dbTask.overview,
+        details: dbTask.details,
+        scheduledTime: dbTask.scheduled_time
+      };
+      
+      console.log(`🔍 DB FETCH TRANSFORMED: CamelCase data for ${taskId}:`, task);
       return task;
     } catch (error) {
       console.error(`🔍 DB FETCH ERROR: Failed to fetch task ${taskId}:`, error);
@@ -739,12 +761,24 @@ async function openTaskModal(task, taskElement) {
       throw new Error('Modal fields missing');
     }
 
-    titleInput.value = task.content||'';
+    // Populate form fields with fresh data from database
+    console.log('🟡 MODAL POPULATE: Setting form values from task data:', {
+      content: task.content,
+      revisitDate: task.revisitDate,
+      scheduledTime: task.scheduledTime,
+      overview: task.overview,
+      details: task.details,
+      timeEstimate: task.timeEstimate,
+      timeEstimateType: typeof task.timeEstimate
+    });
+    
+    titleInput.value = task.content || '';
     
     // Handle date formatting for modal input - convert all dates to YYYY-MM-DD format
     let dateValue = '';
     if (task.revisitDate) {
       dateValue = formatDateForInput(task.revisitDate);
+      console.log('🟡 MODAL POPULATE: Formatted date from', task.revisitDate, 'to', dateValue);
     }
     revisitInput.value = dateValue;
     
@@ -759,10 +793,27 @@ async function openTaskModal(task, taskElement) {
         this.value=`${hh}:${mmu}`;
       });
     }
-    timeInput.value = task.scheduledTime || '09:00';
-    overviewInput.value = task.overview||'';
-    detailsInput.value = task.details||'';
-    estimateInput.value = task.timeEstimate||'';
+    
+    // Handle scheduled time - convert from database format (HH:MM:SS) to input format (HH:MM)
+    let timeValue = '09:00';
+    if (task.scheduledTime) {
+      if (task.scheduledTime.includes(':')) {
+        const timeParts = task.scheduledTime.split(':');
+        timeValue = `${timeParts[0]}:${timeParts[1]}`;
+      } else {
+        timeValue = task.scheduledTime;
+      }
+    }
+    timeInput.value = timeValue;
+    console.log('🟡 MODAL POPULATE: Set scheduled time from', task.scheduledTime, 'to', timeValue);
+    
+    overviewInput.value = task.overview || '';
+    detailsInput.value = task.details || '';
+    
+    // Handle time estimate - ensure it's a number
+    const timeEstimateValue = task.timeEstimate || 0;
+    estimateInput.value = timeEstimateValue;
+    console.log('🟡 MODAL POPULATE: Set time estimate to', timeEstimateValue, 'type:', typeof timeEstimateValue);
 
     // Generate priority flags dynamically using the unified function
     const modalFlagsContainer = document.getElementById('modal-priority-flags');
@@ -1262,6 +1313,18 @@ async function updateTaskState(taskId, updates) {
             openTaskModal(taskData, taskElement);
           });
           dateContainer.appendChild(calendarIcon);
+        }
+      }
+    }
+    
+    if (updates.hasOwnProperty('timeEstimate')) {
+      const estimateEl = taskElement.querySelector('.task-time-estimate');
+      if (estimateEl) {
+        if (taskData.timeEstimate && taskData.timeEstimate > 0) {
+          estimateEl.textContent = `${taskData.timeEstimate}h`;
+          estimateEl.style.display = 'inline';
+        } else {
+          estimateEl.style.display = 'none';
         }
       }
     }
