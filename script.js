@@ -795,7 +795,15 @@ async function openTaskModal(task, taskElement) {
     document.getElementById('save-task-btn').onclick = () => saveTaskFromModal(task, taskElement);
     document.getElementById('delete-task-btn').onclick = () => deleteTask(task, taskElement);
     document.querySelector('.close-modal').onclick = () => modal.style.display='none';
-    // Remove click-outside-to-close functionality
+    
+    // Close modal on click outside or ESC key
+    window.onclick = e => { if (e.target === modal) modal.style.display='none'; };
+    document.addEventListener('keydown', function escHandler(e) {
+      if (e.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = 'none';
+        document.removeEventListener('keydown', escHandler);
+      }
+    });
 
     if (debug) console.log(`Opened modal for "${task.content}"`);
   } catch(err){
