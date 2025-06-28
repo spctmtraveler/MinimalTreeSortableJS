@@ -979,3 +979,14 @@ body > .sortable-drag {
 .toast-action:hover {
   background-color: rgba(0, 206, 247, 0.1);
 }
+
+/* Priority flags toggle visibility */
+.priority-flags-hidden .priority-flag,
+.priority-flags-hidden .task-priority-flags {
+  display: none !important;
+}
+
+.view-toggle-btn.active {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}

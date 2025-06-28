@@ -601,11 +601,11 @@ function createPriorityFlag(type, iconClass, isActive, tooltip, isModal = false)
 
   let icon, title;
   switch(type) {
-    case 'fire':  icon='fa-fire';  title='Urgent'; break;
-    case 'fast':  icon='fa-bolt';  title='Quick'; break;
-    case 'flow':  icon='fa-water'; title='Flow'; break;
-    case 'fear':  icon='fa-skull'; title='Fear'; break;
-    case 'first': icon='fa-flag';  title='First'; break;
+    case 'fire':  icon='fa-fire';  title='Tasks requiring immediate urgent attention'; break;
+    case 'fast':  icon='fa-bolt';  title='Tasks that can be completed quickly'; break;
+    case 'flow':  icon='fa-water'; title='Tasks requiring deep focus and concentration'; break;
+    case 'fear':  icon='fa-skull'; title='Challenging tasks that cause anxiety or avoidance'; break;
+    case 'first': icon='fa-flag';  title='Tasks that should be prioritized above others'; break;
     default:      icon=iconClass;  title=tooltip||type;
   }
   flag.title = title;
@@ -1444,12 +1444,48 @@ async function updateSiblingPositions(container) {
   }
 }
 
+/* ---------- Toggle Priority Flags Visibility ----------- */
+function togglePriorityFlags() {
+  const priorityFlags = document.querySelectorAll('.priority-flag, .task-priority-flags');
+  const toggleBtn = document.getElementById('toggle-priority');
+  const sortBtn = document.getElementById('priority-sort-btn');
+  const consolidateBtn = document.getElementById('consolidate-btn');
+  
+  const isVisible = !document.body.classList.contains('priority-flags-hidden');
+  
+  if (isVisible) {
+    // Hide priority flags and related controls
+    document.body.classList.add('priority-flags-hidden');
+    toggleBtn?.classList.remove('active');
+    if (sortBtn) sortBtn.style.display = 'none';
+    if (consolidateBtn) consolidateBtn.style.display = 'none';
+    
+    // Hide all priority flag elements
+    priorityFlags.forEach(flag => {
+      flag.style.display = 'none';
+    });
+    
+    console.log('🎯 Priority flags and controls hidden');
+  } else {
+    // Show priority flags and related controls
+    document.body.classList.remove('priority-flags-hidden');
+    toggleBtn?.classList.add('active');
+    if (sortBtn) sortBtn.style.display = 'block';
+    if (consolidateBtn) consolidateBtn.style.display = 'block';
+    
+    // Show all priority flag elements
+    priorityFlags.forEach(flag => {
+      flag.style.display = '';
+    });
+    
+    console.log('🎯 Priority flags and controls shown');
+  }
+}
+
 /* ---------- UI Init ----------- */
 function initUI() {
   document.getElementById('toggle-priority')?.addEventListener('click', ()=>{
-    document.querySelectorAll('.task-priority-flags').forEach(el=>{
-      el.style.display = el.style.display==='none'?'flex':'none';
-    });
+    togglePriorityFlags();
   });
 
   document.getElementById('priority-sort-btn')?.addEventListener('click', ()=>{
