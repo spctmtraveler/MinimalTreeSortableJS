@@ -44,6 +44,7 @@
     "http-errors": "^2.0.0",
     "iconv-lite": "^0.6.3",
     "inherits": "^2.0.4",
+    "interactjs": "^1.10.27",
     "ipaddr.js": "^1.9.1",
     "is-promise": "^2.2.2",
     "jose": "^6.0.11",
