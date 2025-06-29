@@ -115,10 +115,13 @@ DUN is a hierarchical task management application built with a client-server arc
 ### 🔍 Key Business Logic (June 29, 2025)
 
 #### Triage Filtering Rules
+The Triage filter shows tasks that need attention regardless of date range:
 - **Expired Revisit Dates**: Tasks with revisit dates in the past that aren't completed
-- **No Revisit Date**: Tasks with null/undefined revisit dates (need review)
-- **Today's Tasks**: Tasks scheduled for today but not yet categorized to A/B/C
-- **Physical Location**: Always shows tasks physically located in Triage section
+- **No Revisit Date**: Tasks with null/undefined revisit dates (need scheduling)
+- **Today's Tasks**: Tasks scheduled for today but not yet categorized to A/B/C sections
+- **Manually Placed**: Tasks user has dragged directly into the Triage section
+
+**Note**: "Physically assigned to Triage" occurs when users drag tasks directly into the Triage section, overriding automatic categorization. This allows manual intervention for edge cases or tasks requiring special handling.
 
 #### Date Range Definitions
 - **This Week**: Last Monday through coming Sunday (Monday-based week)

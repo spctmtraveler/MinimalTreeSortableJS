@@ -1049,23 +1049,29 @@ function handleFilterChange() {
     if (filterValue === 'all') {
       shouldShow = true;
     } else if (filterValue === 'triage') {
-      // FIXED TRIAGE LOGIC: Include tasks that belong in Triage
-      // 1. Tasks with expired revisit dates (past due, not completed)
-      // 2. Tasks with NO revisit date set (null/undefined)
-      // 3. Tasks scheduled for today but not yet categorized to A/B/C
+      // TRIAGE LOGIC: Show tasks that NEED triaging regardless of their current location
+      // These are tasks that haven't been properly categorized yet
       const revisitDate = taskData.revisitDate;
       const isCompleted = taskData.completed;
       const isInTriageSection = taskData.parent_id === 'section-triage';
+      const isInABC = taskData.parent_id === 'section-a' || taskData.parent_id === 'section-b' || taskData.parent_id === 'section-c';
       
+      console.log(`🔍 TRIAGE CHECK: Task "${taskData.content}" - completed: ${isCompleted}, revisitDate: ${revisitDate}, parent: ${taskData.parent_id}`);
+      
+      // Always show tasks physically in Triage section (user manually placed them there)
       if (isInTriageSection) {
-        shouldShow = true; // Always show tasks physically in Triage section
-      } else if (!isCompleted) {
-        // Check if task should be in Triage based on revisit date logic
-        if (!revisitDate) {
-          // Tasks with no revisit date should be in Triage
+        shouldShow = true;
+        console.log(`✅ TRIAGE: "${taskData.content}" - physically in Triage section`);
+      } 
+      // Only check uncompleted tasks for triage criteria
+      else if (!isCompleted) {
+        // Case 1: Tasks with no revisit date (need to be scheduled/categorized)
+        if (!revisitDate || revisitDate === null || revisitDate === '') {
           shouldShow = true;
-        } else {
-          // Parse revisit date and check if expired
+          console.log(`✅ TRIAGE: "${taskData.content}" - no revisit date set`);
+        } 
+        // Case 2: Tasks with expired revisit dates (past due)
+        else {
           let taskDate = null;
           if (revisitDate === 'today') {
             taskDate = today;
@@ -1083,10 +1089,22 @@ function handleFilterChange() {
           
           if (taskDate && !isNaN(taskDate)) {
             const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
-            // Show if revisit date has passed (expired) or is today
-            shouldShow = taskDateOnly <= today;
+            // Show if revisit date has passed (expired) 
+            if (taskDateOnly < today) {
+              shouldShow = true;
+              console.log(`✅ TRIAGE: "${taskData.content}" - expired revisit date (${taskDateOnly.toDateString()} < ${today.toDateString()})`);
+            }
+            // Case 3: Tasks scheduled for today but not in A/B/C sections
+            else if (taskDateOnly.getTime() === today.getTime() && !isInABC) {
+              shouldShow = true;
+              console.log(`✅ TRIAGE: "${taskData.content}" - scheduled for today but not categorized to A/B/C`);
+            }
           }
         }
+      }
+      
+      if (!shouldShow) {
+        console.log(`❌ TRIAGE: "${taskData.content}" - does not meet triage criteria`);
       }
     } else {
       // Date-based filters (Today, Tomorrow, This Week, etc.)
