@@ -1843,10 +1843,19 @@ function initUI() {
   // Hours panel toggle functionality
   document.getElementById('toggle-hours')?.addEventListener('click', toggleHoursView);
   
-  // Set initial state for Hours panel (visible by default)
+  // Set initial state for toggle buttons (all panels visible by default)
   const hoursToggleBtn = document.getElementById('toggle-hours');
+  const priorityToggleBtn = document.getElementById('toggle-priority');
+  const tasksToggleBtn = document.getElementById('toggle-tasks');
+  
   if (hoursToggleBtn) {
     hoursToggleBtn.classList.add('active');
+  }
+  if (priorityToggleBtn) {
+    priorityToggleBtn.classList.add('active');
+  }
+  if (tasksToggleBtn) {
+    tasksToggleBtn.classList.add('active');
   }
 
   document.querySelectorAll('.flag-btn').forEach(btn=>{

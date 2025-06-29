@@ -170,6 +170,7 @@ button, input, select, textarea {
   align-items: center;
   margin-bottom: 16px;
   height: 40px; /* Fixed height to ensure alignment */
+  border: 1px solid rgba(255, 0, 0, 0.3); /* DEBUG: Red border */
 }
 
 .task-column-header {
@@ -177,6 +178,7 @@ button, input, select, textarea {
   width: calc(100% - 300px - 150px); /* Match task column width */
   text-align: left; /* Align to left */
   padding-left: 0; /* No extra padding */
+  border: 1px solid rgba(0, 255, 0, 0.3); /* DEBUG: Green border */
 }
 
 .priority-column-header {
@@ -186,12 +188,14 @@ button, input, select, textarea {
   justify-content: center;
   align-items: center;
   margin-left: 50px; /* Match the priority flags positioning */
+  border: 1px solid rgba(0, 0, 255, 0.3); /* DEBUG: Blue border */
 }
 
 .hours-column-header {
   width: 150px;
   text-align: center;
   margin-left: 20px;
+  border: 1px solid rgba(255, 255, 0, 0.3); /* DEBUG: Yellow border */
 }
 
 .controls-row {
@@ -199,6 +203,7 @@ button, input, select, textarea {
   align-items: center;
   margin-bottom: 16px;
   height: 36px;
+  border: 1px solid rgba(255, 0, 255, 0.3); /* DEBUG: Magenta border */
 }
 
 .controls-row::before {
@@ -260,6 +265,7 @@ button, input, select, textarea {
 .task-column {
   flex: 1;
   width: calc(100% - 300px); /* Reserve space for priority flags */
+  border: 1px solid rgba(128, 128, 128, 0.3); /* DEBUG: Gray border */
 }
 
 #task-tree {
@@ -333,6 +339,7 @@ button, input, select, textarea {
   align-items: center;
   width: 150px; /* Match priority column width */
   margin-left: 50px; /* Match priority flags positioning */
+  border: 1px solid rgba(0, 255, 255, 0.3); /* DEBUG: Cyan border */
 }
 
 .sort-btn {
