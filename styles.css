@@ -170,7 +170,7 @@ button, input, select, textarea {
   align-items: center;
   margin-bottom: 16px;
   height: 40px; /* Fixed height to ensure alignment */
-  border: 1px solid rgba(255, 0, 0, 0.3); /* DEBUG: Red border */
+
 }
 
 .task-column-header {
@@ -178,7 +178,7 @@ button, input, select, textarea {
   width: calc(100% - 150px); /* Match task column width minus hours column */
   text-align: left; /* Align to left */
   padding-left: 0; /* No extra padding */
-  border: 1px solid rgba(0, 255, 0, 0.3); /* DEBUG: Green border */
+
 }
 
 .priority-column-header {
@@ -195,7 +195,7 @@ button, input, select, textarea {
   width: 150px;
   text-align: center;
   margin-left: 220px; /* Account for priority column space (150px + 50px offset + 20px margin) */
-  border: 1px solid rgba(255, 255, 0, 0.3); /* DEBUG: Yellow border */
+
 }
 
 .controls-row {
@@ -203,7 +203,7 @@ button, input, select, textarea {
   align-items: center;
   margin-bottom: 16px;
   height: 36px;
-  border: 1px solid rgba(255, 0, 255, 0.3); /* DEBUG: Magenta border */
+
 }
 
 .controls-row::before {
@@ -265,8 +265,8 @@ button, input, select, textarea {
 .task-column {
   flex: 1;
   width: calc(100% - 300px); /* Reserve space for priority flags */
-  border: 1px solid rgba(128, 128, 128, 0.3); /* DEBUG: Gray border */
-  margin-top: 80px; /* Create space for overlaid priority elements */
+
+  /*margin-top: 80px; /* Create space for overlaid priority elements */
   position: relative; /* Enable absolute positioning for children */
 }
 
@@ -274,17 +274,6 @@ button, input, select, textarea {
   width: 100%;
 }
 
-.priority-column {
-  width: 150px;
-  min-width: 150px;
-  margin-left: -20px; /* Move left to align with closer priority flags */
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  min-height: 400px; /* Give space for the sort button at bottom */
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 165, 0, 0.3); /* DEBUG: Orange border */
-}
 
 .hours-column {
   width: 150px;
@@ -293,7 +282,7 @@ button, input, select, textarea {
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 400px;
+  min-height: 300px;
   transition: all 0.3s ease;
   border: 1px solid rgba(128, 0, 128, 0.3); /* DEBUG: Purple border */
 }
@@ -339,8 +328,8 @@ button, input, select, textarea {
 /* Priority Overlay Positioning */
 .priority-overlay-header {
   position: absolute;
-  top: -100px; /* Position well above task tree */
-  right: 50px; /* Align with priority flags */
+  top: -48px; /* Position well above task tree */
+  right: 250px;
   width: 150px;
   text-align: center;
   z-index: 10;
@@ -349,11 +338,13 @@ button, input, select, textarea {
 
 .priority-overlay-controls {
   position: absolute;
-  top: -60px; /* Position between header and tasks */
-  right: 50px; /* Align with priority flags */
+  top: 10px; /* Position between header and tasks */
+  /*left: 575px; /*Align with priority flags */
+  right: 250px;
+  /*(margin-right: 0px; */
   width: 150px;
   z-index: 10;
-  border: 1px solid rgba(0, 255, 255, 0.3); /* DEBUG: Cyan border */
+
 }
 
 /* Priority Sort Button */
