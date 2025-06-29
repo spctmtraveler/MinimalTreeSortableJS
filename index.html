@@ -73,12 +73,27 @@
         <div id="dun-app">
             <!-- Tasks Section -->
             <div class="content-section">
-                <div class="section-header">
-                    <div class="section-title-container">
+                <!-- Unified headers for all three panels -->
+                <div class="unified-header">
+                    <div class="task-column-header">
                         <div class="section-title">
                             <i class="fa-solid fa-list"></i> Tasks
                         </div>
                     </div>
+                    <div class="priority-column-header">
+                        <div class="priority-header">
+                            Priority
+                        </div>
+                    </div>
+                    <div class="hours-column-header">
+                        <div class="section-title">
+                            <i class="fa-solid fa-clock"></i> Hours
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control buttons row -->
+                <div class="controls-row">
                     <div id="priority-sort-container">
                         <button
                             id="priority-sort-btn"
@@ -106,11 +121,6 @@
                     <div class="priority-column">
                     </div>
                     <div class="hours-column">
-                        <div class="hours-header">
-                            <div class="section-title">
-                                <i class="fa-solid fa-clock"></i> Hours
-                            </div>
-                        </div>
                         <!-- Hours content will go here -->
                     </div>
                 </div>
