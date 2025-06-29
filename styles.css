@@ -990,3 +990,83 @@ body > .sortable-drag {
   background-color: var(--accent-color);
   color: var(--bg-color);
 }
+
+/* Keyboard navigation focus styling */
+.keyboard-focused {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Completion checkbox styling improvements */
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--accent-color);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: transparent;
+  opacity: 0.5;
+}
+
+.task-item.task-completed .task-checkbox {
+  background-color: var(--accent-color);
+  opacity: 1;
+}
+
+.task-checkbox i {
+  color: white;
+  font-size: 12px;
+}
+
+/* Completed task styling with strikethrough */
+.task-item.task-completed .task-text {
+  opacity: 0.5;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* Control panel fade timing */
+.task-control-container {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:hover .task-control-container {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:not(:hover) .task-control-container {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+/* Task date container synced with control panel */
+.task-date-container {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:hover .task-date-container {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:not(:hover) .task-date-container {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+/* Task truncation at 240px */
+.task-text {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}

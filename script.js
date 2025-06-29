@@ -917,15 +917,49 @@ function deleteTask(task, taskElement) {
   try {
     const parentList = taskElement.parentNode;
     if (!parentList) throw new Error('No parent list');
-    const data = JSON.parse(JSON.stringify(task));
-
-    parentList.removeChild(taskElement);
-    db.deleteTask(task.id);  // persist deletion
-
-    showToast('Task Deleted','Task removed.', 'Undo', ()=>{
-      buildTree([data], parentList);
-      showToast('Restored','Task restored.');
+    
+    // Store complete task data including position and parent info for proper restoration
+    const taskData = JSON.parse(JSON.stringify(task));
+    const taskPosition = Array.from(parentList.children).indexOf(taskElement);
+    const parentSection = taskElement.closest('.section-header');
+    const parentId = parentSection ? parentSection.dataset.taskId : null;
+    
+    console.log('🗑️ DELETE: Storing restoration data:', {
+      taskData,
+      taskPosition,
+      parentId,
+      parentListId: parentList.id
     });
+
+    // Remove from UI and database
+    parentList.removeChild(taskElement);
+    db.deleteTask(task.id);
+
+    showToast('Task Deleted', 'Task removed.', 'Undo', async () => {
+      try {
+        console.log('🔄 UNDO: Restoring task to database and UI');
+        
+        // Restore to database first
+        const restored = await db.saveTask(taskData.id, {
+          ...taskData,
+          parent_id: parentId,
+          positionOrder: taskPosition
+        });
+        
+        if (restored !== false) {
+          // Reload the entire task tree to ensure proper positioning
+          await db.loadTasks();
+          showToast('Restored', 'Task restored successfully.');
+          console.log('✅ UNDO: Task restored successfully');
+        } else {
+          throw new Error('Failed to restore task to database');
+        }
+      } catch (error) {
+        console.error('❌ UNDO ERROR:', error);
+        showToast('Error', 'Failed to restore task.');
+      }
+    });
+    
     if (debug) console.log(`Deleted "${task.content}"`);
   } catch(err){
     console.error('Error deleting task:', err);
@@ -1640,6 +1674,106 @@ function initUI() {
   input?.addEventListener('keydown', e=>{
     if (e.key==='Enter') addNewTask();
   });
+
+  // Add keyboard navigation for tasks
+  setupKeyboardNavigation();
+}
+
+/* ---------- Keyboard Navigation ----------- */
+let currentFocusedTask = null;
+
+function setupKeyboardNavigation() {
+  document.addEventListener('keydown', (e) => {
+    // Skip if user is typing in an input field
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    
+    const visibleTasks = Array.from(document.querySelectorAll('.task-item:not(.section-header)'))
+      .filter(task => task.style.display !== 'none');
+    
+    if (visibleTasks.length === 0) return;
+    
+    switch(e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        navigateToNextTask(visibleTasks);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        navigateToPreviousTask(visibleTasks);
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (currentFocusedTask) {
+          const taskData = JSON.parse(currentFocusedTask.dataset.taskData || '{}');
+          openTaskModal(taskData, currentFocusedTask);
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        const modal = document.getElementById('task-view-modal');
+        if (modal && modal.style.display === 'block') {
+          modal.style.display = 'none';
+        }
+        break;
+      case 'Tab':
+        if (currentFocusedTask) {
+          e.preventDefault();
+          navigateTabWithinTask(currentFocusedTask, !e.shiftKey);
+        }
+        break;
+    }
+  });
+}
+
+function navigateToNextTask(visibleTasks) {
+  if (!currentFocusedTask) {
+    focusTask(visibleTasks[0]);
+  } else {
+    const currentIndex = visibleTasks.indexOf(currentFocusedTask);
+    const nextIndex = (currentIndex + 1) % visibleTasks.length;
+    focusTask(visibleTasks[nextIndex]);
+  }
+}
+
+function navigateToPreviousTask(visibleTasks) {
+  if (!currentFocusedTask) {
+    focusTask(visibleTasks[visibleTasks.length - 1]);
+  } else {
+    const currentIndex = visibleTasks.indexOf(currentFocusedTask);
+    const prevIndex = currentIndex === 0 ? visibleTasks.length - 1 : currentIndex - 1;
+    focusTask(visibleTasks[prevIndex]);
+  }
+}
+
+function focusTask(taskElement) {
+  // Remove focus from previous task
+  if (currentFocusedTask) {
+    currentFocusedTask.classList.remove('keyboard-focused');
+  }
+  
+  // Set focus to new task
+  currentFocusedTask = taskElement;
+  currentFocusedTask.classList.add('keyboard-focused');
+  currentFocusedTask.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  
+  console.log('⌨️ Focused task:', currentFocusedTask.dataset.taskData);
+}
+
+function navigateTabWithinTask(taskElement, forward) {
+  const tabbableElements = taskElement.querySelectorAll('.task-checkbox, .task-text, .priority-flag, .task-control-btn');
+  const currentFocused = document.activeElement;
+  const currentIndex = Array.from(tabbableElements).indexOf(currentFocused);
+  
+  let nextIndex;
+  if (currentIndex === -1) {
+    nextIndex = forward ? 0 : tabbableElements.length - 1;
+  } else {
+    nextIndex = forward 
+      ? (currentIndex + 1) % tabbableElements.length
+      : currentIndex === 0 ? tabbableElements.length - 1 : currentIndex - 1;
+  }
+  
+  tabbableElements[nextIndex]?.focus();
 }
 
 /* ---------- Add New Task ----------- */

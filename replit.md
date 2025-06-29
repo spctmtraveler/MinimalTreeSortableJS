@@ -104,6 +104,12 @@ DUN is a hierarchical task management application built with a client-server arc
 - **Modal Data Persistence**: Fixed date/time/estimate storage and retrieval
 - **Database Integration**: PostgreSQL with immediate persistence
 - **View Toggles**: All top banner icons now functional
+- **Delete/Undo System**: 5-second undo with proper database restoration
+- **Keyboard Navigation**: Arrow keys, Enter, Escape, Tab navigation
+- **Completion Styling**: Accent color checkboxes, strikethrough text
+- **Control Panel Timing**: 0.2s fade in, 1s fade out for hover states
+- **Task Truncation**: 240px width limit with ellipsis and tooltips
+- **Quick Add Logic**: Creates tasks in Triage with all defaults
 - **Mobile Optimization**: Responsive design with touch support
 
 ### 🔍 Features Requiring Verification
