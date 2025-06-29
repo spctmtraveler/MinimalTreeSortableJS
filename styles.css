@@ -1205,3 +1205,265 @@ body > .sortable-drag {
   white-space: nowrap;
   cursor: pointer;
 }
+
+/* ===== HOURS PANEL TIMELINE STYLES ===== */
+
+/* Hours Timeline Container */
+.hours-timeline {
+  position: relative;
+  width: 100%;
+  min-height: 1440px; /* 24 hours * 60px per hour */
+  background: transparent;
+  padding-top: 20px;
+}
+
+/* Hour Grid */
+.hour-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hour-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #333333;
+  z-index: 1;
+}
+
+.hour-line.half-hour {
+  background: #2a2a2a;
+  border-top: 1px dashed #2a2a2a;
+  border-bottom: none;
+}
+
+.hour-label {
+  position: absolute;
+  left: -50px;
+  top: -10px;
+  font-size: 0.875rem;
+  color: #dddddd;
+  font-weight: normal;
+  width: 45px;
+  text-align: right;
+  z-index: 2;
+}
+
+.hour-label.pm {
+  font-weight: bold;
+}
+
+/* Task Blocks Container */
+.task-blocks-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+/* Task Block Styling */
+.task-block {
+  position: absolute;
+  left: 0;
+  width: calc(100% - 4px);
+  background: rgba(0, 206, 247, 0.85);
+  color: white;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: move;
+  transition: all 150ms ease-in-out;
+  border: 1px solid transparent;
+  user-select: none;
+  min-height: 15px; /* Minimum 15-minute block */
+  line-height: 1.2;
+}
+
+.task-block:hover {
+  filter: brightness(1.2);
+}
+
+.task-block.dragging {
+  outline: 2px solid #00CEF7;
+  z-index: 10;
+}
+
+.task-block.ghost {
+  opacity: 0.3;
+  border: 2px dashed #00CEF7;
+  background: rgba(0, 206, 247, 0.3);
+}
+
+.task-block.overlap-error {
+  border: 2px solid rgba(255, 0, 0, 0.8);
+  animation: flashRed 400ms ease-in-out;
+}
+
+@keyframes flashRed {
+  0%, 100% { border-color: rgba(255, 0, 0, 0.8); }
+  50% { border-color: rgba(255, 0, 0, 1); }
+}
+
+/* Task Block Controls */
+.task-block-controls {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.task-block:hover .task-block-controls {
+  opacity: 1;
+}
+
+.task-control-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0.8;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+.task-control-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Resize Handle */
+.resize-handle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #00CEF7;
+  cursor: ns-resize;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.resize-handle:hover {
+  opacity: 1;
+  box-shadow: 0 0 4px #00CEF7;
+}
+
+/* Current Time Line */
+.current-time-line {
+  position: absolute;
+  left: 0;
+  width: calc(100% + 25px);
+  height: 1px;
+  background: #00CEF7;
+  z-index: 15;
+  transition: top 150ms ease-in-out;
+}
+
+.time-line-indicator {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #00CEF7;
+}
+
+.time-icon {
+  position: absolute;
+  right: -25px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  background: #00CEF7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+}
+
+/* Limit Lines */
+.limit-line {
+  position: absolute;
+  left: 0;
+  width: calc(100% + 60px);
+  z-index: 10;
+  cursor: ns-resize;
+}
+
+.limit-line-bar {
+  width: 100%;
+  height: 3px;
+  background: repeating-linear-gradient(
+    45deg,
+    #00CEF7,
+    #00CEF7 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.limit-icon {
+  position: absolute;
+  right: -25px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  background: #00CEF7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: white;
+  cursor: ns-resize;
+}
+
+.limit-label {
+  position: absolute;
+  left: -100px;
+  top: -8px;
+  font-size: 0.75rem;
+  color: #00CEF7;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.remaining-time {
+  position: absolute;
+  right: -60px;
+  top: 8px;
+  font-size: 0.75rem;
+  color: #00CEF7;
+  white-space: nowrap;
+}
+
+/* Task Block Inline Edit */
+.task-block input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.875rem;
+  width: calc(100% - 30px);
+  outline: none;
+  padding: 0;
+}
+
+.task-block input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}

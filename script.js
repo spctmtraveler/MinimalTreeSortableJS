@@ -2184,4 +2184,574 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   if (debug) console.log('Application initialized');
+  
+  // Initialize Hours Panel
+  initHoursPanel();
 });
+
+/* ===== HOURS PANEL FUNCTIONALITY ===== */
+
+// Hours panel data structure (runtime-only, no persistence)
+let hoursData = {
+  tasks: [],
+  nextId: 1,
+  limitLines: {
+    stop: { time: '18:00', position: 18 * 60 }, // 6:00 PM in minutes from midnight
+    sleep: { time: '23:00', position: 23 * 60 } // 11:00 PM in minutes from midnight
+  }
+};
+
+// Initialize Hours Panel
+function initHoursPanel() {
+  generateHourGrid();
+  initCurrentTimeLine();
+  initLimitLines();
+  setupHoursEventListeners();
+  updateRemainingTimes();
+  
+  if (debug) console.log('Hours panel initialized');
+}
+
+// Generate 24-hour grid with labels and lines
+function generateHourGrid() {
+  const hourGrid = document.getElementById('hour-grid');
+  if (!hourGrid) return;
+  
+  hourGrid.innerHTML = '';
+  
+  // Create 48 half-hour slots (24 hours * 2)
+  for (let i = 0; i < 48; i++) {
+    const hour = Math.floor(i / 2);
+    const isHalfHour = i % 2 === 1;
+    const position = i * 30; // 30px per half hour
+    
+    // Create hour line
+    const hourLine = document.createElement('div');
+    hourLine.className = isHalfHour ? 'hour-line half-hour' : 'hour-line';
+    hourLine.style.top = position + 'px';
+    hourGrid.appendChild(hourLine);
+    
+    // Add hour label for full hours only
+    if (!isHalfHour) {
+      const hourLabel = document.createElement('div');
+      hourLabel.className = hour >= 12 ? 'hour-label pm' : 'hour-label';
+      hourLabel.style.top = position + 'px';
+      
+      let displayHour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+      hourLabel.textContent = displayHour;
+      
+      hourGrid.appendChild(hourLabel);
+    }
+  }
+}
+
+// Initialize current time line with auto-update
+function initCurrentTimeLine() {
+  updateCurrentTimeLine();
+  
+  // Update every 5 minutes as per requirements
+  setInterval(updateCurrentTimeLine, 5 * 60 * 1000);
+}
+
+// Update current time line position
+function updateCurrentTimeLine() {
+  const currentTimeLine = document.getElementById('current-time-line');
+  if (!currentTimeLine) return;
+  
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const totalMinutes = hours * 60 + minutes;
+  const position = (totalMinutes / 60) * 60; // 60px per hour
+  
+  currentTimeLine.style.top = position + 'px';
+  
+  if (debug) console.log('Current time line updated:', `${hours}:${minutes.toString().padStart(2, '0')}`);
+}
+
+// Initialize draggable limit lines
+function initLimitLines() {
+  const stopLine = document.getElementById('stop-line');
+  const sleepLine = document.getElementById('sleep-line');
+  
+  if (stopLine) {
+    positionLimitLine(stopLine, hoursData.limitLines.stop.position);
+    makeLimitLineDraggable(stopLine, 'stop');
+  }
+  
+  if (sleepLine) {
+    positionLimitLine(sleepLine, hoursData.limitLines.sleep.position);
+    makeLimitLineDraggable(sleepLine, 'sleep');
+  }
+}
+
+// Position limit line at specified time
+function positionLimitLine(element, minutes) {
+  const position = (minutes / 60) * 60; // 60px per hour
+  element.style.top = position + 'px';
+}
+
+// Make limit line draggable with 15-minute snapping
+function makeLimitLineDraggable(element, type) {
+  let isDragging = false;
+  let startY = 0;
+  let startPosition = 0;
+  
+  element.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startY = e.clientY;
+    startPosition = hoursData.limitLines[type].position;
+    element.style.cursor = 'ns-resize';
+    
+    if (debug) console.log(`limitDrag: ${type} drag started`);
+    
+    e.preventDefault();
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    
+    const deltaY = e.clientY - startY;
+    const deltaMinutes = (deltaY / 60) * 60; // Convert pixels to minutes
+    let newPosition = startPosition + deltaMinutes;
+    
+    // Snap to 15-minute increments
+    newPosition = Math.round(newPosition / 15) * 15;
+    
+    // Constrain to valid range (0-24 hours)
+    newPosition = Math.max(0, Math.min(1440, newPosition));
+    
+    hoursData.limitLines[type].position = newPosition;
+    positionLimitLine(element, newPosition);
+    
+    // Update time display
+    const hours = Math.floor(newPosition / 60);
+    const minutes = newPosition % 60;
+    const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    hoursData.limitLines[type].time = timeStr;
+    
+    // Update label
+    const label = element.querySelector('.limit-label');
+    if (label) {
+      label.textContent = `${type.toUpperCase()} ${formatTimeDisplay(timeStr)}`;
+    }
+    
+    updateRemainingTimes();
+  });
+  
+  document.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      element.style.cursor = 'ns-resize';
+      
+      if (debug) console.log(`limitDrag: ${type} drag ended at ${hoursData.limitLines[type].time}`);
+    }
+  });
+}
+
+// Format time for display (e.g., "18:00" -> "6:00 PM")
+function formatTimeDisplay(timeStr) {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const displayHour = hours === 0 ? 12 : (hours > 12 ? hours - 12 : hours);
+  return `${displayHour}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+// Update remaining time displays
+function updateRemainingTimes() {
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  
+  // Update STOP remaining time
+  const stopRemaining = document.getElementById('stop-remaining');
+  if (stopRemaining) {
+    const stopMinutes = hoursData.limitLines.stop.position;
+    const remainingToStop = stopMinutes - currentMinutes;
+    stopRemaining.textContent = formatRemainingTime(remainingToStop);
+  }
+  
+  // Update SLEEP remaining time
+  const sleepRemaining = document.getElementById('sleep-remaining');
+  if (sleepRemaining) {
+    const sleepMinutes = hoursData.limitLines.sleep.position;
+    const remainingToSleep = sleepMinutes - currentMinutes;
+    sleepRemaining.textContent = formatRemainingTime(remainingToSleep);
+  }
+}
+
+// Format remaining time (e.g., 570 minutes -> "9h 30m")
+function formatRemainingTime(minutes) {
+  if (minutes <= 0) return '0m';
+  
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  
+  if (hours === 0) return `${mins}m`;
+  if (mins === 0) return `${hours}h`;
+  return `${hours}h ${mins}m`;
+}
+
+// Setup event listeners for Hours panel
+function setupHoursEventListeners() {
+  const timeline = document.getElementById('hours-timeline');
+  if (!timeline) return;
+  
+  // Double-click to create task
+  timeline.addEventListener('dblclick', (e) => {
+    // Don't create task if clicking on existing task or control elements
+    if (e.target.closest('.task-block') || e.target.closest('.limit-line') || e.target.closest('.current-time-line')) {
+      return;
+    }
+    
+    const rect = timeline.getBoundingClientRect();
+    const clickY = e.clientY - rect.top - 20; // Adjust for padding
+    const minutes = Math.round((clickY / 60) * 60); // Convert pixels to minutes
+    const snappedMinutes = Math.round(minutes / 15) * 15; // Snap to 15-minute grid
+    
+    createHoursTask(snappedMinutes);
+  });
+}
+
+// Create a new task in the Hours panel
+function createHoursTask(startMinutes, title = null) {
+  if (!title) {
+    title = prompt('Enter task name:');
+    if (!title || !title.trim()) return;
+    title = title.trim();
+  }
+  
+  const task = {
+    id: `hours-task-${hoursData.nextId++}`,
+    title: title,
+    startIndex: Math.round(startMinutes / 15), // Store as 15-minute increments
+    durationSteps: 4, // Default 60 minutes (4 * 15 minutes)
+    startMinutes: startMinutes,
+    durationMinutes: 60
+  };
+  
+  // Check for overlaps
+  if (checkTaskOverlap(task)) {
+    showToast('Error', 'Task overlaps with existing task or limit');
+    return;
+  }
+  
+  hoursData.tasks.push(task);
+  renderHoursTask(task);
+  
+  if (debug) console.log('create: Hours task created', task);
+}
+
+// Check if task overlaps with existing tasks or limits
+function checkTaskOverlap(newTask) {
+  const newStart = newTask.startMinutes;
+  const newEnd = newStart + newTask.durationMinutes;
+  
+  // Check overlap with existing tasks
+  for (const task of hoursData.tasks) {
+    if (task.id === newTask.id) continue; // Skip self when updating
+    
+    const taskStart = task.startMinutes;
+    const taskEnd = taskStart + task.durationMinutes;
+    
+    if (newStart < taskEnd && newEnd > taskStart) {
+      return true; // Overlap detected
+    }
+  }
+  
+  // Check overlap with limit lines
+  const stopPos = hoursData.limitLines.stop.position;
+  const sleepPos = hoursData.limitLines.sleep.position;
+  
+  if (newEnd > stopPos && newStart < stopPos) return true;
+  if (newEnd > sleepPos && newStart < sleepPos) return true;
+  
+  return false;
+}
+
+// Render a task block in the Hours panel
+function renderHoursTask(task) {
+  const container = document.getElementById('task-blocks-container');
+  if (!container) return;
+  
+  const taskBlock = document.createElement('div');
+  taskBlock.className = 'task-block';
+  taskBlock.dataset.taskId = task.id;
+  
+  const position = (task.startMinutes / 60) * 60; // 60px per hour
+  const height = (task.durationMinutes / 60) * 60; // 60px per hour
+  
+  taskBlock.style.top = position + 'px';
+  taskBlock.style.height = height + 'px';
+  
+  taskBlock.innerHTML = `
+    <span class="task-title">${task.title}</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  `;
+  
+  container.appendChild(taskBlock);
+  
+  // Setup task interactions
+  setupTaskInteractions(taskBlock, task);
+}
+
+// Setup interactions for a task block
+function setupTaskInteractions(taskBlock, task) {
+  const titleSpan = taskBlock.querySelector('.task-title');
+  const editBtn = taskBlock.querySelector('.edit-btn');
+  const deleteBtn = taskBlock.querySelector('.delete-btn');
+  const resizeHandle = taskBlock.querySelector('.resize-handle');
+  
+  // Inline rename on double-click title
+  titleSpan.addEventListener('dblclick', (e) => {
+    e.stopPropagation();
+    startInlineEdit(titleSpan, task);
+  });
+  
+  // Modal edit on double-click block (but not title)
+  taskBlock.addEventListener('dblclick', (e) => {
+    if (e.target === titleSpan) return; // Already handled above
+    e.stopPropagation();
+    openHoursTaskModal(task, taskBlock);
+  });
+  
+  // Edit button
+  editBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openHoursTaskModal(task, taskBlock);
+  });
+  
+  // Delete button
+  deleteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    deleteHoursTask(task.id);
+  });
+  
+  // Make task draggable
+  makeTaskDraggable(taskBlock, task);
+  
+  // Make task resizable
+  makeTaskResizable(taskBlock, task, resizeHandle);
+}
+
+// Start inline editing of task title
+function startInlineEdit(titleSpan, task) {
+  const currentTitle = task.title;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentTitle;
+  input.style.width = 'calc(100% - 30px)';
+  
+  titleSpan.style.display = 'none';
+  titleSpan.parentNode.insertBefore(input, titleSpan);
+  input.focus();
+  input.select();
+  
+  const finishEdit = () => {
+    const newTitle = input.value.trim();
+    if (newTitle && newTitle !== currentTitle) {
+      task.title = newTitle;
+      titleSpan.textContent = newTitle;
+      if (debug) console.log('Task renamed:', task);
+    }
+    
+    input.remove();
+    titleSpan.style.display = '';
+  };
+  
+  input.addEventListener('blur', finishEdit);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') finishEdit();
+    if (e.key === 'Escape') {
+      input.remove();
+      titleSpan.style.display = '';
+    }
+  });
+}
+
+// Open task edit modal (reuse existing modal with Hours-specific fields)
+function openHoursTaskModal(task, taskElement) {
+  // For now, use a simplified prompt-based edit
+  // In full implementation, this would use the existing modal with time picker
+  const newTitle = prompt('Edit task title:', task.title);
+  if (newTitle && newTitle.trim() && newTitle !== task.title) {
+    task.title = newTitle.trim();
+    const titleSpan = taskElement.querySelector('.task-title');
+    titleSpan.textContent = task.title;
+    if (debug) console.log('Task edited via modal:', task);
+  }
+}
+
+// Delete a task with confirmation
+function deleteHoursTask(taskId) {
+  if (!confirm('Delete this task?')) return;
+  
+  const taskIndex = hoursData.tasks.findIndex(t => t.id === taskId);
+  if (taskIndex === -1) return;
+  
+  hoursData.tasks.splice(taskIndex, 1);
+  
+  const taskBlock = document.querySelector(`[data-task-id="${taskId}"]`);
+  if (taskBlock) {
+    taskBlock.remove();
+  }
+  
+  if (debug) console.log('delete: Hours task deleted', taskId);
+}
+
+// Make task draggable with snapping
+function makeTaskDraggable(taskBlock, task) {
+  let isDragging = false;
+  let startY = 0;
+  let startMinutes = 0;
+  
+  taskBlock.addEventListener('mousedown', (e) => {
+    // Don't start drag if clicking on controls or resize handle
+    if (e.target.closest('.task-block-controls') || e.target.closest('.resize-handle')) {
+      return;
+    }
+    
+    isDragging = true;
+    startY = e.clientY;
+    startMinutes = task.startMinutes;
+    taskBlock.classList.add('dragging');
+    
+    if (debug) console.log('dragStart: Hours task drag started', task.id);
+    
+    e.preventDefault();
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    
+    const deltaY = e.clientY - startY;
+    const deltaMinutes = (deltaY / 60) * 60; // Convert pixels to minutes
+    let newStartMinutes = startMinutes + deltaMinutes;
+    
+    // Snap to 15-minute increments
+    newStartMinutes = Math.round(newStartMinutes / 15) * 15;
+    
+    // Constrain to valid range
+    newStartMinutes = Math.max(0, Math.min(1440 - task.durationMinutes, newStartMinutes));
+    
+    // Check for overlaps
+    const testTask = { ...task, startMinutes: newStartMinutes };
+    if (checkTaskOverlap(testTask)) {
+      taskBlock.classList.add('overlap-error');
+      return;
+    } else {
+      taskBlock.classList.remove('overlap-error');
+    }
+    
+    // Update task position
+    task.startMinutes = newStartMinutes;
+    task.startIndex = Math.round(newStartMinutes / 15);
+    
+    const position = (newStartMinutes / 60) * 60;
+    taskBlock.style.top = position + 'px';
+  });
+  
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    taskBlock.classList.remove('dragging');
+    
+    // Handle overlap error
+    if (taskBlock.classList.contains('overlap-error')) {
+      taskBlock.classList.add('overlap-error');
+      setTimeout(() => {
+        taskBlock.classList.remove('overlap-error');
+        // Revert to original position
+        task.startMinutes = startMinutes;
+        task.startIndex = Math.round(startMinutes / 15);
+        const position = (startMinutes / 60) * 60;
+        taskBlock.style.top = position + 'px';
+      }, 400);
+    }
+    
+    if (debug) console.log('dragEnd: Hours task drag ended', task);
+  });
+}
+
+// Make task resizable from bottom edge
+function makeTaskResizable(taskBlock, task, resizeHandle) {
+  let isResizing = false;
+  let startY = 0;
+  let startDuration = 0;
+  
+  resizeHandle.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    startY = e.clientY;
+    startDuration = task.durationMinutes;
+    taskBlock.classList.add('dragging');
+    
+    if (debug) console.log('resize: Hours task resize started', task.id);
+    
+    e.preventDefault();
+    e.stopPropagation();
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    
+    const deltaY = e.clientY - startY;
+    const deltaMinutes = (deltaY / 60) * 60; // Convert pixels to minutes
+    let newDuration = startDuration + deltaMinutes;
+    
+    // Snap to 15-minute increments
+    newDuration = Math.round(newDuration / 15) * 15;
+    
+    // Minimum 15 minutes
+    newDuration = Math.max(15, newDuration);
+    
+    // Don't extend past midnight
+    const maxDuration = 1440 - task.startMinutes;
+    newDuration = Math.min(newDuration, maxDuration);
+    
+    // Check for overlaps
+    const testTask = { ...task, durationMinutes: newDuration };
+    if (checkTaskOverlap(testTask)) {
+      taskBlock.classList.add('overlap-error');
+      return;
+    } else {
+      taskBlock.classList.remove('overlap-error');
+    }
+    
+    // Update task duration
+    task.durationMinutes = newDuration;
+    task.durationSteps = Math.round(newDuration / 15);
+    
+    const height = (newDuration / 60) * 60;
+    taskBlock.style.height = height + 'px';
+  });
+  
+  document.addEventListener('mouseup', () => {
+    if (!isResizing) return;
+    
+    isResizing = false;
+    taskBlock.classList.remove('dragging');
+    
+    // Handle overlap error
+    if (taskBlock.classList.contains('overlap-error')) {
+      taskBlock.classList.add('overlap-error');
+      setTimeout(() => {
+        taskBlock.classList.remove('overlap-error');
+        // Revert to original duration
+        task.durationMinutes = startDuration;
+        task.durationSteps = Math.round(startDuration / 15);
+        const height = (startDuration / 60) * 60;
+        taskBlock.style.height = height + 'px';
+      }, 400);
+    }
+    
+    if (debug) console.log('resize: Hours task resize ended', task);
+  });
+}
