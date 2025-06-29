@@ -1109,8 +1109,16 @@ function handleFilterChange() {
     } else {
       // Date-based filters (Today, Tomorrow, This Week, etc.)
       const revisitDate = taskData.revisitDate;
+      const isCompleted = taskData.completed;
       
-      if (revisitDate) {
+      // CRITICAL FIX: Tasks with no revisit date should ALWAYS show up in date filters
+      // because they need attention (require scheduling/categorization)
+      if (!revisitDate || revisitDate === null || revisitDate === '') {
+        if (!isCompleted) {
+          shouldShow = true;
+          console.log(`🚨 FILTER: "${taskData.content}" - no revisit date, showing in all date filters`);
+        }
+      } else {
         let taskDate;
         
         // Handle different date formats
@@ -1844,6 +1852,11 @@ async function addNewTask() {
   const text = input.value.trim();
   if (!text) { showToast('Error','Enter a task.'); return; }
 
+  // IMMEDIATE UI FEEDBACK: Clear input and show visual confirmation
+  input.value = '';
+  input.placeholder = 'Adding task...';
+  input.disabled = true;
+  
   const newTask = {
     id: 'task-'+Date.now(),
     content: text,
@@ -1876,10 +1889,16 @@ async function addNewTask() {
     };
     
     await db.addTask(taskData);
+    
+    // Show immediate success feedback
+    showToast('Task Added','Added to TRIAGE');
+    console.log(`✅ QUICK ADD: Successfully added "${text}" to Triage`);
+    
   } catch (error) {
     console.error('Error saving new task:', error);
     showToast('Error','Could not save new task to database.');
-    return;
+    // Restore input if there was an error
+    input.value = text;
   }
 
   // Reload tasks from database to use the proper display logic
@@ -1889,15 +1908,18 @@ async function addNewTask() {
       const taskTree = document.getElementById('task-tree');
       taskTree.innerHTML = '';
       buildTree(tasks, taskTree);
-      showToast('Task Added','Added to TRIAGE');
-      input.value = '';
-      if (debug) console.log(`Added new task "${text}"`);
+      if (debug) console.log(`Rebuilt task tree with new task "${text}"`);
     } else {
       showToast('Error','Could not reload tasks after adding new task.');
     }
   } catch (error) {
     console.error('Error reloading tasks after adding new task:', error);
     showToast('Error','Could not reload tasks after adding new task.');
+  } finally {
+    // Always restore input state
+    input.placeholder = 'Enter task';
+    input.disabled = false;
+    input.focus();
   }
 }
 
