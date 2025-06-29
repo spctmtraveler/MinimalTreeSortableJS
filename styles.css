@@ -266,6 +266,8 @@ button, input, select, textarea {
   flex: 1;
   width: calc(100% - 300px); /* Reserve space for priority flags */
   border: 1px solid rgba(128, 128, 128, 0.3); /* DEBUG: Gray border */
+  margin-top: 80px; /* Create space for overlaid priority elements */
+  position: relative; /* Enable absolute positioning for children */
 }
 
 #task-tree {
@@ -337,7 +339,7 @@ button, input, select, textarea {
 /* Priority Overlay Positioning */
 .priority-overlay-header {
   position: absolute;
-  top: -80px; /* Position above task tree */
+  top: -100px; /* Position well above task tree */
   right: 50px; /* Align with priority flags */
   width: 150px;
   text-align: center;
@@ -347,7 +349,7 @@ button, input, select, textarea {
 
 .priority-overlay-controls {
   position: absolute;
-  top: -40px; /* Position between header and tasks */
+  top: -60px; /* Position between header and tasks */
   right: 50px; /* Align with priority flags */
   width: 150px;
   z-index: 10;
