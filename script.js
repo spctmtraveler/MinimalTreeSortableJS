@@ -1012,8 +1012,10 @@ function handleFilterChange() {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
   
+  // Fixed: This week is last Monday through coming Sunday
+  const daysSinceMonday = (today.getDay() + 6) % 7; // Convert Sunday=0 to Monday=0 system
   const weekStart = new Date(today);
-  weekStart.setDate(today.getDate() - today.getDay());
+  weekStart.setDate(today.getDate() - daysSinceMonday);
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekStart.getDate() + 6);
   
@@ -1022,11 +1024,17 @@ function handleFilterChange() {
   const nextWeekEnd = new Date(nextWeekStart);
   nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
   
+  // Fixed: This month is 1st through last calendar day of current month
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   
   const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
   const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+
+  console.log(`📅 DATE RANGES:
+    Today: ${today.toDateString()}
+    This Week: ${weekStart.toDateString()} → ${weekEnd.toDateString()}
+    This Month: ${monthStart.toDateString()} → ${monthEnd.toDateString()}`);
 
   document.querySelectorAll('.task-item').forEach(taskItem => {
     if (taskItem.classList.contains('section-header')) {
@@ -1036,17 +1044,52 @@ function handleFilterChange() {
     }
     
     let shouldShow = false;
+    const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
     
     if (filterValue === 'all') {
       shouldShow = true;
     } else if (filterValue === 'triage') {
-      // Show tasks in triage section - check parent_id or if task id contains triage
-      const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
-      shouldShow = (taskData.parent_id === 'section-triage') || 
-                   (taskData.id && taskData.id.includes('triage'));
+      // FIXED TRIAGE LOGIC: Include tasks that belong in Triage
+      // 1. Tasks with expired revisit dates (past due, not completed)
+      // 2. Tasks with NO revisit date set (null/undefined)
+      // 3. Tasks scheduled for today but not yet categorized to A/B/C
+      const revisitDate = taskData.revisitDate;
+      const isCompleted = taskData.completed;
+      const isInTriageSection = taskData.parent_id === 'section-triage';
+      
+      if (isInTriageSection) {
+        shouldShow = true; // Always show tasks physically in Triage section
+      } else if (!isCompleted) {
+        // Check if task should be in Triage based on revisit date logic
+        if (!revisitDate) {
+          // Tasks with no revisit date should be in Triage
+          shouldShow = true;
+        } else {
+          // Parse revisit date and check if expired
+          let taskDate = null;
+          if (revisitDate === 'today') {
+            taskDate = today;
+          } else if (revisitDate === 'tomorrow') {
+            taskDate = tomorrow;
+          } else if (typeof revisitDate === 'string') {
+            if (revisitDate.includes('T')) {
+              taskDate = new Date(revisitDate);
+            } else if (revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+              taskDate = new Date(revisitDate + 'T00:00:00');
+            } else {
+              taskDate = new Date(revisitDate);
+            }
+          }
+          
+          if (taskDate && !isNaN(taskDate)) {
+            const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+            // Show if revisit date has passed (expired) or is today
+            shouldShow = taskDateOnly <= today;
+          }
+        }
+      }
     } else {
-      // Date-based filters
-      const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
+      // Date-based filters (Today, Tomorrow, This Week, etc.)
       const revisitDate = taskData.revisitDate;
       
       if (revisitDate) {
@@ -1099,7 +1142,7 @@ function handleFilterChange() {
     taskItem.style.display = shouldShow ? '' : 'none';
   });
   
-  console.log(`🔍 FILTER: Applied "${filterValue}" filter`);
+  console.log(`🔍 FILTER: Applied "${filterValue}" filter with corrected Triage logic`);
 }
 
 /* ---------- Sort by Priority ----------- */
