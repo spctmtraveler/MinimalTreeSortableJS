@@ -112,6 +112,8 @@ DUN is a hierarchical task management application built with a client-server arc
 - **Quick Add Logic**: Creates tasks in Triage with all defaults
 - **Auto-Dating System**: Tasks dragged from Triage to A/B/C automatically get revisit dates based on current view
 - **Smart Filtering**: Tasks with no revisit date appear in all date filters (need attention)
+- **Hours Panel**: New toggleable panel for time tracking features (clock icon in header)
+- **Streamlined UI**: Removed unused icons (checkmark, lightbulb, hourglass) from header
 - **Mobile Optimization**: Responsive design with touch support
 
 ### 🔍 Key Business Logic (June 29, 2025)

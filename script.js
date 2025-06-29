@@ -1711,6 +1711,27 @@ function toggleTasksView(btn) {
   console.log('📋 Tasks view toggled');
 }
 
+function toggleHoursView(btn) {
+  const hoursColumn = document.querySelector('.hours-column');
+  const toggleBtn = document.getElementById('toggle-hours');
+  
+  if (hoursColumn && toggleBtn) {
+    const isVisible = !hoursColumn.classList.contains('hidden');
+    
+    if (isVisible) {
+      // Hide hours column
+      hoursColumn.classList.add('hidden');
+      toggleBtn.classList.remove('active');
+      console.log('🕐 Hours panel hidden');
+    } else {
+      // Show hours column
+      hoursColumn.classList.remove('hidden');
+      toggleBtn.classList.add('active');
+      console.log('🕐 Hours panel shown');
+    }
+  }
+}
+
 function toggleTimerView(btn) {
   // This could show time estimates more prominently
   const timeEstimates = document.querySelectorAll('.task-time-estimate');
@@ -1818,6 +1839,12 @@ function initUI() {
 
   // Hours panel toggle functionality
   document.getElementById('toggle-hours')?.addEventListener('click', toggleHoursView);
+  
+  // Set initial state for Hours panel (visible by default)
+  const hoursToggleBtn = document.getElementById('toggle-hours');
+  if (hoursToggleBtn) {
+    hoursToggleBtn.classList.add('active');
+  }
 
   document.querySelectorAll('.flag-btn').forEach(btn=>{
     btn.addEventListener('click', e=>{
