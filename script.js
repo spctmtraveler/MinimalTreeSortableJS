@@ -1713,19 +1713,22 @@ function toggleTasksView(btn) {
 
 function toggleHoursView(btn) {
   const hoursColumn = document.querySelector('.hours-column');
+  const hoursColumnHeader = document.querySelector('.hours-column-header');
   const toggleBtn = document.getElementById('toggle-hours');
   
-  if (hoursColumn && toggleBtn) {
+  if (hoursColumn && hoursColumnHeader && toggleBtn) {
     const isVisible = !hoursColumn.classList.contains('hidden');
     
     if (isVisible) {
-      // Hide hours column
+      // Hide hours column and header
       hoursColumn.classList.add('hidden');
+      hoursColumnHeader.classList.add('hidden');
       toggleBtn.classList.remove('active');
       console.log('🕐 Hours panel hidden');
     } else {
-      // Show hours column
+      // Show hours column and header
       hoursColumn.classList.remove('hidden');
+      hoursColumnHeader.classList.remove('hidden');
       toggleBtn.classList.add('active');
       console.log('🕐 Hours panel shown');
     }

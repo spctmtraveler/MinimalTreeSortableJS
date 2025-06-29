@@ -258,7 +258,8 @@ button, input, select, textarea {
   transition: all 0.3s ease;
 }
 
-.hours-column.hidden {
+.hours-column.hidden,
+.hours-column-header.hidden {
   display: none;
 }
 
