@@ -73,16 +73,11 @@
         <div id="dun-app">
             <!-- Tasks Section -->
             <div class="content-section">
-                <!-- Unified headers for all three panels -->
+                <!-- Unified headers for main panels -->
                 <div class="unified-header">
                     <div class="task-column-header">
                         <div class="section-title">
                             <i class="fa-solid fa-list"></i> Tasks
-                        </div>
-                    </div>
-                    <div class="priority-column-header">
-                        <div class="priority-header">
-                            <i class="fa-solid fa-flag"></i> Priority
                         </div>
                     </div>
                     <div class="hours-column-header">
@@ -92,29 +87,33 @@
                     </div>
                 </div>
 
-                <!-- Control buttons row -->
-                <div class="controls-row">
-                    <div id="priority-sort-container">
-                        <button
-                            id="priority-sort-btn"
-                            class="sort-btn"
-                            title="Sort tasks by priority"
-                        >
-                            <i class="fas fa-sort-amount-down"></i>
-                        </button>
-                        <button
-                            id="consolidate-btn"
-                            class="sort-btn"
-                            title="Move all tasks to Triage for aggressive sorting"
-                        >
-                            <i class="fas fa-compress-arrows-alt"></i>
-                        </button>
-                    </div>
-                </div>
-
                 <!-- Task container with three columns -->
                 <div class="task-container">
                     <div class="task-column">
+                        <!-- Priority header and controls positioned above flags -->
+                        <div class="priority-overlay-header">
+                            <div class="priority-header">
+                                <i class="fa-solid fa-flag"></i> Priority
+                            </div>
+                        </div>
+                        <div class="priority-overlay-controls">
+                            <div id="priority-sort-container">
+                                <button
+                                    id="priority-sort-btn"
+                                    class="sort-btn"
+                                    title="Sort tasks by priority"
+                                >
+                                    <i class="fas fa-sort-amount-down"></i>
+                                </button>
+                                <button
+                                    id="consolidate-btn"
+                                    class="sort-btn"
+                                    title="Move all tasks to Triage for aggressive sorting"
+                                >
+                                    <i class="fas fa-compress-arrows-alt"></i>
+                                </button>
+                            </div>
+                        </div>
                         <!-- Task tree container -->
                         <div id="task-tree"></div>
                     </div>
