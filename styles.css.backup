@@ -1,0 +1,1205 @@
+/* ===== Reset & Base ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #212121; color: #dddddd; }
+button, input, select, textarea {
+  font-family: 'Inter', sans-serif;
+  outline: none;
+}
+
+/* ===== Variables ===== */
+:root {
+  --primary-bg: #212121;
+  --secondary-bg: #2a2a2a;
+  --text-color: #dddddd;
+  --accent-color: #00CEF7;
+  --accent-hover: #3ddaff;
+  --active-color: #00CEF7;
+  --inactive-color: rgba(0, 206, 247, 0.5);
+  --border-color: #444;
+  --danger-color: #ff4d4d;
+  --header-height: 60px;
+  --section-spacing: 24px;
+  --task-indent: 24px;
+  --container-width: 1200px;
+}
+
+/* ===== Top Banner ===== */
+.top-banner {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--header-height);
+  background: var(--primary-bg);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.banner-container {
+  max-width: var(--container-width);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--accent-color);
+  letter-spacing: 1px;
+}
+
+.task-input-container {
+  display: flex;
+  flex: 1;
+  max-width: 400px;
+  margin: 0 20px;
+}
+
+#new-task-input {
+  flex: 1;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px 0 0 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-color);
+}
+
+#add-task-btn {
+  height: 36px;
+  padding: 0 16px;
+  background: var(--accent-color);
+  color: #000;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#add-task-btn:hover {
+  background: var(--accent-hover);
+}
+
+.filter-container {
+  margin: 0 20px;
+}
+
+#filter-dropdown {
+  height: 36px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+#filter-dropdown option {
+  background: #212121;
+  color: var(--text-color);
+}
+
+#filter-dropdown option:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.view-toggles {
+  display: flex;
+}
+
+.view-toggle-btn {
+  width: 36px;
+  height: 36px;
+  margin-left: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.3); /* Dimmed by default */
+  border: none; /* No border for minimalist design */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none; /* Remove any focus outline */
+  box-shadow: none; /* Remove any box shadow */
+  font-size: 18px; /* Make icons 50% bigger */
+}
+
+.view-toggle-btn:hover {
+  color: rgba(0, 206, 247, 0.65); /* Half way between dimmed and full */
+  background: transparent; /* Keep background transparent */
+  outline: none;
+  box-shadow: none;
+}
+
+.view-toggle-btn.active {
+  color: var(--accent-color) !important; /* Full brightness accent color */
+  background: transparent !important; /* No background for minimalist design */
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.view-toggle-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ===== Main Content Area ===== */
+#dun-app {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  margin-top: calc(var(--header-height) + 20px); /* Space for fixed header */
+}
+
+.content-section {
+  margin-bottom: var(--section-spacing);
+}
+
+/* Unified header system for all panels */
+.unified-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  height: 40px; /* Fixed height to ensure alignment */
+
+}
+
+.task-column-header {
+  flex: 1;
+  width: calc(100% - 150px); /* Match task column width minus hours column */
+  text-align: left; /* Align to left */
+  padding-left: 0; /* No extra padding */
+
+}
+
+.priority-column-header {
+  width: 150px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 50px; /* Match the priority flags positioning */
+}
+
+.hours-column-header {
+  width: 150px;
+  text-align: center;
+  margin-left: 220px; /* Account for priority column space (150px + 50px offset + 20px margin) */
+
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  height: 36px;
+
+}
+
+.controls-row::before {
+  content: "";
+  flex: 1;
+  width: calc(100% - 200px - 150px); /* Match actual spacing: 150px priority + 50px margin + 150px hours */
+}
+
+.section-header {
+  display: flex;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: none; /* Remove bottom border */
+}
+
+.section-title-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px; /* Match unified header height */
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 0; /* Remove margin for left alignment */
+}
+
+.section-title i {
+  margin-right: 8px;
+}
+
+.priority-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  justify-content: center;
+}
+
+.section-title i, .priority-header i {
+  margin-right: 8px;
+}
+
+.task-container {
+  display: flex;
+  width: 100%;
+}
+
+.task-column {
+  flex: 1;
+  width: calc(100% - 300px); /* Reserve space for priority flags */
+
+  /*margin-top: 80px; /* Create space for overlaid priority elements */
+  position: relative; /* Enable absolute positioning for children */
+}
+
+#task-tree {
+  width: 100%;
+}
+
+
+.hours-column {
+  width: 150px;
+  min-width: 150px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 300px;
+  transition: all 0.3s ease;
+  /*  border: 1px solid rgba(128, 0, 128, 0.3); /* DEBUG: Purple border */
+}
+
+.hours-column.hidden,
+.hours-column-header.hidden {
+  display: none;
+}
+
+.hours-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  height: 40px; /* Match other headers */
+}
+
+.hours-header .section-title {
+  color: var(--accent-color);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* When priority column is hidden, hide priority elements and adjust hours position */
+.priority-flags-hidden .priority-overlay-header,
+.priority-flags-hidden .priority-overlay-controls {
+  display: none;
+}
+
+.priority-flags-hidden .hours-column-header {
+  margin-left: 20px; /* Reset to normal position when priority hidden */
+}
+
+.priority-flags-hidden .hours-column {
+  margin-left: 20px; /* Reset to normal position when priority hidden */
+}
+
+/* Priority Overlay Positioning */
+.priority-overlay-header {
+  position: absolute;
+  top: -48px; /* Position well above task tree */
+  right: 250px;
+  width: 150px;
+  text-align: center;
+  z-index: 10;
+}
+
+.priority-overlay-controls {
+  position: absolute;
+  top: 10px; /* Position between header and tasks */
+  /*left: 575px; /*Align with priority flags */
+  right: 250px;
+  /*(margin-right: 0px; */
+  width: 150px;
+  z-index: 10;
+
+}
+
+/* Priority Sort Button */
+#priority-sort-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  width: 150px;
+}
+
+.sort-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary-bg);
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-btn:hover {
+  background-color: rgba(0, 206, 247, 0.2);
+}
+
+.sort-btn.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.priority-column-headers {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0;
+  margin-top: 8px;
+  padding-right: 12px; /* Ensure alignment with flags */
+}
+
+.priority-label {
+  width: 21px;
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin: 0 1.5px;
+}
+
+/* ===== Task Tree & List ===== */
+.task-list {
+  list-style: none;
+  padding-left: var(--task-indent);
+  margin: 0;
+  border: none; /* Remove any borders */
+}
+
+/* Remove all borders from list items */
+.task-list li {
+  border: none;
+}
+
+/* Remove any stray pseudo-elements */
+.task-children:before,
+.task-list:before,
+.task-list:empty:before,
+li::before {
+  content: none !important;
+}
+
+/* ===== Task Items ===== */
+.task-item {
+  margin: 4px 0;
+  position: relative;
+}
+
+.task-content {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: grab;
+  user-select: none;
+  background: transparent;
+  position: relative;
+  margin-right: 200px; /* Reduced space for priority flags */
+  gap: 4px; /* Further reduced space between elements */
+}
+
+.task-content:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ===== Task Controls Container ===== */
+.task-control-container {
+  display: flex;
+  align-items: center;
+  margin-left: 0; /* Remove auto margin to align left */
+  margin-right: 8px; /* Reduced space before priority flags */
+  min-width: 80px; /* Reduced width */
+}
+
+/* Task date display */
+.task-date {
+  color: var(--accent-color);
+  font-size: 12px;
+  margin-right: 8px;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 2s ease-out; /* Match control bar fade out */
+}
+
+/* Show date on hover */
+.task-content:hover .task-date {
+  opacity: 1;
+  transition: opacity 0.5s ease-in; /* Match control bar fade in */
+}
+
+/* ===== Control Bar (buttons) ===== */
+.task-control-bar {
+  display: flex;
+  opacity: 0;
+  transition: opacity 2s ease-out; /* Fade out longer (2 seconds) */
+  z-index: 5;
+  margin-left: 2px; /* Reduced gap between date and buttons */
+}
+
+.task-content:hover .task-control-bar {
+  opacity: 1;
+  transition: opacity 0.5s ease-in; /* Fade in quicker (0.5 seconds) */
+}
+
+.control-btn {
+  width: 28px;
+  height: 28px;
+  margin-left: 2px; /* Much tighter spacing */
+  background: transparent;
+  color: var(--inactive-color);
+  border: none;
+  border-radius: 50%; /* Make buttons circular */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 12px; /* Slightly smaller */
+}
+
+.control-btn:hover {
+  color: var(--accent-color);
+  background: rgba(0, 206, 247, 0.1);
+  transform: scale(1.1); /* Subtle grow effect on hover */
+}
+
+/* Specific control button styles */
+.edit-btn {
+  color: var(--inactive-color);
+}
+
+.play-btn {
+  color: var(--inactive-color);
+}
+
+.delete-btn {
+  color: var(--inactive-color);
+}
+
+.edit-btn:hover {
+  color: var(--accent-color);
+}
+
+.play-btn:hover {
+  color: #4CAF50; /* Green */
+}
+
+.delete-btn:hover {
+  color: var(--danger-color);
+}
+
+/* ===== Priority Flags Container ===== */
+.task-priority-flags {
+  position: absolute;
+  display: flex;
+  width: 150px;
+  right: 50px; /* Even closer to action buttons */
+  top: 50%;
+  transform: translateY(-50%);
+  justify-content: space-between;
+  z-index: 5;
+}
+
+/* Individual priority flag */
+.priority-flag {
+  width: 21px; /* 30% smaller */
+  height: 21px; /* 30% smaller */
+  border-radius: 50%;
+  border: 2px solid var(--inactive-color);
+  background: transparent;
+  color: var(--inactive-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  font-size: 9px; /* Also reduce font size */
+  z-index: 10;
+  margin: 0 1.5px; /* 70% reduced spacing */
+  padding: 0;
+}
+
+/* Active priority flag */
+.priority-flag.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000;
+}
+
+/* Hover effect for priority flags */
+.priority-flag:hover {
+  border-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+/* ===== Toggle (Chevron) ===== */
+.toggle-area {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.toggle-btn {
+  font-size: 16px;
+  color: var(--inactive-color);
+  line-height: 1;
+}
+
+.toggle-btn.expanded {
+  color: var(--accent-color);
+}
+
+/* ===== Task Checkbox ===== */
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  border: 2px solid var(--inactive-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.task-completed .task-checkbox {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000;
+}
+
+/* ===== Text ===== */
+.task-text {
+  font-size: 14px;
+  color: var(--text-color);
+  width: 210px; /* Reduced width for ~26 characters */
+  min-width: 210px;
+  max-width: 210px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* ===== Date Container ===== */
+.task-date-container {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.task-date {
+  font-size: 12px;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.task-date:hover {
+  color: var(--accent-hover);
+}
+
+.task-date-icon {
+  background: none;
+  border: none;
+  color: var(--inactive-color);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  opacity: 0; /* Hidden by default like other controls */
+}
+
+.task-date-icon:hover {
+  color: var(--accent-color);
+  background: rgba(0, 206, 247, 0.1);
+}
+
+/* Show calendar icon on task hover */
+.task-content:hover .task-date-icon {
+  opacity: 1;
+}
+
+/* ===== Children Container ===== */
+.task-children {
+  margin-left: var(--task-indent);
+  padding-left: 0;
+}
+
+/* ===== Empty Drop‑zone Lists ===== */
+.task-list:empty {
+  min-height: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s, visibility 0.1s, min-height 0.1s;
+}
+
+/* Active drop target (dotted box) - current target */
+.task-list.drop-target-active {
+  visibility: visible;
+  opacity: 1;
+  min-height: 32px; /* Larger target area */
+  height: auto;
+  margin-left: 24px; /* Increased indent for active drop targets */
+  background: rgba(0, 206, 247, 0.1); /* Accent color to match theme */
+  border: 1px dashed rgba(0, 206, 247, 0.5); /* Accent color border */
+  border-radius: 4px;
+}
+
+/* Hint style for other possible drop targets */
+.task-list.drop-target-hint {
+  visibility: visible;
+  opacity: 1;
+  min-height: 20px; /* Smaller than active */
+  height: auto;
+  margin-left: 24px; /* Same indent */
+  background: rgba(0, 206, 247, 0.03); /* Subtler background */
+  border: 1px dotted rgba(0, 206, 247, 0.2); /* Subtler border */
+  border-radius: 4px;
+}
+
+/* To track when the body is in dragging state */
+body.is-dragging .task-list:empty {
+  min-height: 0;
+  height: 0;
+}
+
+/* ===== Drag / Ghost ===== */
+.task-ghost,
+.sortable-drag,
+.task-drag {
+  background: rgba(0, 206, 247, 0.12) !important;
+  border: 1px dashed rgba(0, 206, 247, 0.4) !important;
+  border-radius: 4px;
+  opacity: 0.85 !important;
+}
+
+/* Hide chevron gap for drag & ghost */
+.task-ghost .toggle-area,
+.sortable-drag .toggle-area,
+.task-drag .toggle-area {
+  display: none !important;
+}
+
+/* Align label properly inside drag & ghost */
+.task-ghost .task-content,
+.sortable-drag .task-content,
+.task-drag .task-content {
+  padding-left: 8px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Drag preview container cleanup */
+body > .sortable-drag {
+  pointer-events: none;
+  position: fixed !important;
+  z-index: 999;
+  margin: 0 !important;
+  padding: 6px 12px !important;
+  background: rgba(33, 33, 33, 0.95) !important;
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(0, 206, 247, 0.2);
+}
+
+/* Compact drag mode (cleaner appearance) */
+.drag-compact {
+  margin: 0 !important;
+  padding: 2px 8px !important;
+}
+
+/* Add a "right-indent" visual indicator for drag targets */
+.task-item {
+  position: relative;
+}
+
+/* Create a visual right-arrow indicator to show indent */
+.task-item::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 8px;
+  border-color: transparent transparent transparent rgba(0, 206, 247, 0);
+  transform: translateY(-50%);
+  transition: border-color 0.2s;
+}
+
+/* Show the right-arrow when hovering over a task */
+/*.task-item:hover::after {
+  border-color: transparent transparent transparent rgba(0, 206, 247, 0.15);
+}*/
+
+/* ===== Section Headers ===== */
+.section-header {
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
+  position: relative;
+  border-left: 0; /* Remove blue left border */
+  padding-left: 5px;
+  display: block;
+  width: 100%;
+}
+
+.section-header:first-child {
+  margin-top: 0 !important;
+}
+
+.section-header > .task-content {
+  background: transparent !important; /* Remove dark background */
+  padding: 10px 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 0;
+  margin-right: 0 !important;
+}
+
+.section-header > .task-content .task-text {
+  color: var(--accent-color);
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.section-header > .task-children {
+  margin-left: 8px;
+  margin-top: 12px;
+}
+
+/* Section content indentation */
+.section-header > .task-children > .task-list {
+  padding-left: 0; /* Remove left padding to align with section label */
+  border-left: 0; /* Remove any left borders */
+}
+
+/* Task icons/grip */
+.task-grip {
+  margin-right: 8px;
+  color: var(--inactive-color);
+  font-size: 12px;
+}
+
+/* ===== Modal Styles ===== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: var(--secondary-bg);
+  margin: 5% auto;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.close-modal {
+  font-size: 24px;
+  cursor: pointer;
+  color: #ffffff;
+  transition: color 0.2s;
+}
+
+.close-modal:hover {
+  color: var(--danger-color);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="number"],
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.priority-flags h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.flags-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.flag-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70px;
+  margin-bottom: 12px;
+}
+
+.flag-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--inactive-color);
+  background: transparent;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 6px;
+}
+
+.flag-btn.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000;
+}
+
+.flag-btn:hover {
+  border-color: var(--accent-hover);
+}
+
+.flag-item span {
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+/* Modal Priority Flags - Match main screen styling */
+.priority-flags-modal {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.priority-flag-modal {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--inactive-color);
+  background: transparent;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.priority-flag-modal.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000;
+}
+
+.priority-flag-modal:hover {
+  border-color: var(--accent-hover);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  margin-left: 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#save-task-btn {
+  background-color: var(--accent-color);
+  color: #000;
+}
+
+#save-task-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+#delete-task-btn {
+  background-color: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+#delete-task-btn:hover {
+  background-color: rgba(255, 77, 77, 0.1);
+}
+
+.btn-outline-danger {
+  background-color: transparent !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--text-color) !important;
+}
+
+.btn-outline-danger:hover {
+  background-color: rgba(127, 127, 127, 0.1) !important;
+}
+
+/* Toast Notifications */
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 3000;
+}
+
+.toast {
+  padding: 12px 16px;
+  margin-top: 8px;
+  background-color: var(--secondary-bg);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  animation: toastFadeIn 0.3s;
+}
+
+@keyframes toastFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toast-content {
+  flex: 1;
+  margin-right: 12px;
+}
+
+.toast-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.toast-message {
+  font-size: 12px;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.toast-action {
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.toast-action:hover {
+  background-color: rgba(0, 206, 247, 0.1);
+}
+
+/* Priority flags toggle visibility */
+.priority-flags-hidden .priority-flag,
+.priority-flags-hidden .task-priority-flags {
+  display: none !important;
+}
+
+.view-toggle-btn.active {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+/* Keyboard navigation focus styling */
+.keyboard-focused {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Completion checkbox styling improvements */
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--accent-color);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: transparent;
+  opacity: 0.5;
+}
+
+.task-item.task-completed .task-checkbox {
+  background-color: var(--accent-color);
+  opacity: 1;
+}
+
+.task-checkbox i {
+  color: white;
+  font-size: 12px;
+}
+
+/* Completed task styling with strikethrough */
+.task-item.task-completed .task-text {
+  opacity: 0.5;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* Control panel fade timing */
+.task-control-container {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:hover .task-control-container {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:not(:hover) .task-control-container {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+/* Task date container synced with control panel */
+.task-date-container {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:hover .task-date-container {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+.task-item:not(:hover) .task-date-container {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+/* Task truncation at 240px */
+.task-text {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
