@@ -281,6 +281,7 @@ button, input, select, textarea {
   position: relative;
   min-height: 400px; /* Give space for the sort button at bottom */
   transition: all 0.3s ease;
+  border: 1px solid rgba(255, 165, 0, 0.3); /* DEBUG: Orange border */
 }
 
 .hours-column {
@@ -292,6 +293,7 @@ button, input, select, textarea {
   position: relative;
   min-height: 400px;
   transition: all 0.3s ease;
+  border: 1px solid rgba(128, 0, 128, 0.3); /* DEBUG: Purple border */
 }
 
 .hours-column.hidden,
