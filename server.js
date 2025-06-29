@@ -14,6 +14,11 @@ const pool = new Pool({
 app.use(express.json());
 app.use(express.static('.'));
 
+// Route for Hours standalone prototype
+app.get('/hours', (req, res) => {
+    res.sendFile(path.join(__dirname, 'hours-standalone.html'));
+});
+
 // API Routes
 
 // Get all tasks
