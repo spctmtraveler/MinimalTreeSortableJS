@@ -48,19 +48,22 @@
                     </select>
                 </div>
                 <div class="view-toggles">
+                    <button id="toggle-tasks" class="view-toggle-btn" title="Tasks View">
+                        <i class="fa-solid fa-list"></i>
+                    </button>
                     <button
                         id="toggle-priority"
                         class="view-toggle-btn"
                         title="Toggle Priority Flags"
                     >
-                        <i class="fa-solid fa-eye"></i>
+                        <i class="fa-solid fa-bullseye"></i>
                     </button>
                     <button
-                        id="sort-tasks"
+                        id="toggle-hours"
                         class="view-toggle-btn"
-                        title="Sort Tasks by Priority"
+                        title="Show/Hide Hours View"
                     >
-                        <i class="fa-solid fa-sort"></i>
+                        <i class="fa-solid fa-clock"></i>
                     </button>
                 </div>
             </div>
@@ -68,19 +71,56 @@
 
         <!-- Main Content Area -->
         <div id="dun-app">
-            <!-- Header row with column labels -->
-            <div class="tasks-header">
-                <div class="tasks-label">
-                    <i class="fa-solid fa-list"></i> Tasks
+            <!-- Tasks Section -->
+            <div class="content-section">
+                <!-- Unified headers for main panels -->
+                <div class="unified-header">
+                    <div class="task-column-header">
+                        <div class="section-title">
+                            <i class="fa-solid fa-list"></i> Tasks
+                        </div>
+                    </div>
+                    <div class="hours-column-header">
+                        <div class="section-title">
+                            <i class="fa-solid fa-clock"></i> Hours
+                        </div>
+                    </div>
                 </div>
-                <div class="priority-label">
-                    <i class="fa-solid fa-bullseye"></i> Priority
-                </div>
-            </div>
 
-            <!-- Main Tasks View -->
-            <div class="tasks-view">
-                <div id="task-tree"></div>
+                <!-- Task container with three columns -->
+                <div class="task-container">
+                    <div class="task-column">
+                        <!-- Priority header and controls positioned above flags -->
+                        <div class="priority-overlay-header">
+                            <div class="priority-header">
+                                <i class="fa-solid fa-flag"></i> Priority
+                            </div>
+                        </div>
+                        <div class="priority-overlay-controls">
+                            <div id="priority-sort-container">
+                                <button
+                                    id="priority-sort-btn"
+                                    class="sort-btn"
+                                    title="Sort tasks by priority"
+                                >
+                                    <i class="fas fa-sort-amount-down"></i>
+                                </button>
+                                <button
+                                    id="consolidate-btn"
+                                    class="sort-btn"
+                                    title="Move all tasks to Triage for aggressive sorting"
+                                >
+                                    <i class="fas fa-compress-arrows-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Task tree container -->
+                        <div id="task-tree"></div>
+                    </div>
+                    <div class="hours-column">
+                        <!-- Hours content will go here -->
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -92,51 +132,38 @@
                     <span class="close-modal">&times;</span>
                 </div>
                 <div class="modal-body">
-                    <!-- Completion Status -->
                     <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="modal-completed" />
-                            Mark as completed
-                        </label>
+                        <label for="modal-task-name">Task Name:</label>
+                        <input type="text" id="modal-task-name" />
                     </div>
                     
-                    <!-- Title Field -->
-                    <div class="form-group">
-                        <label for="modal-title">Title:</label>
-                        <input type="text" id="modal-title" />
-                    </div>
-                    
-                    <!-- Revisit Date Field -->
-                    <div class="form-group">
-                        <label for="modal-revisit-date">Revisit Date:</label>
-                        <input type="date" id="modal-revisit-date" />
-                    </div>
-                    
-                    <!-- Scheduled Time Field -->
-                    <div class="form-group">
-                        <label for="modal-scheduled-time">Scheduled Time:</label>
-                        <input type="time" id="modal-scheduled-time" step="900" />
-                    </div>
-                    
-                    <!-- Overview Field -->
                     <div class="form-group">
                         <label for="modal-overview">Overview:</label>
                         <textarea id="modal-overview" rows="3"></textarea>
                     </div>
                     
-                    <!-- Details Field -->
                     <div class="form-group">
                         <label for="modal-details">Details:</label>
                         <textarea id="modal-details" rows="5"></textarea>
                     </div>
                     
-                    <!-- Overall Time Estimate Field -->
-                    <div class="form-group">
-                        <label for="modal-time-estimate">Overall Time Estimate (mins):</label>
-                        <input type="number" id="modal-time-estimate" min="0" step="15" />
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="modal-time-estimate">Time Estimate (mins):</label>
+                            <input type="number" id="modal-time-estimate" min="0" step="15" />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="modal-scheduled-time">Scheduled Time:</label>
+                            <input type="time" id="modal-scheduled-time" step="900" />
+                        </div>
                     </div>
                     
-                    <!-- Priority Flags -->
+                    <div class="form-group">
+                        <label for="modal-revisit-date">Revisit Date:</label>
+                        <input type="date" id="modal-revisit-date" />
+                    </div>
+                    
                     <div class="form-group">
                         <label>Priority Flags:</label>
                         <div class="priority-flags-modal" id="modal-priority-flags">
@@ -144,11 +171,9 @@
                         </div>
                     </div>
                     
-                    <!-- Action Buttons -->
                     <div class="modal-actions">
-                        <button id="modal-start-btn" class="btn-primary">Start/Play</button>
-                        <button id="modal-save-btn" class="btn-secondary">Save</button>
-                        <button id="modal-delete-btn" class="btn-outline-danger">Delete</button>
+                        <button id="save-task-btn" class="btn-primary">Save</button>
+                        <button id="delete-task-btn" class="btn-outline-danger">Delete</button>
                     </div>
                 </div>
             </div>
