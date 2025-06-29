@@ -98,7 +98,7 @@ DUN is a hierarchical task management application built with a client-server arc
 
 ## Recent Implementation Status
 
-### ✅ Completed Features (June 28, 2025)
+### ✅ Completed Features (June 29, 2025)
 - **Core Task Management**: Hierarchical tree, drag-and-drop, CRUD operations
 - **Priority System**: Five flags with tooltips, toggle visibility, sorting
 - **Modal Data Persistence**: Fixed date/time/estimate storage and retrieval
@@ -110,6 +110,8 @@ DUN is a hierarchical task management application built with a client-server arc
 - **Control Panel Timing**: 0.2s fade in, 1s fade out for hover states
 - **Task Truncation**: 240px width limit with ellipsis and tooltips
 - **Quick Add Logic**: Creates tasks in Triage with all defaults
+- **Auto-Dating System**: Tasks dragged from Triage to A/B/C automatically get revisit dates based on current view
+- **Smart Filtering**: Tasks with no revisit date appear in all date filters (need attention)
 - **Mobile Optimization**: Responsive design with touch support
 
 ### 🔍 Key Business Logic (June 29, 2025)
@@ -122,6 +124,12 @@ The Triage filter shows tasks that need attention regardless of date range:
 - **Manually Placed**: Tasks user has dragged directly into the Triage section
 
 **Note**: "Physically assigned to Triage" occurs when users drag tasks directly into the Triage section, overriding automatic categorization. This allows manual intervention for edge cases or tasks requiring special handling.
+
+#### Auto-Dating System
+When tasks are dragged from Triage to A/B/C sections, the system automatically assigns revisit dates:
+- **Single Day Views** (Today, Tomorrow): Sets revisit date to the viewed day
+- **Date Range Views** (This Week, This Month): Sets to first day of range, or today if today falls within the range
+- **Non-Date Views** (All, Triage): Defaults to today's date
 
 #### Date Range Definitions
 - **This Week**: Last Monday through coming Sunday (Monday-based week)

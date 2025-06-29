@@ -1492,11 +1492,26 @@ async function handleDragEnd(evt) {
     
     console.log(`🔄 DRAG: Moving task ${taskId} to parent ${newParentId} at position ${newPosition}`);
     
+    // Check if task was moved FROM Triage TO A/B/C sections and auto-assign date
+    const oldParentId = evt.from.closest('.section-header')?.dataset.taskId;
+    const isFromTriage = oldParentId === 'section-triage';
+    const isToABC = newParentId === 'section-a' || newParentId === 'section-b' || newParentId === 'section-c';
+    
     // Update task with new parent and position
     const updates = {
       parent_id: newParentId,
       positionOrder: newPosition
     };
+    
+    // AUTO-ASSIGN REVISIT DATE when moving from Triage to A/B/C
+    if (isFromTriage && isToABC) {
+      const autoAssignedDate = calculateAutoRevisitDate();
+      if (autoAssignedDate) {
+        updates.revisitDate = autoAssignedDate;
+        console.log(`📅 AUTO-DATE: Task ${taskId} moved from Triage to ${newParentId}, assigned date: ${autoAssignedDate}`);
+        showToast('Date Assigned', `Task scheduled for ${formatDateForDisplay(autoAssignedDate)}`);
+      }
+    }
     
     await updateTaskState(taskId, updates);
     
@@ -1506,6 +1521,84 @@ async function handleDragEnd(evt) {
   } catch (error) {
     console.error('❌ Error handling drag end:', error);
     showToast('Error', 'Failed to save task position');
+  }
+}
+
+function calculateAutoRevisitDate() {
+  const filterValue = document.getElementById('filter-dropdown').value;
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
+  console.log(`📅 AUTO-DATE: Current filter is "${filterValue}"`);
+  
+  switch (filterValue) {
+    case 'today':
+      return today.toISOString();
+      
+    case 'tomorrow':
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      return tomorrow.toISOString();
+      
+    case 'this-week':
+      // First day of current week (Monday) or today if today is within the week
+      const daysSinceMonday = (today.getDay() + 6) % 7;
+      const weekStart = new Date(today);
+      weekStart.setDate(today.getDate() - daysSinceMonday);
+      
+      // If today is within this week and weekStart is in the past, use today
+      if (weekStart <= today) {
+        return today.toISOString();
+      } else {
+        return weekStart.toISOString();
+      }
+      
+    case 'next-week':
+      const nextWeekStart = new Date(today);
+      const daysUntilNextMonday = (8 - today.getDay()) % 7 || 7;
+      nextWeekStart.setDate(today.getDate() + daysUntilNextMonday);
+      return nextWeekStart.toISOString();
+      
+    case 'this-month':
+      // First day of current month or today if today is within the month
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      
+      // If today is within this month and monthStart is in the past, use today
+      if (monthStart <= today) {
+        return today.toISOString();
+      } else {
+        return monthStart.toISOString();
+      }
+      
+    case 'next-month':
+      const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      return nextMonthStart.toISOString();
+      
+    case 'all':
+    case 'triage':
+    default:
+      // For non-date views, assign today's date
+      return today.toISOString();
+  }
+}
+
+function formatDateForDisplay(isoDateString) {
+  const date = new Date(isoDateString);
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  
+  // Compare dates only (ignore time)
+  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const tomorrowOnly = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+  
+  if (dateOnly.getTime() === todayOnly.getTime()) {
+    return 'today';
+  } else if (dateOnly.getTime() === tomorrowOnly.getTime()) {
+    return 'tomorrow';
+  } else {
+    return date.toLocaleDateString();
   }
 }
 
