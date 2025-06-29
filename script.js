@@ -153,7 +153,7 @@ const sampleTasks = [
     children: [
       {
         id: 'task-triage-1',
-        content: 'Mail check',
+        content: 'SAMPLE:: Mail check',
         completed: true,
         children: [],
         revisitDate: '2025-03-07',
@@ -169,7 +169,7 @@ const sampleTasks = [
       },
       {
         id: 'task-triage-2',
-        content: 'Clean Kitchen',
+        content: 'SAMPLE:: Clean Kitchen',
         completed: true,
         children: [],
         revisitDate: null,
@@ -601,11 +601,11 @@ function createPriorityFlag(type, iconClass, isActive, tooltip, isModal = false)
 
   let icon, title;
   switch(type) {
-    case 'fire':  icon='fa-fire';  title='Tasks requiring immediate urgent attention'; break;
-    case 'fast':  icon='fa-bolt';  title='Tasks that can be completed quickly'; break;
-    case 'flow':  icon='fa-water'; title='Tasks requiring deep focus and concentration'; break;
-    case 'fear':  icon='fa-skull'; title='Challenging tasks that cause anxiety or avoidance'; break;
-    case 'first': icon='fa-flag';  title='Tasks that should be prioritized above others'; break;
+    case 'fire':  icon='fa-fire';  title='Urgent?'; break;
+    case 'fast':  icon='fa-bolt';  title='Under 5 min?'; break;
+    case 'flow':  icon='fa-water'; title='Hyperfocus risk?'; break;
+    case 'fear':  icon='fa-skull'; title='Avoidance risk?'; break;
+    case 'first': icon='fa-flag';  title='20% that matters most?'; break;
     default:      icon=iconClass;  title=tooltip||type;
   }
   flag.title = title;
@@ -1482,6 +1482,106 @@ function togglePriorityFlags() {
   }
 }
 
+/* ---------- View Toggle Functions ----------- */
+function toggleCompletedTasks(btn) {
+  const isActive = btn.classList.contains('active');
+  
+  if (isActive) {
+    // Show all tasks
+    document.querySelectorAll('.task-item').forEach(task => {
+      task.style.display = '';
+    });
+    btn.classList.remove('active');
+    console.log('✅ Showing all tasks');
+  } else {
+    // Show only completed tasks
+    document.querySelectorAll('.task-item').forEach(task => {
+      if (task.classList.contains('section-header')) {
+        task.style.display = '';
+        return;
+      }
+      
+      const isCompleted = task.classList.contains('task-completed');
+      task.style.display = isCompleted ? '' : 'none';
+    });
+    btn.classList.add('active');
+    console.log('✅ Showing only completed tasks');
+  }
+}
+
+function toggleTasksView(btn) {
+  // This could toggle between different task view modes
+  btn.classList.toggle('active');
+  console.log('📋 Tasks view toggled');
+}
+
+function toggleTimerView(btn) {
+  // This could show time estimates more prominently
+  const timeEstimates = document.querySelectorAll('.task-time-estimate');
+  const isActive = btn.classList.contains('active');
+  
+  timeEstimates.forEach(est => {
+    est.style.display = isActive ? 'none' : 'inline';
+  });
+  
+  btn.classList.toggle('active');
+  console.log('⏰ Timer view toggled');
+}
+
+function toggleReviewView(btn) {
+  // This could highlight tasks that need review
+  const reviewTasks = document.querySelectorAll('.task-item');
+  const isActive = btn.classList.contains('active');
+  
+  reviewTasks.forEach(task => {
+    if (task.classList.contains('section-header')) return;
+    
+    const taskData = JSON.parse(task.dataset.taskData || '{}');
+    const hasReviewDate = taskData.revisitDate;
+    
+    if (isActive) {
+      task.style.display = '';
+    } else {
+      task.style.display = hasReviewDate ? '' : 'none';
+    }
+  });
+  
+  btn.classList.toggle('active');
+  console.log('💡 Review view toggled');
+}
+
+function toggleDailyView(btn) {
+  // This could show today's tasks prominently
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  const tasks = document.querySelectorAll('.task-item');
+  const isActive = btn.classList.contains('active');
+  
+  tasks.forEach(task => {
+    if (task.classList.contains('section-header')) {
+      task.style.display = '';
+      return;
+    }
+    
+    const taskData = JSON.parse(task.dataset.taskData || '{}');
+    const reviewDate = taskData.revisitDate;
+    
+    if (isActive) {
+      task.style.display = '';
+    } else {
+      let isToday = false;
+      if (reviewDate) {
+        const taskDateStr = reviewDate.includes('T') ? reviewDate.split('T')[0] : reviewDate;
+        isToday = taskDateStr === todayStr;
+      }
+      task.style.display = isToday ? '' : 'none';
+    }
+  });
+  
+  btn.classList.toggle('active');
+  console.log('📅 Daily view toggled');
+}
+
 /* ---------- UI Init ----------- */
 function initUI() {
   document.getElementById('toggle-priority')?.addEventListener('click', ()=>{
@@ -1504,6 +1604,28 @@ function initUI() {
 
   // Filter dropdown functionality
   document.getElementById('filter-dropdown')?.addEventListener('change', handleFilterChange);
+
+  // Add view toggle functionality for all toggle buttons
+  document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+    if (btn.id === 'toggle-priority') return; // Already handled above
+    
+    btn.addEventListener('click', () => {
+      const icon = btn.querySelector('i');
+      if (!icon) return;
+      
+      if (icon.classList.contains('fa-check')) {
+        toggleCompletedTasks(btn);
+      } else if (icon.classList.contains('fa-list')) {
+        toggleTasksView(btn);
+      } else if (icon.classList.contains('fa-clock')) {
+        toggleTimerView(btn);
+      } else if (icon.classList.contains('fa-lightbulb')) {
+        toggleReviewView(btn);
+      } else if (icon.classList.contains('fa-hourglass')) {
+        toggleDailyView(btn);
+      }
+    });
+  });
 
   document.querySelectorAll('.flag-btn').forEach(btn=>{
     btn.addEventListener('click', e=>{
