@@ -126,15 +126,29 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none; /* Remove any focus outline */
+  box-shadow: none; /* Remove any box shadow */
 }
 
 .view-toggle-btn:hover {
   color: rgba(0, 206, 247, 0.65); /* Half way between dimmed and full */
+  background: transparent; /* Keep background transparent */
+  outline: none;
+  box-shadow: none;
 }
 
 .view-toggle-btn.active {
-  color: var(--accent-color); /* Full brightness accent color */
-  background: transparent; /* No background for minimalist design */
+  color: var(--accent-color) !important; /* Full brightness accent color */
+  background: transparent !important; /* No background for minimalist design */
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.view-toggle-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 /* ===== Main Content Area ===== */
@@ -160,6 +174,8 @@ button, input, select, textarea {
 .task-column-header {
   flex: 1;
   width: calc(100% - 300px - 150px); /* Match task column width */
+  text-align: left; /* Align to left */
+  padding-left: 0; /* No extra padding */
 }
 
 .priority-column-header {
@@ -203,7 +219,11 @@ button, input, select, textarea {
   align-items: center;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-left: 20px; /* Consistent left margin */
+  margin-left: 0; /* Remove margin for left alignment */
+}
+
+.section-title i {
+  margin-right: 8px;
 }
 
 .priority-header {
@@ -297,14 +317,10 @@ button, input, select, textarea {
 
 /* Priority Sort Button */
 #priority-sort-container {
-  position: absolute;
-  right: 380px; /* Align with priority flags position */
-  top: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 8px;
-  width: 150px;
-  margin-top: 0;
+  align-items: center;
 }
 
 .sort-btn {
