@@ -2209,7 +2209,37 @@ function initHoursPanel() {
   setupHoursEventListeners();
   updateRemainingTimes();
   
+  // Add sample tasks to demonstrate functionality
+  addSampleHoursTasks();
+  
   if (debug) console.log('Hours panel initialized');
+}
+
+// Add sample tasks for demonstration
+function addSampleHoursTasks() {
+  const sampleTasks = [
+    { title: 'test', startMinutes: 4 * 60, durationMinutes: 60 }, // 4:00 AM
+    { title: 'Task2', startMinutes: 5 * 60, durationMinutes: 60 }, // 5:00 AM
+    { title: 'Sleep', startMinutes: 11 * 60, durationMinutes: 60 }, // 11:00 AM
+    { title: 'Nap', startMinutes: 12 * 60, durationMinutes: 60 }, // 12:00 PM
+    { title: 'Get Milan', startMinutes: 15 * 60, durationMinutes: 180 } // 3:00 PM (3 hours)
+  ];
+  
+  sampleTasks.forEach(taskData => {
+    const task = {
+      id: `hours-task-${hoursData.nextId++}`,
+      title: taskData.title,
+      startIndex: Math.round(taskData.startMinutes / 15),
+      durationSteps: Math.round(taskData.durationMinutes / 15),
+      startMinutes: taskData.startMinutes,
+      durationMinutes: taskData.durationMinutes
+    };
+    
+    hoursData.tasks.push(task);
+    renderHoursTask(task);
+  });
+  
+  if (debug) console.log('Sample hours tasks added');
 }
 
 // Generate 24-hour grid with labels and lines
