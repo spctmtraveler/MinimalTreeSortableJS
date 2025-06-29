@@ -204,7 +204,7 @@ button, input, select, textarea {
 .controls-row::before {
   content: "";
   flex: 1;
-  width: calc(100% - 300px - 150px); /* Match task column width */
+  width: calc(100% - 200px - 150px); /* Match actual spacing: 150px priority + 50px margin + 150px hours */
 }
 
 .section-header {
@@ -318,11 +318,11 @@ button, input, select, textarea {
 }
 
 .priority-flags-hidden .hours-column-header {
-  margin-left: -280px; /* Move to close the gap */
+  margin-left: -200px; /* Move to close the gap */
 }
 
 .priority-flags-hidden .hours-column {
-  margin-left: -280px; /* Move hours column closer to tasks */
+  margin-left: -200px; /* Move hours column closer to tasks */
 }
 
 /* Priority Sort Button */
@@ -331,7 +331,8 @@ button, input, select, textarea {
   justify-content: center;
   gap: 8px;
   align-items: center;
-  width: 300px; /* Match priority column width */
+  width: 150px; /* Match priority column width */
+  margin-left: 50px; /* Match priority flags positioning */
 }
 
 .sort-btn {
