@@ -58,17 +58,12 @@
                     >
                         <i class="fa-solid fa-bullseye"></i>
                     </button>
-                    <button class="view-toggle-btn" title="Completed Tasks">
-                        <i class="fa-solid fa-check"></i>
-                    </button>
-                    <button class="view-toggle-btn" title="Timer View">
+                    <button
+                        id="toggle-hours"
+                        class="view-toggle-btn"
+                        title="Show/Hide Hours View"
+                    >
                         <i class="fa-solid fa-clock"></i>
-                    </button>
-                    <button class="view-toggle-btn" title="Review View">
-                        <i class="fa-solid fa-lightbulb"></i>
-                    </button>
-                    <button class="view-toggle-btn" title="Daily View">
-                        <i class="fa-solid fa-hourglass"></i>
                     </button>
                 </div>
             </div>
@@ -102,13 +97,21 @@
                     </div>
                 </div>
 
-                <!-- Task container with two columns -->
+                <!-- Task container with three columns -->
                 <div class="task-container">
                     <div class="task-column">
                         <!-- Task tree container -->
                         <div id="task-tree"></div>
                     </div>
                     <div class="priority-column">
+                    </div>
+                    <div class="hours-column">
+                        <div class="hours-header">
+                            <div class="section-title">
+                                <i class="fa-solid fa-clock"></i> Hours
+                            </div>
+                        </div>
+                        <!-- Hours content will go here -->
                     </div>
                 </div>
             </div>

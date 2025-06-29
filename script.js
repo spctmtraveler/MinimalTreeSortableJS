@@ -1804,24 +1804,20 @@ function initUI() {
   // Add view toggle functionality for all toggle buttons
   document.querySelectorAll('.view-toggle-btn').forEach(btn => {
     if (btn.id === 'toggle-priority') return; // Already handled above
+    if (btn.id === 'toggle-hours') return; // Handled separately below
     
     btn.addEventListener('click', () => {
       const icon = btn.querySelector('i');
       if (!icon) return;
       
-      if (icon.classList.contains('fa-check')) {
-        toggleCompletedTasks(btn);
-      } else if (icon.classList.contains('fa-list')) {
+      if (icon.classList.contains('fa-list')) {
         toggleTasksView(btn);
-      } else if (icon.classList.contains('fa-clock')) {
-        toggleTimerView(btn);
-      } else if (icon.classList.contains('fa-lightbulb')) {
-        toggleReviewView(btn);
-      } else if (icon.classList.contains('fa-hourglass')) {
-        toggleDailyView(btn);
       }
     });
   });
+
+  // Hours panel toggle functionality
+  document.getElementById('toggle-hours')?.addEventListener('click', toggleHoursView);
 
   document.querySelectorAll('.flag-btn').forEach(btn=>{
     btn.addEventListener('click', e=>{

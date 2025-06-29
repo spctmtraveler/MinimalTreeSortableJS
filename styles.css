@@ -207,6 +207,45 @@ button, input, select, textarea {
   flex-direction: column;
   position: relative;
   min-height: 400px; /* Give space for the sort button at bottom */
+  transition: all 0.3s ease;
+}
+
+.hours-column {
+  width: 150px;
+  min-width: 150px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 400px;
+  transition: all 0.3s ease;
+}
+
+.hours-column.hidden {
+  display: none;
+}
+
+.hours-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.hours-header .section-title {
+  color: var(--accent-color);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* When priority column is hidden, move hours column closer to tasks */
+.priority-flags-hidden .hours-column {
+  margin-left: -20px;
 }
 
 /* Priority Sort Button */
