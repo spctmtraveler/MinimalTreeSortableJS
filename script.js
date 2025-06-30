@@ -478,6 +478,15 @@ function buildTree(tasks, parent) {
       txt.textContent = task.content;
     }
     txt.title = task.content; // Show full text on hover
+    
+    // Add inline editing functionality
+    if (!task.isSection) {
+      txt.addEventListener('dblclick', e => {
+        e.stopPropagation();
+        startTaskInlineEdit(txt, task, li);
+      });
+    }
+    
     row.appendChild(txt);
 
     if (!task.isSection) {
@@ -1716,6 +1725,73 @@ function updateLayoutWidth() {
   if (debug) console.log(`Layout: Updated width to ${newWidth} for ${visiblePanels} visible panels`);
 }
 
+// Start inline editing for task names in the main task list
+function startTaskInlineEdit(textSpan, task, taskElement) {
+  const currentText = task.content;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentText;
+  input.className = 'task-inline-edit';
+  
+  // Style the input to match the text
+  input.style.width = '240px';
+  input.style.background = 'transparent';
+  input.style.border = '1px solid var(--accent-color)';
+  input.style.color = 'var(--text-color)';
+  input.style.fontSize = '14px';
+  input.style.padding = '2px 4px';
+  input.style.borderRadius = '2px';
+  
+  textSpan.style.display = 'none';
+  textSpan.parentNode.insertBefore(input, textSpan);
+  input.focus();
+  input.select();
+  
+  const finishEdit = async () => {
+    const newText = input.value.trim();
+    if (newText && newText !== currentText) {
+      // Update task in database
+      try {
+        await updateTaskState(task.id, { content: newText });
+        task.content = newText;
+        
+        // Update text span with new content
+        const maxLength = 26;
+        if (newText.length > maxLength) {
+          textSpan.textContent = newText.substring(0, maxLength) + '...';
+        } else {
+          textSpan.textContent = newText;
+        }
+        textSpan.title = newText;
+        
+        // Update task data in element
+        taskElement.dataset.taskData = JSON.stringify(task);
+        
+        if (debug) console.log('Task renamed:', newText);
+      } catch (error) {
+        console.error('Error updating task name:', error);
+        showToast('Error', 'Could not update task name');
+      }
+    }
+    
+    input.remove();
+    textSpan.style.display = '';
+  };
+  
+  input.addEventListener('blur', finishEdit);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      finishEdit();
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      input.remove();
+      textSpan.style.display = '';
+    }
+  });
+}
+
 /* ---------- View Toggle Functions ----------- */
 function toggleCompletedTasks(btn) {
   const isActive = btn.classList.contains('active');
@@ -1891,15 +1967,13 @@ function initUI() {
   document.querySelectorAll('.view-toggle-btn').forEach(btn => {
     if (btn.id === 'toggle-priority') return; // Already handled above
     if (btn.id === 'toggle-hours') return; // Handled separately below
-    
-    btn.addEventListener('click', () => {
-      const icon = btn.querySelector('i');
-      if (!icon) return;
-      
-      if (icon.classList.contains('fa-list')) {
-        toggleTasksView(btn);
-      }
-    });
+    if (btn.id === 'toggle-tasks') return; // Handled separately below
+  });
+  
+  // Tasks panel toggle functionality
+  document.getElementById('toggle-tasks')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    toggleTasksView(btn);
   });
 
   // Hours panel toggle functionality
@@ -2249,6 +2323,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Initialize Hours Panel
   initHoursPanel();
+  
+  // Set initial layout width
+  updateLayoutWidth();
 });
 
 /* ===== HOURS PANEL FUNCTIONALITY ===== */

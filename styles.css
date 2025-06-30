@@ -1472,3 +1472,18 @@ body > .sortable-drag {
 .task-block input::placeholder {
   color: rgba(255, 255, 255, 0.7);
 }
+
+/* ===== PANEL VISIBILITY CONTROLS ===== */
+
+/* Hide columns when toggled */
+.tasks-column.hidden,
+.tasks-column-header.hidden,
+.hours-column.hidden,
+.hours-column-header.hidden {
+  display: none !important;
+}
+
+/* Container width adjustments are handled by JavaScript updateLayoutWidth() */
+.container {
+  transition: width 0.3s ease;
+}
