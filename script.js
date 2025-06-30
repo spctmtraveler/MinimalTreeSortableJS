@@ -1676,6 +1676,44 @@ function togglePriorityFlags() {
     
     console.log('🎯 Priority flags and controls shown');
   }
+  
+  // Update layout after panel visibility change
+  updateLayoutWidth();
+}
+
+// Update the overall layout width based on visible panels
+function updateLayoutWidth() {
+  const container = document.querySelector('.container');
+  if (!container) return;
+  
+  // Check which panels are visible
+  const tasksVisible = !document.querySelector('.tasks-column')?.classList.contains('hidden');
+  const priorityVisible = !document.body.classList.contains('priority-flags-hidden');
+  const hoursVisible = !document.querySelector('.hours-column')?.classList.contains('hidden');
+  
+  let visiblePanels = 0;
+  if (tasksVisible) visiblePanels++;
+  if (priorityVisible) visiblePanels++;
+  if (hoursVisible) visiblePanels++;
+  
+  // Calculate appropriate width based on visible panels
+  let newWidth;
+  switch (visiblePanels) {
+    case 1:
+      newWidth = tasksVisible ? '700px' : (hoursVisible ? '350px' : '250px'); // Priority column is narrower
+      break;
+    case 2:
+      newWidth = '1050px'; // Two panels
+      break;
+    case 3:
+    default:
+      newWidth = '1300px'; // All panels
+      break;
+  }
+  
+  container.style.width = newWidth;
+  
+  if (debug) console.log(`Layout: Updated width to ${newWidth} for ${visiblePanels} visible panels`);
 }
 
 /* ---------- View Toggle Functions ----------- */
@@ -1706,9 +1744,30 @@ function toggleCompletedTasks(btn) {
 }
 
 function toggleTasksView(btn) {
-  // This could toggle between different task view modes
-  btn.classList.toggle('active');
-  console.log('📋 Tasks view toggled');
+  const tasksColumn = document.querySelector('.tasks-column');
+  const tasksColumnHeader = document.querySelector('.tasks-column-header');
+  const toggleBtn = document.getElementById('toggle-tasks');
+  
+  if (tasksColumn && tasksColumnHeader && toggleBtn) {
+    const isVisible = !tasksColumn.classList.contains('hidden');
+    
+    if (isVisible) {
+      // Hide tasks column and header
+      tasksColumn.classList.add('hidden');
+      tasksColumnHeader.classList.add('hidden');
+      toggleBtn.classList.remove('active');
+      console.log('📋 Tasks panel hidden');
+    } else {
+      // Show tasks column and header
+      tasksColumn.classList.remove('hidden');
+      tasksColumnHeader.classList.remove('hidden');
+      toggleBtn.classList.add('active');
+      console.log('📋 Tasks panel shown');
+    }
+    
+    // Update layout after panel visibility change
+    updateLayoutWidth();
+  }
 }
 
 function toggleHoursView(btn) {
@@ -1732,6 +1791,9 @@ function toggleHoursView(btn) {
       toggleBtn.classList.add('active');
       console.log('🕐 Hours panel shown');
     }
+    
+    // Update layout after panel visibility change
+    updateLayoutWidth();
   }
 }
 
@@ -2232,30 +2294,42 @@ async function addSampleHoursTasks() {
     
     tasks.forEach(task => {
       // Check if task has scheduled time for today
-      if (task.scheduledTime && task.revisitDate) {
+      // Allow tasks with scheduled time OR revisit date for today
+      let isToday = false;
+      
+      if (task.revisitDate) {
         const taskDate = task.revisitDate.includes('T') ? task.revisitDate.split('T')[0] : task.revisitDate;
-        
-        if (taskDate === today) {
-          // Parse scheduled time (HH:MM format)
-          const [hours, minutes] = task.scheduledTime.split(':').map(Number);
-          const startMinutes = hours * 60 + minutes;
-          const durationMinutes = task.timeEstimate && task.timeEstimate > 0 ? task.timeEstimate : 60;
+        isToday = taskDate === today;
+      }
+      
+      if (isToday && task.scheduledTime) {
+        // Parse scheduled time (HH:MM format)
+        const timeParts = task.scheduledTime.split(':');
+        if (timeParts.length >= 2) {
+          const hours = parseInt(timeParts[0], 10);
+          const minutes = parseInt(timeParts[1], 10);
           
-          const hoursTask = {
-            id: `hours-task-${hoursData.nextId++}`,
-            title: task.content,
-            startIndex: Math.round(startMinutes / 15),
-            durationSteps: Math.round(durationMinutes / 15),
-            startMinutes: startMinutes,
-            durationMinutes: durationMinutes,
-            dbTaskId: task.id // Link to original database task
-          };
-          
-          // Check for overlaps before adding
-          if (!checkTaskOverlap(hoursTask)) {
-            hoursData.tasks.push(hoursTask);
-            renderHoursTask(hoursTask);
-            addedCount++;
+          if (!isNaN(hours) && !isNaN(minutes)) {
+            const startMinutes = hours * 60 + minutes;
+            const durationMinutes = task.timeEstimate && task.timeEstimate > 0 ? task.timeEstimate : 60;
+            
+            const hoursTask = {
+              id: `hours-task-${hoursData.nextId++}`,
+              title: task.content,
+              startIndex: Math.round(startMinutes / 15),
+              durationSteps: Math.round(durationMinutes / 15),
+              startMinutes: startMinutes,
+              durationMinutes: durationMinutes,
+              dbTaskId: task.id // Link to original database task
+            };
+            
+            // Check for overlaps before adding
+            if (!checkTaskOverlap(hoursTask)) {
+              hoursData.tasks.push(hoursTask);
+              renderHoursTask(hoursTask);
+              addedCount++;
+              if (debug) console.log('Hours: Added database task:', task.content, `at ${hours}:${minutes.toString().padStart(2, '0')}`);
+            }
           }
         }
       }
@@ -2661,10 +2735,20 @@ function startInlineEdit(titleSpan, task) {
   });
 }
 
-// Open task edit (now uses inline editing instead of modal)
+// Open task edit modal (reuse existing modal system)
 function openHoursTaskModal(task, taskElement) {
-  const titleSpan = taskElement.querySelector('.task-title');
-  startInlineEdit(titleSpan, task);
+  // Convert Hours task to database task format for modal
+  const modalTask = {
+    id: task.dbTaskId || task.id,
+    content: task.title,
+    completed: false,
+    fire: false, fast: false, flow: false, fear: false, first: false,
+    overview: '', details: '', timeEstimate: task.durationMinutes,
+    scheduledTime: `${Math.floor(task.startMinutes / 60).toString().padStart(2, '0')}:${(task.startMinutes % 60).toString().padStart(2, '0')}`,
+    revisitDate: new Date().toISOString().split('T')[0]
+  };
+  
+  openTaskModal(modalTask, taskElement);
 }
 
 // Delete a task with undo functionality
