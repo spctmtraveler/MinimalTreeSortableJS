@@ -2209,37 +2209,90 @@ function initHoursPanel() {
   setupHoursEventListeners();
   updateRemainingTimes();
   
+  // Update remaining times every minute
+  setInterval(updateRemainingTimes, 60 * 1000);
+  
   // Add sample tasks to demonstrate functionality
   addSampleHoursTasks();
   
   if (debug) console.log('Hours panel initialized');
 }
 
-// Add sample tasks for demonstration
-function addSampleHoursTasks() {
-  const sampleTasks = [
-    { title: 'test', startMinutes: 4 * 60, durationMinutes: 60 }, // 4:00 AM
-    { title: 'Task2', startMinutes: 5 * 60, durationMinutes: 60 }, // 5:00 AM
-    { title: 'Sleep', startMinutes: 11 * 60, durationMinutes: 60 }, // 11:00 AM
-    { title: 'Nap', startMinutes: 12 * 60, durationMinutes: 60 }, // 12:00 PM
-    { title: 'Get Milan', startMinutes: 15 * 60, durationMinutes: 180 } // 3:00 PM (3 hours)
-  ];
-  
-  sampleTasks.forEach(taskData => {
-    const task = {
-      id: `hours-task-${hoursData.nextId++}`,
-      title: taskData.title,
-      startIndex: Math.round(taskData.startMinutes / 15),
-      durationSteps: Math.round(taskData.durationMinutes / 15),
-      startMinutes: taskData.startMinutes,
-      durationMinutes: taskData.durationMinutes
-    };
+// Load tasks from database for today's date with scheduled times
+async function addSampleHoursTasks() {
+  try {
+    const tasks = await db.loadTasks();
+    if (!tasks || !Array.isArray(tasks)) {
+      if (debug) console.log('No database tasks found for Hours panel');
+      return;
+    }
     
-    hoursData.tasks.push(task);
-    renderHoursTask(task);
-  });
-  
-  if (debug) console.log('Sample hours tasks added');
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+    let addedCount = 0;
+    
+    tasks.forEach(task => {
+      // Check if task has scheduled time for today
+      if (task.scheduledTime && task.revisitDate) {
+        const taskDate = task.revisitDate.includes('T') ? task.revisitDate.split('T')[0] : task.revisitDate;
+        
+        if (taskDate === today) {
+          // Parse scheduled time (HH:MM format)
+          const [hours, minutes] = task.scheduledTime.split(':').map(Number);
+          const startMinutes = hours * 60 + minutes;
+          const durationMinutes = task.timeEstimate && task.timeEstimate > 0 ? task.timeEstimate : 60;
+          
+          const hoursTask = {
+            id: `hours-task-${hoursData.nextId++}`,
+            title: task.content,
+            startIndex: Math.round(startMinutes / 15),
+            durationSteps: Math.round(durationMinutes / 15),
+            startMinutes: startMinutes,
+            durationMinutes: durationMinutes,
+            dbTaskId: task.id // Link to original database task
+          };
+          
+          // Check for overlaps before adding
+          if (!checkTaskOverlap(hoursTask)) {
+            hoursData.tasks.push(hoursTask);
+            renderHoursTask(hoursTask);
+            addedCount++;
+          }
+        }
+      }
+    });
+    
+    if (debug) console.log(`Hours panel: Added ${addedCount} tasks from database for today`);
+    
+    // If no database tasks found, add a few demo tasks for testing
+    if (addedCount === 0) {
+      const demoTasks = [
+        { title: 'Morning Review', startMinutes: 9 * 60, durationMinutes: 30 }, // 9:00 AM
+        { title: 'Focused Work', startMinutes: 10 * 60, durationMinutes: 120 }, // 10:00 AM (2 hours)
+        { title: 'Lunch Break', startMinutes: 12 * 60, durationMinutes: 60 }, // 12:00 PM
+        { title: 'Afternoon Tasks', startMinutes: 14 * 60, durationMinutes: 90 } // 2:00 PM (1.5 hours)
+      ];
+      
+      demoTasks.forEach(taskData => {
+        const task = {
+          id: `hours-task-${hoursData.nextId++}`,
+          title: taskData.title,
+          startIndex: Math.round(taskData.startMinutes / 15),
+          durationSteps: Math.round(taskData.durationMinutes / 15),
+          startMinutes: taskData.startMinutes,
+          durationMinutes: taskData.durationMinutes
+        };
+        
+        hoursData.tasks.push(task);
+        renderHoursTask(task);
+      });
+      
+      if (debug) console.log('Hours panel: Added demo tasks (no scheduled database tasks found)');
+    }
+    
+  } catch (error) {
+    console.error('Error loading database tasks for Hours panel:', error);
+    if (debug) console.log('Hours panel: Error loading from database, skipping task loading');
+  }
 }
 
 // Generate 24-hour grid with labels and lines
@@ -2444,15 +2497,9 @@ function setupHoursEventListeners() {
 
 // Create a new task in the Hours panel
 function createHoursTask(startMinutes, title = null) {
-  if (!title) {
-    title = prompt('Enter task name:');
-    if (!title || !title.trim()) return;
-    title = title.trim();
-  }
-  
   const task = {
     id: `hours-task-${hoursData.nextId++}`,
-    title: title,
+    title: title || 'New Task',
     startIndex: Math.round(startMinutes / 15), // Store as 15-minute increments
     durationSteps: 4, // Default 60 minutes (4 * 15 minutes)
     startMinutes: startMinutes,
@@ -2466,7 +2513,13 @@ function createHoursTask(startMinutes, title = null) {
   }
   
   hoursData.tasks.push(task);
-  renderHoursTask(task);
+  const taskBlock = renderHoursTask(task);
+  
+  // Immediately start inline editing if no title was provided
+  if (!title) {
+    const titleSpan = taskBlock.querySelector('.task-title');
+    setTimeout(() => startInlineEdit(titleSpan, task), 50);
+  }
   
   if (debug) console.log('create: Hours task created', task);
 }
@@ -2530,6 +2583,8 @@ function renderHoursTask(task) {
   
   // Setup task interactions
   setupTaskInteractions(taskBlock, task);
+  
+  return taskBlock;
 }
 
 // Setup interactions for a task block
@@ -2606,32 +2661,42 @@ function startInlineEdit(titleSpan, task) {
   });
 }
 
-// Open task edit modal (reuse existing modal with Hours-specific fields)
+// Open task edit (now uses inline editing instead of modal)
 function openHoursTaskModal(task, taskElement) {
-  // For now, use a simplified prompt-based edit
-  // In full implementation, this would use the existing modal with time picker
-  const newTitle = prompt('Edit task title:', task.title);
-  if (newTitle && newTitle.trim() && newTitle !== task.title) {
-    task.title = newTitle.trim();
-    const titleSpan = taskElement.querySelector('.task-title');
-    titleSpan.textContent = task.title;
-    if (debug) console.log('Task edited via modal:', task);
-  }
+  const titleSpan = taskElement.querySelector('.task-title');
+  startInlineEdit(titleSpan, task);
 }
 
-// Delete a task with confirmation
+// Delete a task with undo functionality
 function deleteHoursTask(taskId) {
-  if (!confirm('Delete this task?')) return;
-  
   const taskIndex = hoursData.tasks.findIndex(t => t.id === taskId);
   if (taskIndex === -1) return;
   
-  hoursData.tasks.splice(taskIndex, 1);
-  
+  const task = hoursData.tasks[taskIndex];
   const taskBlock = document.querySelector(`[data-task-id="${taskId}"]`);
+  
+  // Store task data for potential undo
+  const deletedTaskData = { ...task };
+  const deletedTaskHTML = taskBlock ? taskBlock.outerHTML : null;
+  
+  // Remove from data and DOM
+  hoursData.tasks.splice(taskIndex, 1);
   if (taskBlock) {
     taskBlock.remove();
   }
+  
+  // Show undo toast
+  showToast(
+    'Task Deleted',
+    `"${task.title}" removed from timeline`,
+    'UNDO',
+    () => {
+      // Restore task
+      hoursData.tasks.push(deletedTaskData);
+      renderHoursTask(deletedTaskData);
+      if (debug) console.log('undo: Hours task restored', deletedTaskData);
+    }
+  );
   
   if (debug) console.log('delete: Hours task deleted', taskId);
 }
