@@ -6,8 +6,33 @@
 // 4. Persist new tasks under TRIAGE (not as siblings) via db.addTask()
 // ---------------------------------------------------
 
-// Debug mode - enable for console logs
-const debug = true;
+// Global debug variables
+let debug = true;
+let debugLog = [];
+
+// Debug logging function
+function debugLogger(message) {
+  const timestamp = new Date().toLocaleTimeString();
+  const logEntry = `[${timestamp}] ${message}`;
+  debugLog.push(logEntry);
+  
+  // Keep only last 500 log entries to prevent memory issues
+  if (debugLog.length > 500) {
+    debugLog = debugLog.slice(-500);
+  }
+  
+  // Update debug log display if modal is open
+  const debugLogElement = document.getElementById('debug-log');
+  if (debugLogElement) {
+    debugLogElement.textContent = debugLog.join('\n');
+    debugLogElement.scrollTop = debugLogElement.scrollHeight;
+  }
+  
+  // Also log to console if debug is enabled
+  if (debug) {
+    console.log(logEntry);
+  }
+}
 
 // Database module using PostgreSQL API
 const db = {
@@ -2383,6 +2408,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (tasksToggleBtn) {
     tasksToggleBtn.classList.add('active');
   }
+  
+  // Initialize debug modal functionality
+  initDebugModal();
 });
 
 /* ===== HOURS PANEL FUNCTIONALITY ===== */
