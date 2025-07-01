@@ -276,8 +276,8 @@ button, input, select, textarea {
 
 
 .hours-column {
-  width: 150px;
-  min-width: 150px;
+  width: 225px;
+  min-width: 225px;
   margin-left: 20px;
   display: flex;
   flex-direction: column;
@@ -329,7 +329,7 @@ button, input, select, textarea {
 .priority-overlay-header {
   position: absolute;
   top: -48px; /* Position well above task tree */
-  right: 250px;
+  right: 275px;
   width: 150px;
   text-align: center;
   z-index: 10;
@@ -1476,8 +1476,20 @@ body > .sortable-drag {
 /* ===== PANEL VISIBILITY CONTROLS ===== */
 
 /* Hide columns when toggled */
-.content-section.hidden,
+.content-section.tasks-hidden {
+  display: none !important;
+}
+
 .hours-column.hidden {
+  display: none !important;
+}
+
+/* Priority panel should shrink to zero width when hidden */
+body.priority-flags-hidden .task-priority-flags {
+  display: none !important;
+}
+
+body.priority-flags-hidden .task-priority-header {
   display: none !important;
 }
 

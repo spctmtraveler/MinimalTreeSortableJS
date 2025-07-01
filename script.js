@@ -663,9 +663,14 @@ function formatRevisitDate(dateStr) {
     // Handle ISO date format from database (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS.SSSZ)
     if (typeof dateStr === 'string') {
       if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-        taskDate = new Date(dateStr + 'T00:00:00');
+        // Parse date in local timezone to avoid UTC conversion issues
+        const [year, month, day] = dateStr.split('-').map(Number);
+        taskDate = new Date(year, month - 1, day);
       } else if (dateStr.includes('T')) {
-        taskDate = new Date(dateStr);
+        // Extract just the date part to avoid timezone issues
+        const datePart = dateStr.split('T')[0];
+        const [year, month, day] = datePart.split('-').map(Number);
+        taskDate = new Date(year, month - 1, day);
       } else {
         taskDate = new Date(dateStr);
       }
@@ -718,7 +723,9 @@ function formatDateForInput(dateStr) {
         if (datePart.match(/^\d{4}-\d{2}-\d{2}$/)) {
           return datePart;
         }
-        d = new Date(datePart + 'T00:00:00');
+        // Parse in local timezone
+        const [year, month, day] = datePart.split('-').map(Number);
+        d = new Date(year, month - 1, day);
       } else if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
         // Already in YYYY-MM-DD format
         console.log('🗓️ FORMAT INPUT: Date already in correct format:', dateStr);
@@ -1704,7 +1711,7 @@ function updateLayoutWidth() {
   if (!container) return;
   
   // Check which panels are visible
-  const tasksVisible = !document.querySelector('.content-section')?.classList.contains('hidden');
+  const tasksVisible = !document.querySelector('.content-section')?.classList.contains('tasks-hidden');
   const priorityVisible = !document.body.classList.contains('priority-flags-hidden');
   const hoursVisible = !document.querySelector('.hours-column')?.classList.contains('hidden');
   
@@ -1715,17 +1722,14 @@ function updateLayoutWidth() {
   
   // Calculate appropriate width based on visible panels
   let newWidth;
-  switch (visiblePanels) {
-    case 1:
-      newWidth = tasksVisible ? '700px' : (hoursVisible ? '350px' : '250px'); // Priority column is narrower
-      break;
-    case 2:
-      newWidth = '1050px'; // Two panels
-      break;
-    case 3:
-    default:
-      newWidth = '1300px'; // All panels
-      break;
+  if (!tasksVisible && !hoursVisible) {
+    newWidth = '250px'; // Only priority column
+  } else if (tasksVisible && !hoursVisible) {
+    newWidth = priorityVisible ? '850px' : '700px'; // Tasks + optional priority
+  } else if (!tasksVisible && hoursVisible) {
+    newWidth = priorityVisible ? '395px' : '225px'; // Hours + optional priority (225px hours + 150px priority + 20px margin)
+  } else {
+    newWidth = priorityVisible ? '1095px' : '925px'; // All panels (700px tasks + 225px hours + 150px priority + margins)
   }
   
   container.style.width = newWidth;
@@ -1832,16 +1836,16 @@ function toggleTasksView(btn) {
   const toggleBtn = document.getElementById('toggle-tasks');
   
   if (tasksColumn && toggleBtn) {
-    const isVisible = !tasksColumn.classList.contains('hidden');
+    const isVisible = !tasksColumn.classList.contains('tasks-hidden');
     
     if (isVisible) {
       // Hide tasks column
-      tasksColumn.classList.add('hidden');
+      tasksColumn.classList.add('tasks-hidden');
       toggleBtn.classList.remove('active');
       console.log('📋 Tasks panel hidden');
     } else {
       // Show tasks column
-      tasksColumn.classList.remove('hidden');
+      tasksColumn.classList.remove('tasks-hidden');
       toggleBtn.classList.add('active');
       console.log('📋 Tasks panel shown');
     }
