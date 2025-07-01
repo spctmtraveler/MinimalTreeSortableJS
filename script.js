@@ -894,6 +894,14 @@ async function saveTaskFromModal(task, taskElement) {
   try {
     console.log('🔵 MODAL SAVE: Starting save for task:', task.id);
     
+    // Store original values to detect changes
+    const originalData = {
+      content: task.content,
+      revisitDate: task.revisitDate,
+      scheduledTime: task.scheduledTime,
+      timeEstimate: task.timeEstimate
+    };
+    
     // Create updates object with modal form data
     const updates = {
       content: document.getElementById('modal-task-name').value,
@@ -916,8 +924,38 @@ async function saveTaskFromModal(task, taskElement) {
 
     console.log('🔵 MODAL SAVE: Updates being applied:', JSON.stringify(updates, null, 2));
 
+    // Check if display-affecting changes were made
+    const hasDisplayChanges = 
+      originalData.content !== updates.content ||
+      originalData.revisitDate !== updates.revisitDate ||
+      originalData.scheduledTime !== updates.scheduledTime ||
+      originalData.timeEstimate !== updates.timeEstimate;
+
     // Use centralized state management
     await updateTaskState(task.id, updates);
+
+    // If display-affecting changes were made, refresh both panels
+    if (hasDisplayChanges) {
+      console.log('🔵 MODAL SAVE: Display changes detected, refreshing panels');
+      
+      // Reload tasks from database and rebuild both panels
+      const tasks = await db.loadTasks();
+      if (tasks) {
+        // Refresh task tree
+        const taskTree = document.getElementById('task-tree');
+        taskTree.innerHTML = '';
+        buildTree(tasks, taskTree);
+        handleFilterChange(); // Reapply current filter
+        
+        // Refresh hours panel if visible
+        const hoursVisible = !document.querySelector('.hours-column')?.classList.contains('hidden');
+        if (hoursVisible) {
+          await addSampleHoursTasks(); // This loads database tasks for today
+        }
+        
+        console.log('🔵 MODAL SAVE: Panels refreshed after display changes');
+      }
+    }
 
     document.getElementById('task-view-modal').style.display='none';
     showToast('Task Updated','Saved changes.');
@@ -955,10 +993,10 @@ function deleteTask(task, taskElement) {
       try {
         console.log('🔄 UNDO: Restoring task to database and UI');
         
-        // Restore to database first
-        const restored = await db.saveTask(taskData.id, {
+        // Restore to database first (use addTask since the task was deleted)
+        const restored = await db.addTask({
           ...taskData,
-          parent_id: parentId,
+          parentId: parentId,
           positionOrder: taskPosition
         });
         
