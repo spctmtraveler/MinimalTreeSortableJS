@@ -1476,10 +1476,8 @@ body > .sortable-drag {
 /* ===== PANEL VISIBILITY CONTROLS ===== */
 
 /* Hide columns when toggled */
-.tasks-column.hidden,
-.tasks-column-header.hidden,
-.hours-column.hidden,
-.hours-column-header.hidden {
+.content-section.hidden,
+.hours-column.hidden {
   display: none !important;
 }
 

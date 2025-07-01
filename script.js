@@ -957,7 +957,15 @@ function deleteTask(task, taskElement) {
         
         if (restored !== false) {
           // Reload the entire task tree to ensure proper positioning
-          await db.loadTasks();
+          const tasks = await db.loadTasks();
+          if (tasks) {
+            const taskTree = document.getElementById('task-tree');
+            taskTree.innerHTML = '';
+            buildTree(tasks, taskTree);
+            
+            // Reapply current filter to maintain user's view
+            handleFilterChange();
+          }
           showToast('Restored', 'Task restored successfully.');
           console.log('✅ UNDO: Task restored successfully');
         } else {
@@ -1696,7 +1704,7 @@ function updateLayoutWidth() {
   if (!container) return;
   
   // Check which panels are visible
-  const tasksVisible = !document.querySelector('.tasks-column')?.classList.contains('hidden');
+  const tasksVisible = !document.querySelector('.content-section')?.classList.contains('hidden');
   const priorityVisible = !document.body.classList.contains('priority-flags-hidden');
   const hoursVisible = !document.querySelector('.hours-column')?.classList.contains('hidden');
   
@@ -1820,23 +1828,20 @@ function toggleCompletedTasks(btn) {
 }
 
 function toggleTasksView(btn) {
-  const tasksColumn = document.querySelector('.tasks-column');
-  const tasksColumnHeader = document.querySelector('.tasks-column-header');
+  const tasksColumn = document.querySelector('.content-section');
   const toggleBtn = document.getElementById('toggle-tasks');
   
-  if (tasksColumn && tasksColumnHeader && toggleBtn) {
+  if (tasksColumn && toggleBtn) {
     const isVisible = !tasksColumn.classList.contains('hidden');
     
     if (isVisible) {
-      // Hide tasks column and header
+      // Hide tasks column
       tasksColumn.classList.add('hidden');
-      tasksColumnHeader.classList.add('hidden');
       toggleBtn.classList.remove('active');
       console.log('📋 Tasks panel hidden');
     } else {
-      // Show tasks column and header
+      // Show tasks column
       tasksColumn.classList.remove('hidden');
-      tasksColumnHeader.classList.remove('hidden');
       toggleBtn.classList.add('active');
       console.log('📋 Tasks panel shown');
     }
@@ -2165,14 +2170,18 @@ async function addNewTask() {
     input.value = text;
   }
 
-  // Reload tasks from database to use the proper display logic
+  // Reload tasks from database and reapply current filter
   try {
     const tasks = await db.loadTasks();
     if (tasks) {
       const taskTree = document.getElementById('task-tree');
       taskTree.innerHTML = '';
       buildTree(tasks, taskTree);
-      if (debug) console.log(`Rebuilt task tree with new task "${text}"`);
+      
+      // Reapply the current filter to maintain the user's view
+      handleFilterChange();
+      
+      if (debug) console.log(`Rebuilt task tree with new task "${text}" and reapplied current filter`);
     } else {
       showToast('Error','Could not reload tasks after adding new task.');
     }
@@ -2326,6 +2335,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Set initial layout width
   updateLayoutWidth();
+  
+  // Initialize tasks panel as active (visible by default)
+  const tasksToggleBtn = document.getElementById('toggle-tasks');
+  if (tasksToggleBtn) {
+    tasksToggleBtn.classList.add('active');
+  }
 });
 
 /* ===== HOURS PANEL FUNCTIONALITY ===== */
