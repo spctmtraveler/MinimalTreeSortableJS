@@ -2416,46 +2416,94 @@ document.addEventListener('DOMContentLoaded', async () => {
 /* ===== DEBUG MODAL FUNCTIONALITY ===== */
 
 function initDebugModal() {
+  const debugToggleBtn = document.getElementById('debug-toggle');
+  const modal = document.getElementById('debug-modal');
+  
+  if (!debugToggleBtn) {
+    console.error('Debug toggle button not found');
+    return;
+  }
+  
+  if (!modal) {
+    console.error('Debug modal not found');
+    return;
+  }
+  
   // Debug toggle button
-  document.getElementById('debug-toggle')?.addEventListener('click', () => {
-    const modal = document.getElementById('debug-modal');
+  debugToggleBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    debugLogger('Debug modal opened via gear icon click');
+    
     modal.style.display = 'block';
     
     // Update checkboxes with current states
-    document.getElementById('debug-toggle-checkbox').checked = debug;
-    document.getElementById('borders-toggle-checkbox').checked = document.body.classList.contains('debug-borders-enabled');
+    const debugCheckbox = document.getElementById('debug-toggle-checkbox');
+    const bordersCheckbox = document.getElementById('borders-toggle-checkbox');
+    
+    if (debugCheckbox) debugCheckbox.checked = debug;
+    if (bordersCheckbox) bordersCheckbox.checked = document.body.classList.contains('debug-borders-enabled');
     
     // Update debug log display
     const debugLogElement = document.getElementById('debug-log');
-    debugLogElement.textContent = debugLog.join('\n');
-    debugLogElement.scrollTop = debugLogElement.scrollHeight;
-  });
-  
-  // Debug logging toggle
-  document.getElementById('debug-toggle-checkbox')?.addEventListener('change', (e) => {
-    debug = e.target.checked;
-    debugLogger(`Debug logging ${debug ? 'enabled' : 'disabled'}`);
-  });
-  
-  // Borders toggle
-  document.getElementById('borders-toggle-checkbox')?.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      document.body.classList.add('debug-borders-enabled');
-      debugLogger('Debug borders enabled');
-    } else {
-      document.body.classList.remove('debug-borders-enabled');
-      debugLogger('Debug borders disabled');
+    if (debugLogElement) {
+      debugLogElement.textContent = debugLog.join('\n');
+      debugLogElement.scrollTop = debugLogElement.scrollHeight;
     }
   });
   
+  // Debug logging toggle
+  const debugCheckbox = document.getElementById('debug-toggle-checkbox');
+  if (debugCheckbox) {
+    debugCheckbox.addEventListener('change', (e) => {
+      debug = e.target.checked;
+      debugLogger(`Debug logging ${debug ? 'enabled' : 'disabled'}`);
+    });
+  }
+  
+  // Borders toggle
+  const bordersCheckbox = document.getElementById('borders-toggle-checkbox');
+  if (bordersCheckbox) {
+    bordersCheckbox.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        document.body.classList.add('debug-borders-enabled');
+        debugLogger('Debug borders enabled');
+      } else {
+        document.body.classList.remove('debug-borders-enabled');
+        debugLogger('Debug borders disabled');
+      }
+    });
+  }
+  
   // Clear log button
-  document.getElementById('clear-debug-log')?.addEventListener('click', () => {
-    debugLog = [];
-    document.getElementById('debug-log').textContent = '';
-    debugLogger('Debug log cleared');
+  const clearLogBtn = document.getElementById('clear-debug-log');
+  if (clearLogBtn) {
+    clearLogBtn.addEventListener('click', () => {
+      debugLog = [];
+      const debugLogElement = document.getElementById('debug-log');
+      if (debugLogElement) debugLogElement.textContent = '';
+      debugLogger('Debug log cleared');
+    });
+  }
+  
+  // Modal close functionality
+  const closeBtn = modal.querySelector('.modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      debugLogger('Debug modal closed');
+    });
+  }
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      debugLogger('Debug modal closed (clicked outside)');
+    }
   });
   
-  debugLogger('Debug modal initialized');
+  debugLogger('Debug modal initialized successfully');
 }
 
 /* ===== HOURS PANEL FUNCTIONALITY ===== */
@@ -2490,13 +2538,16 @@ function initHoursPanel() {
 // Load tasks from database for today's date with scheduled times
 async function addSampleHoursTasks() {
   try {
+    debugLogger('Hours: Starting task loading from database...');
     const tasks = await db.loadTasks();
     if (!tasks || !Array.isArray(tasks)) {
-      if (debug) console.log('No database tasks found for Hours panel');
+      debugLogger('Hours: No database tasks found or invalid response');
       return;
     }
     
+    debugLogger(`Hours: Loaded ${tasks.length} tasks from database`);
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+    debugLogger(`Hours: Today's date for comparison: ${today}`);
     let addedCount = 0;
     
     tasks.forEach(task => {
@@ -2562,6 +2613,8 @@ async function addSampleHoursTasks() {
     
     // If no database tasks found, add one demo task for testing
     if (addedCount === 0) {
+      debugLogger('Hours: No database tasks with scheduled times found, adding demo task');
+      
       const demoTask = { title: 'Fake Task', startMinutes: 17 * 60, durationMinutes: 60 }; // 5:00 PM
       
       const task = {
@@ -2576,9 +2629,47 @@ async function addSampleHoursTasks() {
       hoursData.tasks.push(task);
       renderHoursTask(task);
       
-      debugLogger('Hours panel: Added single demo task - no database tasks found for today');
+      debugLogger('Hours: Added single demo task at 5:00 PM');
     } else {
-      debugLogger(`Hours panel: Added ${addedCount} tasks from database for today`);
+      debugLogger(`Hours: Successfully added ${addedCount} database tasks with scheduled times`);
+    }
+    
+    // Create a test task with scheduled time to verify Hours panel functionality
+    debugLogger('Hours: Creating test database task with scheduled time...');
+    try {
+      const testTaskData = {
+        content: 'Test Hours Task',
+        scheduledTime: '14:30', // 2:30 PM
+        timeEstimate: 1.5, // 1.5 hours
+        revisitDate: today
+      };
+      
+      const createdTask = await db.addTask(testTaskData);
+      if (createdTask) {
+        debugLogger(`Hours: Created test task in database with ID: ${createdTask.id}`);
+        
+        // Add to Hours panel immediately
+        const startMinutes = 14 * 60 + 30; // 2:30 PM
+        const durationMinutes = 90; // 1.5 hours
+        
+        const hoursTask = {
+          id: `hours-task-${hoursData.nextId++}`,
+          title: testTaskData.content,
+          startIndex: Math.round(startMinutes / 15),
+          durationSteps: Math.round(durationMinutes / 15),
+          startMinutes: startMinutes,
+          durationMinutes: durationMinutes,
+          dbTaskId: createdTask.id
+        };
+        
+        if (!checkTaskOverlap(hoursTask)) {
+          hoursData.tasks.push(hoursTask);
+          renderHoursTask(hoursTask);
+          debugLogger('Hours: Added test database task to Hours panel at 2:30 PM');
+        }
+      }
+    } catch (error) {
+      debugLogger(`Hours: Error creating test task: ${error.message}`);
     }
     
   } catch (error) {
