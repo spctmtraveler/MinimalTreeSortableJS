@@ -84,6 +84,27 @@ app.get('/api/tasks', async (req, res) => {
   }
 });
 
+// Get raw tasks from database (for Hours panel)
+app.get('/api/tasks/raw', async (req, res) => {
+  try {
+    console.log('RAW TASKS REQUEST: Getting all raw database records');
+    const result = await pool.query(`
+      SELECT 
+        id, content, is_section, completed, parent_id, position_order,
+        revisit_date, fire, fast, flow, fear, first, time_estimate,
+        overview, details, scheduled_time
+      FROM tasks 
+      ORDER BY position_order
+    `);
+    
+    console.log(`RAW TASKS: Returning ${result.rows.length} raw database records`);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching raw tasks:', error);
+    res.status(500).json({ error: 'Failed to fetch raw tasks' });
+  }
+});
+
 // Get a single task by ID
 app.get('/api/tasks/:id', async (req, res) => {
   try {

@@ -1,0 +1,126 @@
+<!-- Import brand fonts & Font Awesome -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap">
+
+<style>
+  :root {
+    /* LNL Brand Palette */
+    --color-primary: #6B46C1;
+    --color-primary-light: #9F7AEA;
+    --color-bg: #FFFFFF;
+    --color-text: #2D3748;
+    --color-nav-bg: #1A202C;
+    --color-nav-text: #E2E8F0;
+
+    /* Typography */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: var(--color-nav-bg);
+  }
+  .tabs a {
+    flex: 1;
+    text-align: center;
+    padding: 1rem 0;
+    text-decoration: none;
+    color: var(--color-nav-text);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .tabs a:hover {
+    background: var(--color-primary-light);
+  }
+  .tabs a.active {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  /* Main Content */
+  .container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-size: 2.275rem; /* 1.75rem * 1.3 */
+    margin-bottom: 1.5rem;
+  }
+  .step-header .dot {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    background: var(--color-primary);
+    border-radius: 50%;
+    margin: 0 0.75rem;
+  }
+
+  /* eGains List */
+  .egains-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .egains-list li {
+    margin-bottom: 1rem;
+    font-size: 1.3rem; /* increased by 30% */
+  }
+
+  /* Show Ratings Link */
+  .ratings-toggle {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-size: 1.17rem; /* 0.9rem * 1.3 */
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .ratings-toggle:hover {
+    color: var(--color-primary-light);
+  }
+</style>
+
+<div class="tabs">
+  <a href="#">Utility Brainstorm</a>
+  <a href="#">Attention Hooks</a>
+  <a href="#" class="active">eGains Layer</a>
+  <a href="#">Credibility Pass</a>
+  <a href="#">Fluency Polish</a>
+  <a href="#">Putting It All Together</a>
+</div>
+
+<div class="container">
+  <header class="step-header">
+    Step 3 <span class="dot"></span> eGains Layer
+  </header>
+
+  <ul class="egains-list">
+    <li><strong>1 Boom</strong>—unlock faster member wins with three free fixes.</li>
+    <li><strong>2 Quick win</strong>: free review and see clicks soar.</li>
+    <li><strong>3 Challenge me</strong>—I’ll turn your toughest notice into thank-you notes.</li>
+    <li>4 Imagine—every email sparking confident yes‑responses—on us.</li>
+    <li>5 Sneak peek: no‑cost check‑up for happy, action‑ready members.</li>
+    <li>6 Stuck? Free audit → celebrated engagement jump in days.</li>
+    <li>7 Spot the friction? Get three fixes that make follow‑through effortless.</li>
+    <li>8 Free science: enjoy an analysis that sparks healthier habits fast.</li>
+    <li>9 Boom—three friction killers = more completed screenings—free.</li>
+    <li>10 Imagine—quick audit, clearer care paths, happier execs.</li>
+  </ul>
+
+  <a href="#" class="ratings-toggle"><i class="fas fa-chevron-down"></i> Show Ratings</a>
+</div>

@@ -2492,6 +2492,27 @@ function initDebugModal() {
     });
   }
   
+  // Copy log button
+  const copyLogBtn = document.getElementById('copy-debug-log');
+  if (copyLogBtn) {
+    copyLogBtn.addEventListener('click', async () => {
+      try {
+        const logText = debugLog.join('\n');
+        await navigator.clipboard.writeText(logText);
+        copyLogBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyLogBtn.textContent = 'Copy Log';
+        }, 1000);
+      } catch (err) {
+        console.error('Failed to copy log:', err);
+        copyLogBtn.textContent = 'Copy failed';
+        setTimeout(() => {
+          copyLogBtn.textContent = 'Copy Log';
+        }, 1000);
+      }
+    });
+  }
+  
   // Modal close functionality
   const closeBtn = modal.querySelector('.modal-close');
   if (closeBtn) {
@@ -2614,7 +2635,7 @@ async function addSampleHoursTasks() {
     debugLogger('Hours: Starting task loading from database...');
     
     // Direct API call to get ALL raw tasks from database (not the tree structure)
-    const response = await fetch('/api/tasks');
+    const response = await fetch('/api/tasks/raw');
     if (!response.ok) {
       throw new Error(`API call failed: ${response.status}`);
     }
