@@ -1508,6 +1508,18 @@ body.priority-flags-hidden .task-priority-header {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10000;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.debug-modal-content .modal-header {
+  cursor: move;
+  user-select: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.debug-modal-content.dragging {
+  transition: none;
 }
 
 .debug-controls {

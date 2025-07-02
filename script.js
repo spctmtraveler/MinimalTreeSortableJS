@@ -2509,7 +2509,74 @@ function initDebugModal() {
     }
   });
   
+  // Make modal draggable
+  makeDraggable(modal.querySelector('.debug-modal-content'));
+  
   debugLogger('Debug modal initialized successfully');
+}
+
+// Make an element draggable by its header
+function makeDraggable(element) {
+  const header = element.querySelector('.modal-header');
+  if (!header) return;
+  
+  let isDragging = false;
+  let startX, startY, initialX, initialY;
+  
+  header.addEventListener('mousedown', (e) => {
+    // Don't start dragging if clicking on close button
+    if (e.target.closest('.modal-close')) return;
+    
+    isDragging = true;
+    element.classList.add('dragging');
+    
+    // Get current position
+    const rect = element.getBoundingClientRect();
+    initialX = rect.left;
+    initialY = rect.top;
+    
+    // Store initial mouse position
+    startX = e.clientX;
+    startY = e.clientY;
+    
+    // Remove transform and set explicit position
+    element.style.transform = 'none';
+    element.style.left = initialX + 'px';
+    element.style.top = initialY + 'px';
+    
+    debugLogger('Debug modal: Started dragging');
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    
+    e.preventDefault();
+    
+    // Calculate new position
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+    
+    const newX = initialX + deltaX;
+    const newY = initialY + deltaY;
+    
+    // Keep modal within viewport bounds
+    const maxX = window.innerWidth - element.offsetWidth;
+    const maxY = window.innerHeight - element.offsetHeight;
+    
+    const boundedX = Math.max(0, Math.min(newX, maxX));
+    const boundedY = Math.max(0, Math.min(newY, maxY));
+    
+    element.style.left = boundedX + 'px';
+    element.style.top = boundedY + 'px';
+  });
+  
+  document.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      element.classList.remove('dragging');
+      debugLogger('Debug modal: Finished dragging');
+    }
+  });
 }
 
 /* ===== HOURS PANEL FUNCTIONALITY ===== */
