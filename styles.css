@@ -1503,6 +1503,11 @@ body.priority-flags-hidden .task-priority-header {
   width: 600px;
   max-height: 80vh;
   overflow-y: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
 }
 
 .debug-controls {

@@ -1,0 +1,39 @@
+[8:00:32 PM] Hours: Starting task loading from database...
+[8:00:32 PM] Debug modal initialized successfully
+[8:00:33 PM] Hours: Loaded 4 tasks from database
+[8:00:33 PM] Hours: Today's date for comparison: 2025-07-02
+[8:00:33 PM] Hours: Examining task "TRIAGE" - revisitDate: null, scheduledTime: null
+[8:00:33 PM] Hours: Task "TRIAGE" has no scheduled time
+[8:00:33 PM] Hours: Examining task "A" - revisitDate: null, scheduledTime: null
+[8:00:33 PM] Hours: Task "A" has no scheduled time
+[8:00:33 PM] Hours: Examining task "B" - revisitDate: null, scheduledTime: null
+[8:00:33 PM] Hours: Task "B" has no scheduled time
+[8:00:33 PM] Hours: Examining task "C" - revisitDate: null, scheduledTime: null
+[8:00:33 PM] Hours: Task "C" has no scheduled time
+[8:00:33 PM] Hours: No database tasks with scheduled times found, adding demo task
+[8:00:33 PM] Hours: Added single demo task at 5:00 PM
+[8:00:33 PM] Hours: Creating test database task with scheduled time...
+[8:00:33 PM] Hours: Error creating test task: HTTP error! status: 500
+[10:05:40 PM] Debug modal opened via gear icon click
+[10:05:41 PM] Debug modal opened via gear icon click
+[10:05:42 PM] Debug modal opened via gear icon click
+[10:11:56 PM] Debug modal opened via gear icon click
+[10:11:56 PM] Debug modal opened via gear icon click
+[10:13:10 PM] Hours: Starting task loading from database...
+[10:13:10 PM] Hours: Loaded 4 tasks from database
+[10:13:10 PM] Hours: Today's date for comparison: 2025-07-02
+[10:13:10 PM] Hours: Examining task "TRIAGE" - revisitDate: null, scheduledTime: null
+[10:13:10 PM] Hours: Task "TRIAGE" has no scheduled time
+[10:13:10 PM] Hours: Examining task "A" - revisitDate: null, scheduledTime: null
+[10:13:10 PM] Hours: Task "A" has no scheduled time
+[10:13:10 PM] Hours: Examining task "B" - revisitDate: null, scheduledTime: null
+[10:13:10 PM] Hours: Task "B" has no scheduled time
+[10:13:10 PM] Hours: Examining task "C" - revisitDate: null, scheduledTime: null
+[10:13:10 PM] Hours: Task "C" has no scheduled time
+[10:13:10 PM] Hours: No database tasks with scheduled times found, adding demo task
+[10:13:10 PM] Hours: Added single demo task at 5:00 PM
+[10:13:10 PM] Hours: Creating test database task with scheduled time...
+[10:13:10 PM] Hours: Error creating test task: HTTP error! status: 500
+[10:15:36 PM] Debug modal opened via gear icon click
+[10:15:39 PM] Debug modal opened via gear icon click
+[10:15:40 PM] Debug modal opened via gear icon click

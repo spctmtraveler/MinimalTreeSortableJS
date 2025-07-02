@@ -1,0 +1,152 @@
+Tasks loaded from database
+script.js:2380 Using tasks from database
+script.js:2398 Application initialized
+script.js:2735 Current time line updated: 20:00
+script.js:33 [8:00:32 PM] Hours: Starting task loading from database...
+script.js:2535 Hours panel initialized
+script.js:33 [8:00:32 PM] Debug modal initialized successfully
+script.js:46 Tasks loaded from database
+script.js:33 [8:00:33 PM] Hours: Loaded 4 tasks from database
+script.js:33 [8:00:33 PM] Hours: Today's date for comparison: 2025-07-02
+script.js:33 [8:00:33 PM] Hours: Examining task "TRIAGE" - revisitDate: null, scheduledTime: null
+script.js:33 [8:00:33 PM] Hours: Task "TRIAGE" has no scheduled time
+script.js:33 [8:00:33 PM] Hours: Examining task "A" - revisitDate: null, scheduledTime: null
+script.js:33 [8:00:33 PM] Hours: Task "A" has no scheduled time
+script.js:33 [8:00:33 PM] Hours: Examining task "B" - revisitDate: null, scheduledTime: null
+script.js:33 [8:00:33 PM] Hours: Task "B" has no scheduled time
+script.js:33 [8:00:33 PM] Hours: Examining task "C" - revisitDate: null, scheduledTime: null
+script.js:33 [8:00:33 PM] Hours: Task "C" has no scheduled time
+script.js:2612 Hours panel: Added 0 tasks from database for today
+script.js:33 [8:00:33 PM] Hours: No database tasks with scheduled times found, adding demo task
+script.js:33 [8:00:33 PM] Hours: Added single demo task at 5:00 PM
+script.js:33 [8:00:33 PM] Hours: Creating test database task with scheduled time...
+/api/tasks:1 
+        
+        
+       Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+script.js:72 Error adding task to database: Error: HTTP error! status: 500
+    at Object.addTask (script.js:65:15)
+    at async addSampleHoursTasks (script.js:2647:27)
+addTask @ script.js:72
+script.js:33 [8:00:33 PM] Hours: Error creating test task: HTTP error! status: 500
+script.js:2735 Current time line updated: 20:05
+script.js:2735 Current time line updated: 20:10
+script.js:2735 Current time line updated: 20:15
+script.js:2735 Current time line updated: 20:20
+script.js:2735 Current time line updated: 20:25
+script.js:2735 Current time line updated: 20:30
+script.js:2735 Current time line updated: 20:35
+script.js:2735 Current time line updated: 20:40
+script.js:2735 Current time line updated: 20:45
+script.js:2735 Current time line updated: 20:50
+script.js:2735 Current time line updated: 20:55
+script.js:2735 Current time line updated: 21:00
+script.js:2735 Current time line updated: 21:05
+script.js:2735 Current time line updated: 21:10
+script.js:2735 Current time line updated: 21:15
+script.js:2735 Current time line updated: 21:20
+script.js:2735 Current time line updated: 21:25
+script.js:2735 Current time line updated: 21:30
+script.js:2735 Current time line updated: 21:35
+script.js:2735 Current time line updated: 21:40
+script.js:2735 Current time line updated: 21:45
+script.js:2735 Current time line updated: 21:50
+script.js:2735 Current time line updated: 21:55
+script.js:2735 Current time line updated: 22:00
+script.js:2735 Current time line updated: 22:05
+script.js:33 [10:05:40 PM] Debug modal opened via gear icon click
+script.js:33 [10:05:41 PM] Debug modal opened via gear icon click
+script.js:33 [10:05:42 PM] Debug modal opened via gear icon click
+script.js:2735 Current time line updated: 22:10
+2script.js:33 [10:11:56 PM] Debug modal opened via gear icon click
+script.js:779 🟡 MODAL OPEN: Starting to open modal for task: task-1751331547896
+script.js:782 🟡 MODAL OPEN: Fetching fresh data from database...
+script.js:124 🔍 DB FETCH: Getting fresh data for task task-1751331547896
+script.js:130 🔍 DB FETCH SUCCESS: Raw database data for task-1751331547896: Object
+script.js:152 🔍 DB FETCH TRANSFORMED: CamelCase data for task-1751331547896: Object
+script.js:785 🟡 MODAL OPEN: Got fresh data from DB: Object
+script.js:802 Modal fields found: Object
+script.js:816 🟡 MODAL POPULATE: Setting form values from task data: Object
+script.js:741 🗓️ FORMAT INPUT: Processing string date: 2025-07-01T00:00:00.000Z
+script.js:746 🗓️ FORMAT INPUT: Extracted date part from ISO: 2025-07-01
+script.js:832 🟡 MODAL POPULATE: Formatted date from 2025-07-01T00:00:00.000Z to 2025-07-01
+script.js:859 🟡 MODAL POPULATE: Set scheduled time from 08:00:00 to 08:00
+script.js:867 🟡 MODAL POPULATE: Set time estimate to 1 type: number
+script.js:910 Opened modal for "taskE e"
+script.js:920 🔵 MODAL SAVE: Starting save for task: task-1751331547896
+script.js:945 🔵 MODAL SAVE: fire flag changed to true
+script.js:945 🔵 MODAL SAVE: fast flag changed to true
+script.js:945 🔵 MODAL SAVE: flow flag changed to true
+script.js:945 🔵 MODAL SAVE: fear flag changed to true
+script.js:945 🔵 MODAL SAVE: first flag changed to true
+script.js:950 🔵 MODAL SAVE: Updates being applied: {
+  "content": "taskE e",
+  "revisitDate": "2025-07-01",
+  "scheduledTime": "08:00",
+  "overview": "e",
+  "details": "e",
+  "timeEstimate": 1,
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true
+}
+script.js:1453 🔄 Updating task task-1751331547896: Object
+script.js:78 💾 DB SAVE: Attempting to save task task-1751331547896 to database
+script.js:79 💾 DB SAVE: Data being sent: {
+  "id": "task-1751331547896",
+  "content": "taskE e",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-01",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 1,
+  "overview": "e",
+  "details": "e",
+  "scheduledTime": "08:00"
+}
+script.js:96 💾 DB SAVE SUCCESS: Task task-1751331547896 saved successfully
+script.js:97 💾 DB SAVE: Server response: Object
+script.js:1544 ✅ Task task-1751331547896 updated successfully
+script.js:964 🔵 MODAL SAVE: Display changes detected, refreshing panels
+script.js:46 Tasks loaded from database
+script.js:1095 🔍 FILTER: Applying filter "all"
+script.js:1121 📅 DATE RANGES:
+    Today: Tue Jul 01 2025
+    This Week: Mon Jun 30 2025 → Sun Jul 06 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+script.js:1258 🔍 FILTER: Applied "all" filter with corrected Triage logic
+script.js:33 [10:13:10 PM] Hours: Starting task loading from database...
+script.js:46 Tasks loaded from database
+script.js:33 [10:13:10 PM] Hours: Loaded 4 tasks from database
+script.js:33 [10:13:10 PM] Hours: Today's date for comparison: 2025-07-02
+script.js:33 [10:13:10 PM] Hours: Examining task "TRIAGE" - revisitDate: null, scheduledTime: null
+script.js:33 [10:13:10 PM] Hours: Task "TRIAGE" has no scheduled time
+script.js:33 [10:13:10 PM] Hours: Examining task "A" - revisitDate: null, scheduledTime: null
+script.js:33 [10:13:10 PM] Hours: Task "A" has no scheduled time
+script.js:33 [10:13:10 PM] Hours: Examining task "B" - revisitDate: null, scheduledTime: null
+script.js:33 [10:13:10 PM] Hours: Task "B" has no scheduled time
+script.js:33 [10:13:10 PM] Hours: Examining task "C" - revisitDate: null, scheduledTime: null
+script.js:33 [10:13:10 PM] Hours: Task "C" has no scheduled time
+script.js:2612 Hours panel: Added 0 tasks from database for today
+script.js:33 [10:13:10 PM] Hours: No database tasks with scheduled times found, adding demo task
+script.js:33 [10:13:10 PM] Hours: Added single demo task at 5:00 PM
+script.js:33 [10:13:10 PM] Hours: Creating test database task with scheduled time...
+/api/tasks:1 
+        
+        
+       Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+script.js:72 Error adding task to database: Error: HTTP error! status: 500
+    at Object.addTask (script.js:65:15)
+    at async addSampleHoursTasks (script.js:2647:27)
+    at async saveTaskFromModal (script.js:978:11)
+addTask @ script.js:72
+script.js:33 [10:13:10 PM] Hours: Error creating test task: HTTP error! status: 500
+script.js:981 🔵 MODAL SAVE: Panels refreshed after display changes
+script.js:987 Saved modal edits for "taskE e"

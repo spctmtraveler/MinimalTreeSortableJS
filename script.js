@@ -2433,22 +2433,28 @@ function initDebugModal() {
   debugToggleBtn.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    debugLogger('Debug modal opened via gear icon click');
     
-    modal.style.display = 'block';
-    
-    // Update checkboxes with current states
-    const debugCheckbox = document.getElementById('debug-toggle-checkbox');
-    const bordersCheckbox = document.getElementById('borders-toggle-checkbox');
-    
-    if (debugCheckbox) debugCheckbox.checked = debug;
-    if (bordersCheckbox) bordersCheckbox.checked = document.body.classList.contains('debug-borders-enabled');
-    
-    // Update debug log display
-    const debugLogElement = document.getElementById('debug-log');
-    if (debugLogElement) {
-      debugLogElement.textContent = debugLog.join('\n');
-      debugLogElement.scrollTop = debugLogElement.scrollHeight;
+    // Toggle modal visibility
+    if (modal.style.display === 'block') {
+      modal.style.display = 'none';
+      debugLogger('Debug modal closed via gear icon click');
+    } else {
+      modal.style.display = 'block';
+      debugLogger('Debug modal opened via gear icon click');
+      
+      // Update checkboxes with current states
+      const debugCheckbox = document.getElementById('debug-toggle-checkbox');
+      const bordersCheckbox = document.getElementById('borders-toggle-checkbox');
+      
+      if (debugCheckbox) debugCheckbox.checked = debug;
+      if (bordersCheckbox) bordersCheckbox.checked = document.body.classList.contains('debug-borders-enabled');
+      
+      // Update debug log display
+      const debugLogElement = document.getElementById('debug-log');
+      if (debugLogElement) {
+        debugLogElement.textContent = debugLog.join('\n');
+        debugLogElement.scrollTop = debugLogElement.scrollHeight;
+      }
     }
   });
   
@@ -2539,18 +2545,27 @@ function initHoursPanel() {
 async function addSampleHoursTasks() {
   try {
     debugLogger('Hours: Starting task loading from database...');
-    const tasks = await db.loadTasks();
-    if (!tasks || !Array.isArray(tasks)) {
+    
+    // Direct API call to get ALL tasks (not using cached tree)
+    const response = await fetch('/api/tasks');
+    const allTasks = await response.json();
+    
+    if (!allTasks || !Array.isArray(allTasks)) {
       debugLogger('Hours: No database tasks found or invalid response');
       return;
     }
     
-    debugLogger(`Hours: Loaded ${tasks.length} tasks from database`);
+    debugLogger(`Hours: Loaded ${allTasks.length} raw tasks from database`);
+    
+    // Filter out section headers and get actual tasks
+    const actualTasks = allTasks.filter(task => !task.isSection);
+    debugLogger(`Hours: Found ${actualTasks.length} actual tasks (excluding ${allTasks.length - actualTasks.length} section headers)`);
+    
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
     debugLogger(`Hours: Today's date for comparison: ${today}`);
     let addedCount = 0;
     
-    tasks.forEach(task => {
+    actualTasks.forEach(task => {
       // Enhanced debug logging for task examination
       debugLogger(`Hours: Examining task "${task.content}" - revisitDate: ${task.revisitDate}, scheduledTime: ${task.scheduledTime}`);
       
@@ -2567,8 +2582,9 @@ async function addSampleHoursTasks() {
       if (task.scheduledTime) {
         debugLogger(`Hours: Task "${task.content}" has scheduled time: ${task.scheduledTime}`);
         
-        // Parse scheduled time (HH:MM format)
-        const timeParts = task.scheduledTime.split(':');
+        // Parse scheduled time (HH:MM format or HH:MM:SS format)
+        const timeStr = task.scheduledTime.includes(':') ? task.scheduledTime : task.scheduledTime;
+        const timeParts = timeStr.split(':');
         if (timeParts.length >= 2) {
           const hours = parseInt(timeParts[0], 10);
           const minutes = parseInt(timeParts[1], 10);
@@ -2634,43 +2650,7 @@ async function addSampleHoursTasks() {
       debugLogger(`Hours: Successfully added ${addedCount} database tasks with scheduled times`);
     }
     
-    // Create a test task with scheduled time to verify Hours panel functionality
-    debugLogger('Hours: Creating test database task with scheduled time...');
-    try {
-      const testTaskData = {
-        content: 'Test Hours Task',
-        scheduledTime: '14:30', // 2:30 PM
-        timeEstimate: 1.5, // 1.5 hours
-        revisitDate: today
-      };
-      
-      const createdTask = await db.addTask(testTaskData);
-      if (createdTask) {
-        debugLogger(`Hours: Created test task in database with ID: ${createdTask.id}`);
-        
-        // Add to Hours panel immediately
-        const startMinutes = 14 * 60 + 30; // 2:30 PM
-        const durationMinutes = 90; // 1.5 hours
-        
-        const hoursTask = {
-          id: `hours-task-${hoursData.nextId++}`,
-          title: testTaskData.content,
-          startIndex: Math.round(startMinutes / 15),
-          durationSteps: Math.round(durationMinutes / 15),
-          startMinutes: startMinutes,
-          durationMinutes: durationMinutes,
-          dbTaskId: createdTask.id
-        };
-        
-        if (!checkTaskOverlap(hoursTask)) {
-          hoursData.tasks.push(hoursTask);
-          renderHoursTask(hoursTask);
-          debugLogger('Hours: Added test database task to Hours panel at 2:30 PM');
-        }
-      }
-    } catch (error) {
-      debugLogger(`Hours: Error creating test task: ${error.message}`);
-    }
+    debugLogger(`Hours: Summary - processed ${actualTasks.length} actual tasks, added ${addedCount} with scheduled times`);
     
   } catch (error) {
     console.error('Error loading database tasks for Hours panel:', error);
