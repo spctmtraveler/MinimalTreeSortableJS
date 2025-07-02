@@ -2613,20 +2613,34 @@ async function addSampleHoursTasks() {
   try {
     debugLogger('Hours: Starting task loading from database...');
     
-    // Direct API call to get ALL tasks (not using cached tree)
+    // Direct API call to get ALL raw tasks from database (not the tree structure)
     const response = await fetch('/api/tasks');
+    if (!response.ok) {
+      throw new Error(`API call failed: ${response.status}`);
+    }
+    
     const allTasks = await response.json();
+    debugLogger('Hours: Raw API response received');
+    debugLogger(`Hours: API returned ${allTasks.length} total records`);
     
     if (!allTasks || !Array.isArray(allTasks)) {
       debugLogger('Hours: No database tasks found or invalid response');
       return;
     }
     
-    debugLogger(`Hours: Loaded ${allTasks.length} raw tasks from database`);
+    // Debug: log first few tasks to see structure
+    if (allTasks.length > 0) {
+      debugLogger(`Hours: First task structure: ${JSON.stringify(allTasks[0])}`);
+    }
     
-    // Filter out section headers and get actual tasks
-    const actualTasks = allTasks.filter(task => !task.isSection);
+    // Filter out section headers using the correct field name
+    const actualTasks = allTasks.filter(task => task.is_section === false);
     debugLogger(`Hours: Found ${actualTasks.length} actual tasks (excluding ${allTasks.length - actualTasks.length} section headers)`);
+    
+    // Debug: log a few actual tasks
+    if (actualTasks.length > 0) {
+      debugLogger(`Hours: Sample actual task: ${JSON.stringify(actualTasks[0])}`);
+    }
     
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
     debugLogger(`Hours: Today's date for comparison: ${today}`);
@@ -2634,23 +2648,23 @@ async function addSampleHoursTasks() {
     
     actualTasks.forEach(task => {
       // Enhanced debug logging for task examination
-      debugLogger(`Hours: Examining task "${task.content}" - revisitDate: ${task.revisitDate}, scheduledTime: ${task.scheduledTime}`);
+      debugLogger(`Hours: Examining task "${task.content}" - revisitDate: ${task.revisit_date}, scheduledTime: ${task.scheduled_time}`);
       
       // Check if task has scheduled time for today
       let isToday = false;
       
-      if (task.revisitDate) {
-        const taskDate = task.revisitDate.includes('T') ? task.revisitDate.split('T')[0] : task.revisitDate;
+      if (task.revisit_date) {
+        const taskDate = task.revisit_date.includes('T') ? task.revisit_date.split('T')[0] : task.revisit_date;
         isToday = taskDate === today;
         debugLogger(`Hours: Task "${task.content}" date comparison - taskDate: ${taskDate}, today: ${today}, isToday: ${isToday}`);
       }
       
       // Allow tasks with scheduled time regardless of date for testing
-      if (task.scheduledTime) {
-        debugLogger(`Hours: Task "${task.content}" has scheduled time: ${task.scheduledTime}`);
+      if (task.scheduled_time) {
+        debugLogger(`Hours: Task "${task.content}" has scheduled time: ${task.scheduled_time}`);
         
-        // Parse scheduled time (HH:MM format or HH:MM:SS format)
-        const timeStr = task.scheduledTime.includes(':') ? task.scheduledTime : task.scheduledTime;
+        // Parse scheduled time (HH:MM:SS format from database)
+        const timeStr = task.scheduled_time;
         const timeParts = timeStr.split(':');
         if (timeParts.length >= 2) {
           const hours = parseInt(timeParts[0], 10);
@@ -2658,7 +2672,9 @@ async function addSampleHoursTasks() {
           
           if (!isNaN(hours) && !isNaN(minutes)) {
             const startMinutes = hours * 60 + minutes;
-            const durationMinutes = task.timeEstimate && task.timeEstimate > 0 ? (task.timeEstimate * 60) : 60; // Convert hours to minutes
+            // Parse time_estimate from database (could be string like "1.50")
+            const timeEstimate = parseFloat(task.time_estimate) || 1;
+            const durationMinutes = timeEstimate > 0 ? (timeEstimate * 60) : 60; // Convert hours to minutes
             
             const hoursTask = {
               id: `hours-task-${hoursData.nextId++}`,
@@ -2670,7 +2686,7 @@ async function addSampleHoursTasks() {
               dbTaskId: task.id // Link to original database task
             };
             
-            debugLogger(`Hours: Created hours task - start: ${hours}:${minutes.toString().padStart(2, '0')}, duration: ${durationMinutes}min`);
+            debugLogger(`Hours: Created hours task - start: ${hours}:${minutes.toString().padStart(2, '0')}, duration: ${durationMinutes}min (from estimate: ${timeEstimate}h)`);
             
             // Check for overlaps before adding
             if (!checkTaskOverlap(hoursTask)) {
@@ -2682,10 +2698,10 @@ async function addSampleHoursTasks() {
               debugLogger(`Hours: Task "${task.content}" overlaps with existing task, skipped`);
             }
           } else {
-            debugLogger(`Hours: Invalid time format for task "${task.content}": ${task.scheduledTime}`);
+            debugLogger(`Hours: Invalid time format for task "${task.content}": ${task.scheduled_time}`);
           }
         } else {
-          debugLogger(`Hours: Malformed scheduled time for task "${task.content}": ${task.scheduledTime}`);
+          debugLogger(`Hours: Malformed scheduled time for task "${task.content}": ${task.scheduled_time}`);
         }
       } else {
         debugLogger(`Hours: Task "${task.content}" has no scheduled time`);
