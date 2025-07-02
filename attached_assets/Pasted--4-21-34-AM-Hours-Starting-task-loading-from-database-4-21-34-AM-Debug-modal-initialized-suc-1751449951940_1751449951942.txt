@@ -1,0 +1,239 @@
+[4:21:34 AM] Hours: Starting task loading from database...
+[4:21:34 AM] Debug modal initialized successfully
+[4:21:34 AM] Hours: Raw API response received
+[4:21:34 AM] Hours: API returned 29 total records
+[4:21:34 AM] Hours: First task structure: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":false,"time_estimate":"0.00","overview":"","details":"","scheduled_time":null}
+[4:21:34 AM] Hours: Found 25 actual tasks (excluding 4 section headers)
+[4:21:34 AM] Hours: Sample actual task: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":false,"time_estimate":"0.00","overview":"","details":"","scheduled_time":null}
+[4:21:34 AM] Hours: Today's date for comparison: 2025-07-02
+[4:21:34 AM] Hours: Examining task "exercise" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+[4:21:34 AM] Hours: Task "exercise" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "exercise" has no scheduled time
+[4:21:34 AM] Hours: Examining task "Post for LI" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 10:15:00
+[4:21:34 AM] Hours: Task "Post for LI" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Post for LI" has scheduled time: 10:15:00
+[4:21:34 AM] Hours: Created hours task - start: 10:15, duration: 1800min (from estimate: 30h)
+[4:21:34 AM] Hours: Task "Post for LI" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "Exercise Routine like a really long one like run for 10 hours and stuff so we" - revisitDate: 2025-06-28T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "Exercise Routine like a really long one like run for 10 hours and stuff so we" date comparison - taskDate: 2025-06-28, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Exercise Routine like a really long one like run for 10 hours and stuff so we" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Successfully added database task: "Exercise Routine like a really long one like run for 10 hours and stuff so we" at 9:00
+[4:21:34 AM] Hours: Examining task "task3" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "task3" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "task3" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "task3" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "TaskD" - revisitDate: 2025-07-02T00:00:00.000Z, scheduledTime: 14:00:00
+[4:21:34 AM] Hours: Task "TaskD" date comparison - taskDate: 2025-07-02, today: 2025-07-02, isToday: true
+[4:21:34 AM] Hours: Task "TaskD" has scheduled time: 14:00:00
+[4:21:34 AM] Hours: Created hours task - start: 14:00, duration: 1500min (from estimate: 25h)
+[4:21:34 AM] Hours: Task "TaskD" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "Reply to mark V" - revisitDate: null, scheduledTime: null
+[4:21:34 AM] Hours: Task "Reply to mark V" has no scheduled time
+[4:21:34 AM] Hours: Examining task "task1" - revisitDate: null, scheduledTime: null
+[4:21:34 AM] Hours: Task "task1" has no scheduled time
+[4:21:34 AM] Hours: Examining task "Review suggested post text" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "Review suggested post text" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Review suggested post text" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "Review suggested post text" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "ask colleagues to proof" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "ask colleagues to proof" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "ask colleagues to proof" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "ask colleagues to proof" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+[4:21:34 AM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "tas3" has scheduled time: 03:00:00
+[4:21:34 AM] Hours: Created hours task - start: 3:00, duration: 180min (from estimate: 3h)
+[4:21:34 AM] Hours: Successfully added database task: "tas3" at 3:00
+[4:21:34 AM] Hours: Examining task "Review Budget3" - revisitDate: 2025-06-29T00:00:00.000Z, scheduledTime: 01:00:00
+[4:21:34 AM] Hours: Task "Review Budget3" date comparison - taskDate: 2025-06-29, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Review Budget3" has scheduled time: 01:00:00
+[4:21:34 AM] Hours: Created hours task - start: 1:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Successfully added database task: "Review Budget3" at 1:00
+[4:21:34 AM] Hours: Examining task "Revision round on LI post" - revisitDate: null, scheduledTime: null
+[4:21:34 AM] Hours: Task "Revision round on LI post" has no scheduled time
+[4:21:34 AM] Hours: Examining task "Milan's Bidet2" - revisitDate: 2025-06-29T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "Milan's Bidet2" date comparison - taskDate: 2025-06-29, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Milan's Bidet2" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "Milan's Bidet2" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "taskE e" - revisitDate: 2025-07-01T00:00:00.000Z, scheduledTime: 08:00:00
+[4:21:34 AM] Hours: Task "taskE e" date comparison - taskDate: 2025-07-01, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "taskE e" has scheduled time: 08:00:00
+[4:21:34 AM] Hours: Created hours task - start: 8:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Successfully added database task: "taskE e" at 8:00
+[4:21:34 AM] Hours: Examining task "TaskE" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+[4:21:34 AM] Hours: Task "TaskE" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "TaskE" has no scheduled time
+[4:21:34 AM] Hours: Examining task "task44" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+[4:21:34 AM] Hours: Task "task44" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "task44" has scheduled time: 20:00:00
+[4:21:34 AM] Hours: Created hours task - start: 20:00, duration: 900min (from estimate: 15h)
+[4:21:34 AM] Hours: Task "task44" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "task G" - revisitDate: 2025-07-01T00:00:00.000Z, scheduledTime: 00:00:00
+[4:21:34 AM] Hours: Task "task G" date comparison - taskDate: 2025-07-01, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "task G" has scheduled time: 00:00:00
+[4:21:34 AM] Hours: Created hours task - start: 0:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Successfully added database task: "task G" at 0:00
+[4:21:34 AM] Hours: Examining task "figure out image" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+[4:21:34 AM] Hours: Task "figure out image" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "figure out image" has no scheduled time
+[4:21:34 AM] Hours: Examining task "Mail check1" - revisitDate: 2025-06-29T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "Mail check1" date comparison - taskDate: 2025-06-29, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Mail check1" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 900min (from estimate: 15h)
+[4:21:34 AM] Hours: Task "Mail check1" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "TaskC" - revisitDate: 2025-07-02T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "TaskC" date comparison - taskDate: 2025-07-02, today: 2025-07-02, isToday: true
+[4:21:34 AM] Hours: Task "TaskC" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "TaskC" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "Remove Milu's Bidet" - revisitDate: 2025-07-05T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "Remove Milu's Bidet" date comparison - taskDate: 2025-07-05, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Remove Milu's Bidet" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "Remove Milu's Bidet" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-05T00:00:00.000Z, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-05, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Fix Broken Sprinkler" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "Fix Broken Sprinkler" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "Clean Kitchen" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 04:00:00
+[4:21:34 AM] Hours: Task "Clean Kitchen" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "Clean Kitchen" has scheduled time: 04:00:00
+[4:21:34 AM] Hours: Created hours task - start: 4:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "Clean Kitchen" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "Read Book2" - revisitDate: null, scheduledTime: 09:00:00
+[4:21:34 AM] Hours: Task "Read Book2" has scheduled time: 09:00:00
+[4:21:34 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:21:34 AM] Hours: Task "Read Book2" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Examining task "taks41" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 04:00:00
+[4:21:34 AM] Hours: Task "taks41" date comparison - taskDate: 2025-07-03, today: 2025-07-02, isToday: false
+[4:21:34 AM] Hours: Task "taks41" has scheduled time: 04:00:00
+[4:21:34 AM] Hours: Created hours task - start: 4:00, duration: 180min (from estimate: 3h)
+[4:21:34 AM] Hours: Task "taks41" overlaps with existing task, skipped
+[4:21:34 AM] Hours: Successfully added 5 database tasks with scheduled times
+[4:21:34 AM] Hours: Summary - processed 25 actual tasks, added 5 with scheduled times
+[4:47:56 AM] Hours: Starting task loading from database...
+[4:47:56 AM] Hours: Raw API response received
+[4:47:56 AM] Hours: API returned 29 total records
+[4:47:56 AM] Hours: First task structure: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":false,"time_estimate":"0.00","overview":"","details":"","scheduled_time":null}
+[4:47:56 AM] Hours: Found 25 actual tasks (excluding 4 section headers)
+[4:47:56 AM] Hours: Sample actual task: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":false,"time_estimate":"0.00","overview":"","details":"","scheduled_time":null}
+[4:47:56 AM] Hours: Today's date for comparison: 2025-07-02
+[4:47:56 AM] Hours: Examining task "exercise" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+[4:47:56 AM] Hours: Task "exercise" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "exercise" has no scheduled time
+[4:47:56 AM] Hours: Examining task "Post for LI" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 10:15:00
+[4:47:56 AM] Hours: Task "Post for LI" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Post for LI" has scheduled time: 10:15:00
+[4:47:56 AM] Hours: Created hours task - start: 10:15, duration: 1800min (from estimate: 30h)
+[4:47:56 AM] Hours: Task "Post for LI" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Exercise Routine like a really long one like run for 10 hours and stuff so we" - revisitDate: 2025-06-28T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "Exercise Routine like a really long one like run for 10 hours and stuff so we" date comparison - taskDate: 2025-06-28, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Exercise Routine like a really long one like run for 10 hours and stuff so we" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Exercise Routine like a really long one like run for 10 hours and stuff so we" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "task3" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "task3" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "task3" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "task3" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "TaskD" - revisitDate: 2025-07-02T00:00:00.000Z, scheduledTime: 14:00:00
+[4:47:56 AM] Hours: Task "TaskD" date comparison - taskDate: 2025-07-02, today: 2025-07-02, isToday: true
+[4:47:56 AM] Hours: Task "TaskD" has scheduled time: 14:00:00
+[4:47:56 AM] Hours: Created hours task - start: 14:00, duration: 1500min (from estimate: 25h)
+[4:47:56 AM] Hours: Task "TaskD" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+[4:47:56 AM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "tas3" has scheduled time: 03:00:00
+[4:47:56 AM] Hours: Created hours task - start: 3:00, duration: 900min (from estimate: 15h)
+[4:47:56 AM] Hours: Task "tas3" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Reply to mark V" - revisitDate: null, scheduledTime: null
+[4:47:56 AM] Hours: Task "Reply to mark V" has no scheduled time
+[4:47:56 AM] Hours: Examining task "task1" - revisitDate: null, scheduledTime: null
+[4:47:56 AM] Hours: Task "task1" has no scheduled time
+[4:47:56 AM] Hours: Examining task "Review suggested post text" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "Review suggested post text" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Review suggested post text" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Review suggested post text" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "ask colleagues to proof" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "ask colleagues to proof" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "ask colleagues to proof" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "ask colleagues to proof" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Review Budget3" - revisitDate: 2025-06-29T00:00:00.000Z, scheduledTime: 01:00:00
+[4:47:56 AM] Hours: Task "Review Budget3" date comparison - taskDate: 2025-06-29, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Review Budget3" has scheduled time: 01:00:00
+[4:47:56 AM] Hours: Created hours task - start: 1:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Review Budget3" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Revision round on LI post" - revisitDate: null, scheduledTime: null
+[4:47:56 AM] Hours: Task "Revision round on LI post" has no scheduled time
+[4:47:56 AM] Hours: Examining task "Milan's Bidet2" - revisitDate: 2025-06-29T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "Milan's Bidet2" date comparison - taskDate: 2025-06-29, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Milan's Bidet2" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Milan's Bidet2" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "taskE e" - revisitDate: 2025-07-01T00:00:00.000Z, scheduledTime: 08:00:00
+[4:47:56 AM] Hours: Task "taskE e" date comparison - taskDate: 2025-07-01, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "taskE e" has scheduled time: 08:00:00
+[4:47:56 AM] Hours: Created hours task - start: 8:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "taskE e" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "TaskE" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+[4:47:56 AM] Hours: Task "TaskE" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "TaskE" has no scheduled time
+[4:47:56 AM] Hours: Examining task "task44" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+[4:47:56 AM] Hours: Task "task44" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "task44" has scheduled time: 20:00:00
+[4:47:56 AM] Hours: Created hours task - start: 20:00, duration: 900min (from estimate: 15h)
+[4:47:56 AM] Hours: Task "task44" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "task G" - revisitDate: 2025-07-01T00:00:00.000Z, scheduledTime: 00:00:00
+[4:47:56 AM] Hours: Task "task G" date comparison - taskDate: 2025-07-01, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "task G" has scheduled time: 00:00:00
+[4:47:56 AM] Hours: Created hours task - start: 0:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "task G" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "figure out image" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+[4:47:56 AM] Hours: Task "figure out image" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "figure out image" has no scheduled time
+[4:47:56 AM] Hours: Examining task "Mail check1" - revisitDate: 2025-06-29T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "Mail check1" date comparison - taskDate: 2025-06-29, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Mail check1" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 900min (from estimate: 15h)
+[4:47:56 AM] Hours: Task "Mail check1" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "TaskC" - revisitDate: 2025-07-02T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "TaskC" date comparison - taskDate: 2025-07-02, today: 2025-07-02, isToday: true
+[4:47:56 AM] Hours: Task "TaskC" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "TaskC" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Remove Milu's Bidet" - revisitDate: 2025-07-05T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "Remove Milu's Bidet" date comparison - taskDate: 2025-07-05, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Remove Milu's Bidet" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Remove Milu's Bidet" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-05T00:00:00.000Z, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-05, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Fix Broken Sprinkler" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Fix Broken Sprinkler" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Clean Kitchen" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 04:00:00
+[4:47:56 AM] Hours: Task "Clean Kitchen" date comparison - taskDate: 2025-06-30, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "Clean Kitchen" has scheduled time: 04:00:00
+[4:47:56 AM] Hours: Created hours task - start: 4:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Clean Kitchen" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "Read Book2" - revisitDate: null, scheduledTime: 09:00:00
+[4:47:56 AM] Hours: Task "Read Book2" has scheduled time: 09:00:00
+[4:47:56 AM] Hours: Created hours task - start: 9:00, duration: 60min (from estimate: 1h)
+[4:47:56 AM] Hours: Task "Read Book2" overlaps with existing task, skipped
+[4:47:56 AM] Hours: Examining task "taks41" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 04:00:00
+[4:47:56 AM] Hours: Task "taks41" date comparison - taskDate: 2025-07-03, today: 2025-07-02, isToday: false
+[4:47:56 AM] Hours: Task "taks41" has scheduled time: 04:00:00
+[4:47:56 AM] Hours: Created hours task - start: 4:00, duration: 180min (from estimate: 3h)
+[4:47:56 AM] Hours: Task "taks41" overlaps with existing task, skipped
+[4:47:56 AM] Hours: No database tasks with scheduled times found, adding demo task
+[4:47:56 AM] Hours: Added single demo task at 5:00 PM
+[4:47:56 AM] Hours: Summary - processed 25 actual tasks, added 0 with scheduled times
+[4:52:27 AM] Debug modal opened via gear icon click

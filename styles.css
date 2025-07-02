@@ -1578,8 +1578,15 @@ body.priority-flags-hidden .task-priority-header {
 }
 
 /* ===== DEBUG BORDERS ===== */
-body.debug-borders-enabled * {
-  border: 1px solid rgba(255, 0, 0, 0.3) !important;
+body.debug-borders-enabled .container,
+body.debug-borders-enabled .task-tree,
+body.debug-borders-enabled .hours-panel,
+body.debug-borders-enabled .priority-column,
+body.debug-borders-enabled .modal-content,
+body.debug-borders-enabled .top-banner,
+body.debug-borders-enabled .section,
+body.debug-borders-enabled .task-item {
+  border: 2px solid rgba(255, 0, 0, 0.5) !important;
 }
 
 body.debug-borders-enabled .container {

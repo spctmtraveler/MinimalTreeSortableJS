@@ -2680,8 +2680,8 @@ async function addSampleHoursTasks() {
         debugLogger(`Hours: Task "${task.content}" date comparison - taskDate: ${taskDate}, today: ${today}, isToday: ${isToday}`);
       }
       
-      // Allow tasks with scheduled time regardless of date for testing
-      if (task.scheduled_time) {
+      // Only show tasks scheduled for today in Hours panel
+      if (task.scheduled_time && isToday) {
         debugLogger(`Hours: Task "${task.content}" has scheduled time: ${task.scheduled_time}`);
         
         // Parse scheduled time (HH:MM:SS format from database)
@@ -2725,7 +2725,7 @@ async function addSampleHoursTasks() {
           debugLogger(`Hours: Malformed scheduled time for task "${task.content}": ${task.scheduled_time}`);
         }
       } else {
-        debugLogger(`Hours: Task "${task.content}" has no scheduled time`);
+        debugLogger(`Hours: Task "${task.content}" has no scheduled time or not scheduled for today`);
       }
     });
     
@@ -2733,7 +2733,7 @@ async function addSampleHoursTasks() {
     
     // If no database tasks found, add one demo task for testing
     if (addedCount === 0) {
-      debugLogger('Hours: No database tasks with scheduled times found, adding demo task');
+      debugLogger('Hours: No database tasks scheduled for today found, adding demo task');
       
       const demoTask = { title: 'Fake Task', startMinutes: 17 * 60, durationMinutes: 60 }; // 5:00 PM
       
@@ -2759,6 +2759,21 @@ async function addSampleHoursTasks() {
   } catch (error) {
     console.error('Error loading database tasks for Hours panel:', error);
     if (debug) console.log('Hours panel: Error loading from database, skipping task loading');
+  }
+}
+
+// Refresh Hours panel when tasks are updated
+function refreshHoursPanel() {
+  if (!document.getElementById('hours-panel').style.display || document.getElementById('hours-panel').style.display !== 'none') {
+    debugLogger('Hours: Refreshing panel due to task updates');
+    // Clear existing tasks
+    hoursData.tasks = [];
+    const hoursContainer = document.querySelector('.hours-container');
+    if (hoursContainer) {
+      hoursContainer.querySelectorAll('.hours-task').forEach(task => task.remove());
+    }
+    // Reload tasks
+    addSampleHoursTasks();
   }
 }
 
