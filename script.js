@@ -2693,9 +2693,17 @@ async function addSampleHoursTasks() {
           
           if (!isNaN(hours) && !isNaN(minutes)) {
             const startMinutes = hours * 60 + minutes;
-            // Parse time_estimate from database (could be string like "1.50")
-            const timeEstimate = parseFloat(task.time_estimate) || 1;
-            const durationMinutes = timeEstimate > 0 ? (timeEstimate * 60) : 60; // Convert hours to minutes
+            // Parse time_estimate from database - handle both legacy hours and new minutes format
+            let timeEstimate = parseFloat(task.time_estimate) || 60; // Default to 60 minutes
+            
+            // Smart conversion: if the value seems like hours (small numbers), convert to minutes
+            // Values > 8 are likely already in minutes, values <= 8 are likely hours
+            if (timeEstimate <= 8) {
+              timeEstimate = timeEstimate * 60; // Convert hours to minutes
+              debugLogger(`Hours: Converting ${task.time_estimate}h to ${timeEstimate}min for task "${task.content}"`);
+            }
+            
+            const durationMinutes = timeEstimate > 0 ? timeEstimate : 60;
             
             const hoursTask = {
               id: `hours-task-${hoursData.nextId++}`,
@@ -2707,7 +2715,7 @@ async function addSampleHoursTasks() {
               dbTaskId: task.id // Link to original database task
             };
             
-            debugLogger(`Hours: Created hours task - start: ${hours}:${minutes.toString().padStart(2, '0')}, duration: ${durationMinutes}min (from estimate: ${timeEstimate}h)`);
+            debugLogger(`Hours: Created hours task - start: ${hours}:${minutes.toString().padStart(2, '0')}, duration: ${durationMinutes}min (from estimate: ${timeEstimate}min)`);
             
             // Check for overlaps before adding
             if (!checkTaskOverlap(hoursTask)) {
