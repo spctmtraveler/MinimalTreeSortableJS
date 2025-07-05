@@ -882,24 +882,34 @@ async function openTaskModal(task, taskElement) {
       const isActive = !!task[flagDef.type];
       const flag = createPriorityFlag(flagDef.type, flagDef.icon, isActive, flagDef.title, true);
       
-      // Add click handler for modal flags
-      flag.onclick = (e) => {
+      // Add click handler for modal flags with real-time saving
+      flag.onclick = async (e) => {
         e.preventDefault();
         flag.classList.toggle('active');
+        
+        // Save flag change immediately
+        const updates = {};
+        updates[flagDef.type] = flag.classList.contains('active');
+        await saveModalChanges(task, updates);
       };
       
       modalFlagsContainer.appendChild(flag);
     });
 
+    // Set up real-time saving for all form fields
+    setupRealTimeSaving(task, titleInput, revisitInput, timeInput, overviewInput, detailsInput, estimateInput);
+
     modal.style.display='block';
     titleInput.focus();
 
-    document.getElementById('save-task-btn').onclick = () => saveTaskFromModal(task, taskElement);
+    // Replace save button with close button
+    document.getElementById('close-task-btn').onclick = () => modal.style.display='none';
     document.getElementById('delete-task-btn').onclick = () => deleteTask(task, taskElement);
     document.querySelector('.close-modal').onclick = () => modal.style.display='none';
     
-    // Close modal on click outside or ESC key
-    window.onclick = e => { if (e.target === modal) modal.style.display='none'; };
+    // Fixed modal close behavior - only close on actual clicks, not drags
+    setupModalCloseHandling(modal);
+    
     document.addEventListener('keydown', function escHandler(e) {
       if (e.key === 'Escape' && modal.style.display === 'block') {
         modal.style.display = 'none';
@@ -914,7 +924,123 @@ async function openTaskModal(task, taskElement) {
   }
 }
 
-/* ---------- Save from Modal ----------- */
+/* ---------- Real-time Saving Functions ----------- */
+function setupRealTimeSaving(task, titleInput, revisitInput, timeInput, overviewInput, detailsInput, estimateInput) {
+  // Debounce function to avoid too many saves
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // Create debounced save function (500ms delay)
+  const debouncedSave = debounce(async (updates) => {
+    await saveModalChanges(task, updates);
+  }, 500);
+
+  // Set up listeners for all form fields
+  titleInput.addEventListener('input', () => {
+    debouncedSave({ content: titleInput.value });
+  });
+
+  revisitInput.addEventListener('change', () => {
+    debouncedSave({ revisitDate: revisitInput.value });
+  });
+
+  timeInput.addEventListener('change', () => {
+    debouncedSave({ scheduledTime: timeInput.value });
+  });
+
+  overviewInput.addEventListener('input', () => {
+    debouncedSave({ overview: overviewInput.value });
+  });
+
+  detailsInput.addEventListener('input', () => {
+    debouncedSave({ details: detailsInput.value });
+  });
+
+  estimateInput.addEventListener('change', () => {
+    debouncedSave({ timeEstimate: parseFloat(estimateInput.value) || 0 });
+  });
+}
+
+async function saveModalChanges(task, updates) {
+  try {
+    console.log('🔵 REAL-TIME SAVE: Saving changes for task:', task.id, updates);
+    
+    // Update task object with new values
+    Object.assign(task, updates);
+    
+    // Use centralized state management
+    await updateTaskState(task.id, updates);
+    
+    // Check if Hours panel affecting changes were made
+    const hasHoursChanges = 
+      updates.hasOwnProperty('timeEstimate') ||
+      updates.hasOwnProperty('scheduledTime');
+
+    // If Hours panel changes were made, refresh just the Hours panel
+    if (hasHoursChanges) {
+      console.log('🔵 REAL-TIME SAVE: Hours panel changes detected, refreshing Hours panel');
+      
+      const hoursVisible = !document.querySelector('.hours-column')?.classList.contains('hidden');
+      if (hoursVisible) {
+        // Clear existing hours tasks
+        hoursData.tasks = [];
+        const taskBlocksContainer = document.getElementById('task-blocks-container');
+        if (taskBlocksContainer) {
+          taskBlocksContainer.querySelectorAll('.task-block').forEach(block => block.remove());
+        }
+        
+        // Reload hours tasks
+        await addSampleHoursTasks();
+      }
+    }
+    
+    console.log('✅ REAL-TIME SAVE: Changes saved successfully');
+  } catch(err) {
+    console.error('❌ REAL-TIME SAVE ERROR:', err);
+    showToast('Save Error', 'Failed to save changes automatically');
+  }
+}
+
+function setupModalCloseHandling(modal) {
+  let isMouseDown = false;
+  let mouseDownTarget = null;
+  
+  // Track mouse down events
+  document.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    mouseDownTarget = e.target;
+  });
+  
+  // Track mouse up events - only close if both down and up were outside modal content
+  document.addEventListener('mouseup', (e) => {
+    if (isMouseDown && modal.style.display === 'block') {
+      const modalContent = modal.querySelector('.modal-content');
+      
+      // Check if both mousedown and mouseup were outside modal content
+      const mouseDownOutside = !modalContent.contains(mouseDownTarget);
+      const mouseUpOutside = !modalContent.contains(e.target);
+      
+      if (mouseDownOutside && mouseUpOutside && e.target === modal) {
+        modal.style.display = 'none';
+        console.log('🔵 MODAL: Closed via click outside (not drag)');
+      }
+    }
+    
+    isMouseDown = false;
+    mouseDownTarget = null;
+  });
+}
+
+/* ---------- Save from Modal (Legacy - kept for compatibility) ----------- */
 async function saveTaskFromModal(task, taskElement) {
   try {
     console.log('🔵 MODAL SAVE: Starting save for task:', task.id);
