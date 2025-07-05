@@ -959,6 +959,11 @@ async function saveTaskFromModal(task, taskElement) {
     // Use centralized state management
     await updateTaskState(task.id, updates);
 
+    // Check if Hours panel affecting changes were made (time estimate or scheduled time)
+    const hasHoursChanges = 
+      originalData.timeEstimate !== updates.timeEstimate ||
+      originalData.scheduledTime !== updates.scheduledTime;
+
     // If display-affecting changes were made, refresh both panels
     if (hasDisplayChanges) {
       console.log('🔵 MODAL SAVE: Display changes detected, refreshing panels');
@@ -979,6 +984,24 @@ async function saveTaskFromModal(task, taskElement) {
         }
         
         console.log('🔵 MODAL SAVE: Panels refreshed after display changes');
+      }
+    } 
+    // If only Hours panel changes were made, refresh just the Hours panel
+    else if (hasHoursChanges) {
+      console.log('🔵 MODAL SAVE: Hours panel changes detected, refreshing Hours panel only');
+      
+      const hoursVisible = !document.querySelector('.hours-column')?.classList.contains('hidden');
+      if (hoursVisible) {
+        // Clear existing hours tasks
+        hoursData.tasks = [];
+        const taskBlocksContainer = document.getElementById('task-blocks-container');
+        if (taskBlocksContainer) {
+          taskBlocksContainer.querySelectorAll('.task-block').forEach(block => block.remove());
+        }
+        
+        // Reload hours tasks
+        await addSampleHoursTasks();
+        console.log('🔵 MODAL SAVE: Hours panel refreshed after time estimate/schedule changes');
       }
     }
 
@@ -2633,6 +2656,13 @@ function initHoursPanel() {
 async function addSampleHoursTasks() {
   try {
     debugLogger('Hours: Starting task loading from database...');
+    
+    // Clear existing hours tasks first
+    hoursData.tasks = [];
+    const taskBlocksContainer = document.getElementById('task-blocks-container');
+    if (taskBlocksContainer) {
+      taskBlocksContainer.querySelectorAll('.task-block').forEach(block => block.remove());
+    }
     
     // Direct API call to get ALL raw tasks from database (not the tree structure)
     const response = await fetch('/api/tasks/raw');
