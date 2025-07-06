@@ -329,7 +329,7 @@ button, input, select, textarea {
 .priority-overlay-header {
   position: absolute;
   top: -48px; /* Position well above task tree */
-  right: 275px;
+  right: 200px; /* Adjusted to align with new flag positions */
   width: 150px;
   text-align: center;
   z-index: 10;
@@ -340,7 +340,7 @@ button, input, select, textarea {
   position: absolute;
   top: 10px; /* Position between header and tasks */
   /*left: 575px; /*Align with priority flags */
-  right: 250px;
+  right: 175px; /* Adjusted to align with new flag positions */
   /*(margin-right: 0px; */
   width: 150px;
   z-index: 10;
@@ -543,7 +543,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: -59px; /* Moved left by 84px (25px - 84px = -59px) */
+  right: -130px; /* Much closer to control icons */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
