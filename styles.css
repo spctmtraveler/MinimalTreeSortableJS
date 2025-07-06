@@ -433,7 +433,7 @@ li::before {
   user-select: none;
   background: transparent;
   position: relative;
-  margin-right: 180px; /* Further reduced space for priority flags */
+  margin-right: 96px; /* Reduced by 84px (40% of 210px) to move controls left */
   gap: 2px; /* Even tighter spacing between elements */
 }
 
@@ -543,7 +543,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: 25px; /* Much closer to action buttons */
+  right: -59px; /* Moved left by 84px (25px - 84px = -59px) */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
@@ -633,9 +633,9 @@ li::before {
 .task-text {
   font-size: 14px;
   color: var(--text-color);
-  width: 210px; /* Reduced width for ~26 characters */
-  min-width: 210px;
-  max-width: 210px;
+  width: 126px; /* 60% of 210px = 126px for ~16 characters */
+  min-width: 126px;
+  max-width: 126px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

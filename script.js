@@ -495,8 +495,8 @@ function buildTree(tasks, parent) {
 
     const txt = document.createElement('span');
     txt.className = 'task-text';
-    // Truncate text to ~26 characters with ellipsis
-    const maxLength = 26;
+    // Truncate text to ~16 characters with ellipsis (60% of original 26)
+    const maxLength = 16;
     if (task.content.length > maxLength) {
       txt.textContent = task.content.substring(0, maxLength) + '...';
     } else {
@@ -1629,7 +1629,7 @@ async function updateTaskState(taskId, updates) {
     if (updates.hasOwnProperty('content')) {
       const textEl = taskElement.querySelector('.task-text');
       if (textEl) {
-        const maxLength = 26;
+        const maxLength = 16;
         if (taskData.content.length > maxLength) {
           textEl.textContent = taskData.content.substring(0, maxLength) + '...';
         } else {
@@ -1958,7 +1958,7 @@ function startTaskInlineEdit(textSpan, task, taskElement) {
   input.className = 'task-inline-edit';
   
   // Style the input to match the text
-  input.style.width = '240px';
+  input.style.width = '126px';
   input.style.background = 'transparent';
   input.style.border = '1px solid var(--accent-color)';
   input.style.color = 'var(--text-color)';
