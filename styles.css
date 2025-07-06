@@ -441,6 +441,17 @@ li::before {
   background: rgba(255, 255, 255, 0.03);
 }
 
+/* Show toggle/chevron on task hover or when expanded */
+.task-content:hover .toggle-area,
+.task-item.task-expanded .toggle-area {
+  opacity: 1;
+}
+
+/* Always show toggle for tasks that have children and are expanded */
+.toggle-btn.expanded {
+  opacity: 1;
+}
+
 /* ===== Task Controls Container ===== */
 .task-control-container {
   display: flex;
@@ -581,6 +592,11 @@ li::before {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s ease;
+  position: absolute;
+  left: -26px; /* Position to the left of the task content */
+  z-index: 10;
 }
 
 .toggle-btn {
