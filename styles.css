@@ -19,7 +19,7 @@ button, input, select, textarea {
   --danger-color: #ff4d4d;
   --header-height: 60px;
   --section-spacing: 24px;
-  --task-indent: 24px;
+  --task-indent: 15px; /* Reduced from 24px to ~width of grab handle */
   --container-width: 1200px;
 }
 
@@ -420,21 +420,21 @@ li::before {
 
 /* ===== Task Items ===== */
 .task-item {
-  margin: 4px 0;
+  margin: 2px 0; /* Reduced from 4px to 2px (50% tighter) */
   position: relative;
 }
 
 .task-content {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 4px 6px; /* Reduced from 8px to 4px vertical, 6px horizontal */
   border-radius: 4px;
   cursor: grab;
   user-select: none;
   background: transparent;
   position: relative;
-  margin-right: 200px; /* Reduced space for priority flags */
-  gap: 4px; /* Further reduced space between elements */
+  margin-right: 180px; /* Further reduced space for priority flags */
+  gap: 2px; /* Even tighter spacing between elements */
 }
 
 .task-content:hover {
@@ -446,15 +446,15 @@ li::before {
   display: flex;
   align-items: center;
   margin-left: 0; /* Remove auto margin to align left */
-  margin-right: 8px; /* Reduced space before priority flags */
-  min-width: 80px; /* Reduced width */
+  margin-right: 4px; /* Further reduced space before priority flags */
+  min-width: 70px; /* Further reduced width */
 }
 
 /* Task date display */
 .task-date {
   color: var(--accent-color);
   font-size: 12px;
-  margin-right: 8px;
+  margin-right: 4px; /* Reduced from 8px to 4px */
   opacity: 0; /* Hidden by default */
   transition: opacity 2s ease-out; /* Match control bar fade out */
 }
@@ -471,7 +471,8 @@ li::before {
   opacity: 0;
   transition: opacity 2s ease-out; /* Fade out longer (2 seconds) */
   z-index: 5;
-  margin-left: 2px; /* Reduced gap between date and buttons */
+  margin-left: 1px; /* Further reduced gap between date and buttons */
+  gap: 1px; /* Tight spacing between control buttons */
 }
 
 .task-content:hover .task-control-bar {
@@ -480,9 +481,9 @@ li::before {
 }
 
 .control-btn {
-  width: 28px;
-  height: 28px;
-  margin-left: 2px; /* Much tighter spacing */
+  width: 24px; /* Reduced from 28px */
+  height: 24px; /* Reduced from 28px */
+  margin-left: 1px; /* Tighter spacing */
   background: transparent;
   color: var(--inactive-color);
   border: none;
@@ -492,7 +493,7 @@ li::before {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  font-size: 12px; /* Slightly smaller */
+  font-size: 11px; /* Even smaller */
 }
 
 .control-btn:hover {
@@ -531,7 +532,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: 50px; /* Even closer to action buttons */
+  right: 25px; /* Much closer to action buttons */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
@@ -540,8 +541,8 @@ li::before {
 
 /* Individual priority flag */
 .priority-flag {
-  width: 21px; /* 30% smaller */
-  height: 21px; /* 30% smaller */
+  width: 20px; /* Further reduced */
+  height: 20px; /* Further reduced */
   border-radius: 50%;
   border: 2px solid var(--inactive-color);
   background: transparent;
@@ -552,9 +553,9 @@ li::before {
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  font-size: 9px; /* Also reduce font size */
+  font-size: 8px; /* Further reduced font size */
   z-index: 10;
-  margin: 0 1.5px; /* 70% reduced spacing */
+  margin: 0 1px; /* Even tighter spacing */
   padding: 0;
 }
 
@@ -573,9 +574,9 @@ li::before {
 
 /* ===== Toggle (Chevron) ===== */
 .toggle-area {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
+  width: 20px; /* Reduced from 24px */
+  height: 20px; /* Reduced from 24px */
+  margin-right: 6px; /* Reduced from 8px */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -594,9 +595,9 @@ li::before {
 
 /* ===== Task Checkbox ===== */
 .task-checkbox {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
+  width: 16px; /* Reduced from 18px */
+  height: 16px; /* Reduced from 18px */
+  margin-right: 8px; /* Reduced from 10px */
   border: 2px solid var(--inactive-color);
   border-radius: 4px;
   display: flex;
@@ -795,8 +796,8 @@ body > .sortable-drag {
 
 /* ===== Section Headers ===== */
 .section-header {
-  margin-top: 20px !important;
-  margin-bottom: 10px !important;
+  margin-top: 24px !important; /* Keep extra top margin for A, B, C headers */
+  margin-bottom: 6px !important; /* Reduced from 10px to 6px */
   position: relative;
   border-left: 0; /* Remove blue left border */
   padding-left: 5px;
@@ -825,7 +826,7 @@ body > .sortable-drag {
 
 .section-header > .task-children {
   margin-left: 8px;
-  margin-top: 12px;
+  margin-top: 6px; /* Reduced from 12px to 6px */
 }
 
 /* Section content indentation */
@@ -836,7 +837,7 @@ body > .sortable-drag {
 
 /* Task icons/grip */
 .task-grip {
-  margin-right: 8px;
+  margin-right: 6px; /* Reduced from 8px to 6px */
   color: var(--inactive-color);
   font-size: 12px;
 }
@@ -1604,3 +1605,4 @@ body.debug-borders-enabled .hours-column {
 body.debug-borders-enabled .task-priority-flags {
   border: 2px solid rgba(255, 255, 0, 0.5) !important;
 }
+
