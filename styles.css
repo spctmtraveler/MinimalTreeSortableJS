@@ -329,7 +329,7 @@ button, input, select, textarea {
 .priority-overlay-header {
   position: absolute;
   top: -48px; /* Position well above task tree */
-  right: 200px; /* Adjusted to align with new flag positions */
+  right: 350px; /* REVERSE DIRECTION - moved back to align with corrected flag positions */
   width: 150px;
   text-align: center;
   z-index: 10;
@@ -340,7 +340,7 @@ button, input, select, textarea {
   position: absolute;
   top: 10px; /* Position between header and tasks */
   /*left: 575px; /*Align with priority flags */
-  right: 175px; /* Adjusted to align with new flag positions */
+  right: 325px; /* REVERSE DIRECTION - moved back to align with corrected flag positions */
   /*(margin-right: 0px; */
   width: 150px;
   z-index: 10;
@@ -543,7 +543,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: -130px; /* Much closer to control icons */
+  right: 12px; /* REVERSE DIRECTION - moved 71px right from -59px (NOTE: I always move wrong direction, so this is reversed) */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
