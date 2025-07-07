@@ -502,7 +502,25 @@ function buildTree(tasks, parent) {
     } else {
       txt.textContent = task.content;
     }
-    txt.title = task.content; // Show full text on hover
+    
+    // Add tooltips for section headers A, B, C
+    if (task.isSection) {
+      switch(task.content) {
+        case 'A':
+          txt.title = 'Must Do Today';
+          break;
+        case 'B':
+          txt.title = 'Should Do Today';
+          break;
+        case 'C':
+          txt.title = 'Like to Do Today';
+          break;
+        default:
+          txt.title = task.content; // Show full text on hover for other sections
+      }
+    } else {
+      txt.title = task.content; // Show full text on hover for regular tasks
+    }
     
     // Add inline editing functionality
     if (!task.isSection) {
