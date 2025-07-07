@@ -545,7 +545,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: 120px; /* REVERSE DIRECTION - moved even further left (NOTE: I always move wrong direction, so this is reversed) */
+  right: 145px; /* REVERSE DIRECTION - moved even further left (NOTE: I always move wrong direction, so this is reversed) */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
@@ -652,9 +652,9 @@ li::before {
 
 /* ===== Date Container ===== */
 .task-date-container {
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
