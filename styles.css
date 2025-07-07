@@ -329,7 +329,7 @@ button, input, select, textarea {
 .priority-overlay-header {
   position: absolute;
   top: -48px; /* Position well above task tree */
-  right: 350px; /* REVERSE DIRECTION - moved back to align with corrected flag positions */
+  right: 230px; /* REVERSE DIRECTION - aligned with closer flag positions */
   width: 150px;
   text-align: center;
   z-index: 10;
@@ -340,7 +340,7 @@ button, input, select, textarea {
   position: absolute;
   top: 10px; /* Position between header and tasks */
   /*left: 575px; /*Align with priority flags */
-  right: 325px; /* REVERSE DIRECTION - moved back to align with corrected flag positions */
+  right: 205px; /* REVERSE DIRECTION - aligned with closer flag positions */
   /*(margin-right: 0px; */
   width: 150px;
   z-index: 10;
@@ -452,6 +452,20 @@ li::before {
   opacity: 1;
 }
 
+/* Show toggle area when it contains an expanded toggle */
+.toggle-area:has(.toggle-btn.expanded) {
+  opacity: 1;
+}
+
+/* Fallback for browsers without :has() support - show toggle for any task with children */
+.task-item:not(.task-completed) .toggle-area:not(:empty) {
+  opacity: 0.7;
+}
+
+.task-item:not(.task-completed):hover .toggle-area:not(:empty) {
+  opacity: 1;
+}
+
 /* ===== Task Controls Container ===== */
 .task-control-container {
   display: flex;
@@ -543,7 +557,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: 12px; /* REVERSE DIRECTION - moved 71px right from -59px (NOTE: I always move wrong direction, so this is reversed) */
+  right: 80px; /* REVERSE DIRECTION - moved much closer to control icons (NOTE: I always move wrong direction, so this is reversed) */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
@@ -595,7 +609,9 @@ li::before {
   opacity: 0; /* Hidden by default */
   transition: opacity 0.2s ease;
   position: absolute;
-  left: -26px; /* Position to the left of the task content */
+  left: -22px; /* Position closer to task content for better visibility */
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 10;
 }
 
