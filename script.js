@@ -3141,8 +3141,21 @@ function setupHoursEventListeners() {
   
   // Double-click to create task
   timeline.addEventListener('dblclick', (e) => {
+    if (debug) console.log('🎯 TIMELINE: Double-click detected on element:', e.target.tagName, e.target.className);
+    
+    const taskBlock = e.target.closest('.task-block');
+    const limitLine = e.target.closest('.limit-line');
+    const timeLine = e.target.closest('.current-time-line');
+    
+    if (debug) {
+      console.log('🔍 TIMELINE: Checking closest elements...');
+      console.log('   - task-block:', taskBlock ? taskBlock.dataset.taskId : 'null');
+      console.log('   - limit-line:', limitLine ? 'found' : 'null');
+      console.log('   - current-time-line:', timeLine ? 'found' : 'null');
+    }
+    
     // Don't create task if clicking on existing task or control elements
-    if (e.target.closest('.task-block') || e.target.closest('.limit-line') || e.target.closest('.current-time-line')) {
+    if (taskBlock || limitLine || timeLine) {
       if (debug) console.log('🚫 HOURS: Double-click ignored - clicked on existing element');
       return;
     }
@@ -3282,7 +3295,11 @@ function setupTaskInteractions(taskBlock, task) {
   
   // Modal edit on double-click block (but not title)
   taskBlock.addEventListener('dblclick', (e) => {
-    if (e.target === titleSpan) return; // Already handled above
+    if (debug) console.log('🎯 TASK: Double-click detected on task block', task.id, 'target:', e.target.tagName, e.target.className);
+    if (e.target === titleSpan) {
+      if (debug) console.log('🚫 TASK: Double-click on title, skipping modal (handled by title handler)');
+      return; // Already handled above
+    }
     e.stopPropagation();
     if (debug) console.log('🎯 EDIT: Opening Hours task modal for', task.id);
     openHoursTaskModal(task, taskBlock);
