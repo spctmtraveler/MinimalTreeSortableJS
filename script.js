@@ -3143,6 +3143,7 @@ function setupHoursEventListeners() {
   timeline.addEventListener('dblclick', (e) => {
     // Don't create task if clicking on existing task or control elements
     if (e.target.closest('.task-block') || e.target.closest('.limit-line') || e.target.closest('.current-time-line')) {
+      if (debug) console.log('🚫 HOURS: Double-click ignored - clicked on existing element');
       return;
     }
     
@@ -3151,12 +3152,15 @@ function setupHoursEventListeners() {
     const minutes = Math.round((clickY / 60) * 60); // Convert pixels to minutes
     const snappedMinutes = Math.round(minutes / 15) * 15; // Snap to 15-minute grid
     
+    if (debug) console.log('✅ HOURS: Creating new task at', snappedMinutes, 'minutes');
     createHoursTask(snappedMinutes);
   });
 }
 
 // Create a new task in the Hours panel
 function createHoursTask(startMinutes, title = null) {
+  if (debug) console.log('🚀 CREATE: Starting task creation at', startMinutes, 'minutes');
+  
   const task = {
     id: `hours-task-${hoursData.nextId++}`,
     title: title || 'New Task',
@@ -3166,8 +3170,11 @@ function createHoursTask(startMinutes, title = null) {
     durationMinutes: 60
   };
   
+  if (debug) console.log('🆕 CREATE: Created task object', task);
+  
   // Check for overlaps
   if (checkTaskOverlap(task)) {
+    if (debug) console.log('❌ CREATE: Task creation blocked due to overlap');
     showToast('Error', 'Task overlaps with existing task or limit');
     return;
   }
@@ -3181,7 +3188,7 @@ function createHoursTask(startMinutes, title = null) {
     setTimeout(() => startInlineEdit(titleSpan, task), 50);
   }
   
-  if (debug) console.log('create: Hours task created', task);
+  if (debug) console.log('✅ CREATE: Hours task created successfully', task);
 }
 
 // Check if task overlaps with existing tasks or limits
@@ -3189,14 +3196,20 @@ function checkTaskOverlap(newTask) {
   const newStart = newTask.startMinutes;
   const newEnd = newStart + newTask.durationMinutes;
   
+  if (debug) console.log('🔍 OVERLAP CHECK: Testing task', newTask.id, 'from', newStart, 'to', newEnd);
+  
   // Check overlap with existing tasks
   for (const task of hoursData.tasks) {
-    if (task.id === newTask.id) continue; // Skip self when updating
+    if (task.id === newTask.id) {
+      if (debug) console.log('⏭️ OVERLAP CHECK: Skipping self', task.id);
+      continue; // Skip self when updating
+    }
     
     const taskStart = task.startMinutes;
     const taskEnd = taskStart + task.durationMinutes;
     
     if (newStart < taskEnd && newEnd > taskStart) {
+      if (debug) console.log('❌ OVERLAP CHECK: Overlap detected with', task.id, 'from', taskStart, 'to', taskEnd);
       return true; // Overlap detected
     }
   }
@@ -3205,9 +3218,16 @@ function checkTaskOverlap(newTask) {
   const stopPos = hoursData.limitLines.stop.position;
   const sleepPos = hoursData.limitLines.sleep.position;
   
-  if (newEnd > stopPos && newStart < stopPos) return true;
-  if (newEnd > sleepPos && newStart < sleepPos) return true;
+  if (newEnd > stopPos && newStart < stopPos) {
+    if (debug) console.log('❌ OVERLAP CHECK: Overlap with STOP line at', stopPos);
+    return true;
+  }
+  if (newEnd > sleepPos && newStart < sleepPos) {
+    if (debug) console.log('❌ OVERLAP CHECK: Overlap with SLEEP line at', sleepPos);
+    return true;
+  }
   
+  if (debug) console.log('✅ OVERLAP CHECK: No overlap detected');
   return false;
 }
 
@@ -3264,6 +3284,7 @@ function setupTaskInteractions(taskBlock, task) {
   taskBlock.addEventListener('dblclick', (e) => {
     if (e.target === titleSpan) return; // Already handled above
     e.stopPropagation();
+    if (debug) console.log('🎯 EDIT: Opening Hours task modal for', task.id);
     openHoursTaskModal(task, taskBlock);
   });
   
@@ -3380,6 +3401,7 @@ function makeTaskDraggable(taskBlock, task) {
   taskBlock.addEventListener('mousedown', (e) => {
     // Don't start drag if clicking on controls or resize handle
     if (e.target.closest('.task-block-controls') || e.target.closest('.resize-handle')) {
+      if (debug) console.log('🚫 DRAG: Mousedown ignored - clicked on controls');
       return;
     }
     
@@ -3388,9 +3410,10 @@ function makeTaskDraggable(taskBlock, task) {
     startMinutes = task.startMinutes;
     taskBlock.classList.add('dragging');
     
-    if (debug) console.log('dragStart: Hours task drag started', task.id);
+    if (debug) console.log('🎯 DRAG: Hours task drag started', task.id);
     
     e.preventDefault();
+    e.stopPropagation(); // Prevent event bubbling to timeline
   });
   
   document.addEventListener('mousemove', (e) => {
