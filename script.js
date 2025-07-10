@@ -495,32 +495,14 @@ function buildTree(tasks, parent) {
 
     const txt = document.createElement('span');
     txt.className = 'task-text';
-    // Truncate text to ~16 characters with ellipsis (60% of original 26)
-    const maxLength = 16;
+    // Truncate text to ~26 characters with ellipsis
+    const maxLength = 26;
     if (task.content.length > maxLength) {
       txt.textContent = task.content.substring(0, maxLength) + '...';
     } else {
       txt.textContent = task.content;
     }
-    
-    // Add tooltips for section headers A, B, C
-    if (task.isSection) {
-      switch(task.content) {
-        case 'A':
-          txt.title = 'Must Do Today';
-          break;
-        case 'B':
-          txt.title = 'Should Do Today';
-          break;
-        case 'C':
-          txt.title = 'Like to Do Today';
-          break;
-        default:
-          txt.title = task.content; // Show full text on hover for other sections
-      }
-    } else {
-      txt.title = task.content; // Show full text on hover for regular tasks
-    }
+    txt.title = task.content; // Show full text on hover
     
     // Add inline editing functionality
     if (!task.isSection) {
@@ -1647,7 +1629,7 @@ async function updateTaskState(taskId, updates) {
     if (updates.hasOwnProperty('content')) {
       const textEl = taskElement.querySelector('.task-text');
       if (textEl) {
-        const maxLength = 16;
+        const maxLength = 26;
         if (taskData.content.length > maxLength) {
           textEl.textContent = taskData.content.substring(0, maxLength) + '...';
         } else {
@@ -1976,7 +1958,7 @@ function startTaskInlineEdit(textSpan, task, taskElement) {
   input.className = 'task-inline-edit';
   
   // Style the input to match the text
-  input.style.width = '126px';
+  input.style.width = '240px';
   input.style.background = 'transparent';
   input.style.border = '1px solid var(--accent-color)';
   input.style.color = 'var(--text-color)';
@@ -3141,20 +3123,8 @@ function setupHoursEventListeners() {
   
   // Double-click to create task
   timeline.addEventListener('dblclick', (e) => {
-    console.log('🎯 TIMELINE: Double-click detected on element:', e.target.tagName, e.target.className);
-    
-    const taskBlock = e.target.closest('.task-block');
-    const limitLine = e.target.closest('.limit-line');
-    const timeLine = e.target.closest('.current-time-line');
-    
-    console.log('🔍 TIMELINE: Checking closest elements...');
-    console.log('   - task-block:', taskBlock ? taskBlock.dataset.taskId : 'null');
-    console.log('   - limit-line:', limitLine ? 'found' : 'null');
-    console.log('   - current-time-line:', timeLine ? 'found' : 'null');
-    
     // Don't create task if clicking on existing task or control elements
-    if (taskBlock || limitLine || timeLine) {
-      console.log('🚫 HOURS: Double-click ignored - clicked on existing element');
+    if (e.target.closest('.task-block') || e.target.closest('.limit-line') || e.target.closest('.current-time-line')) {
       return;
     }
     
@@ -3163,15 +3133,12 @@ function setupHoursEventListeners() {
     const minutes = Math.round((clickY / 60) * 60); // Convert pixels to minutes
     const snappedMinutes = Math.round(minutes / 15) * 15; // Snap to 15-minute grid
     
-    console.log('✅ HOURS: Creating new task at', snappedMinutes, 'minutes');
     createHoursTask(snappedMinutes);
   });
 }
 
 // Create a new task in the Hours panel
 function createHoursTask(startMinutes, title = null) {
-  console.log('🚀 CREATE: Starting task creation at', startMinutes, 'minutes');
-  
   const task = {
     id: `hours-task-${hoursData.nextId++}`,
     title: title || 'New Task',
@@ -3181,11 +3148,8 @@ function createHoursTask(startMinutes, title = null) {
     durationMinutes: 60
   };
   
-  console.log('🆕 CREATE: Created task object', task);
-  
   // Check for overlaps
   if (checkTaskOverlap(task)) {
-    console.log('❌ CREATE: Task creation blocked due to overlap');
     showToast('Error', 'Task overlaps with existing task or limit');
     return;
   }
@@ -3199,7 +3163,7 @@ function createHoursTask(startMinutes, title = null) {
     setTimeout(() => startInlineEdit(titleSpan, task), 50);
   }
   
-  console.log('✅ CREATE: Hours task created successfully', task);
+  if (debug) console.log('create: Hours task created', task);
 }
 
 // Check if task overlaps with existing tasks or limits
@@ -3207,20 +3171,14 @@ function checkTaskOverlap(newTask) {
   const newStart = newTask.startMinutes;
   const newEnd = newStart + newTask.durationMinutes;
   
-  if (debug) console.log('🔍 OVERLAP CHECK: Testing task', newTask.id, 'from', newStart, 'to', newEnd);
-  
   // Check overlap with existing tasks
   for (const task of hoursData.tasks) {
-    if (task.id === newTask.id) {
-      if (debug) console.log('⏭️ OVERLAP CHECK: Skipping self', task.id);
-      continue; // Skip self when updating
-    }
+    if (task.id === newTask.id) continue; // Skip self when updating
     
     const taskStart = task.startMinutes;
     const taskEnd = taskStart + task.durationMinutes;
     
     if (newStart < taskEnd && newEnd > taskStart) {
-      if (debug) console.log('❌ OVERLAP CHECK: Overlap detected with', task.id, 'from', taskStart, 'to', taskEnd);
       return true; // Overlap detected
     }
   }
@@ -3229,16 +3187,9 @@ function checkTaskOverlap(newTask) {
   const stopPos = hoursData.limitLines.stop.position;
   const sleepPos = hoursData.limitLines.sleep.position;
   
-  if (newEnd > stopPos && newStart < stopPos) {
-    if (debug) console.log('❌ OVERLAP CHECK: Overlap with STOP line at', stopPos);
-    return true;
-  }
-  if (newEnd > sleepPos && newStart < sleepPos) {
-    if (debug) console.log('❌ OVERLAP CHECK: Overlap with SLEEP line at', sleepPos);
-    return true;
-  }
+  if (newEnd > stopPos && newStart < stopPos) return true;
+  if (newEnd > sleepPos && newStart < sleepPos) return true;
   
-  if (debug) console.log('✅ OVERLAP CHECK: No overlap detected');
   return false;
 }
 
@@ -3273,45 +3224,28 @@ function renderHoursTask(task) {
   container.appendChild(taskBlock);
   
   // Setup task interactions
-  console.log('🔧 RENDER: Setting up interactions for task', task.id);
   setupTaskInteractions(taskBlock, task);
   
-  console.log('✅ RENDER: Task rendered and interactions setup complete for', task.id);
   return taskBlock;
 }
 
 // Setup interactions for a task block
 function setupTaskInteractions(taskBlock, task) {
-  console.log('🔧 SETUP: Starting interaction setup for task', task.id);
-  
   const titleSpan = taskBlock.querySelector('.task-title');
   const editBtn = taskBlock.querySelector('.edit-btn');
   const deleteBtn = taskBlock.querySelector('.delete-btn');
   const resizeHandle = taskBlock.querySelector('.resize-handle');
   
-  console.log('🔧 SETUP: Found elements - title:', !!titleSpan, 'edit:', !!editBtn, 'delete:', !!deleteBtn, 'resize:', !!resizeHandle);
-  
   // Inline rename on double-click title
   titleSpan.addEventListener('dblclick', (e) => {
-    console.log('🎯 TITLE: Double-click detected on title span for task', task.id);
     e.stopPropagation();
     startInlineEdit(titleSpan, task);
   });
   
-  // Add basic click detection for debugging
-  taskBlock.addEventListener('click', (e) => {
-    console.log('👆 CLICK: Single-click on task', task.id, 'target:', e.target.tagName, e.target.className);
-  });
-  
   // Modal edit on double-click block (but not title)
   taskBlock.addEventListener('dblclick', (e) => {
-    console.log('🎯 TASK: Double-click detected on task block', task.id, 'target:', e.target.tagName, e.target.className);
-    if (e.target === titleSpan) {
-      console.log('🚫 TASK: Double-click on title, skipping modal (handled by title handler)');
-      return; // Already handled above
-    }
+    if (e.target === titleSpan) return; // Already handled above
     e.stopPropagation();
-    console.log('🎯 EDIT: Opening Hours task modal for', task.id);
     openHoursTaskModal(task, taskBlock);
   });
   
@@ -3332,8 +3266,6 @@ function setupTaskInteractions(taskBlock, task) {
   
   // Make task resizable
   makeTaskResizable(taskBlock, task, resizeHandle);
-  
-  console.log('✅ SETUP: All event listeners attached for task', task.id);
 }
 
 // Start inline editing of task title
@@ -3430,7 +3362,6 @@ function makeTaskDraggable(taskBlock, task) {
   taskBlock.addEventListener('mousedown', (e) => {
     // Don't start drag if clicking on controls or resize handle
     if (e.target.closest('.task-block-controls') || e.target.closest('.resize-handle')) {
-      if (debug) console.log('🚫 DRAG: Mousedown ignored - clicked on controls');
       return;
     }
     
@@ -3439,10 +3370,9 @@ function makeTaskDraggable(taskBlock, task) {
     startMinutes = task.startMinutes;
     taskBlock.classList.add('dragging');
     
-    if (debug) console.log('🎯 DRAG: Hours task drag started', task.id);
+    if (debug) console.log('dragStart: Hours task drag started', task.id);
     
     e.preventDefault();
-    e.stopPropagation(); // Prevent event bubbling to timeline
   });
   
   document.addEventListener('mousemove', (e) => {

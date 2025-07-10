@@ -19,7 +19,7 @@ button, input, select, textarea {
   --danger-color: #ff4d4d;
   --header-height: 60px;
   --section-spacing: 24px;
-  --task-indent: 15px; /* Reduced from 24px to ~width of grab handle */
+  --task-indent: 24px;
   --container-width: 1200px;
 }
 
@@ -329,7 +329,7 @@ button, input, select, textarea {
 .priority-overlay-header {
   position: absolute;
   top: -48px; /* Position well above task tree */
-  right: 270px; /* REVERSE DIRECTION - aligned with further left flag positions */
+  right: 275px;
   width: 150px;
   text-align: center;
   z-index: 10;
@@ -338,9 +338,9 @@ button, input, select, textarea {
 
 .priority-overlay-controls {
   position: absolute;
-  top: 5px; /* Moved up 5 pixels from 10px to 5px */
+  top: 10px; /* Position between header and tasks */
   /*left: 575px; /*Align with priority flags */
-  right: 245px; /* REVERSE DIRECTION - aligned with further left flag positions */
+  right: 250px;
   /*(margin-right: 0px; */
   width: 150px;
   z-index: 10;
@@ -420,54 +420,41 @@ li::before {
 
 /* ===== Task Items ===== */
 .task-item {
-  margin: 2px 0; /* Reduced from 4px to 2px (50% tighter) */
+  margin: 4px 0;
   position: relative;
 }
 
 .task-content {
   display: flex;
   align-items: center;
-  padding: 4px 6px; /* Reduced from 8px to 4px vertical, 6px horizontal */
+  padding: 8px;
   border-radius: 4px;
   cursor: grab;
   user-select: none;
   background: transparent;
   position: relative;
-  margin-right: 96px; /* Reduced by 84px (40% of 210px) to move controls left */
-  gap: 2px; /* Even tighter spacing between elements */
+  margin-right: 200px; /* Reduced space for priority flags */
+  gap: 4px; /* Further reduced space between elements */
 }
 
 .task-content:hover {
   background: rgba(255, 255, 255, 0.03);
 }
 
-/* Show toggle/chevron on task hover or when expanded */
-.task-content:hover .toggle-area,
-.task-item.task-expanded .toggle-area {
-  opacity: 1;
-}
-
-/* Always show toggle for tasks that have children and are expanded */
-.toggle-btn.expanded {
-  opacity: 1;
-}
-
-/* Chevrons should be completely invisible until hover - remove all visibility fallbacks */
-
 /* ===== Task Controls Container ===== */
 .task-control-container {
   display: flex;
   align-items: center;
   margin-left: 0; /* Remove auto margin to align left */
-  margin-right: 4px; /* Further reduced space before priority flags */
-  min-width: 70px; /* Further reduced width */
+  margin-right: 8px; /* Reduced space before priority flags */
+  min-width: 80px; /* Reduced width */
 }
 
 /* Task date display */
 .task-date {
   color: var(--accent-color);
   font-size: 12px;
-  margin-right: 4px; /* Reduced from 8px to 4px */
+  margin-right: 8px;
   opacity: 0; /* Hidden by default */
   transition: opacity 2s ease-out; /* Match control bar fade out */
 }
@@ -484,8 +471,7 @@ li::before {
   opacity: 0;
   transition: opacity 2s ease-out; /* Fade out longer (2 seconds) */
   z-index: 5;
-  margin-left: 1px; /* Further reduced gap between date and buttons */
-  gap: 1px; /* Tight spacing between control buttons */
+  margin-left: 2px; /* Reduced gap between date and buttons */
 }
 
 .task-content:hover .task-control-bar {
@@ -494,9 +480,9 @@ li::before {
 }
 
 .control-btn {
-  width: 24px; /* Reduced from 28px */
-  height: 24px; /* Reduced from 28px */
-  margin-left: 1px; /* Tighter spacing */
+  width: 28px;
+  height: 28px;
+  margin-left: 2px; /* Much tighter spacing */
   background: transparent;
   color: var(--inactive-color);
   border: none;
@@ -506,7 +492,7 @@ li::before {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  font-size: 11px; /* Even smaller */
+  font-size: 12px; /* Slightly smaller */
 }
 
 .control-btn:hover {
@@ -545,7 +531,7 @@ li::before {
   position: absolute;
   display: flex;
   width: 150px;
-  right: 145px; /* REVERSE DIRECTION - moved even further left (NOTE: I always move wrong direction, so this is reversed) */
+  right: 50px; /* Even closer to action buttons */
   top: 50%;
   transform: translateY(-50%);
   justify-content: space-between;
@@ -554,8 +540,8 @@ li::before {
 
 /* Individual priority flag */
 .priority-flag {
-  width: 20px; /* Further reduced */
-  height: 20px; /* Further reduced */
+  width: 21px; /* 30% smaller */
+  height: 21px; /* 30% smaller */
   border-radius: 50%;
   border: 2px solid var(--inactive-color);
   background: transparent;
@@ -566,9 +552,9 @@ li::before {
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  font-size: 8px; /* Further reduced font size */
+  font-size: 9px; /* Also reduce font size */
   z-index: 10;
-  margin: 0 1px; /* Even tighter spacing */
+  margin: 0 1.5px; /* 70% reduced spacing */
   padding: 0;
 }
 
@@ -587,24 +573,17 @@ li::before {
 
 /* ===== Toggle (Chevron) ===== */
 .toggle-area {
-  width: 20px; /* Reduced from 24px */
-  height: 20px; /* Reduced from 24px */
-  margin-right: 6px; /* Reduced from 8px */
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0; /* Hidden by default */
-  transition: opacity 0.2s ease;
-  position: absolute;
-  left: -22px; /* Position closer to task content for better visibility */
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
 }
 
 .toggle-btn {
-  font-size: 32px; /* Double the size from 16px to 32px */
+  font-size: 16px;
   color: var(--inactive-color);
   line-height: 1;
 }
@@ -615,9 +594,9 @@ li::before {
 
 /* ===== Task Checkbox ===== */
 .task-checkbox {
-  width: 16px; /* Reduced from 18px */
-  height: 16px; /* Reduced from 18px */
-  margin-right: 8px; /* Reduced from 10px */
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
   border: 2px solid var(--inactive-color);
   border-radius: 4px;
   display: flex;
@@ -637,9 +616,9 @@ li::before {
 .task-text {
   font-size: 14px;
   color: var(--text-color);
-  width: 126px; /* 60% of 210px = 126px for ~16 characters */
-  min-width: 126px;
-  max-width: 126px;
+  width: 210px; /* Reduced width for ~26 characters */
+  min-width: 210px;
+  max-width: 210px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -652,9 +631,9 @@ li::before {
 
 /* ===== Date Container ===== */
 .task-date-container {
-  width: 60px;
-  min-width: 60px;
-  max-width: 60px;
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -816,8 +795,8 @@ body > .sortable-drag {
 
 /* ===== Section Headers ===== */
 .section-header {
-  margin-top: 24px !important; /* Keep extra top margin for A, B, C headers */
-  margin-bottom: 6px !important; /* Reduced from 10px to 6px */
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
   position: relative;
   border-left: 0; /* Remove blue left border */
   padding-left: 5px;
@@ -846,7 +825,7 @@ body > .sortable-drag {
 
 .section-header > .task-children {
   margin-left: 8px;
-  margin-top: 6px; /* Reduced from 12px to 6px */
+  margin-top: 12px;
 }
 
 /* Section content indentation */
@@ -857,7 +836,7 @@ body > .sortable-drag {
 
 /* Task icons/grip */
 .task-grip {
-  margin-right: 6px; /* Reduced from 8px to 6px */
+  margin-right: 8px;
   color: var(--inactive-color);
   font-size: 12px;
 }
@@ -1625,4 +1604,3 @@ body.debug-borders-enabled .hours-column {
 body.debug-borders-enabled .task-priority-flags {
   border: 2px solid rgba(255, 255, 0, 0.5) !important;
 }
-
