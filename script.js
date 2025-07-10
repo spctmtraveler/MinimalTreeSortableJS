@@ -3275,22 +3275,34 @@ function renderHoursTask(task) {
   container.appendChild(taskBlock);
   
   // Setup task interactions
+  if (debug) console.log('🔧 RENDER: Setting up interactions for task', task.id);
   setupTaskInteractions(taskBlock, task);
   
+  if (debug) console.log('✅ RENDER: Task rendered and interactions setup complete for', task.id);
   return taskBlock;
 }
 
 // Setup interactions for a task block
 function setupTaskInteractions(taskBlock, task) {
+  if (debug) console.log('🔧 SETUP: Starting interaction setup for task', task.id);
+  
   const titleSpan = taskBlock.querySelector('.task-title');
   const editBtn = taskBlock.querySelector('.edit-btn');
   const deleteBtn = taskBlock.querySelector('.delete-btn');
   const resizeHandle = taskBlock.querySelector('.resize-handle');
   
+  if (debug) console.log('🔧 SETUP: Found elements - title:', !!titleSpan, 'edit:', !!editBtn, 'delete:', !!deleteBtn, 'resize:', !!resizeHandle);
+  
   // Inline rename on double-click title
   titleSpan.addEventListener('dblclick', (e) => {
+    if (debug) console.log('🎯 TITLE: Double-click detected on title span for task', task.id);
     e.stopPropagation();
     startInlineEdit(titleSpan, task);
+  });
+  
+  // Add basic click detection for debugging
+  taskBlock.addEventListener('click', (e) => {
+    if (debug) console.log('👆 CLICK: Single-click on task', task.id, 'target:', e.target.tagName, e.target.className);
   });
   
   // Modal edit on double-click block (but not title)
@@ -3322,6 +3334,8 @@ function setupTaskInteractions(taskBlock, task) {
   
   // Make task resizable
   makeTaskResizable(taskBlock, task, resizeHandle);
+  
+  if (debug) console.log('✅ SETUP: All event listeners attached for task', task.id);
 }
 
 // Start inline editing of task title
