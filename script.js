@@ -3195,8 +3195,13 @@ function checkTaskOverlap(newTask) {
 
 // Render a task block in the Hours panel
 function renderHoursTask(task) {
+  console.log('🔧 RENDER: Starting to render task', task.id);
   const container = document.getElementById('task-blocks-container');
-  if (!container) return;
+  if (!container) {
+    console.log('❌ RENDER: Container task-blocks-container not found!');
+    return;
+  }
+  console.log('✅ RENDER: Container found, proceeding with task rendering');
   
   const taskBlock = document.createElement('div');
   taskBlock.className = 'task-block';

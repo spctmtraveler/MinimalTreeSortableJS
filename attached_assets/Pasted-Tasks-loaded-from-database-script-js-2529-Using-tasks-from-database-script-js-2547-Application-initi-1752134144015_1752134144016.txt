@@ -1,0 +1,229 @@
+Tasks loaded from database
+script.js:2529 Using tasks from database
+script.js:2547 Application initialized
+script.js:2994 Current time line updated: 2:51
+script.js:33 [2:51:24 AM] Hours: Starting task loading from database...
+script.js:2778 Hours panel initialized
+script.js:33 [2:51:24 AM] Debug modal initialized successfully
+script.js:33 [2:51:24 AM] Hours: Raw API response received
+script.js:33 [2:51:24 AM] Hours: API returned 19 total records
+script.js:33 [2:51:24 AM] Hours: First task structure: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"time_estimate":"15.00","overview":"","details":"","scheduled_time":null}
+script.js:33 [2:51:24 AM] Hours: Found 15 actual tasks (excluding 4 section headers)
+script.js:33 [2:51:24 AM] Hours: Sample actual task: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"time_estimate":"15.00","overview":"","details":"","scheduled_time":null}
+script.js:33 [2:51:24 AM] Hours: Today's date for comparison: 2025-07-10
+script.js:33 [2:51:24 AM] Hours: Examining task "exercise" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "exercise" date comparison - taskDate: 2025-06-30, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "exercise" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "Send Pics to Traudi" - revisitDate: 2025-07-07T00:00:00.000Z, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "Send Pics to Traudi" date comparison - taskDate: 2025-07-07, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "Send Pics to Traudi" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "task1" - revisitDate: null, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "task1" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+script.js:33 [2:51:24 AM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "tas3" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "Remove Milan's Bidet" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: 13:00:00
+script.js:33 [2:51:24 AM] Hours: Task "Remove Milan's Bidet" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "Remove Milan's Bidet" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "stretch/yoga" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+script.js:33 [2:51:24 AM] Hours: Task "stretch/yoga" date comparison - taskDate: 2025-06-30, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "stretch/yoga" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "test july 8th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "test july 8th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "test july 8th" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: 09:00:00
+script.js:33 [2:51:24 AM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "Fix Broken Sprinkler" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "Read Book2" - revisitDate: null, scheduledTime: 09:00:00
+script.js:33 [2:51:24 AM] Hours: Task "Read Book2" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "test: july 11th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "test: july 11th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "test: july 11th" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "test: july 9th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "test: july 9th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "test: july 9th" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "test: july 10th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "test: july 10th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "test: july 10th" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "shower" - revisitDate: null, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "shower" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "test: aug 5th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "test: aug 5th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [2:51:24 AM] Hours: Task "test: aug 5th" has no scheduled time or not scheduled for today
+script.js:33 [2:51:24 AM] Hours: Examining task "test: july 15" - revisitDate: null, scheduledTime: null
+script.js:33 [2:51:24 AM] Hours: Task "test: july 15" has no scheduled time or not scheduled for today
+script.js:2892 Hours panel: Added 0 tasks from database for today
+script.js:33 [2:51:24 AM] Hours: No database tasks scheduled for today found, adding demo task
+script.js:33 [2:51:24 AM] Hours: Added single demo task at 5:00 PM
+script.js:33 [2:51:24 AM] Hours: Summary - processed 15 actual tasks, added 0 with scheduled times
+script.js:3166 create: Hours task created Object
+script.js:3166 create: Hours task created Object
+script.js:659 🔴 MAIN SCREEN FLAG CHANGE: first for task "shower" changed from false to true
+script.js:660 🔴 About to save task data to DB: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:78 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:79 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:663 Flag first for "shower" → true
+script.js:659 🔴 MAIN SCREEN FLAG CHANGE: fear for task "shower" changed from false to true
+script.js:660 🔴 About to save task data to DB: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:78 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:79 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:663 Flag fear for "shower" → true
+script.js:659 🔴 MAIN SCREEN FLAG CHANGE: fear for task "shower" changed from true to false
+script.js:660 🔴 About to save task data to DB: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:78 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:79 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:663 Flag fear for "shower" → false
+script.js:96 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:97 💾 DB SAVE: Server response: Object
+script.js:96 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:97 💾 DB SAVE: Server response: Object
+script.js:96 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:97 💾 DB SAVE: Server response: Object
+script.js:659 🔴 MAIN SCREEN FLAG CHANGE: first for task "shower" changed from true to false
+script.js:660 🔴 About to save task data to DB: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:78 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:79 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": null,
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null
+}
+script.js:663 Flag first for "shower" → false
+script.js:96 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:97 💾 DB SAVE: Server response: Object
+script.js:779 🟡 MODAL OPEN: Starting to open modal for task: task-1751899158925
+script.js:782 🟡 MODAL OPEN: Fetching fresh data from database...
+script.js:124 🔍 DB FETCH: Getting fresh data for task task-1751899158925
+script.js:130 🔍 DB FETCH SUCCESS: Raw database data for task-1751899158925: Object
+script.js:152 🔍 DB FETCH TRANSFORMED: CamelCase data for task-1751899158925: Object
+script.js:785 🟡 MODAL OPEN: Got fresh data from DB: Object
+script.js:802 Modal fields found: Object
+script.js:816 🟡 MODAL POPULATE: Setting form values from task data: Object
+script.js:741 🗓️ FORMAT INPUT: Processing string date: 2025-07-09T00:00:00.000Z
+script.js:746 🗓️ FORMAT INPUT: Extracted date part from ISO: 2025-07-09
+script.js:832 🟡 MODAL POPULATE: Formatted date from 2025-07-09T00:00:00.000Z to 2025-07-09
+script.js:859 🟡 MODAL POPULATE: Set scheduled time from null to 09:00
+script.js:867 🟡 MODAL POPULATE: Set time estimate to 0 type: number
