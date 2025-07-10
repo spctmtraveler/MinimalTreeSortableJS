@@ -1,0 +1,202 @@
+ Tasks loaded from database
+ Using tasks from database
+ Application initialized
+ Current time line updated: 17:32
+ [5:32:18 PM] Hours: Starting task loading from database...
+ Hours panel initialized
+ [5:32:18 PM] Debug modal initialized successfully
+ [5:32:18 PM] Hours: Raw API response received
+ [5:32:18 PM] Hours: API returned 19 total records
+ [5:32:18 PM] Hours: First task structure: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"time_estimate":"15.00","overview":"","details":"","scheduled_time":null}
+ [5:32:18 PM] Hours: Found 15 actual tasks (excluding 4 section headers)
+ [5:32:18 PM] Hours: Sample actual task: {"id":"task-1751267575010","content":"exercise","is_section":false,"completed":false,"parent_id":"section-c","position_order":0,"revisit_date":"2025-06-30T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"time_estimate":"15.00","overview":"","details":"","scheduled_time":null}
+ [5:32:18 PM] Hours: Today's date for comparison: 2025-07-10
+ [5:32:18 PM] Hours: Examining task "exercise" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+ [5:32:18 PM] Hours: Task "exercise" date comparison - taskDate: 2025-06-30, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "exercise" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "Send Pics to Traudi" - revisitDate: 2025-07-07T00:00:00.000Z, scheduledTime: null
+ [5:32:18 PM] Hours: Task "Send Pics to Traudi" date comparison - taskDate: 2025-07-07, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "Send Pics to Traudi" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "task1" - revisitDate: null, scheduledTime: null
+ [5:32:18 PM] Hours: Task "task1" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+ [5:32:18 PM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "tas3" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "Remove Milan's Bidet" - revisitDate: 2025-07-10T00:00:00.000Z, scheduledTime: 14:00:00
+ [5:32:18 PM] Hours: Task "Remove Milan's Bidet" date comparison - taskDate: 2025-07-10, today: 2025-07-10, isToday: true
+ [5:32:18 PM] Hours: Task "Remove Milan's Bidet" has scheduled time: 14:00:00
+ [5:32:18 PM] Hours: Created hours task - start: 14:00, duration: 30min (from estimate: 30.00min → 30min)
+ 🔧 RENDER: Starting to render task hours-task-1
+ ✅ RENDER: Container found, proceeding with task rendering
+ [5:32:18 PM] Hours: Successfully added database task: "Remove Milan's Bidet" at 14:00
+ [5:32:18 PM] Hours: Examining task "stretch/yoga" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+ [5:32:18 PM] Hours: Task "stretch/yoga" date comparison - taskDate: 2025-06-30, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "stretch/yoga" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "test july 8th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+ [5:32:18 PM] Hours: Task "test july 8th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "test july 8th" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-10T00:00:00.000Z, scheduledTime: 14:00:00
+ [5:32:18 PM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-10, today: 2025-07-10, isToday: true
+ [5:32:18 PM] Hours: Task "Fix Broken Sprinkler" has scheduled time: 14:00:00
+ [5:32:18 PM] Hours: Created hours task - start: 14:00, duration: 15min (from estimate: 15.00min → 15min)
+ [5:32:18 PM] Hours: Task "Fix Broken Sprinkler" overlaps with existing task, skipped
+ [5:32:18 PM] Hours: Examining task "Read Book2" - revisitDate: null, scheduledTime: 09:00:00
+ [5:32:18 PM] Hours: Task "Read Book2" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "test: july 11th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+ [5:32:18 PM] Hours: Task "test: july 11th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "test: july 11th" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "test: july 9th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+ [5:32:18 PM] Hours: Task "test: july 9th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "test: july 9th" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "test: july 10th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+ [5:32:18 PM] Hours: Task "test: july 10th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "test: july 10th" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "test: aug 5th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+ [5:32:18 PM] Hours: Task "test: aug 5th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+ [5:32:18 PM] Hours: Task "test: aug 5th" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "shower" - revisitDate: null, scheduledTime: null
+ [5:32:18 PM] Hours: Task "shower" has no scheduled time or not scheduled for today
+ [5:32:18 PM] Hours: Examining task "test: july 15" - revisitDate: 2025-07-10T00:00:00.000Z, scheduledTime: 14:00:00
+ [5:32:18 PM] Hours: Task "test: july 15" date comparison - taskDate: 2025-07-10, today: 2025-07-10, isToday: true
+ [5:32:18 PM] Hours: Task "test: july 15" has scheduled time: 14:00:00
+ [5:32:18 PM] Hours: Created hours task - start: 14:00, duration: 60min (from estimate: 0.00min → 60min)
+ [5:32:18 PM] Hours: Task "test: july 15" overlaps with existing task, skipped
+ Hours panel: Added 1 tasks from database for today
+ [5:32:18 PM] Hours: Successfully added 1 database tasks with scheduled times
+ [5:32:18 PM] Hours: Summary - processed 15 actual tasks, added 1 with scheduled times
+ 🔄 DRAG: Moving task task-1751899090655 to parent section-b at position 2
+ 📅 AUTO-DATE: Current filter is "all"
+ 📅 AUTO-DATE: Task task-1751899090655 moved from Triage to section-b, assigned date: 2025-07-10T05:00:00.000Z
+ 🔄 Updating task task-1751899090655: Object
+ 💾 DB SAVE: Attempting to save task task-1751899090655 to database
+ 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899090655",
+  "content": "test: july 15",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-10T05:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "14:00:00",
+  "parent_id": "section-b",
+  "positionOrder": 2
+}
+ Dropped into: B
+ 💾 DB SAVE SUCCESS: Task task-1751899090655 saved successfully
+ 💾 DB SAVE: Server response: Object
+ ✅ Task task-1751899090655 updated successfully
+ 🔄 Updating sibling positions: Array(4)
+ 🟡 MODAL OPEN: Starting to open modal for task: task-1751899090655
+ 🟡 MODAL OPEN: Fetching fresh data from database...
+ 🔍 DB FETCH: Getting fresh data for task task-1751899090655
+ 🔍 DB FETCH SUCCESS: Raw database data for task-1751899090655: Object
+ 🔍 DB FETCH TRANSFORMED: CamelCase data for task-1751899090655: Object
+ 🟡 MODAL OPEN: Got fresh data from DB: Object
+ Modal fields found: Object
+ 🟡 MODAL POPULATE: Setting form values from task data: Object
+ 🗓️ FORMAT INPUT: Processing string date: 2025-07-10T00:00:00.000Z
+ 🗓️ FORMAT INPUT: Extracted date part from ISO: 2025-07-10
+ 🟡 MODAL POPULATE: Formatted date from 2025-07-10T00:00:00.000Z to 2025-07-10
+ 🟡 MODAL POPULATE: Set scheduled time from 14:00:00 to 14:00
+ 🟡 MODAL POPULATE: Set time estimate to 0 type: number
+ Opened modal for "test: july 15"
+ 🔵 REAL-TIME SAVE: Saving changes for task: task-1751899090655 Object
+ 🔄 Updating task task-1751899090655: Object
+ 💾 DB SAVE: Attempting to save task task-1751899090655 to database
+ 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899090655",
+  "content": "test: july 15",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-10T05:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "10:00",
+  "parent_id": "section-b",
+  "positionOrder": 2
+}
+ 💾 DB SAVE SUCCESS: Task task-1751899090655 saved successfully
+ 💾 DB SAVE: Server response: Object
+ ✅ Task task-1751899090655 updated successfully
+ 🔵 REAL-TIME SAVE: Hours panel changes detected, refreshing Hours panel
+ [5:35:40 PM] Hours: Starting task loading from database...
+ [5:35:40 PM] Hours: Raw API response received
+ [5:35:40 PM] Hours: API returned 19 total records
+ [5:35:40 PM] Hours: First task structure: {"id":"task-1751096021427","content":"Remove Milan's Bidet","is_section":false,"completed":false,"parent_id":"section-a","position_order":0,"revisit_date":"2025-07-10T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":true,"time_estimate":"30.00","overview":"ee","details":"Need bucket & wrench & probably plumbers tape","scheduled_time":"14:00:00"}
+ [5:35:40 PM] Hours: Found 15 actual tasks (excluding 4 section headers)
+ [5:35:40 PM] Hours: Sample actual task: {"id":"task-1751096021427","content":"Remove Milan's Bidet","is_section":false,"completed":false,"parent_id":"section-a","position_order":0,"revisit_date":"2025-07-10T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":true,"time_estimate":"30.00","overview":"ee","details":"Need bucket & wrench & probably plumbers tape","scheduled_time":"14:00:00"}
+ [5:35:40 PM] Hours: Today's date for comparison: 2025-07-10
+ [5:35:40 PM] Hours: Examining task "Remove Milan's Bidet" - revisitDate: 2025-07-10T00:00:00.000Z, scheduledTime: 14:00:00
+ [5:35:40 PM] Hours: Task "Remove Milan's Bidet" date comparison - taskDate: 2025-07-10, today: 2025-07-10, isToday: true
+ [5:35:40 PM] Hours: Task "Remove Milan's Bidet" has scheduled time: 14:00:00
+ [5:35:40 PM] Hours: Created hours task - start: 14:00, duration: 30min (from estimate: 30.00min → 30min)
+ 🔧 RENDER: Starting to render task hours-task-4
+ ✅ RENDER: Container found, proceeding with task rendering
+ [5:35:40 PM] Hours: Successfully added database task: "Remove Milan's Bidet" at 14:00
+ [5:35:40 PM] Hours: Examining task "task1" - revisitDate: null, scheduledTime: null
+ [5:35:40 PM] Hours: Task "task1" has no scheduled time or not scheduled for today
+ [5:35:40 PM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+ [5:35:40 PM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-10, isToday: false
+ [5:35:40 PM] Hours: Task "tas3" has no scheduled time or not scheduled for today
+ [5:35:40 PM] Hours: Examining task "Send Pics to Traudi" - revisitDate: 2025-07-07T00:00:00.000Z, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "Send Pics to Traudi" date comparison - taskDate: 2025-07-07, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "Send Pics to Traudi" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "exercise" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "exercise" date comparison - taskDate: 2025-06-30, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "exercise" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "test july 8th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "test july 8th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "test july 8th" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "stretch/yoga" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+script.js:33 [5:35:40 PM] Hours: Task "stretch/yoga" date comparison - taskDate: 2025-06-30, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "stretch/yoga" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "test: july 15" - revisitDate: 2025-07-10T00:00:00.000Z, scheduledTime: 10:00:00
+script.js:33 [5:35:40 PM] Hours: Task "test: july 15" date comparison - taskDate: 2025-07-10, today: 2025-07-10, isToday: true
+script.js:33 [5:35:40 PM] Hours: Task "test: july 15" has scheduled time: 10:00:00
+script.js:33 [5:35:40 PM] Hours: Created hours task - start: 10:00, duration: 60min (from estimate: 0.00min → 60min)
+script.js:3198 🔧 RENDER: Starting to render task hours-task-5
+script.js:3204 ✅ RENDER: Container found, proceeding with task rendering
+script.js:33 [5:35:40 PM] Hours: Successfully added database task: "test: july 15" at 10:00
+script.js:33 [5:35:40 PM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-10T00:00:00.000Z, scheduledTime: 14:00:00
+script.js:33 [5:35:40 PM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-10, today: 2025-07-10, isToday: true
+script.js:33 [5:35:40 PM] Hours: Task "Fix Broken Sprinkler" has scheduled time: 14:00:00
+script.js:33 [5:35:40 PM] Hours: Created hours task - start: 14:00, duration: 15min (from estimate: 15.00min → 15min)
+script.js:33 [5:35:40 PM] Hours: Task "Fix Broken Sprinkler" overlaps with existing task, skipped
+script.js:33 [5:35:40 PM] Hours: Examining task "test: july 11th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "test: july 11th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "test: july 11th" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "Read Book2" - revisitDate: null, scheduledTime: 09:00:00
+script.js:33 [5:35:40 PM] Hours: Task "Read Book2" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "test: july 10th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "test: july 10th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "test: july 10th" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "test: july 9th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "test: july 9th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "test: july 9th" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "test: aug 5th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "test: aug 5th" date comparison - taskDate: 2025-07-09, today: 2025-07-10, isToday: false
+script.js:33 [5:35:40 PM] Hours: Task "test: aug 5th" has no scheduled time or not scheduled for today
+script.js:33 [5:35:40 PM] Hours: Examining task "shower" - revisitDate: null, scheduledTime: null
+script.js:33 [5:35:40 PM] Hours: Task "shower" has no scheduled time or not scheduled for today
+script.js:2892 Hours panel: Added 2 tasks from database for today
+script.js:33 [5:35:40 PM] Hours: Successfully added 2 database tasks with scheduled times
+script.js:33 [5:35:40 PM] Hours: Summary - processed 15 actual tasks, added 2 with scheduled times
+script.js:1006 ✅ REAL-TIME SAVE: Changes saved successfully
+script.js:2994 Current time line updated: 17:37
+script.js:2994 Current time line updated: 17:42
+script.js:2994 Current time line updated: 17:47
+script.js:2994 Current time line updated: 17:52

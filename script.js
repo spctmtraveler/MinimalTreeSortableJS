@@ -3228,8 +3228,10 @@ function renderHoursTask(task) {
   
   container.appendChild(taskBlock);
   
+  console.log('🔧 RENDER: About to setup task interactions for', task.id);
   // Setup task interactions
   setupTaskInteractions(taskBlock, task);
+  console.log('🔧 RENDER: Task rendering complete for', task.id);
   
   return taskBlock;
 }
