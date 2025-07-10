@@ -3238,10 +3238,13 @@ function renderHoursTask(task) {
 
 // Setup interactions for a task block
 function setupTaskInteractions(taskBlock, task) {
+  console.log('🔧 SETUP: Starting interaction setup for task', task.id);
   const titleSpan = taskBlock.querySelector('.task-title');
   const editBtn = taskBlock.querySelector('.edit-btn');
   const deleteBtn = taskBlock.querySelector('.delete-btn');
   const resizeHandle = taskBlock.querySelector('.resize-handle');
+  
+  console.log('🔧 SETUP: Found elements - title:', !!titleSpan, 'edit:', !!editBtn, 'delete:', !!deleteBtn, 'resize:', !!resizeHandle);
   
   // Inline rename on double-click title
   titleSpan.addEventListener('dblclick', (e) => {
