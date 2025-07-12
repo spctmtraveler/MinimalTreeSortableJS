@@ -1380,6 +1380,7 @@ function handleFilterChange() {
           switch (filterValue) {
             case 'today':
               shouldShow = taskDateOnly.getTime() === today.getTime();
+              console.log(`🔍 TODAY FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, today: ${today.toDateString()}, match: ${shouldShow}`);
               break;
             case 'tomorrow':
               shouldShow = taskDateOnly.getTime() === tomorrow.getTime();
