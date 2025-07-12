@@ -7,6 +7,16 @@
 // ---------------------------------------------------
 
 console.log('🚀 SCRIPT START: Main script.js is loading...');
+window.addEventListener('error', (e) => {
+  console.error('❌ SCRIPT ERROR:', e.error, e.filename, e.lineno);
+});
+
+// Test if basic execution works
+try {
+  console.log('🧪 BASIC TEST: Script executing normally');
+} catch (e) {
+  console.error('❌ BASIC TEST FAILED:', e);
+}
 
 // Global debug variables
 let debug = true;
