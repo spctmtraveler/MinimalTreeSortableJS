@@ -2870,7 +2870,12 @@ async function addSampleHoursTasks() {
             debugLogger(`Hours: Created hours task - start: ${hours}:${minutes.toString().padStart(2, '0')}, duration: ${durationMinutes}min (from estimate: ${task.time_estimate}min → ${timeEstimate}min)`);
             
             // Check for overlaps before adding
-            if (!checkTaskOverlap(hoursTask)) {
+            console.log('🔍 OVERLAP CHECK: About to check overlap for task', hoursTask.id);
+            const hasOverlap = checkTaskOverlap(hoursTask);
+            console.log('🔍 OVERLAP RESULT:', hasOverlap ? 'HAS OVERLAP' : 'NO OVERLAP');
+            
+            if (!hasOverlap) {
+              console.log('✅ NO OVERLAP: Adding task to hoursData.tasks');
               hoursData.tasks.push(hoursTask);
               console.log('🚀 ABOUT TO RENDER: Task', hoursTask.id, 'with data:', hoursTask);
               console.log('🚀 ABOUT TO RENDER: Container exists?', !!document.getElementById('task-blocks-container'));
@@ -2878,6 +2883,7 @@ async function addSampleHoursTasks() {
               addedCount++;
               debugLogger(`Hours: Successfully added database task: "${task.content}" at ${hours}:${minutes.toString().padStart(2, '0')}`);
             } else {
+              console.log('❌ HAS OVERLAP: Skipping task due to overlap');
               debugLogger(`Hours: Task "${task.content}" overlaps with existing task, skipped`);
             }
           } else {
