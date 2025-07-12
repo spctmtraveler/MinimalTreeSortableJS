@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUN Task Filter Flow Diagram</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #ddd;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00CEF7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .flow-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .flow-table th {
+            background: #333;
+            color: #00CEF7;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #444;
+        }
+        .flow-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #444;
+            vertical-align: top;
+        }
+        .flow-table tr:nth-child(even) {
+            background: #252525;
+        }
+        .flow-table tr:hover {
+            background: #333;
+            transition: background 0.2s;
+        }
+        .step-action {
+            font-weight: bold;
+            color: #0f8;
+            font-size: 14px;
+        }
+        .step-description {
+            color: #ccc;
+            font-size: 13px;
+        }
+        .step-code {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #f0f0f0;
+            border-left: 3px solid #00CEF7;
+        }
+        .step-data {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #ffa500;
+            border-left: 3px solid #ffa500;
+            max-width: 300px;
+            overflow-x: auto;
+        }
+        .issue-highlight {
+            background: #3d1a1a !important;
+            border-left: 4px solid #ff4444;
+        }
+        .issue-indicator {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        .success-highlight {
+            background: #1a3d1a !important;
+            border-left: 4px solid #44ff44;
+        }
+        .legend {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .legend h3 {
+            color: #00CEF7;
+            margin-top: 0;
+        }
+        .legend-item {
+            display: inline-block;
+            margin: 5px 15px 5px 0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .legend-normal { background: #333; }
+        .legend-issue { background: #3d1a1a; border-left: 4px solid #ff4444; }
+        .legend-success { background: #1a3d1a; border-left: 4px solid #44ff44; }
+        
+        .debug-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border-left: 4px solid #00CEF7;
+        }
+        .debug-section h3 {
+            color: #00CEF7;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .highlight-issue { color: #ff4444; font-weight: bold; }
+        .highlight-success { color: #44ff44; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 DUN Task Filter Flow Diagram</h1>
+        
+        <div class="legend">
+            <h3>Legend</h3>
+            <span class="legend-item legend-normal">Normal Flow</span>
+            <span class="legend-item legend-issue">Potential Issue</span>
+            <span class="legend-item legend-success">Working Correctly</span>
+        </div>
+
+        <table class="flow-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Action</th>
+                    <th style="width: 25%;">Description</th>
+                    <th style="width: 35%;">Code Responsible</th>
+                    <th style="width: 25%;">Data State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="success-highlight">
+                    <td class="step-action">User Changes</td>
+                    <td class="step-description">User selects a different option in the filter dropdown menu</td>
+                    <td class="step-code">HTML: &lt;select id="filter-dropdown"&gt;<br/>JavaScript: addEventListener('change', handleFilterChange)</td>
+                    <td class="step-data">filterValue = "today" | "all" | "triage" | etc.</td>
+                </tr>
+                
+                <tr class="success-highlight">
+                    <td class="step-action">Event Triggers</td>
+                    <td class="step-description">The 'change' event fires and calls the handleFilterChange function</td>
+                    <td class="step-code">script.js line ~1185:<br/>filterDropdown.addEventListener('change', handleFilterChange);</td>
+                    <td class="step-data">Event object: { target: { value: "today" } }</td>
+                </tr>
+                
+                <tr class="success-highlight">
+                    <td class="step-action">Read Filter</td>
+                    <td class="step-description">Function reads the selected filter value from the dropdown</td>
+                    <td class="step-code">const filterValue = filterDropdown.value;<br/>console.log(`🔍 FILTER: Selected filter value = "${filterValue}"`);</td>
+                    <td class="step-data">filterValue = "today"</td>
+                </tr>
+                
+                <tr class="success-highlight">
+                    <td class="step-action">Calculate Dates</td>
+                    <td class="step-description">Function calculates today's date and other date ranges for comparison</td>
+                    <td class="step-code">const now = new Date();<br/>const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());</td>
+                    <td class="step-data">today = Date object: "2025-07-12T00:00:00.000Z"<br/>todayStr = "2025-07-12"</td>
+                </tr>
+                
+                <tr class="issue-highlight">
+                    <td class="step-action"><span class="issue-indicator">Find Tasks</span></td>
+                    <td class="step-description">Function searches for all task items in the DOM to filter them</td>
+                    <td class="step-code">const allTaskItems = document.querySelectorAll('.task-item');<br/>console.log(`📋 FILTER: Found ${allTaskItems.length} task items`);</td>
+                    <td class="step-data"><span class="issue-indicator">allTaskItems.length = 0</span><br/>(This is the problem!)</td>
+                </tr>
+                
+                <tr class="issue-highlight">
+                    <td class="step-action"><span class="issue-indicator">Process Each</span></td>
+                    <td class="step-description">Function loops through each task to apply filter logic</td>
+                    <td class="step-code">allTaskItems.forEach(taskItem => {<br/>  // Filter logic here<br/>});</td>
+                    <td class="step-data"><span class="issue-indicator">Loop executes 0 times</span><br/>No tasks processed</td>
+                </tr>
+                
+                <tr class="issue-highlight">
+                    <td class="step-action"><span class="issue-indicator">Check Sections</span></td>
+                    <td class="step-description">Function identifies section headers and always shows them</td>
+                    <td class="step-code">if (taskItem.classList.contains('section-header')) {<br/>  taskItem.style.display = '';<br/>}</td>
+                    <td class="step-data"><span class="issue-indicator">No sections found</span><br/>Section headers not processed</td>
+                </tr>
+                
+                <tr class="issue-highlight">
+                    <td class="step-action"><span class="issue-indicator">Parse Data</span></td>
+                    <td class="step-description">Function extracts task data from DOM element's dataset</td>
+                    <td class="step-code">const taskData = JSON.parse(taskItem.dataset.taskData || '{}');<br/>console.log(`📊 PARSED: "${taskData.content}"`);</td>
+                    <td class="step-data"><span class="issue-indicator">No parsing occurs</span><br/>taskData objects not created</td>
+                </tr>
+                
+                <tr class="issue-highlight">
+                    <td class="step-action"><span class="issue-indicator">Apply Logic</span></td>
+                    <td class="step-description">Function applies filter-specific logic to determine task visibility</td>
+                    <td class="step-code">if (filterValue === 'today') {<br/>  const taskDateStr = taskData.revisitDate.split('T')[0];<br/>  shouldShow = taskDateStr === todayStr;<br/>}</td>
+                    <td class="step-data"><span class="issue-indicator">No logic applied</span><br/>shouldShow values not set</td>
+                </tr>
+                
+                <tr class="issue-highlight">
+                    <td class="step-action"><span class="issue-indicator">Set Visibility</span></td>
+                    <td class="step-description">Function shows or hides task elements based on filter logic</td>
+                    <td class="step-code">taskItem.style.display = shouldShow ? '' : 'none';<br/>if (shouldShow) shownCount++;</td>
+                    <td class="step-data"><span class="issue-indicator">No elements modified</span><br/>shownCount = 0, hiddenCount = 0</td>
+                </tr>
+                
+                <tr class="issue-highlight">
+                    <td class="step-action"><span class="issue-indicator">Log Results</span></td>
+                    <td class="step-description">Function logs the final count of shown vs hidden tasks</td>
+                    <td class="step-code">console.log(`🏁 FILTER COMPLETE: ${shownCount} shown, ${hiddenCount} hidden`);</td>
+                    <td class="step-data"><span class="issue-indicator">Output: "0 shown, 0 hidden"</span><br/>Indicates no tasks were processed</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="debug-section">
+            <h3>🐛 Root Cause Analysis</h3>
+            <p>Based on the console logs, the filter function executes but finds <strong>0 task elements</strong>:</p>
+            <div class="code-block">
+                <span class="highlight-issue">"📋 WORKING FILTER: Found 0 task elements"</span>
+            </div>
+            
+            <p><strong>Possible Causes:</strong></p>
+            <ol>
+                <li><strong>Timing Issue:</strong> Filter runs before DOM is fully built</li>
+                <li><strong>CSS Class Issue:</strong> Tasks don't have '.task-item' class</li>
+                <li><strong>DOM Structure Issue:</strong> Tasks are in different container than expected</li>
+                <li><strong>Script Loading Issue:</strong> Filter function runs before buildTree() completes</li>
+            </ol>
+        </div>
+
+        <div class="debug-section">
+            <h3>🔧 Debugging Steps</h3>
+            <p>To diagnose the issue, add this debug code to your browser console:</p>
+            <div class="code-block">
+// Check if task elements exist with different selectors
+console.log('Direct .task-item count:', document.querySelectorAll('.task-item').length);
+console.log('All divs with task in class:', document.querySelectorAll('[class*="task"]').length);
+console.log('Elements in task-tree:', document.querySelector('#task-tree')?.children.length);
+console.log('Task tree HTML:', document.querySelector('#task-tree')?.innerHTML.substring(0, 500));
+
+// Check timing of buildTree vs filter
+setTimeout(() => {
+    console.log('After delay - .task-item count:', document.querySelectorAll('.task-item').length);
+}, 1000);
+            </div>
+        </div>
+
+        <div class="debug-section">
+            <h3>✅ Expected Successful Flow</h3>
+            <p>When working correctly, you should see logs like:</p>
+            <div class="code-block">
+<span class="highlight-success">"📋 FILTER: Found 15 task items in DOM"</span>
+<span class="highlight-success">"📁 SECTION: Found section header"</span>
+<span class="highlight-success">"📊 PARSED: 'Remove Milan's Bidet' - revisitDate: 2025-07-12"</span>
+<span class="highlight-success">"✅ SHOW: 'Remove Milan's Bidet' will be visible"</span>
+<span class="highlight-success">"🏁 FILTER COMPLETE: 8 shown, 7 hidden"</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
