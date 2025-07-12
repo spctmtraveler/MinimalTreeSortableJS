@@ -6,6 +6,8 @@
 // 4. Persist new tasks under TRIAGE (not as siblings) via db.addTask()
 // ---------------------------------------------------
 
+console.log('🚀 SCRIPT START: Main script.js is loading...');
+
 // Global debug variables
 let debug = true;
 let debugLog = [];
@@ -2200,6 +2202,7 @@ function toggleDailyView(btn) {
 
 /* ---------- UI Init ----------- */
 function initUI() {
+  console.log('🚀 INIT UI: Starting UI initialization...');
   document.getElementById('toggle-priority')?.addEventListener('click', ()=>{
     togglePriorityFlags();
   });
@@ -2574,6 +2577,7 @@ function createRootSortable(list) {
 
 /* ---------- Initialize Application ----------- */
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log('🚀 DOM READY: DOMContentLoaded event fired, starting application...');
   initUI();
   const root = document.getElementById('task-tree');
   root.innerHTML = '';  // clear any previous
@@ -2673,6 +2677,15 @@ function initDebugModal() {
     } else {
       modal.style.display = 'block';
       debugLogger('Debug modal opened via gear icon click');
+      
+      // Auto-copy logs immediately when modal opens
+      setTimeout(() => {
+        const copyBtn = document.getElementById('copy-logs-btn');
+        if (copyBtn) {
+          copyBtn.click();
+          console.log('📋 AUTO-COPY: Logs copied automatically on modal open');
+        }
+      }, 100);
       
       // Update checkboxes with current states
       const debugCheckbox = document.getElementById('debug-toggle-checkbox');
