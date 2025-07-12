@@ -2872,6 +2872,8 @@ async function addSampleHoursTasks() {
             // Check for overlaps before adding
             if (!checkTaskOverlap(hoursTask)) {
               hoursData.tasks.push(hoursTask);
+              console.log('🚀 ABOUT TO RENDER: Task', hoursTask.id, 'with data:', hoursTask);
+              console.log('🚀 ABOUT TO RENDER: Container exists?', !!document.getElementById('task-blocks-container'));
               renderHoursTask(hoursTask);
               addedCount++;
               debugLogger(`Hours: Successfully added database task: "${task.content}" at ${hours}:${minutes.toString().padStart(2, '0')}`);
@@ -2907,6 +2909,8 @@ async function addSampleHoursTasks() {
       };
       
       hoursData.tasks.push(task);
+      console.log('🚀 DEMO RENDER: About to render demo task', task.id, 'with data:', task);
+      console.log('🚀 DEMO RENDER: Container exists?', !!document.getElementById('task-blocks-container'));
       renderHoursTask(task);
       
       debugLogger('Hours: Added single demo task at 5:00 PM');
