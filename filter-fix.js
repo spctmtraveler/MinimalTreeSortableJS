@@ -1,16 +1,23 @@
 // EMERGENCY FILTER FIX - Standalone working filter
 console.log('🚨 FILTER FIX: Loading emergency filter solution...');
 
-// Wait for page to load, then fix the filter
-window.addEventListener('load', () => {
-  console.log('🚨 FILTER FIX: Page loaded, setting up working filter...');
+// Immediate test to confirm script is loading
+window.filterFixLoaded = true;
+console.log('🧪 MANUAL TEST: Adding filter test button to page');
+
+// Multiple ways to ensure filter loads
+function initFilterFix() {
+  console.log('🚨 FILTER FIX: Initializing filter fix...');
   
-  // Find the filter dropdown
+  // Check if elements exist yet
   const filterDropdown = document.getElementById('filter-dropdown');
   if (!filterDropdown) {
-    console.error('❌ FILTER FIX: Cannot find filter dropdown');
+    console.log('🚨 FILTER FIX: Elements not ready, retrying in 100ms...');
+    setTimeout(initFilterFix, 100);
     return;
   }
+  
+  console.log('🚨 FILTER FIX: Elements found, setting up working filter...');
   
   console.log('✅ FILTER FIX: Found filter dropdown, attaching listener...');
   
@@ -129,16 +136,36 @@ window.addEventListener('load', () => {
       // Add or remove CSS class to show dates persistently
       if (isEnabled) {
         document.body.classList.add('show-dates-always');
+        console.log('📅 DATE DISPLAY: Added show-dates-always class to body');
       } else {
         document.body.classList.remove('show-dates-always');
+        console.log('📅 DATE DISPLAY: Removed show-dates-always class from body');
       }
     });
     console.log('✅ FILTER FIX: Date display toggle attached');
+    
+    // Test the toggle immediately if checked
+    if (showDatesToggle.checked) {
+      document.body.classList.add('show-dates-always');
+      console.log('📅 DATE DISPLAY: Initial state - showing dates persistently');
+    }
+  } else {
+    console.error('❌ FILTER FIX: Could not find show-dates-toggle-checkbox');
   }
   
   // Test it immediately
   console.log('🧪 FILTER FIX: Testing filter function...');
   workingFilter();
-});
+}
+
+// Try multiple loading strategies
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFilterFix);
+} else {
+  initFilterFix();
+}
+
+window.addEventListener('load', initFilterFix);
+setTimeout(initFilterFix, 1000); // Fallback
 
 console.log('🚨 FILTER FIX: Script loaded successfully');
