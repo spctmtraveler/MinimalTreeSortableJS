@@ -1240,6 +1240,8 @@ function showToast(title, message, actionText, actionCallback) {
 
 /* ---------- Filter Tasks ----------- */
 function handleFilterChange() {
+  console.log('🚀 FILTER START: handleFilterChange() function called');
+  
   const filterDropdown = document.getElementById('filter-dropdown');
   if (!filterDropdown) {
     console.log('❌ FILTER ERROR: filter-dropdown element not found!');
@@ -1247,10 +1249,11 @@ function handleFilterChange() {
   }
   
   const filterValue = filterDropdown.value;
-  console.log(`🔍 FILTER: Function called! Applying filter "${filterValue}"`);
+  console.log(`🔍 FILTER: Selected filter value = "${filterValue}"`);
   
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  console.log(`📅 FILTER: Today's date = ${today.toISOString().split('T')[0]} (${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')})`);
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
   
@@ -1278,15 +1281,33 @@ function handleFilterChange() {
     This Week: ${weekStart.toDateString()} → ${weekEnd.toDateString()}
     This Month: ${monthStart.toDateString()} → ${monthEnd.toDateString()}`);
 
-  document.querySelectorAll('.task-item').forEach(taskItem => {
+  const allTaskItems = document.querySelectorAll('.task-item');
+  console.log(`📋 FILTER: Found ${allTaskItems.length} task items in DOM`);
+  
+  let processedCount = 0;
+  let shownCount = 0;
+  let hiddenCount = 0;
+  let sectionCount = 0;
+  
+  allTaskItems.forEach(taskItem => {
+    processedCount++;
+    console.log(`\n--- PROCESSING TASK ${processedCount}/${allTaskItems.length} ---`);
+    
     if (taskItem.classList.contains('section-header')) {
       // Always show section headers
       taskItem.style.display = '';
+      sectionCount++;
+      shownCount++;
+      console.log(`📁 SECTION: Found section header - always visible`);
       return;
     }
     
     let shouldShow = false;
-    const taskData = JSON.parse(taskItem.dataset.taskData || '{}');
+    const rawTaskData = taskItem.dataset.taskData || '{}';
+    console.log(`📄 RAW DATA: ${rawTaskData}`);
+    
+    const taskData = JSON.parse(rawTaskData);
+    console.log(`📊 PARSED TASK: "${taskData.content}" - ID: ${taskData.id}, revisitDate: ${taskData.revisitDate}, parent: ${taskData.parent_id}`);
     
     if (filterValue === 'all') {
       shouldShow = true;
@@ -1408,10 +1429,19 @@ function handleFilterChange() {
       }
     }
     
+    // Apply visibility and count results
     taskItem.style.display = shouldShow ? '' : 'none';
+    if (shouldShow) {
+      shownCount++;
+      console.log(`✅ SHOW: "${taskData.content}" will be visible`);
+    } else {
+      hiddenCount++;
+      console.log(`❌ HIDE: "${taskData.content}" will be hidden`);
+    }
   });
   
-  console.log(`🔍 FILTER: Applied "${filterValue}" filter with corrected Triage logic`);
+  console.log(`\n🏁 FILTER COMPLETE: "${filterValue}" filter applied`);
+  console.log(`📊 SUMMARY: ${processedCount} total, ${sectionCount} sections, ${shownCount} shown, ${hiddenCount} hidden`);
 }
 
 /* ---------- Sort by Priority ----------- */
