@@ -1240,8 +1240,14 @@ function showToast(title, message, actionText, actionCallback) {
 
 /* ---------- Filter Tasks ----------- */
 function handleFilterChange() {
-  const filterValue = document.getElementById('filter-dropdown').value;
-  console.log(`🔍 FILTER: Applying filter "${filterValue}"`);
+  const filterDropdown = document.getElementById('filter-dropdown');
+  if (!filterDropdown) {
+    console.log('❌ FILTER ERROR: filter-dropdown element not found!');
+    return;
+  }
+  
+  const filterValue = filterDropdown.value;
+  console.log(`🔍 FILTER: Function called! Applying filter "${filterValue}"`);
   
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -2183,7 +2189,13 @@ function initUI() {
   });
 
   // Filter dropdown functionality
-  document.getElementById('filter-dropdown')?.addEventListener('change', handleFilterChange);
+  const filterDropdown = document.getElementById('filter-dropdown');
+  if (filterDropdown) {
+    filterDropdown.addEventListener('change', handleFilterChange);
+    console.log('✅ SETUP: Filter dropdown event listener attached successfully');
+  } else {
+    console.log('❌ SETUP ERROR: filter-dropdown element not found during initUI');
+  }
 
   // Add view toggle functionality for all toggle buttons
   document.querySelectorAll('.view-toggle-btn').forEach(btn => {
