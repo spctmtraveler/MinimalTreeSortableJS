@@ -1203,6 +1203,12 @@ body > .sortable-drag {
   transition: none !important;
 }
 
+/* Alternative persistent date display using body data attribute */
+body[data-show-dates="true"] .task-date-container {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
 /* Task truncation at 240px */
 .task-text {
   max-width: 240px;
