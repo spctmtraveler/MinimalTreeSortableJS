@@ -62,25 +62,39 @@ window.addEventListener('load', () => {
         shouldShow = true;
         console.log(`✅ ALL FILTER: Showing all tasks`);
       } else if (filterValue === 'today') {
-        // Show if revisitDate matches today
+        // Show ONLY if revisitDate matches today (strict filter)
         if (taskData.revisitDate) {
           const taskDateStr = taskData.revisitDate.split('T')[0]; // Extract date part
           shouldShow = taskDateStr === todayStr;
           console.log(`🔍 TODAY CHECK: taskDate "${taskDateStr}" vs today "${todayStr}" = ${shouldShow}`);
         } else {
-          // Show tasks with no revisit date (need attention)
-          shouldShow = true;
-          console.log(`🔍 TODAY CHECK: No revisit date, showing for attention`);
+          // Do NOT show tasks with no revisit date in Today filter
+          shouldShow = false;
+          console.log(`🔍 TODAY CHECK: No revisit date, NOT showing in Today filter`);
         }
       } else if (filterValue === 'triage') {
-        // Always show Triage section tasks
+        // Show ALL tasks that need attention:
+        // 1. Tasks physically in Triage section
+        // 2. Tasks with past dates that aren't completed
+        // 3. Tasks with no revisit date at all
         if (taskData.parent_id === 'section-triage') {
           shouldShow = true;
           console.log(`✅ TRIAGE: Task in Triage section`);
+        } else if (!taskData.revisitDate) {
+          // Tasks with no revisit date need attention
+          shouldShow = true;
+          console.log(`✅ TRIAGE: No revisit date, needs scheduling`);
+        } else if (!taskData.completed) {
+          // Check if revisit date is in the past
+          const taskDateStr = taskData.revisitDate.split('T')[0];
+          const taskDate = new Date(taskDateStr);
+          const today = new Date(todayStr);
+          const isPastDue = taskDate < today;
+          shouldShow = isPastDue;
+          console.log(`🔍 TRIAGE: Task "${taskData.content}" date ${taskDateStr} vs today ${todayStr}, pastDue = ${isPastDue}`);
         } else {
-          // Show tasks needing attention
-          shouldShow = !taskData.revisitDate || !taskData.completed;
-          console.log(`🔍 TRIAGE CHECK: needsAttention = ${shouldShow}`);
+          shouldShow = false;
+          console.log(`🔍 TRIAGE: Task completed, not showing`);
         }
       } else {
         shouldShow = true; // Default show for other filters
@@ -104,6 +118,23 @@ window.addEventListener('load', () => {
   // Attach the working filter
   filterDropdown.addEventListener('change', workingFilter);
   console.log('✅ FILTER FIX: Event listener attached successfully');
+  
+  // Setup persistent date display toggle
+  const showDatesToggle = document.getElementById('show-dates-toggle-checkbox');
+  if (showDatesToggle) {
+    showDatesToggle.addEventListener('change', () => {
+      const isEnabled = showDatesToggle.checked;
+      console.log(`📅 DATE DISPLAY: ${isEnabled ? 'Enabling' : 'Disabling'} persistent date display`);
+      
+      // Add or remove CSS class to show dates persistently
+      if (isEnabled) {
+        document.body.classList.add('show-dates-always');
+      } else {
+        document.body.classList.remove('show-dates-always');
+      }
+    });
+    console.log('✅ FILTER FIX: Date display toggle attached');
+  }
   
   // Test it immediately
   console.log('🧪 FILTER FIX: Testing filter function...');

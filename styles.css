@@ -1197,6 +1197,12 @@ body > .sortable-drag {
   transition: opacity 1s ease-out;
 }
 
+/* Show dates persistently when debug toggle is enabled */
+.show-dates-always .task-date-container {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
 /* Task truncation at 240px */
 .task-text {
   max-width: 240px;
