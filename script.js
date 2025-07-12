@@ -3229,6 +3229,7 @@ function renderHoursTask(task) {
   container.appendChild(taskBlock);
   
   console.log('🔧 RENDER: About to setup task interactions for', task.id);
+  console.log('🔧 RENDER: TaskBlock HTML before setup:', taskBlock.outerHTML);
   // Setup task interactions
   setupTaskInteractions(taskBlock, task);
   console.log('🔧 RENDER: Task rendering complete for', task.id);
@@ -3246,11 +3247,27 @@ function setupTaskInteractions(taskBlock, task) {
   
   console.log('🔧 SETUP: Found elements - title:', !!titleSpan, 'edit:', !!editBtn, 'delete:', !!deleteBtn, 'resize:', !!resizeHandle);
   
+  // TEST: Add simple click listener to verify events work
+  if (titleSpan) {
+    titleSpan.addEventListener('click', (e) => {
+      console.log('🟢 CLICK TEST: Title span clicked successfully for task', task.id);
+    });
+  }
+  
+  if (taskBlock) {
+    taskBlock.addEventListener('click', (e) => {
+      console.log('🟢 CLICK TEST: Task block clicked successfully for task', task.id);
+    });
+  }
+  
   // Inline rename on double-click title
-  titleSpan.addEventListener('dblclick', (e) => {
-    e.stopPropagation();
-    startInlineEdit(titleSpan, task);
-  });
+  if (titleSpan) {
+    titleSpan.addEventListener('dblclick', (e) => {
+      console.log('🎯 TITLE: Double-click detected on title span for task', task.id);
+      e.stopPropagation();
+      startInlineEdit(titleSpan, task);
+    });
+  }
   
   // Modal edit on double-click block (but not title)
   taskBlock.addEventListener('dblclick', (e) => {
