@@ -1294,6 +1294,13 @@ function handleFilterChange() {
     This Month: ${monthStart.toDateString()} → ${monthEnd.toDateString()}`);
 
   const allTaskItems = document.querySelectorAll('.task-item');
+
+//
+//
+//
+  debugger; // This will pause execution here when Developer Tools is open
+
+  
   console.log(`📋 FILTER: Found ${allTaskItems.length} task items in DOM`);
   
   let processedCount = 0;

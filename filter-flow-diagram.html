@@ -283,5 +283,19 @@ setTimeout(() => {
             </div>
         </div>
     </div>
+
+    <div>
+        <button id="dump-dom-btn">Dump DOM</button>
+        <div id="dom-viewer" style="white-space: pre-wrap; background: #f0f0f0; padding: 10px; border: 1px solid #ccc;"></div>
+    </div>
+
+    <script>
+        document.getElementById('dump-dom-btn').addEventListener('click', () => {
+            const domStructure = document.documentElement.outerHTML; // Get the full DOM structure
+            document.getElementById('dom-viewer').innerText = domStructure; // Display in the viewer div
+        });
+    </script>
+
+    
 </body>
 </html>
