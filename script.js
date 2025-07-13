@@ -1250,13 +1250,121 @@ function showToast(title, message, actionText, actionCallback) {
   }
 }
 
+/* ---------- DOM Debug Dump Function ----------- */
+function DOM_dump(context = 'Filter Debug') {
+  try {
+    // Capture comprehensive DOM debug information
+    const debugInfo = {
+      timestamp: new Date().toISOString(),
+      context: context,
+      url: window.location.href,
+      
+      // Task tree container information
+      taskTreeElement: {
+        exists: !!document.getElementById('task-tree'),
+        innerHTML: document.getElementById('task-tree')?.innerHTML || 'NOT FOUND',
+        childElementCount: document.getElementById('task-tree')?.childElementCount || 0
+      },
+      
+      // Task items query results
+      taskItems: {
+        byClass: document.querySelectorAll('.task-item').length,
+        byDataAttribute: document.querySelectorAll('[data-task-id]').length,
+        byListElements: document.querySelectorAll('.task-list').length,
+        allTaskElements: Array.from(document.querySelectorAll('.task-item')).map(el => ({
+          id: el.dataset.id || el.dataset.taskId,
+          className: el.className,
+          textContent: el.textContent.trim().substring(0, 50),
+          display: el.style.display,
+          visible: el.offsetParent !== null
+        }))
+      },
+      
+      // Filter dropdown state
+      filterDropdown: {
+        exists: !!document.getElementById('filter-dropdown'),
+        value: document.getElementById('filter-dropdown')?.value,
+        options: Array.from(document.getElementById('filter-dropdown')?.options || []).map(opt => opt.value)
+      },
+      
+      // Document readiness
+      documentState: {
+        readyState: document.readyState,
+        bodyExists: !!document.body,
+        headExists: !!document.head
+      },
+      
+      // Sample of actual DOM structure
+      taskTreeHTML: document.getElementById('task-tree')?.outerHTML?.substring(0, 2000) || 'TASK TREE NOT FOUND'
+    };
+    
+    // Format for clipboard
+    const clipboardContent = `
+=== DOM DEBUG DUMP ===
+Context: ${debugInfo.context}
+Timestamp: ${debugInfo.timestamp}
+URL: ${debugInfo.url}
+
+TASK ELEMENTS FOUND:
+- .task-item elements: ${debugInfo.taskItems.byClass}
+- [data-task-id] elements: ${debugInfo.taskItems.byDataAttribute}  
+- .task-list elements: ${debugInfo.taskItems.byListElements}
+
+TASK TREE CONTAINER:
+- Exists: ${debugInfo.taskTreeElement.exists}
+- Child elements: ${debugInfo.taskTreeElement.childElementCount}
+
+FILTER DROPDOWN:
+- Exists: ${debugInfo.filterDropdown.exists}
+- Current value: ${debugInfo.filterDropdown.value}
+- Available options: ${debugInfo.filterDropdown.options.join(', ')}
+
+DOCUMENT STATE:
+- Ready state: ${debugInfo.documentState.readyState}
+- Body exists: ${debugInfo.documentState.bodyExists}
+
+FOUND TASK ELEMENTS DETAILS:
+${debugInfo.taskItems.allTaskElements.map(task => 
+  `- ID: ${task.id}, Class: ${task.className}, Text: "${task.textContent}", Display: ${task.display}, Visible: ${task.visible}`
+).join('\n')}
+
+TASK TREE HTML SAMPLE (first 2000 chars):
+${debugInfo.taskTreeHTML}
+
+=== END DEBUG DUMP ===
+    `;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(clipboardContent).then(() => {
+      showToast('DOM Debug', `${context} - DOM structure copied to clipboard`, 'View Log', () => {
+        console.log('📋 FULL DOM DUMP:', debugInfo);
+      });
+      console.log('📋 DOM DUMP: Copied to clipboard for context:', context);
+    }).catch(err => {
+      console.error('📋 DOM DUMP: Failed to copy to clipboard:', err);
+      showToast('DOM Debug Error', 'Failed to copy DOM dump to clipboard');
+    });
+    
+    return debugInfo;
+    
+  } catch (error) {
+    console.error('📋 DOM DUMP ERROR:', error);
+    showToast('DOM Debug Error', 'Error generating DOM dump');
+    return null;
+  }
+}
+
 /* ---------- Filter Tasks ----------- */
 function handleFilterChange() {
   console.log('🚀 FILTER START: handleFilterChange() function called');
   
+  // CAPTURE DOM STATE BEFORE FILTER PROCESSING
+  DOM_dump('Before Filter Processing');
+  
   const filterDropdown = document.getElementById('filter-dropdown');
   if (!filterDropdown) {
     console.log('❌ FILTER ERROR: filter-dropdown element not found!');
+    DOM_dump('Filter Dropdown Not Found');
     return;
   }
   
@@ -1295,6 +1403,8 @@ function handleFilterChange() {
 
   const allTaskItems = document.querySelectorAll('.task-item');
 
+  // CAPTURE DOM STATE AT CRITICAL MOMENT
+  DOM_dump('Critical Filter Moment - Task Query Results');
 //
 //
 //
@@ -1461,6 +1571,9 @@ function handleFilterChange() {
   
   console.log(`\n🏁 FILTER COMPLETE: "${filterValue}" filter applied`);
   console.log(`📊 SUMMARY: ${processedCount} total, ${sectionCount} sections, ${shownCount} shown, ${hiddenCount} hidden`);
+  
+  // CAPTURE DOM STATE AFTER FILTER PROCESSING
+  DOM_dump('After Filter Processing Complete');
 }
 
 /* ---------- Sort by Priority ----------- */
@@ -2611,6 +2724,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     buildTree(tasksToUse, root);
     const rootList = root.querySelector(':scope > .task-list');
     if (rootList) createRootSortable(rootList);
+    
+    // CAPTURE DOM STATE AFTER TREE IS BUILT
+    DOM_dump('After BuildTree Complete - Database Tasks');
   } catch (error) {
     console.error('Error initializing application:', error);
     // Fallback to sample tasks if database fails
@@ -2618,6 +2734,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     buildTree(sampleTasks, root);
     const rootList = root.querySelector(':scope > .task-list');
     if (rootList) createRootSortable(rootList);
+    
+    // CAPTURE DOM STATE AFTER FALLBACK TREE IS BUILT
+    DOM_dump('After BuildTree Complete - Sample Tasks Fallback');
   }
 
   if (debug) console.log('Application initialized');
