@@ -171,12 +171,84 @@ function setupEmergencyDropdown() {
   console.log('✅ EMERGENCY DROPDOWN: Override complete');
 }
 
+// Debug Hours Panel Structure
+function debugHoursPanel() {
+  console.log('🕐 DEBUG: Checking Hours panel structure...');
+  
+  const hoursColumn = document.querySelector('.hours-column');
+  const hoursTimeline = document.getElementById('hours-timeline');
+  const hourGrid = document.getElementById('hour-grid');
+  const taskBlocksContainer = document.getElementById('task-blocks-container');
+  
+  console.log('🕐 Hours Column exists:', !!hoursColumn);
+  console.log('🕐 Hours Timeline exists:', !!hoursTimeline);
+  console.log('🕐 Hour Grid exists:', !!hourGrid);
+  console.log('🕐 Task Blocks Container exists:', !!taskBlocksContainer);
+  
+  if (hourGrid) {
+    console.log('🕐 Hour Grid children count:', hourGrid.children.length);
+    console.log('🕐 Hour Grid innerHTML length:', hourGrid.innerHTML.length);
+  }
+  
+  if (hoursTimeline) {
+    console.log('🕐 Timeline computed style display:', getComputedStyle(hoursTimeline).display);
+    console.log('🕐 Timeline computed style position:', getComputedStyle(hoursTimeline).position);
+    console.log('🕐 Timeline computed style height:', getComputedStyle(hoursTimeline).minHeight);
+  }
+  
+  // Force generate hour grid if empty
+  if (hourGrid && hourGrid.children.length === 0) {
+    console.log('🕐 FORCE: Hour grid is empty, manually generating...');
+    
+    // Create 48 half-hour slots (24 hours * 2)
+    for (let i = 0; i < 48; i++) {
+      const hour = Math.floor(i / 2);
+      const isHalfHour = i % 2 === 1;
+      const position = i * 30; // 30px per half hour
+      
+      // Create hour line
+      const hourLine = document.createElement('div');
+      hourLine.className = isHalfHour ? 'hour-line half-hour' : 'hour-line';
+      hourLine.style.position = 'absolute';
+      hourLine.style.top = position + 'px';
+      hourLine.style.left = '0';
+      hourLine.style.width = '100%';
+      hourLine.style.height = '1px';
+      hourLine.style.background = isHalfHour ? '#2a2a2a' : '#333333';
+      hourLine.style.zIndex = '1';
+      hourGrid.appendChild(hourLine);
+      
+      // Add hour label for full hours only
+      if (!isHalfHour) {
+        const hourLabel = document.createElement('div');
+        hourLabel.className = hour >= 12 ? 'hour-label pm' : 'hour-label';
+        hourLabel.style.position = 'absolute';
+        hourLabel.style.top = position + 'px';
+        hourLabel.style.left = '-50px';
+        hourLabel.style.width = '45px';
+        hourLabel.style.textAlign = 'right';
+        hourLabel.style.fontSize = '0.875rem';
+        hourLabel.style.color = '#dddddd';
+        hourLabel.style.zIndex = '2';
+        
+        let displayHour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+        hourLabel.textContent = displayHour;
+        
+        hourGrid.appendChild(hourLabel);
+      }
+    }
+    
+    console.log('✅ FORCE: Hour grid manually generated with', hourGrid.children.length, 'elements');
+  }
+}
+
 // Start all emergency fixes
 setTimeout(() => {
   console.log('🚨 EMERGENCY: Starting all fixes...');
   emergencyFilter();
   emergencyDateDisplay();
   setupEmergencyDropdown();
+  debugHoursPanel();
 }, 1000);
 
 // Backup attempts

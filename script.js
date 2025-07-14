@@ -2741,8 +2741,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (debug) console.log('Application initialized');
   
-  // Initialize Hours Panel
-  initHoursPanel();
+  // Initialize Hours Panel with error handling
+  try {
+    console.log('🕐 INIT: Starting Hours Panel initialization...');
+    initHoursPanel();
+    console.log('✅ INIT: Hours Panel initialization completed');
+  } catch (error) {
+    console.error('❌ INIT: Hours Panel initialization failed:', error);
+  }
   
   // Set initial layout width
   updateLayoutWidth();
@@ -3115,19 +3121,35 @@ let hoursData = {
 
 // Initialize Hours Panel
 function initHoursPanel() {
-  generateHourGrid();
-  initCurrentTimeLine();
-  initLimitLines();
-  setupHoursEventListeners();
-  updateRemainingTimes();
+  console.log('🕐 INIT: initHoursPanel() called');
   
-  // Update remaining times every minute
-  setInterval(updateRemainingTimes, 60 * 1000);
-  
-  // Add sample tasks to demonstrate functionality
-  addSampleHoursTasks();
-  
-  if (debug) console.log('Hours panel initialized');
+  try {
+    console.log('🕐 INIT: Calling generateHourGrid()...');
+    generateHourGrid();
+    
+    console.log('🕐 INIT: Calling initCurrentTimeLine()...');
+    initCurrentTimeLine();
+    
+    console.log('🕐 INIT: Calling initLimitLines()...');
+    initLimitLines();
+    
+    console.log('🕐 INIT: Calling setupHoursEventListeners()...');
+    setupHoursEventListeners();
+    
+    console.log('🕐 INIT: Calling updateRemainingTimes()...');
+    updateRemainingTimes();
+    
+    // Update remaining times every minute
+    setInterval(updateRemainingTimes, 60 * 1000);
+    
+    // Add sample tasks to demonstrate functionality
+    console.log('🕐 INIT: Calling addSampleHoursTasks()...');
+    addSampleHoursTasks();
+    
+    console.log('✅ HOURS: Panel initialization completed successfully');
+  } catch (error) {
+    console.error('❌ HOURS: Panel initialization failed:', error);
+  }
 }
 
 // Load tasks from database for today's date with scheduled times
