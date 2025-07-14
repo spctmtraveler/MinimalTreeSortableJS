@@ -1,0 +1,220 @@
+🚀 SCRIPT START: Main script.js is loading...
+script.js:16 🧪 BASIC TEST: Script executing normally
+emergency-fix.js:2 🚨 EMERGENCY FIX: Loading immediate solutions...
+emergency-fix.js:6 🚨 Today is: 2025-07-14
+emergency-fix.js:259 🚨 EMERGENCY FIX: Script loaded
+script.js:2710 🚀 DOM READY: DOMContentLoaded event fired, starting application...
+script.js:2335 🚀 INIT UI: Starting UI initialization...
+script.js:2356 🔍 SETUP: Looking for filter dropdown... <select id=​"filter-dropdown">​…​</select>​
+script.js:2359 🔍 SETUP: Filter dropdown found, current value: all
+script.js:2361 ✅ SETUP: Filter dropdown event listener attached successfully
+script.js:2364 🧪 SETUP: Testing filter function directly...
+script.js:1359 🚀 FILTER START: handleFilterChange() function called
+script.js:1372 🔍 FILTER: Selected filter value = "all"
+script.js:1376 📅 FILTER: Today's date = 2025-07-14 (2025-07-14)
+script.js:1399 📅 DATE RANGES:
+    Today: Mon Jul 14 2025
+    This Week: Mon Jul 14 2025 → Sun Jul 20 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+script.js:1414 📋 FILTER: Found 0 task items in DOM
+script.js:1572 
+🏁 FILTER COMPLETE: "all" filter applied
+script.js:1573 📊 SUMMARY: 0 total, 0 sections, 0 shown, 0 hidden
+script.js:2367 ✅ SETUP: Filter function executed successfully during setup
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1362:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1407:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1576:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:58 Tasks loaded from database
+script.js:2718 Using tasks from database
+script.js:2742 Application initialized
+script.js:2746 🕐 INIT: Starting Hours Panel initialization...
+script.js:3124 🕐 INIT: initHoursPanel() called
+script.js:3127 🕐 INIT: Calling generateHourGrid()...
+script.js:3332 🕐 GRID: Generating hour grid...
+script.js:3360 ✅ GRID: Hour grid generated successfully with 48 slots
+script.js:3130 🕐 INIT: Calling initCurrentTimeLine()...
+script.js:3384 Current time line updated: 17:49
+script.js:3133 🕐 INIT: Calling initLimitLines()...
+script.js:3136 🕐 INIT: Calling setupHoursEventListeners()...
+script.js:3139 🕐 INIT: Calling updateRemainingTimes()...
+script.js:3146 🕐 INIT: Calling addSampleHoursTasks()...
+script.js:45 [5:49:31 PM] Hours: Starting task loading from database...
+script.js:3149 ✅ HOURS: Panel initialization completed successfully
+script.js:2748 ✅ INIT: Hours Panel initialization completed
+script.js:45 [5:49:31 PM] Debug modal initialized successfully
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2729:5)
+(anonymous) @ script.js:1344
+emergency-fix.js:247 🚨 EMERGENCY: Starting all fixes...
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 16 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 16 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+emergency-fix.js:176 🕐 DEBUG: Checking Hours panel structure...
+emergency-fix.js:183 🕐 Hours Column exists: true
+emergency-fix.js:184 🕐 Hours Timeline exists: true
+emergency-fix.js:185 🕐 Hour Grid exists: true
+emergency-fix.js:186 🕐 Task Blocks Container exists: true
+emergency-fix.js:189 🕐 Hour Grid children count: 72
+emergency-fix.js:190 🕐 Hour Grid innerHTML length: 3871
+emergency-fix.js:194 🕐 Timeline computed style display: block
+emergency-fix.js:195 🕐 Timeline computed style position: static
+emergency-fix.js:196 🕐 Timeline computed style height: 0px
+script.js:45 [5:49:31 PM] Hours: Raw API response received
+script.js:45 [5:49:31 PM] Hours: API returned 16 total records
+script.js:45 [5:49:31 PM] Hours: First task structure: {"id":"task-1751345947265","content":"Fix Broken Sprinkler","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-13T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"time_estimate":"45.00","overview":"","details":"","scheduled_time":"14:00:00"}
+script.js:45 [5:49:31 PM] Hours: Found 12 actual tasks (excluding 4 section headers)
+script.js:45 [5:49:31 PM] Hours: Sample actual task: {"id":"task-1751345947265","content":"Fix Broken Sprinkler","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-13T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"time_estimate":"45.00","overview":"","details":"","scheduled_time":"14:00:00"}
+script.js:45 [5:49:31 PM] Hours: Today's date for comparison: 2025-07-14
+script.js:45 [5:49:31 PM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: 14:00:00
+script.js:45 [5:49:31 PM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-13, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "Fix Broken Sprinkler" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "Remove Milan's Bidet" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 14:00:00
+script.js:45 [5:49:31 PM] Hours: Task "Remove Milan's Bidet" date comparison - taskDate: 2025-07-14, today: 2025-07-14, isToday: true
+script.js:45 [5:49:31 PM] Hours: Task "Remove Milan's Bidet" has scheduled time: 14:00:00
+script.js:45 [5:49:31 PM] Hours: Created hours task - start: 14:00, duration: 30min (from estimate: 30.00min → 30min)
+script.js:3247 🔍 OVERLAP CHECK: About to check overlap for task hours-task-1
+script.js:3249 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3252 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3254 🚀 ABOUT TO RENDER: Task hours-task-1 with data: Object
+script.js:3255 🚀 ABOUT TO RENDER: Container exists? true
+script.js:3588 🔧 RENDER: Starting to render task hours-task-1
+script.js:3594 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3621 🔧 RENDER: About to setup task interactions for hours-task-1
+script.js:3622 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-1" style="top: 840px; height: 30px;">
+    <span class="task-title">Remove Milan's Bidet</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3632 🔧 SETUP: Starting interaction setup for task hours-task-1
+script.js:3638 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3625 🔧 RENDER: Task rendering complete for hours-task-1
+script.js:45 [5:49:31 PM] Hours: Successfully added database task: "Remove Milan's Bidet" at 14:00
+script.js:45 [5:49:31 PM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+script.js:45 [5:49:31 PM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "tas3" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "test: aug 5th" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: null
+script.js:45 [5:49:31 PM] Hours: Task "test: aug 5th" date comparison - taskDate: 2025-07-13, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "test: aug 5th" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "test: july 15" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 16:00:00
+script.js:45 [5:49:31 PM] Hours: Task "test: july 15" date comparison - taskDate: 2025-07-14, today: 2025-07-14, isToday: true
+script.js:45 [5:49:31 PM] Hours: Task "test: july 15" has scheduled time: 16:00:00
+script.js:45 [5:49:31 PM] Hours: Created hours task - start: 16:00, duration: 60min (from estimate: 0.00min → 60min)
+script.js:3247 🔍 OVERLAP CHECK: About to check overlap for task hours-task-2
+script.js:3249 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3252 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3254 🚀 ABOUT TO RENDER: Task hours-task-2 with data: Object
+script.js:3255 🚀 ABOUT TO RENDER: Container exists? true
+script.js:3588 🔧 RENDER: Starting to render task hours-task-2
+script.js:3594 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3621 🔧 RENDER: About to setup task interactions for hours-task-2
+script.js:3622 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-2" style="top: 960px; height: 60px;">
+    <span class="task-title">test: july 15</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3632 🔧 SETUP: Starting interaction setup for task hours-task-2
+script.js:3638 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3625 🔧 RENDER: Task rendering complete for hours-task-2
+script.js:45 [5:49:31 PM] Hours: Successfully added database task: "test: july 15" at 16:00
+script.js:45 [5:49:31 PM] Hours: Examining task "stretch/yoga" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+script.js:45 [5:49:31 PM] Hours: Task "stretch/yoga" date comparison - taskDate: 2025-06-30, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "stretch/yoga" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "test: july 9th" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 13:00:00
+script.js:45 [5:49:31 PM] Hours: Task "test: july 9th" date comparison - taskDate: 2025-07-14, today: 2025-07-14, isToday: true
+script.js:45 [5:49:31 PM] Hours: Task "test: july 9th" has scheduled time: 13:00:00
+script.js:45 [5:49:31 PM] Hours: Created hours task - start: 13:00, duration: 45min (from estimate: 45.00min → 45min)
+script.js:3247 🔍 OVERLAP CHECK: About to check overlap for task hours-task-3
+script.js:3249 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3252 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3254 🚀 ABOUT TO RENDER: Task hours-task-3 with data: Object
+script.js:3255 🚀 ABOUT TO RENDER: Container exists? true
+script.js:3588 🔧 RENDER: Starting to render task hours-task-3
+script.js:3594 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3621 🔧 RENDER: About to setup task interactions for hours-task-3
+script.js:3622 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-3" style="top: 780px; height: 45px;">
+    <span class="task-title">test: july 9th</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3632 🔧 SETUP: Starting interaction setup for task hours-task-3
+script.js:3638 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3625 🔧 RENDER: Task rendering complete for hours-task-3
+script.js:45 [5:49:31 PM] Hours: Successfully added database task: "test: july 9th" at 13:00
+script.js:45 [5:49:31 PM] Hours: Examining task "shower" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: null
+script.js:45 [5:49:31 PM] Hours: Task "shower" date comparison - taskDate: 2025-08-04, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "shower" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "test: july 10th" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: 11:00:00
+script.js:45 [5:49:31 PM] Hours: Task "test: july 10th" date comparison - taskDate: 2025-08-04, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "test: july 10th" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "test: july 11th" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: null
+script.js:45 [5:49:31 PM] Hours: Task "test: july 11th" date comparison - taskDate: 2025-08-04, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "test: july 11th" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "test july 8th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:45 [5:49:31 PM] Hours: Task "test july 8th" date comparison - taskDate: 2025-07-09, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "test july 8th" has no scheduled time or not scheduled for today
+script.js:45 [5:49:31 PM] Hours: Examining task "Read Book2" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: 09:00:00
+script.js:45 [5:49:31 PM] Hours: Task "Read Book2" date comparison - taskDate: 2025-07-13, today: 2025-07-14, isToday: false
+script.js:45 [5:49:31 PM] Hours: Task "Read Book2" has no scheduled time or not scheduled for today
+script.js:3274 Hours panel: Added 3 tasks from database for today
+script.js:45 [5:49:31 PM] Hours: Successfully added 3 database tasks with scheduled times
+script.js:45 [5:49:31 PM] Hours: Summary - processed 12 actual tasks, added 3 with scheduled times
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 16 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 16 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+script.js:2767 🧪 MANUAL TEST: Adding filter test button to page
+script.js:45 [5:50:00 PM] Debug modal opened via gear icon click
+script.js:45 [5:50:03 PM] Debug modal closed via gear icon click
+script.js:45 [5:50:05 PM] Debug modal opened via gear icon click
+script.js:45 [5:50:05 PM] Debug modal closed via gear icon click
+script.js:45 [5:50:06 PM] Debug modal opened via gear icon click
