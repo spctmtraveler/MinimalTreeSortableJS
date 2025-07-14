@@ -114,6 +114,65 @@
         .legend-issue { background: #3d1a1a; border-left: 4px solid #ff4444; }
         .legend-success { background: #1a3d1a; border-left: 4px solid #44ff44; }
         
+        .view-controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .view-btn, .copy-btn {
+            background: #333;
+            color: #00CEF7;
+            border: 2px solid #444;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .view-btn:hover, .copy-btn:hover {
+            background: #444;
+            border-color: #00CEF7;
+        }
+        .view-btn.active {
+            background: #00CEF7;
+            color: #1a1a1a;
+            border-color: #00CEF7;
+        }
+        .copy-btn {
+            background: #2a5a2a;
+            border-color: #4a8a4a;
+        }
+        .copy-btn:hover {
+            background: #3a6a3a;
+            border-color: #5a9a5a;
+        }
+        
+        .markup-container {
+            display: none;
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .markup-content {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #f0f0f0;
+            white-space: pre-wrap;
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            background: #0a0a0a;
+            border-radius: 4px;
+        }
+        
         .debug-section {
             margin: 30px 0;
             padding: 20px;
@@ -142,14 +201,20 @@
     <div class="container">
         <h1>🔍 DUN Task Filter Flow Diagram</h1>
         
-        <div class="legend">
+        <div class="view-controls">
+            <button id="visual-view-btn" class="view-btn active">📊 Visual Table</button>
+            <button id="markup-view-btn" class="view-btn">📝 Markup/ASCII</button>
+            <button id="copy-markup-btn" class="copy-btn" style="display: none;">📋 Copy Markup</button>
+        </div>
+        
+        <div class="legend" id="visual-legend">
             <h3>Legend</h3>
             <span class="legend-item legend-normal">Normal Flow</span>
             <span class="legend-item legend-issue">Potential Issue</span>
             <span class="legend-item legend-success">Working Correctly</span>
         </div>
 
-        <table class="flow-table">
+        <table class="flow-table" id="visual-table">
             <thead>
                 <tr>
                     <th style="width: 15%;">Action</th>
@@ -238,6 +303,116 @@
             </tbody>
         </table>
 
+        <!-- Markup/ASCII Version -->
+        <div class="markup-container" id="markup-container">
+            <textarea class="markup-content" id="markup-content" readonly>
+# DUN Task Filter Flow Diagram - ASCII Version
+
+## Process Flow When User Changes Date Range Dropdown
+
+┌─────────────────┬──────────────────────────────────────┬─────────────────────────────────────────┬─────────────────────────────────────┐
+│ ACTION          │ DESCRIPTION                          │ CODE RESPONSIBLE                        │ DATA STATE                          │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ✅ User Changes │ User selects a different option in   │ HTML: <select id="filter-dropdown">    │ filterValue = "today" | "all" |     │
+│                 │ the filter dropdown menu            │ JavaScript: addEventListener('change',  │ "triage" | etc.                     │
+│                 │                                      │ handleFilterChange)                     │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ✅ Event        │ The 'change' event fires and calls  │ script.js line ~1185:                  │ Event object:                       │
+│ Triggers        │ the handleFilterChange function     │ filterDropdown.addEventListener(        │ { target: { value: "today" } }     │
+│                 │                                      │ 'change', handleFilterChange);         │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ✅ Read Filter  │ Function reads the selected filter  │ const filterValue = filterDropdown.    │ filterValue = "today"               │
+│                 │ value from the dropdown             │ value;                                  │                                     │
+│                 │                                      │ console.log(`🔍 FILTER: Selected       │                                     │
+│                 │                                      │ filter value = "${filterValue}"`);     │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ✅ Calculate    │ Function calculates today's date    │ const now = new Date();                │ today = Date object:                │
+│ Dates           │ and other date ranges for           │ const today = new Date(now.getFullYear │ "2025-07-12T00:00:00.000Z"         │
+│                 │ comparison                           │ (), now.getMonth(), now.getDate());    │ todayStr = "2025-07-12"             │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ❌ Find Tasks   │ Function searches for all task      │ const allTaskItems = document.          │ ❌ allTaskItems.length = 0          │
+│ **ISSUE**       │ items in the DOM to filter them     │ querySelectorAll('.task-item');        │ (This is the problem!)              │
+│                 │                                      │ console.log(`📋 FILTER: Found ${all    │                                     │
+│                 │                                      │ TaskItems.length} task items`);        │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ❌ Process Each │ Function loops through each task to  │ allTaskItems.forEach(taskItem => {     │ ❌ Loop executes 0 times            │
+│ **ISSUE**       │ apply filter logic                  │   // Filter logic here                 │ No tasks processed                  │
+│                 │                                      │ });                                     │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ❌ Check        │ Function identifies section headers  │ if (taskItem.classList.contains(       │ ❌ No sections found                │
+│ Sections        │ and always shows them               │ 'section-header')) {                   │ Section headers not processed       │
+│ **ISSUE**       │                                      │   taskItem.style.display = '';        │                                     │
+│                 │                                      │ }                                       │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ❌ Parse Data   │ Function extracts task data from    │ const taskData = JSON.parse(taskItem.  │ ❌ No parsing occurs                │
+│ **ISSUE**       │ DOM element's dataset               │ dataset.taskData || '{}');             │ taskData objects not created        │
+│                 │                                      │ console.log(`📊 PARSED: "${taskData.  │                                     │
+│                 │                                      │ content}"`);                            │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ❌ Apply Logic  │ Function applies filter-specific    │ if (filterValue === 'today') {         │ ❌ No logic applied                 │
+│ **ISSUE**       │ logic to determine task visibility  │   const taskDateStr = taskData.        │ shouldShow values not set           │
+│                 │                                      │   revisitDate.split('T')[0];           │                                     │
+│                 │                                      │   shouldShow = taskDateStr === today   │                                     │
+│                 │                                      │   Str;                                  │                                     │
+│                 │                                      │ }                                       │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ❌ Set          │ Function shows or hides task        │ taskItem.style.display = shouldShow ?  │ ❌ No elements modified             │
+│ Visibility      │ elements based on filter logic     │ '' : 'none';                           │ shownCount = 0, hiddenCount = 0     │
+│ **ISSUE**       │                                      │ if (shouldShow) shownCount++;          │                                     │
+├─────────────────┼──────────────────────────────────────┼─────────────────────────────────────────┼─────────────────────────────────────┤
+│ ❌ Log Results  │ Function logs the final count of    │ console.log(`🏁 FILTER COMPLETE:       │ ❌ Output: "0 shown, 0 hidden"     │
+│ **ISSUE**       │ shown vs hidden tasks               │ ${shownCount} shown, ${hiddenCount}    │ Indicates no tasks were processed   │
+│                 │                                      │ hidden`);                               │                                     │
+└─────────────────┴──────────────────────────────────────┴─────────────────────────────────────────┴─────────────────────────────────────┘
+
+## Root Cause Analysis
+
+Based on the console logs, the filter function executes but finds **0 task elements**:
+
+    "📋 WORKING FILTER: Found 0 task elements"
+
+**Possible Causes:**
+1. **Timing Issue:** Filter runs before DOM is fully built
+2. **CSS Class Issue:** Tasks don't have '.task-item' class  
+3. **DOM Structure Issue:** Tasks are in different container than expected
+4. **Script Loading Issue:** Filter function runs before buildTree() completes
+
+## Debugging Steps
+
+To diagnose the issue, add this debug code to your browser console:
+
+```javascript
+// Check if task elements exist with different selectors
+console.log('Direct .task-item count:', document.querySelectorAll('.task-item').length);
+console.log('All divs with task in class:', document.querySelectorAll('[class*="task"]').length);
+console.log('Elements in task-tree:', document.querySelector('#task-tree')?.children.length);
+console.log('Task tree HTML:', document.querySelector('#task-tree')?.innerHTML.substring(0, 500));
+
+// Check timing of buildTree vs filter
+setTimeout(() => {
+    console.log('After delay - .task-item count:', document.querySelectorAll('.task-item').length);
+}, 1000);
+```
+
+## Expected Successful Flow
+
+When working correctly, you should see logs like:
+
+    "📋 FILTER: Found 15 task items in DOM"
+    "📁 SECTION: Found section header"  
+    "📊 PARSED: 'Remove Milan's Bidet' - revisitDate: 2025-07-12"
+    "✅ SHOW: 'Remove Milan's Bidet' will be visible"
+    "🏁 FILTER COMPLETE: 8 shown, 7 hidden"
+
+## Legend
+- ✅ = Working Correctly  
+- ❌ = Potential Issue
+- 🔍 = Filter Process
+- 📋 = DOM Operations
+- 📊 = Data Processing
+            </textarea>
+        </div>
+
         <div class="debug-section">
             <h3>🐛 Root Cause Analysis</h3>
             <p>Based on the console logs, the filter function executes but finds <strong>0 task elements</strong>:</p>
@@ -290,6 +465,73 @@ setTimeout(() => {
     </div>
 
     <script>
+        // View switching functionality
+        const visualViewBtn = document.getElementById('visual-view-btn');
+        const markupViewBtn = document.getElementById('markup-view-btn');
+        const copyMarkupBtn = document.getElementById('copy-markup-btn');
+        const visualTable = document.getElementById('visual-table');
+        const visualLegend = document.getElementById('visual-legend');
+        const markupContainer = document.getElementById('markup-container');
+        
+        visualViewBtn.addEventListener('click', () => {
+            visualViewBtn.classList.add('active');
+            markupViewBtn.classList.remove('active');
+            visualTable.style.display = 'table';
+            visualLegend.style.display = 'block';
+            markupContainer.style.display = 'none';
+            copyMarkupBtn.style.display = 'none';
+            
+            // Hide all debug sections in visual mode
+            document.querySelectorAll('.debug-section').forEach(section => {
+                section.style.display = 'block';
+            });
+        });
+        
+        markupViewBtn.addEventListener('click', () => {
+            markupViewBtn.classList.add('active');
+            visualViewBtn.classList.remove('active');
+            visualTable.style.display = 'none';
+            visualLegend.style.display = 'none';
+            markupContainer.style.display = 'block';
+            copyMarkupBtn.style.display = 'inline-block';
+            
+            // Hide debug sections in markup mode for cleaner view
+            document.querySelectorAll('.debug-section').forEach(section => {
+                section.style.display = 'none';
+            });
+        });
+        
+        // Copy markup functionality
+        copyMarkupBtn.addEventListener('click', () => {
+            const markupContent = document.getElementById('markup-content');
+            markupContent.select();
+            markupContent.setSelectionRange(0, 99999); // For mobile devices
+            
+            navigator.clipboard.writeText(markupContent.value).then(() => {
+                // Show feedback
+                const originalText = copyMarkupBtn.textContent;
+                copyMarkupBtn.textContent = '✅ Copied!';
+                copyMarkupBtn.style.background = '#2a5a2a';
+                
+                setTimeout(() => {
+                    copyMarkupBtn.textContent = originalText;
+                    copyMarkupBtn.style.background = '#2a5a2a';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                // Fallback for older browsers
+                markupContent.select();
+                document.execCommand('copy');
+                
+                const originalText = copyMarkupBtn.textContent;
+                copyMarkupBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyMarkupBtn.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        // DOM dump functionality (existing)
         document.getElementById('dump-dom-btn').addEventListener('click', () => {
             const domStructure = document.documentElement.outerHTML; // Get the full DOM structure
             document.getElementById('dom-viewer').innerText = domStructure; // Display in the viewer div
