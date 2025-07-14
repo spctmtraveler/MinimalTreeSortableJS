@@ -1022,8 +1022,6 @@ body > .sortable-drag {
   display: flex;
   justify-content: flex-end;
   margin-top: 24px;
-}
-
 .modal-actions button {
   padding: 8px 16px;
   margin-left: 12px;
@@ -1622,4 +1620,114 @@ body.debug-borders-enabled .hours-column {
 
 body.debug-borders-enabled .task-priority-flags {
   border: 2px solid rgba(255, 255, 0, 0.5) !important;
+}
+
+/* Debug Modal Styles */
+.debug-modal-content {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+  max-height: 80vh;
+  overflow: hidden;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.debug-modal-content.dragging {
+  cursor: move;
+  user-select: none;
+}
+
+.debug-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.debug-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ddd;
+  font-size: 14px;
+}
+
+.debug-controls input[type="checkbox"] {
+  accent-color: var(--accent-color);
+}
+
+.debug-controls button {
+  padding: 8px 16px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.debug-controls button:hover {
+  background: #0056b3;
+}
+
+.debug-database-controls {
+  margin: 20px 0;
+  padding: 15px;
+  border: 2px solid #ff4444;
+  border-radius: 8px;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.debug-database-controls h4 {
+  color: #ff6666;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+}
+
+.debug-danger-btn {
+  padding: 10px 20px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.debug-danger-btn:hover {
+  background: #cc3333;
+}
+
+.debug-warning {
+  color: #ffaa00;
+  font-size: 12px;
+  margin: 10px 0 0 0;
+  font-style: italic;
+}
+
+.debug-log-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.debug-log {
+  background: #1a1a1a;
+  color: #ddd;
+  padding: 15px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid #444;
+  max-height: 350px;
+  overflow-y: auto;
 }

@@ -2894,6 +2894,126 @@ function initDebugModal() {
     });
   }
   
+  // Database reset button
+  const clearDatabaseBtn = document.getElementById('clear-database-btn');
+  if (clearDatabaseBtn) {
+    clearDatabaseBtn.addEventListener('click', async () => {
+      const confirmation = confirm(
+        '🚨 DANGER: Clear Database\n\n' +
+        'This will permanently delete ALL tasks from the database.\n' +
+        'This action cannot be undone!\n\n' +
+        'Are you absolutely sure you want to continue?'
+      );
+      
+      if (!confirmation) {
+        debugLogger('Database clear operation cancelled by user');
+        return;
+      }
+      
+      const doubleConfirmation = confirm(
+        '⚠️ FINAL WARNING\n\n' +
+        'You are about to delete ALL tasks permanently.\n' +
+        'Type "DELETE" and click OK to confirm this dangerous operation.'
+      );
+      
+      if (!doubleConfirmation) {
+        debugLogger('Database clear operation cancelled at final confirmation');
+        return;
+      }
+      
+      try {
+        clearDatabaseBtn.textContent = 'Clearing...';
+        clearDatabaseBtn.disabled = true;
+        
+        debugLogger('🚨 DATABASE CLEAR: User confirmed deletion, executing...');
+        
+        const response = await fetch('/api/reset-database', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to clear database: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        debugLogger('✅ DATABASE CLEAR: ' + result.message);
+        
+        // Refresh the application to show empty state
+        window.location.reload();
+        
+      } catch (error) {
+        console.error('❌ Database clear error:', error);
+        debugLogger('❌ DATABASE CLEAR ERROR: ' + error.message);
+        showToast('Error', 'Failed to clear database');
+        
+        clearDatabaseBtn.textContent = 'Clear Database';
+        clearDatabaseBtn.disabled = false;
+      }
+    });
+  }
+  
+  // Load test data button
+  const loadTestDataBtn = document.getElementById('load-test-data-btn');
+  if (loadTestDataBtn) {
+    loadTestDataBtn.addEventListener('click', async () => {
+      const confirmation = confirm(
+        '🧪 Load Test Data\n\n' +
+        'This will:\n' +
+        '• Delete ALL existing tasks\n' +
+        '• Load comprehensive test dataset\n' +
+        '• Create tasks for all time intervals\n' +
+        '• Add tasks with various priority combinations\n' +
+        '• Include nested tasks and sample data\n\n' +
+        'Continue?'
+      );
+      
+      if (!confirmation) {
+        debugLogger('Test data load operation cancelled by user');
+        return;
+      }
+      
+      try {
+        loadTestDataBtn.textContent = 'Loading...';
+        loadTestDataBtn.disabled = true;
+        
+        debugLogger('🧪 TEST DATA: User confirmed load, executing...');
+        
+        const response = await fetch('/api/load-test-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load test data: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        debugLogger('✅ TEST DATA LOADED: ' + result.message);
+        debugLogger(`📊 TEST DATA STATS: ${result.sectionsCount} sections, ${result.tasksCount} tasks`);
+        
+        showToast('Test Data Loaded', `${result.tasksCount} test tasks created across all time intervals`);
+        
+        // Refresh the application to show new test data
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        
+      } catch (error) {
+        console.error('❌ Test data load error:', error);
+        debugLogger('❌ TEST DATA ERROR: ' + error.message);
+        showToast('Error', 'Failed to load test data');
+        
+        loadTestDataBtn.textContent = 'Load Test Data';
+        loadTestDataBtn.disabled = false;
+      }
+    });
+  }
+  
   // Modal close functionality
   const closeBtn = modal.querySelector('.modal-close');
   if (closeBtn) {

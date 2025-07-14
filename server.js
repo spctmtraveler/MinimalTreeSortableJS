@@ -273,6 +273,122 @@ app.get('/debug/tasks', async (req, res) => {
   }
 });
 
+// Reset database endpoint (dangerous operation)
+app.post('/api/reset-database', async (req, res) => {
+  try {
+    console.log('🚨 DATABASE RESET: Clearing all tasks from database');
+    await pool.query('DELETE FROM tasks');
+    console.log('✅ DATABASE RESET: All tasks cleared successfully');
+    res.json({ message: 'Database cleared successfully' });
+  } catch (error) {
+    console.error('❌ DATABASE RESET ERROR:', error);
+    res.status(500).json({ error: 'Failed to clear database' });
+  }
+});
+
+// Load test data endpoint
+app.post('/api/load-test-data', async (req, res) => {
+  try {
+    console.log('🧪 TEST DATA: Loading comprehensive test dataset');
+    
+    // First clear existing data
+    await pool.query('DELETE FROM tasks');
+    console.log('🧪 TEST DATA: Cleared existing data');
+    
+    // Load test data from JSON file
+    const fs = require('fs');
+    const path = require('path');
+    const testDataPath = path.join(__dirname, 'test-data.json');
+    const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
+    
+    // Calculate dynamic dates
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    
+    // This week calculation (Monday-based)
+    const daysSinceMonday = (today.getDay() + 6) % 7;
+    const thisWeekDate = new Date(today);
+    thisWeekDate.setDate(today.getDate() - daysSinceMonday + 3); // Wednesday
+    
+    // Next week calculation
+    const nextWeekDate = new Date(thisWeekDate);
+    nextWeekDate.setDate(thisWeekDate.getDate() + 7);
+    
+    // This month calculation
+    const thisMonthDate = new Date(today.getFullYear(), today.getMonth(), 15);
+    
+    // Next month calculation
+    const nextMonthDate = new Date(today.getFullYear(), today.getMonth() + 1, 15);
+    
+    // Helper function to format dates
+    const formatDate = (date) => {
+      return date.toISOString().split('T')[0];
+    };
+    
+    // Process and insert sections first
+    console.log('🧪 TEST DATA: Inserting sections...');
+    for (const section of testData.sections) {
+      await pool.query(`
+        INSERT INTO tasks (
+          id, content, is_section, completed, parent_id, position_order,
+          revisit_date, fire, fast, flow, fear, first, time_estimate,
+          overview, details, scheduled_time
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+      `, [
+        section.id, section.content, section.is_section, section.completed,
+        section.parent_id, section.position_order, null, false, false, false,
+        false, false, 0, '', '', null
+      ]);
+    }
+    
+    // Process and insert tasks with dynamic dates
+    console.log('🧪 TEST DATA: Inserting tasks with dynamic dates...');
+    for (const task of testData.tasks) {
+      let revisitDate = task.revisit_date;
+      
+      // Replace date placeholders with actual dates
+      if (revisitDate === 'TODAY_PLACEHOLDER') {
+        revisitDate = formatDate(today);
+      } else if (revisitDate === 'TOMORROW_PLACEHOLDER') {
+        revisitDate = formatDate(tomorrow);
+      } else if (revisitDate === 'THIS_WEEK_PLACEHOLDER') {
+        revisitDate = formatDate(thisWeekDate);
+      } else if (revisitDate === 'NEXT_WEEK_PLACEHOLDER') {
+        revisitDate = formatDate(nextWeekDate);
+      } else if (revisitDate === 'THIS_MONTH_PLACEHOLDER') {
+        revisitDate = formatDate(thisMonthDate);
+      } else if (revisitDate === 'NEXT_MONTH_PLACEHOLDER') {
+        revisitDate = formatDate(nextMonthDate);
+      }
+      
+      await pool.query(`
+        INSERT INTO tasks (
+          id, content, is_section, completed, parent_id, position_order,
+          revisit_date, fire, fast, flow, fear, first, time_estimate,
+          overview, details, scheduled_time
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+      `, [
+        task.id, task.content, task.is_section, task.completed,
+        task.parent_id, task.position_order, revisitDate, task.fire,
+        task.fast, task.flow, task.fear, task.first, task.time_estimate,
+        task.overview, task.details, task.scheduled_time
+      ]);
+    }
+    
+    console.log('✅ TEST DATA: Comprehensive test dataset loaded successfully');
+    res.json({ 
+      message: 'Test data loaded successfully',
+      sectionsCount: testData.sections.length,
+      tasksCount: testData.tasks.length
+    });
+    
+  } catch (error) {
+    console.error('❌ TEST DATA ERROR:', error);
+    res.status(500).json({ error: 'Failed to load test data' });
+  }
+});
+
 // Simple table debug endpoint
 app.get('/debug/table', async (req, res) => {
   try {
