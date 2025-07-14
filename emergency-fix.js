@@ -7,11 +7,33 @@ console.log(`🚨 Today is: ${today}`);
 
 // Emergency filter function
 function emergencyFilter() {
-  const dropdown = document.getElementById('filter-dropdown');
+  let dropdown = document.getElementById('filter-dropdown');
   if (!dropdown) {
-    console.log('🚨 No dropdown found, retrying in 300ms...');
-    setTimeout(emergencyFilter, 300);
-    return;
+    console.log('🚨 CRITICAL: Dropdown missing from DOM! Recreating...');
+    
+    // Find the filter container and add dropdown if missing
+    const filterContainer = document.querySelector('.filter-container');
+    if (filterContainer) {
+      console.log('🚨 Found filter container, recreating dropdown...');
+      filterContainer.innerHTML = `
+        <select id="filter-dropdown">
+          <option value="all">All</option>
+          <option value="triage">Triage</option>
+          <option value="today">Today</option>
+          <option value="tomorrow">Tomorrow</option>
+          <option value="this-week">This Week</option>
+          <option value="next-week">Next Week</option>
+          <option value="this-month">This Month</option>
+          <option value="next-month">Next Month</option>
+        </select>
+      `;
+      dropdown = document.getElementById('filter-dropdown');
+      console.log('🚨 Dropdown recreated successfully');
+    } else {
+      console.log('🚨 No filter container found, retrying in 300ms...');
+      setTimeout(emergencyFilter, 300);
+      return;
+    }
   }
   
   const currentFilter = dropdown.value;
