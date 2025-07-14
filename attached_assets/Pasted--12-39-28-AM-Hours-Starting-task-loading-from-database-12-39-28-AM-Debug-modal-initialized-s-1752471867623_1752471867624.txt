@@ -1,0 +1,53 @@
+[12:39:28 AM] Hours: Starting task loading from database...
+[12:39:28 AM] Debug modal initialized successfully
+[12:39:29 AM] Hours: Raw API response received
+[12:39:29 AM] Hours: API returned 16 total records
+[12:39:29 AM] Hours: First task structure: {"id":"task-1751345947265","content":"Fix Broken Sprinkler","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-13T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"time_estimate":"45.00","overview":"","details":"","scheduled_time":"14:00:00"}
+[12:39:29 AM] Hours: Found 12 actual tasks (excluding 4 section headers)
+[12:39:29 AM] Hours: Sample actual task: {"id":"task-1751345947265","content":"Fix Broken Sprinkler","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-13T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"time_estimate":"45.00","overview":"","details":"","scheduled_time":"14:00:00"}
+[12:39:29 AM] Hours: Today's date for comparison: 2025-07-14
+[12:39:29 AM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: 14:00:00
+[12:39:29 AM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-13, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "Fix Broken Sprinkler" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "Remove Milan's Bidet" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 14:00:00
+[12:39:29 AM] Hours: Task "Remove Milan's Bidet" date comparison - taskDate: 2025-07-14, today: 2025-07-14, isToday: true
+[12:39:29 AM] Hours: Task "Remove Milan's Bidet" has scheduled time: 14:00:00
+[12:39:29 AM] Hours: Created hours task - start: 14:00, duration: 30min (from estimate: 30.00min → 30min)
+[12:39:29 AM] Hours: Successfully added database task: "Remove Milan's Bidet" at 14:00
+[12:39:29 AM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+[12:39:29 AM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "tas3" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "test: aug 5th" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: null
+[12:39:29 AM] Hours: Task "test: aug 5th" date comparison - taskDate: 2025-07-13, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "test: aug 5th" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "test: july 15" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 16:00:00
+[12:39:29 AM] Hours: Task "test: july 15" date comparison - taskDate: 2025-07-14, today: 2025-07-14, isToday: true
+[12:39:29 AM] Hours: Task "test: july 15" has scheduled time: 16:00:00
+[12:39:29 AM] Hours: Created hours task - start: 16:00, duration: 60min (from estimate: 0.00min → 60min)
+[12:39:29 AM] Hours: Successfully added database task: "test: july 15" at 16:00
+[12:39:29 AM] Hours: Examining task "stretch/yoga" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+[12:39:29 AM] Hours: Task "stretch/yoga" date comparison - taskDate: 2025-06-30, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "stretch/yoga" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "test: july 9th" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 13:00:00
+[12:39:29 AM] Hours: Task "test: july 9th" date comparison - taskDate: 2025-07-14, today: 2025-07-14, isToday: true
+[12:39:29 AM] Hours: Task "test: july 9th" has scheduled time: 13:00:00
+[12:39:29 AM] Hours: Created hours task - start: 13:00, duration: 45min (from estimate: 45.00min → 45min)
+[12:39:29 AM] Hours: Successfully added database task: "test: july 9th" at 13:00
+[12:39:29 AM] Hours: Examining task "shower" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: null
+[12:39:29 AM] Hours: Task "shower" date comparison - taskDate: 2025-08-04, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "shower" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "test: july 10th" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: 11:00:00
+[12:39:29 AM] Hours: Task "test: july 10th" date comparison - taskDate: 2025-08-04, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "test: july 10th" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "test: july 11th" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: null
+[12:39:29 AM] Hours: Task "test: july 11th" date comparison - taskDate: 2025-08-04, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "test: july 11th" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "test july 8th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+[12:39:29 AM] Hours: Task "test july 8th" date comparison - taskDate: 2025-07-09, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "test july 8th" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Examining task "Read Book2" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: 09:00:00
+[12:39:29 AM] Hours: Task "Read Book2" date comparison - taskDate: 2025-07-13, today: 2025-07-14, isToday: false
+[12:39:29 AM] Hours: Task "Read Book2" has no scheduled time or not scheduled for today
+[12:39:29 AM] Hours: Successfully added 3 database tasks with scheduled times
+[12:39:29 AM] Hours: Summary - processed 12 actual tasks, added 3 with scheduled times
+[12:43:41 AM] Debug modal opened via gear icon click

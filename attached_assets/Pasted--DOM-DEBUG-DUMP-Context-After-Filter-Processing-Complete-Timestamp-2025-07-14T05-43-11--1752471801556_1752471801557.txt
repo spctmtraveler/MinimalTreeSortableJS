@@ -1,0 +1,47 @@
+
+=== DOM DEBUG DUMP ===
+Context: After Filter Processing Complete
+Timestamp: 2025-07-14T05:43:11.081Z
+URL: https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/
+
+TASK ELEMENTS FOUND:
+- .task-item elements: 16
+- [data-task-id] elements: 19  
+- .task-list elements: 23
+
+TASK TREE CONTAINER:
+- Exists: true
+- Child elements: 1
+
+FILTER DROPDOWN:
+- Exists: true
+- Current value: tomorrow
+- Available options: all, triage, today, tomorrow, this-week, next-week, this-month, next-month
+
+DOCUMENT STATE:
+- Ready state: complete
+- Body exists: true
+
+FOUND TASK ELEMENTS DETAILS:
+- ID: section-triage, Class: task-item section-header, Text: "▾TRIAGE▸shower8/4▸test: july 11th8/4▸test july 8th", Display: , Visible: true
+- ID: task-1751898932316, Class: task-item, Text: "▸shower8/4", Display: none, Visible: false
+- ID: task-1751899084375, Class: task-item, Text: "▸test: july 11th8/4", Display: none, Visible: false
+- ID: task-1751899068493, Class: task-item task-completed, Text: "▸test july 8th7/9", Display: none, Visible: false
+- ID: task-c-1, Class: task-item task-completed, Text: "▾Read Book27/13▸tas37/3", Display: none, Visible: false
+- ID: task-1751079482305, Class: task-item, Text: "▸tas37/3", Display: none, Visible: false
+- ID: section-a, Class: task-item section-header, Text: "▾A▾Remove Milan's Bidettoday▸test: july 15today▸te", Display: , Visible: true
+- ID: task-1751096021427, Class: task-item, Text: "▾Remove Milan's Bidettoday▸test: july 15today", Display: none, Visible: false
+- ID: task-1751899090655, Class: task-item, Text: "▸test: july 15today", Display: none, Visible: false
+- ID: task-1751899074408, Class: task-item, Text: "▸test: july 9thtoday", Display: none, Visible: false
+- ID: section-b, Class: task-item section-header, Text: "▾B▸Fix Broken Sprinkler7/13▸test: aug 5th7/13", Display: , Visible: true
+- ID: task-1751345947265, Class: task-item, Text: "▸Fix Broken Sprinkler7/13", Display: none, Visible: false
+- ID: task-1751899158925, Class: task-item, Text: "▸test: aug 5th7/13", Display: none, Visible: false
+- ID: section-c, Class: task-item section-header, Text: "▾C▸stretch/yoga6/30▸test: july 10th8/4", Display: , Visible: true
+- ID: task-1751181136737, Class: task-item, Text: "▸stretch/yoga6/30", Display: none, Visible: false
+- ID: task-1751899079216, Class: task-item, Text: "▸test: july 10th8/4", Display: none, Visible: false
+
+TASK TREE HTML SAMPLE (first 2000 chars):
+<div id="task-tree"><ul class="task-list" data-is-root="true" data-sortable="1" data-root-list="1"><li class="task-item section-header" data-id="section-triage" data-task-data="{&quot;id&quot;:&quot;section-triage&quot;,&quot;content&quot;:&quot;TRIAGE&quot;,&quot;isSection&quot;:true,&quot;completed&quot;:false,&quot;children&quot;:[{&quot;id&quot;:&quot;task-1751898932316&quot;,&quot;content&quot;:&quot;shower&quot;,&quot;isSection&quot;:false,&quot;completed&quot;:false,&quot;children&quot;:[],&quot;revisitDate&quot;:&quot;2025-08-04T00:00:00.000Z&quot;,&quot;fire&quot;:true,&quot;fast&quot;:true,&quot;flow&quot;:true,&quot;fear&quot;:true,&quot;first&quot;:true,&quot;timeEstimate&quot;:0,&quot;overview&quot;:&quot;&quot;,&quot;details&quot;:&quot;&quot;,&quot;scheduledTime&quot;:null},{&quot;id&quot;:&quot;task-1751899084375&quot;,&quot;content&quot;:&quot;test: july 11th&quot;,&quot;isSection&quot;:false,&quot;completed&quot;:false,&quot;children&quot;:[],&quot;revisitDate&quot;:&quot;2025-08-04T00:00:00.000Z&quot;,&quot;fire&quot;:false,&quot;fast&quot;:false,&quot;flow&quot;:false,&quot;fear&quot;:false,&quot;first&quot;:false,&quot;timeEstimate&quot;:0,&quot;overview&quot;:&quot;&quot;,&quot;details&quot;:&quot;&quot;,&quot;scheduledTime&quot;:null},{&quot;id&quot;:&quot;task-1751899068493&quot;,&quot;content&quot;:&quot;test july 8th&quot;,&quot;isSection&quot;:false,&quot;completed&quot;:true,&quot;children&quot;:[],&quot;revisitDate&quot;:&quot;2025-07-09T00:00:00.000Z&quot;,&quot;fire&quot;:false,&quot;fast&quot;:false,&quot;flow&quot;:false,&quot;fear&quot;:false,&quot;first&quot;:false,&quot;timeEstimate&quot;:0,&quot;overview&quot;:&quot;&quot;,&quot;details&quot;:&quot;&quot;,&quot;scheduledTime&quot;:null},{&quot;id&quot;:&quot;task-c-1&quot;,&quot;content&quot;:&quot;Read Book2&quot;,&quot;isSection&quot;:false,&quot;completed&quot;:true,&quot;children&quot;:[{&quot;id&quot;:&quot;task-1751079482305&quot;,&quot;content&quot;:&quot;tas3&quot;,&quot;
+
+=== END DEBUG DUMP ===
+    
