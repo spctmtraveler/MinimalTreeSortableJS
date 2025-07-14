@@ -3302,8 +3302,12 @@ function refreshHoursPanel() {
 // Generate 24-hour grid with labels and lines
 function generateHourGrid() {
   const hourGrid = document.getElementById('hour-grid');
-  if (!hourGrid) return;
+  if (!hourGrid) {
+    console.log('🕐 GRID ERROR: hour-grid element not found!');
+    return;
+  }
   
+  console.log('🕐 GRID: Generating hour grid...');
   hourGrid.innerHTML = '';
   
   // Create 48 half-hour slots (24 hours * 2)
@@ -3330,6 +3334,8 @@ function generateHourGrid() {
       hourGrid.appendChild(hourLabel);
     }
   }
+  
+  console.log('✅ GRID: Hour grid generated successfully with 48 slots');
 }
 
 // Initialize current time line with auto-update

@@ -283,14 +283,14 @@ button, input, select, textarea {
 
 
 .hours-column {
-  width: 225px;
-  min-width: 225px;
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  min-height: 300px;
-  transition: all 0.3s ease;
+  width: 225px !important;
+  min-width: 225px !important;
+  margin-left: 20px !important;
+  display: block !important;
+  position: relative !important;
+  min-height: 1500px !important;
+  transition: all 0.3s ease !important;
+  overflow: visible !important;
   /*border: 1px solid rgba(128, 0, 128, 0.3);  DEBUG: Purple border */
 }
 
@@ -1227,11 +1227,13 @@ body[data-show-dates="true"] .task-date-container {
 
 /* Hours Timeline Container */
 .hours-timeline {
-  position: relative;
-  width: 100%;
-  min-height: 1440px; /* 24 hours * 60px per hour */
-  background: transparent;
-  padding-top: 20px;
+  position: relative !important;
+  width: 100% !important;
+  min-height: 1440px !important; /* 24 hours * 60px per hour */
+  background: transparent !important;
+  padding-top: 20px !important;
+  display: block !important;
+  overflow: visible !important;
 }
 
 /* Hour Grid */
