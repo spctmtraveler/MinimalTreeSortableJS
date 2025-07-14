@@ -11,10 +11,13 @@ if (savedDateState === 'true') {
 
 // Setup toggle when page loads
 function initDateToggle() {
+  // Wait for debug modal elements
+  const debugModal = document.getElementById('debug-modal');
   const showDatesToggle = document.getElementById('show-dates-toggle-checkbox');
-  if (!showDatesToggle) {
-    console.log('📅 DATE FIX: Toggle not found, retrying in 100ms...');
-    setTimeout(initDateToggle, 100);
+  
+  if (!debugModal || !showDatesToggle) {
+    console.log('📅 DATE FIX: Elements not ready, retrying in 200ms...');
+    setTimeout(initDateToggle, 200);
     return;
   }
   
