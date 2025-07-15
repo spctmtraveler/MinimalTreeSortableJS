@@ -3367,7 +3367,7 @@ function generateHourGrid() {
     hourGrid.appendChild(hourLabel);
   }
   
-  console.log('✅ GRID: Hour grid generated successfully with 48 slots');
+  console.log('✅ GRID: Hour grid generated successfully with 24 hours');
 }
 
 // Initialize current time line with auto-update
@@ -3610,8 +3610,18 @@ function renderHoursTask(task) {
   const position = (task.startMinutes / 60) * 60; // 60px per hour
   const height = (task.durationMinutes / 60) * 60; // 60px per hour
   
+  console.log('🎯 POSITION CALC: Task', task.id, 'startMinutes:', task.startMinutes, 'position:', position + 'px');
+  console.log('🎯 HEIGHT CALC: Task', task.id, 'durationMinutes:', task.durationMinutes, 'height:', height + 'px');
+  
+  taskBlock.style.position = 'absolute';
   taskBlock.style.top = position + 'px';
   taskBlock.style.height = height + 'px';
+  taskBlock.style.left = '10px';
+  taskBlock.style.right = '10px';
+  taskBlock.style.background = '#00CEF7';
+  taskBlock.style.color = 'white';
+  taskBlock.style.borderRadius = '4px';
+  taskBlock.style.zIndex = '10';
   
   taskBlock.innerHTML = `
     <span class="task-title">${task.title}</span>
