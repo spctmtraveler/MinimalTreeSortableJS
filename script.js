@@ -3221,6 +3221,8 @@ async function addSampleHoursTasks() {
           const hours = parseInt(timeParts[0], 10);
           const minutes = parseInt(timeParts[1], 10);
           
+          console.log('⏰ TIME PARSE: Task', task.content, 'scheduled at', hours + ':' + minutes.toString().padStart(2, '0'));
+          
           if (!isNaN(hours) && !isNaN(minutes)) {
             const startMinutes = hours * 60 + minutes;
             // Parse time_estimate from database - all values are in minutes
@@ -3400,12 +3402,14 @@ function initLimitLines() {
   const sleepLine = document.getElementById('sleep-line');
   
   if (stopLine) {
-    positionLimitLine(stopLine, hoursData.limitLines.stop.position);
+    const stopPosition = 18 * 60; // 6:00 PM = 18 * 60 = 1080 minutes
+    positionLimitLine(stopLine, stopPosition);
     makeLimitLineDraggable(stopLine, 'stop');
   }
   
   if (sleepLine) {
-    positionLimitLine(sleepLine, hoursData.limitLines.sleep.position);
+    const sleepPosition = 23 * 60; // 11:00 PM = 23 * 60 = 1380 minutes
+    positionLimitLine(sleepLine, sleepPosition);
     makeLimitLineDraggable(sleepLine, 'sleep');
   }
 }
@@ -3413,7 +3417,12 @@ function initLimitLines() {
 // Position limit line at specified time
 function positionLimitLine(element, minutes) {
   const position = (minutes / 60) * 60; // 60px per hour
+  element.style.position = 'absolute';
   element.style.top = position + 'px';
+  element.style.left = '0';
+  element.style.width = '100%';
+  element.style.zIndex = '15';
+  console.log('🚦 LIMIT LINE: Positioned', element.id, 'at', position + 'px', 'for', minutes, 'minutes');
 }
 
 // Make limit line draggable with 15-minute snapping

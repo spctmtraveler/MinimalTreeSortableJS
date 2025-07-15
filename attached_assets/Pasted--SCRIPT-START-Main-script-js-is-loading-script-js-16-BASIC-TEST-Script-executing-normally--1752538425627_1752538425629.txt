@@ -1,0 +1,1498 @@
+🚀 SCRIPT START: Main script.js is loading...
+script.js:16 🧪 BASIC TEST: Script executing normally
+emergency-fix.js:2 🚨 EMERGENCY FIX: Loading immediate solutions...
+emergency-fix.js:6 🚨 Today is: 2025-07-15
+emergency-fix.js:259 🚨 EMERGENCY FIX: Script loaded
+script.js:2710 🚀 DOM READY: DOMContentLoaded event fired, starting application...
+script.js:2335 🚀 INIT UI: Starting UI initialization...
+script.js:2356 🔍 SETUP: Looking for filter dropdown... <select id=​"filter-dropdown">​…​</select>​
+script.js:2359 🔍 SETUP: Filter dropdown found, current value: all
+script.js:2361 ✅ SETUP: Filter dropdown event listener attached successfully
+script.js:2364 🧪 SETUP: Testing filter function directly...
+script.js:1359 🚀 FILTER START: handleFilterChange() function called
+script.js:1372 🔍 FILTER: Selected filter value = "all"
+script.js:1376 📅 FILTER: Today's date = 2025-07-14 (2025-07-14)
+script.js:1399 📅 DATE RANGES:
+    Today: Mon Jul 14 2025
+    This Week: Mon Jul 14 2025 → Sun Jul 20 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+script.js:1414 📋 FILTER: Found 0 task items in DOM
+script.js:1572 
+🏁 FILTER COMPLETE: "all" filter applied
+script.js:1573 📊 SUMMARY: 0 total, 0 sections, 0 shown, 0 hidden
+script.js:2367 ✅ SETUP: Filter function executed successfully during setup
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1362:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1407:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1576:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+emergency-fix.js:247 🚨 EMERGENCY: Starting all fixes...
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 0 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 0 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+emergency-fix.js:176 🕐 DEBUG: Checking Hours panel structure...
+emergency-fix.js:183 🕐 Hours Column exists: true
+emergency-fix.js:184 🕐 Hours Timeline exists: true
+emergency-fix.js:185 🕐 Hour Grid exists: true
+emergency-fix.js:186 🕐 Task Blocks Container exists: true
+emergency-fix.js:189 🕐 Hour Grid children count: 0
+emergency-fix.js:190 🕐 Hour Grid innerHTML length: 0
+emergency-fix.js:194 🕐 Timeline computed style display: block
+emergency-fix.js:195 🕐 Timeline computed style position: static
+emergency-fix.js:196 🕐 Timeline computed style height: 0px
+emergency-fix.js:201 🕐 FORCE: Hour grid is empty, manually generating...
+emergency-fix.js:241 ✅ FORCE: Hour grid manually generated with 72 elements
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 0 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 0 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+script.js:58 Tasks loaded from database
+script.js:2718 Using tasks from database
+script.js:2742 Application initialized
+script.js:2746 🕐 INIT: Starting Hours Panel initialization...
+script.js:3124 🕐 INIT: initHoursPanel() called
+script.js:3127 🕐 INIT: Calling generateHourGrid()...
+script.js:3332 🕐 GRID: Generating hour grid...
+script.js:3370 ✅ GRID: Hour grid generated successfully with 24 hours
+script.js:3130 🕐 INIT: Calling initCurrentTimeLine()...
+script.js:3394 Current time line updated: 19:07
+script.js:3133 🕐 INIT: Calling initLimitLines()...
+script.js:3136 🕐 INIT: Calling setupHoursEventListeners()...
+script.js:3139 🕐 INIT: Calling updateRemainingTimes()...
+script.js:3146 🕐 INIT: Calling addSampleHoursTasks()...
+script.js:45 [7:07:22 PM] Hours: Starting task loading from database...
+script.js:3149 ✅ HOURS: Panel initialization completed successfully
+script.js:2748 ✅ INIT: Hours Panel initialization completed
+script.js:45 [7:07:22 PM] Debug modal initialized successfully
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2729:5)
+(anonymous) @ script.js:1344
+script.js:45 [7:07:22 PM] Hours: Raw API response received
+script.js:45 [7:07:22 PM] Hours: API returned 16 total records
+script.js:45 [7:07:22 PM] Hours: First task structure: {"id":"task-1751345947265","content":"Fix Broken Sprinkler","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-13T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"time_estimate":"45.00","overview":"","details":"","scheduled_time":"14:00:00"}
+script.js:45 [7:07:22 PM] Hours: Found 12 actual tasks (excluding 4 section headers)
+script.js:45 [7:07:22 PM] Hours: Sample actual task: {"id":"task-1751345947265","content":"Fix Broken Sprinkler","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-13T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"time_estimate":"45.00","overview":"","details":"","scheduled_time":"14:00:00"}
+script.js:45 [7:07:22 PM] Hours: Today's date for comparison: 2025-07-15
+script.js:45 [7:07:22 PM] Hours: Examining task "Fix Broken Sprinkler" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: 14:00:00
+script.js:45 [7:07:22 PM] Hours: Task "Fix Broken Sprinkler" date comparison - taskDate: 2025-07-13, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "Fix Broken Sprinkler" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "Remove Milan's Bidet" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 14:00:00
+script.js:45 [7:07:22 PM] Hours: Task "Remove Milan's Bidet" date comparison - taskDate: 2025-07-14, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "Remove Milan's Bidet" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "tas3" - revisitDate: 2025-07-03T00:00:00.000Z, scheduledTime: 03:00:00
+script.js:45 [7:07:22 PM] Hours: Task "tas3" date comparison - taskDate: 2025-07-03, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "tas3" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "test: aug 5th" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: null
+script.js:45 [7:07:22 PM] Hours: Task "test: aug 5th" date comparison - taskDate: 2025-07-13, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "test: aug 5th" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "test: july 15" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 16:00:00
+script.js:45 [7:07:22 PM] Hours: Task "test: july 15" date comparison - taskDate: 2025-07-14, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "test: july 15" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "stretch/yoga" - revisitDate: 2025-06-30T00:00:00.000Z, scheduledTime: 20:00:00
+script.js:45 [7:07:22 PM] Hours: Task "stretch/yoga" date comparison - taskDate: 2025-06-30, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "stretch/yoga" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "test: july 9th" - revisitDate: 2025-07-14T00:00:00.000Z, scheduledTime: 13:00:00
+script.js:45 [7:07:22 PM] Hours: Task "test: july 9th" date comparison - taskDate: 2025-07-14, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "test: july 9th" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "shower" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: null
+script.js:45 [7:07:22 PM] Hours: Task "shower" date comparison - taskDate: 2025-08-04, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "shower" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "test: july 10th" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: 11:00:00
+script.js:45 [7:07:22 PM] Hours: Task "test: july 10th" date comparison - taskDate: 2025-08-04, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "test: july 10th" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "test: july 11th" - revisitDate: 2025-08-04T00:00:00.000Z, scheduledTime: null
+script.js:45 [7:07:22 PM] Hours: Task "test: july 11th" date comparison - taskDate: 2025-08-04, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "test: july 11th" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "test july 8th" - revisitDate: 2025-07-09T00:00:00.000Z, scheduledTime: null
+script.js:45 [7:07:22 PM] Hours: Task "test july 8th" date comparison - taskDate: 2025-07-09, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "test july 8th" has no scheduled time or not scheduled for today
+script.js:45 [7:07:22 PM] Hours: Examining task "Read Book2" - revisitDate: 2025-07-13T00:00:00.000Z, scheduledTime: 09:00:00
+script.js:45 [7:07:22 PM] Hours: Task "Read Book2" date comparison - taskDate: 2025-07-13, today: 2025-07-15, isToday: false
+script.js:45 [7:07:22 PM] Hours: Task "Read Book2" has no scheduled time or not scheduled for today
+script.js:3274 Hours panel: Added 0 tasks from database for today
+script.js:45 [7:07:22 PM] Hours: No database tasks scheduled for today found, adding demo task
+script.js:3292 🚀 DEMO RENDER: About to render demo task hours-task-1 with data: Object
+script.js:3293 🚀 DEMO RENDER: Container exists? true
+script.js:3598 🔧 RENDER: Starting to render task hours-task-1
+script.js:3604 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3613 🎯 POSITION CALC: Task hours-task-1 startMinutes: 1020 position: 1020px
+script.js:3614 🎯 HEIGHT CALC: Task hours-task-1 durationMinutes: 60 height: 60px
+script.js:3641 🔧 RENDER: About to setup task interactions for hours-task-1
+script.js:3642 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-1" style="position: absolute; top: 1020px; height: 60px; left: 10px; right: 10px; background: rgb(0, 206, 247); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Fake Task</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3652 🔧 SETUP: Starting interaction setup for task hours-task-1
+script.js:3658 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3645 🔧 RENDER: Task rendering complete for hours-task-1
+script.js:45 [7:07:22 PM] Hours: Added single demo task at 5:00 PM
+script.js:45 [7:07:22 PM] Hours: Summary - processed 12 actual tasks, added 0 with scheduled times
+script.js:2767 🧪 MANUAL TEST: Adding filter test button to page
+script.js:791 🟡 MODAL OPEN: Starting to open modal for task: hours-task-1
+script.js:794 🟡 MODAL OPEN: Fetching fresh data from database...
+script.js:136 🔍 DB FETCH: Getting fresh data for task hours-task-1
+/api/tasks/hours-task-1:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+script.js:167 🔍 DB FETCH ERROR: Failed to fetch task hours-task-1: Error: HTTP error! status: 404
+    at Object.fetchTask (script.js:139:15)
+    at async openTaskModal (script.js:795:23)
+fetchTask @ script.js:167
+script.js:800 🟡 MODAL OPEN: Using cached data (DB fetch failed)
+script.js:814 Modal fields found: Object
+script.js:828 🟡 MODAL POPULATE: Setting form values from task data: Object
+script.js:753 🗓️ FORMAT INPUT: Processing string date: 2025-07-15
+script.js:768 🗓️ FORMAT INPUT: Date already in correct format: 2025-07-15
+script.js:844 🟡 MODAL POPULATE: Formatted date from 2025-07-15 to 2025-07-15
+script.js:871 🟡 MODAL POPULATE: Set scheduled time from 17:00 to 17:00
+script.js:879 🟡 MODAL POPULATE: Set time estimate to 60 type: number
+script.js:932 Opened modal for "Fake Task"
+script.js:3431 limitDrag: sleep drag started
+script.js:3472 limitDrag: sleep drag ended at 23:15
+script.js:3431 limitDrag: sleep drag started
+script.js:3472 limitDrag: sleep drag ended at 24:00
+script.js:3431 limitDrag: sleep drag started
+script.js:3472 limitDrag: sleep drag ended at 23:45
+script.js:1581 🔄 Starting priority sort
+script.js:1587 🔄 SORT: Processing section section-triage
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-triage" data-task-data=​"{"id":​"section-triage","content":​"TRIAGE","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751898932316","content":​"shower","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899084375","content":​"test:​ july 11th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899068493","content":​"test july 8th","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-09T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-c-1","content":​"Read Book2","isSection":​false,"completed":​true,"children":​[{"id":​"task-1751079482305","content":​"tas3","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-03T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"3","details":​"3","scheduledTime":​"03:​00:​00"}​]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"Continue reading current book","details":​"Read at least one chapter of current novel","scheduledTime":​"09:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-triage" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-triage" data-task-data=​"{"id":​"section-triage","content":​"TRIAGE","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751898932316","content":​"shower","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899084375","content":​"test:​ july 11th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899068493","content":​"test july 8th","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-09T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-c-1","content":​"Read Book2","isSection":​false,"completed":​true,"children":​[{"id":​"task-1751079482305","content":​"tas3","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-03T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"3","details":​"3","scheduledTime":​"03:​00:​00"}​]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"Continue reading current book","details":​"Read at least one chapter of current novel","scheduledTime":​"09:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-triage" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 4 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 4
+script.js:1640 🔄 SORT: Found 4 tasks in section-triage
+script.js:1647 🔄 SORT: Section section-triage - 2 incomplete, 2 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-triage
+script.js:1671 🔄 SORT: Updating task-1751898932316 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751899084375 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899084375 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899084375",
+  "content": "test: july 11th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 1
+}
+script.js:1671 🔄 SORT: Updating task-1751899068493 to position 2
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899068493 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899068493",
+  "content": "test july 8th",
+  "isSection": false,
+  "completed": true,
+  "children": [],
+  "revisitDate": "2025-07-09T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 2
+}
+script.js:1671 🔄 SORT: Updating task-c-1 to position 3
+script.js:90 💾 DB SAVE: Attempting to save task task-c-1 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-c-1",
+  "content": "Read Book2",
+  "isSection": false,
+  "completed": true,
+  "children": [
+    {
+      "id": "task-1751079482305",
+      "content": "tas3",
+      "isSection": false,
+      "completed": false,
+      "children": [],
+      "revisitDate": "2025-07-03T00:00:00.000Z",
+      "fire": true,
+      "fast": false,
+      "flow": true,
+      "fear": true,
+      "first": true,
+      "timeEstimate": 15,
+      "overview": "3",
+      "details": "3",
+      "scheduledTime": "03:00:00"
+    }
+  ],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "Continue reading current book",
+  "details": "Read at least one chapter of current novel",
+  "scheduledTime": "09:00:00",
+  "positionOrder": 3
+}
+script.js:1587 🔄 SORT: Processing section section-a
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-a" data-task-data=​"{"id":​"section-a","content":​"A","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751096021427","content":​"Remove Milan's Bidet","isSection":​false,"completed":​false,"children":​[{"id":​"task-1751899090655","content":​"test:​ july 15","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"16:​00:​00"}​]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​true,"first":​true,"timeEstimate":​30,"overview":​"ee","details":​"Need bucket & wrench & probably plumbers tape","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899074408","content":​"test:​ july 9th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"13:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-a" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-a" data-task-data=​"{"id":​"section-a","content":​"A","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751096021427","content":​"Remove Milan's Bidet","isSection":​false,"completed":​false,"children":​[{"id":​"task-1751899090655","content":​"test:​ july 15","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"16:​00:​00"}​]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​true,"first":​true,"timeEstimate":​30,"overview":​"ee","details":​"Need bucket & wrench & probably plumbers tape","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899074408","content":​"test:​ july 9th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"13:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-a" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 2 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 2
+script.js:1640 🔄 SORT: Found 2 tasks in section-a
+script.js:1647 🔄 SORT: Section section-a - 2 incomplete, 0 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-a
+script.js:1671 🔄 SORT: Updating task-1751096021427 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751096021427 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751096021427",
+  "content": "Remove Milan's Bidet",
+  "isSection": false,
+  "completed": false,
+  "children": [
+    {
+      "id": "task-1751899090655",
+      "content": "test: july 15",
+      "isSection": false,
+      "completed": false,
+      "children": [],
+      "revisitDate": "2025-07-14T00:00:00.000Z",
+      "fire": true,
+      "fast": true,
+      "flow": true,
+      "fear": true,
+      "first": true,
+      "timeEstimate": 0,
+      "overview": "",
+      "details": "",
+      "scheduledTime": "16:00:00"
+    }
+  ],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 30,
+  "overview": "ee",
+  "details": "Need bucket & wrench & probably plumbers tape",
+  "scheduledTime": "14:00:00",
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751899074408 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899074408 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899074408",
+  "content": "test: july 9th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "13:00:00",
+  "positionOrder": 1
+}
+script.js:1587 🔄 SORT: Processing section section-b
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-b" data-task-data=​"{"id":​"section-b","content":​"B","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751345947265","content":​"Fix Broken Sprinkler","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​false,"fear":​true,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899158925","content":​"test:​ aug 5th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​null}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-b" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-b" data-task-data=​"{"id":​"section-b","content":​"B","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751345947265","content":​"Fix Broken Sprinkler","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​false,"fear":​true,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899158925","content":​"test:​ aug 5th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​null}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-b" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 2 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 2
+script.js:1640 🔄 SORT: Found 2 tasks in section-b
+script.js:1647 🔄 SORT: Section section-b - 2 incomplete, 0 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-b
+script.js:1671 🔄 SORT: Updating task-1751345947265 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751345947265 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751345947265",
+  "content": "Fix Broken Sprinkler",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "14:00:00",
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751899158925 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899158925 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899158925",
+  "content": "test: aug 5th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 1
+}
+script.js:1587 🔄 SORT: Processing section section-c
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-c" data-task-data=​"{"id":​"section-c","content":​"C","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751181136737","content":​"stretch/​yoga","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-06-30T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​true,"timeEstimate":​15,"overview":​"45","details":​"45","scheduledTime":​"20:​00:​00"}​,{"id":​"task-1751899079216","content":​"test:​ july 10th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"11:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-c" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-c" data-task-data=​"{"id":​"section-c","content":​"C","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751181136737","content":​"stretch/​yoga","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-06-30T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​true,"timeEstimate":​15,"overview":​"45","details":​"45","scheduledTime":​"20:​00:​00"}​,{"id":​"task-1751899079216","content":​"test:​ july 10th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"11:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-c" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 2 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 2
+script.js:1640 🔄 SORT: Found 2 tasks in section-c
+script.js:1647 🔄 SORT: Section section-c - 2 incomplete, 0 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-c
+script.js:1671 🔄 SORT: Updating task-1751899079216 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899079216 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899079216",
+  "content": "test: july 10th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "11:00:00",
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751181136737 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751181136737 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751181136737",
+  "content": "stretch/yoga",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-06-30T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "45",
+  "details": "45",
+  "scheduledTime": "20:00:00",
+  "positionOrder": 1
+}
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899074408 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751899074408
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899079216 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751899079216
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751181136737 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751181136737
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899158925 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751899158925
+script.js:108 💾 DB SAVE SUCCESS: Task task-c-1 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 3 for task-c-1
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751898932316
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899084375 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751899084375
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899068493 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 2 for task-1751899068493
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751345947265 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751345947265
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751096021427 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751096021427
+script.js:1696 ✅ Priority sort complete - all positions saved to database
+script.js:1581 🔄 Starting priority sort
+script.js:1587 🔄 SORT: Processing section section-triage
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-triage" data-task-data=​"{"id":​"section-triage","content":​"TRIAGE","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751898932316","content":​"shower","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899084375","content":​"test:​ july 11th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899068493","content":​"test july 8th","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-09T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-c-1","content":​"Read Book2","isSection":​false,"completed":​true,"children":​[{"id":​"task-1751079482305","content":​"tas3","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-03T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"3","details":​"3","scheduledTime":​"03:​00:​00"}​]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"Continue reading current book","details":​"Read at least one chapter of current novel","scheduledTime":​"09:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-triage" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-triage" data-task-data=​"{"id":​"section-triage","content":​"TRIAGE","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751898932316","content":​"shower","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899084375","content":​"test:​ july 11th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899068493","content":​"test july 8th","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-09T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-c-1","content":​"Read Book2","isSection":​false,"completed":​true,"children":​[{"id":​"task-1751079482305","content":​"tas3","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-03T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"3","details":​"3","scheduledTime":​"03:​00:​00"}​]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"Continue reading current book","details":​"Read at least one chapter of current novel","scheduledTime":​"09:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-triage" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 4 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 4
+script.js:1640 🔄 SORT: Found 4 tasks in section-triage
+script.js:1647 🔄 SORT: Section section-triage - 2 incomplete, 2 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-triage
+script.js:1671 🔄 SORT: Updating task-1751898932316 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751899084375 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899084375 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899084375",
+  "content": "test: july 11th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 1
+}
+script.js:1671 🔄 SORT: Updating task-1751899068493 to position 2
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899068493 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899068493",
+  "content": "test july 8th",
+  "isSection": false,
+  "completed": true,
+  "children": [],
+  "revisitDate": "2025-07-09T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 2
+}
+script.js:1671 🔄 SORT: Updating task-c-1 to position 3
+script.js:90 💾 DB SAVE: Attempting to save task task-c-1 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-c-1",
+  "content": "Read Book2",
+  "isSection": false,
+  "completed": true,
+  "children": [
+    {
+      "id": "task-1751079482305",
+      "content": "tas3",
+      "isSection": false,
+      "completed": false,
+      "children": [],
+      "revisitDate": "2025-07-03T00:00:00.000Z",
+      "fire": true,
+      "fast": false,
+      "flow": true,
+      "fear": true,
+      "first": true,
+      "timeEstimate": 15,
+      "overview": "3",
+      "details": "3",
+      "scheduledTime": "03:00:00"
+    }
+  ],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "Continue reading current book",
+  "details": "Read at least one chapter of current novel",
+  "scheduledTime": "09:00:00",
+  "positionOrder": 3
+}
+script.js:1587 🔄 SORT: Processing section section-a
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-a" data-task-data=​"{"id":​"section-a","content":​"A","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751096021427","content":​"Remove Milan's Bidet","isSection":​false,"completed":​false,"children":​[{"id":​"task-1751899090655","content":​"test:​ july 15","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"16:​00:​00"}​]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​true,"first":​true,"timeEstimate":​30,"overview":​"ee","details":​"Need bucket & wrench & probably plumbers tape","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899074408","content":​"test:​ july 9th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"13:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-a" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-a" data-task-data=​"{"id":​"section-a","content":​"A","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751096021427","content":​"Remove Milan's Bidet","isSection":​false,"completed":​false,"children":​[{"id":​"task-1751899090655","content":​"test:​ july 15","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"16:​00:​00"}​]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​true,"first":​true,"timeEstimate":​30,"overview":​"ee","details":​"Need bucket & wrench & probably plumbers tape","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899074408","content":​"test:​ july 9th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"13:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-a" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 2 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 2
+script.js:1640 🔄 SORT: Found 2 tasks in section-a
+script.js:1647 🔄 SORT: Section section-a - 2 incomplete, 0 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-a
+script.js:1671 🔄 SORT: Updating task-1751096021427 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751096021427 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751096021427",
+  "content": "Remove Milan's Bidet",
+  "isSection": false,
+  "completed": false,
+  "children": [
+    {
+      "id": "task-1751899090655",
+      "content": "test: july 15",
+      "isSection": false,
+      "completed": false,
+      "children": [],
+      "revisitDate": "2025-07-14T00:00:00.000Z",
+      "fire": true,
+      "fast": true,
+      "flow": true,
+      "fear": true,
+      "first": true,
+      "timeEstimate": 0,
+      "overview": "",
+      "details": "",
+      "scheduledTime": "16:00:00"
+    }
+  ],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 30,
+  "overview": "ee",
+  "details": "Need bucket & wrench & probably plumbers tape",
+  "scheduledTime": "14:00:00",
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751899074408 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899074408 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899074408",
+  "content": "test: july 9th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "13:00:00",
+  "positionOrder": 1
+}
+script.js:1587 🔄 SORT: Processing section section-b
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-b" data-task-data=​"{"id":​"section-b","content":​"B","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751345947265","content":​"Fix Broken Sprinkler","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​false,"fear":​true,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899158925","content":​"test:​ aug 5th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​null}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-b" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-b" data-task-data=​"{"id":​"section-b","content":​"B","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751345947265","content":​"Fix Broken Sprinkler","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​false,"fear":​true,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899158925","content":​"test:​ aug 5th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​null}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-b" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 2 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 2
+script.js:1640 🔄 SORT: Found 2 tasks in section-b
+script.js:1647 🔄 SORT: Section section-b - 2 incomplete, 0 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-b
+script.js:1671 🔄 SORT: Updating task-1751345947265 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751345947265 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751345947265",
+  "content": "Fix Broken Sprinkler",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "14:00:00",
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751899158925 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899158925 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899158925",
+  "content": "test: aug 5th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 1
+}
+script.js:1587 🔄 SORT: Processing section section-c
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-c" data-task-data=​"{"id":​"section-c","content":​"C","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751181136737","content":​"stretch/​yoga","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-06-30T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​true,"timeEstimate":​15,"overview":​"45","details":​"45","scheduledTime":​"20:​00:​00"}​,{"id":​"task-1751899079216","content":​"test:​ july 10th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"11:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-c" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-c" data-task-data=​"{"id":​"section-c","content":​"C","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751181136737","content":​"stretch/​yoga","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-06-30T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​true,"timeEstimate":​15,"overview":​"45","details":​"45","scheduledTime":​"20:​00:​00"}​,{"id":​"task-1751899079216","content":​"test:​ july 10th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"11:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-c" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 2 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 2
+script.js:1640 🔄 SORT: Found 2 tasks in section-c
+script.js:1647 🔄 SORT: Section section-c - 2 incomplete, 0 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-c
+script.js:1671 🔄 SORT: Updating task-1751899079216 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899079216 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899079216",
+  "content": "test: july 10th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "11:00:00",
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751181136737 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751181136737 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751181136737",
+  "content": "stretch/yoga",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-06-30T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "45",
+  "details": "45",
+  "scheduledTime": "20:00:00",
+  "positionOrder": 1
+}
+script.js:108 💾 DB SAVE SUCCESS: Task task-c-1 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 3 for task-c-1
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899084375 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751899084375
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899068493 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 2 for task-1751899068493
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751898932316
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751096021427 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751096021427
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899074408 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751899074408
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751345947265 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751345947265
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899158925 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751899158925
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899079216 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751899079216
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751181136737 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751181136737
+script.js:1696 ✅ Priority sort complete - all positions saved to database
+script.js:1709 🔄 Starting consolidation to Triage
+script.js:1726 🔄 CONSOLIDATE: Found 12 tasks to move to Triage
+script.js:90 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1000
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899084375 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899084375",
+  "content": "test: july 11th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1001
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899068493 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899068493",
+  "content": "test july 8th",
+  "isSection": false,
+  "completed": true,
+  "children": [],
+  "revisitDate": "2025-07-09T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1002
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-c-1 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-c-1",
+  "content": "Read Book2",
+  "isSection": false,
+  "completed": true,
+  "children": [
+    {
+      "id": "task-1751079482305",
+      "content": "tas3",
+      "isSection": false,
+      "completed": false,
+      "children": [],
+      "revisitDate": "2025-07-03T00:00:00.000Z",
+      "fire": true,
+      "fast": false,
+      "flow": true,
+      "fear": true,
+      "first": true,
+      "timeEstimate": 15,
+      "overview": "3",
+      "details": "3",
+      "scheduledTime": "03:00:00"
+    }
+  ],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "Continue reading current book",
+  "details": "Read at least one chapter of current novel",
+  "scheduledTime": "09:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1003
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751079482305 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751079482305",
+  "content": "tas3",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-03T00:00:00.000Z",
+  "fire": true,
+  "fast": false,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "3",
+  "details": "3",
+  "scheduledTime": "03:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1004
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751096021427 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751096021427",
+  "content": "Remove Milan's Bidet",
+  "isSection": false,
+  "completed": false,
+  "children": [
+    {
+      "id": "task-1751899090655",
+      "content": "test: july 15",
+      "isSection": false,
+      "completed": false,
+      "children": [],
+      "revisitDate": "2025-07-14T00:00:00.000Z",
+      "fire": true,
+      "fast": true,
+      "flow": true,
+      "fear": true,
+      "first": true,
+      "timeEstimate": 0,
+      "overview": "",
+      "details": "",
+      "scheduledTime": "16:00:00"
+    }
+  ],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 30,
+  "overview": "ee",
+  "details": "Need bucket & wrench & probably plumbers tape",
+  "scheduledTime": "14:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1005
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899090655 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899090655",
+  "content": "test: july 15",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "16:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1006
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899074408 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899074408",
+  "content": "test: july 9th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "13:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1007
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751345947265 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751345947265",
+  "content": "Fix Broken Sprinkler",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "14:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1008
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899158925 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899158925",
+  "content": "test: aug 5th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 1009
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899079216 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899079216",
+  "content": "test: july 10th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "11:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1010
+}
+script.js:90 💾 DB SAVE: Attempting to save task task-1751181136737 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751181136737",
+  "content": "stretch/yoga",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-06-30T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "45",
+  "details": "45",
+  "scheduledTime": "20:00:00",
+  "parent_id": "section-triage",
+  "positionOrder": 1011
+}
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899084375 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751899084375 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751898932316 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899068493 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751899068493 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-c-1 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-c-1 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751096021427 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751096021427 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899090655 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751899090655 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899074408 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751899074408 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751345947265 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751345947265 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899158925 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751899158925 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899079216 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751899079216 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751181136737 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751181136737 to Triage
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751079482305 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1743 ✅ CONSOLIDATE: Moved task-1751079482305 to Triage
+script.js:58 Tasks loaded from database
+script.js:1759 ✅ Consolidation complete - all tasks moved to Triage
+script.js:1581 🔄 Starting priority sort
+script.js:1587 🔄 SORT: Processing section section-triage
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-triage" data-task-data=​"{"id":​"section-triage","content":​"TRIAGE","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751898932316","content":​"shower","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899084375","content":​"test:​ july 11th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899068493","content":​"test july 8th","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-09T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-c-1","content":​"Read Book2","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"Continue reading current book","details":​"Read at least one chapter of current novel","scheduledTime":​"09:​00:​00"}​,{"id":​"task-1751079482305","content":​"tas3","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-03T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"3","details":​"3","scheduledTime":​"03:​00:​00"}​,{"id":​"task-1751096021427","content":​"Remove Milan's Bidet","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​true,"first":​true,"timeEstimate":​30,"overview":​"ee","details":​"Need bucket & wrench & probably plumbers tape","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899090655","content":​"test:​ july 15","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"16:​00:​00"}​,{"id":​"task-1751899074408","content":​"test:​ july 9th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"13:​00:​00"}​,{"id":​"task-1751345947265","content":​"Fix Broken Sprinkler","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​false,"fear":​true,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899158925","content":​"test:​ aug 5th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899079216","content":​"test:​ july 10th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"11:​00:​00"}​,{"id":​"task-1751181136737","content":​"stretch/​yoga","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-06-30T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​true,"timeEstimate":​15,"overview":​"45","details":​"45","scheduledTime":​"20:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-triage" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-triage" data-task-data=​"{"id":​"section-triage","content":​"TRIAGE","isSection":​true,"completed":​false,"children":​[{"id":​"task-1751898932316","content":​"shower","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899084375","content":​"test:​ july 11th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899068493","content":​"test july 8th","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-09T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-c-1","content":​"Read Book2","isSection":​false,"completed":​true,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"Continue reading current book","details":​"Read at least one chapter of current novel","scheduledTime":​"09:​00:​00"}​,{"id":​"task-1751079482305","content":​"tas3","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-03T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​15,"overview":​"3","details":​"3","scheduledTime":​"03:​00:​00"}​,{"id":​"task-1751096021427","content":​"Remove Milan's Bidet","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​true,"first":​true,"timeEstimate":​30,"overview":​"ee","details":​"Need bucket & wrench & probably plumbers tape","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899090655","content":​"test:​ july 15","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"16:​00:​00"}​,{"id":​"task-1751899074408","content":​"test:​ july 9th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-14T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"13:​00:​00"}​,{"id":​"task-1751345947265","content":​"Fix Broken Sprinkler","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​true,"fast":​false,"flow":​false,"fear":​true,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​"14:​00:​00"}​,{"id":​"task-1751899158925","content":​"test:​ aug 5th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-07-13T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​45,"overview":​"","details":​"","scheduledTime":​null}​,{"id":​"task-1751899079216","content":​"test:​ july 10th","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-08-04T00:​00:​00.000Z","fire":​true,"fast":​true,"flow":​true,"fear":​true,"first":​true,"timeEstimate":​0,"overview":​"","details":​"","scheduledTime":​"11:​00:​00"}​,{"id":​"task-1751181136737","content":​"stretch/​yoga","isSection":​false,"completed":​false,"children":​[]​,"revisitDate":​"2025-06-30T00:​00:​00.000Z","fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​true,"timeEstimate":​15,"overview":​"45","details":​"45","scheduledTime":​"20:​00:​00"}​]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-triage" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children" style=​"display:​ block;​">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​…​</ul>​
+script.js:1624 🔄 SORT: Found 1 nested lists
+script.js:1631 🔄 SORT: Found 12 items in nested list
+script.js:1638 🔄 SORT: Total task items found: 12
+script.js:1640 🔄 SORT: Found 12 tasks in section-triage
+script.js:1647 🔄 SORT: Section section-triage - 10 incomplete, 2 completed
+script.js:1662 🔄 SORT: Using nested list as target for section-triage
+script.js:1671 🔄 SORT: Updating task-1751898932316 to position 0
+script.js:90 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 0
+}
+script.js:1671 🔄 SORT: Updating task-1751899090655 to position 1
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899090655 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899090655",
+  "content": "test: july 15",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "16:00:00",
+  "positionOrder": 1
+}
+script.js:1671 🔄 SORT: Updating task-1751899079216 to position 2
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899079216 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899079216",
+  "content": "test: july 10th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "11:00:00",
+  "positionOrder": 2
+}
+script.js:1671 🔄 SORT: Updating task-1751079482305 to position 3
+script.js:90 💾 DB SAVE: Attempting to save task task-1751079482305 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751079482305",
+  "content": "tas3",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-03T00:00:00.000Z",
+  "fire": true,
+  "fast": false,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "3",
+  "details": "3",
+  "scheduledTime": "03:00:00",
+  "positionOrder": 3
+}
+script.js:1671 🔄 SORT: Updating task-1751096021427 to position 4
+script.js:90 💾 DB SAVE: Attempting to save task task-1751096021427 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751096021427",
+  "content": "Remove Milan's Bidet",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 30,
+  "overview": "ee",
+  "details": "Need bucket & wrench & probably plumbers tape",
+  "scheduledTime": "14:00:00",
+  "positionOrder": 4
+}
+script.js:1671 🔄 SORT: Updating task-1751345947265 to position 5
+script.js:90 💾 DB SAVE: Attempting to save task task-1751345947265 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751345947265",
+  "content": "Fix Broken Sprinkler",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": false,
+  "flow": false,
+  "fear": true,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "14:00:00",
+  "positionOrder": 5
+}
+script.js:1671 🔄 SORT: Updating task-1751181136737 to position 6
+script.js:90 💾 DB SAVE: Attempting to save task task-1751181136737 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751181136737",
+  "content": "stretch/yoga",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-06-30T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "45",
+  "details": "45",
+  "scheduledTime": "20:00:00",
+  "positionOrder": 6
+}
+script.js:1671 🔄 SORT: Updating task-1751899084375 to position 7
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899084375 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899084375",
+  "content": "test: july 11th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 7
+}
+script.js:1671 🔄 SORT: Updating task-1751899074408 to position 8
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899074408 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899074408",
+  "content": "test: july 9th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-14T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": "13:00:00",
+  "positionOrder": 8
+}
+script.js:1671 🔄 SORT: Updating task-1751899158925 to position 9
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899158925 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899158925",
+  "content": "test: aug 5th",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 45,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 9
+}
+script.js:1671 🔄 SORT: Updating task-1751899068493 to position 10
+script.js:90 💾 DB SAVE: Attempting to save task task-1751899068493 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751899068493",
+  "content": "test july 8th",
+  "isSection": false,
+  "completed": true,
+  "children": [],
+  "revisitDate": "2025-07-09T00:00:00.000Z",
+  "fire": false,
+  "fast": false,
+  "flow": false,
+  "fear": false,
+  "first": false,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "positionOrder": 10
+}
+script.js:1671 🔄 SORT: Updating task-c-1 to position 11
+script.js:90 💾 DB SAVE: Attempting to save task task-c-1 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-c-1",
+  "content": "Read Book2",
+  "isSection": false,
+  "completed": true,
+  "children": [],
+  "revisitDate": "2025-07-13T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 15,
+  "overview": "Continue reading current book",
+  "details": "Read at least one chapter of current novel",
+  "scheduledTime": "09:00:00",
+  "positionOrder": 11
+}
+script.js:1587 🔄 SORT: Processing section section-a
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-a" data-task-data=​"{"id":​"section-a","content":​"A","isSection":​true,"completed":​false,"children":​[]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-a" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-a" data-task-data=​"{"id":​"section-a","content":​"A","isSection":​true,"completed":​false,"children":​[]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-a" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​</ul>​
+script.js:1624 🔄 SORT: Found 0 nested lists
+script.js:1638 🔄 SORT: Total task items found: 0
+script.js:1640 🔄 SORT: Found 0 tasks in section-a
+script.js:1587 🔄 SORT: Processing section section-b
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-b" data-task-data=​"{"id":​"section-b","content":​"B","isSection":​true,"completed":​false,"children":​[]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-b" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-b" data-task-data=​"{"id":​"section-b","content":​"B","isSection":​true,"completed":​false,"children":​[]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-b" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​</ul>​
+script.js:1624 🔄 SORT: Found 0 nested lists
+script.js:1638 🔄 SORT: Total task items found: 0
+script.js:1640 🔄 SORT: Found 0 tasks in section-b
+script.js:1587 🔄 SORT: Processing section section-c
+script.js:1590 🔄 SORT: Section header element: <li class=​"task-item section-header" data-id=​"section-c" data-task-data=​"{"id":​"section-c","content":​"C","isSection":​true,"completed":​false,"children":​[]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-c" data-no-drag=​"true">​…​</li>​
+script.js:1591 🔄 SORT: Section header parent: <ul class=​"task-list" data-is-root=​"true" data-sortable=​"1" data-root-list=​"1">​…​</ul>​
+script.js:1595 🔄 SORT: Section LI found: <li class=​"task-item section-header" data-id=​"section-c" data-task-data=​"{"id":​"section-c","content":​"C","isSection":​true,"completed":​false,"children":​[]​,"revisitDate":​null,"fire":​false,"fast":​false,"flow":​false,"fear":​false,"first":​false,"timeEstimate":​15,"overview":​"","details":​"","scheduledTime":​null}​" data-task-id=​"section-c" data-no-drag=​"true">​…​</li>​
+script.js:1598 🔄 SORT: Container found: <div class=​"task-children">​…​</div>​
+script.js:1606 🔄 SORT: List found: <ul class=​"task-list" data-sortable=​"1" data-section-list=​"1">​</ul>​
+script.js:1624 🔄 SORT: Found 0 nested lists
+script.js:1638 🔄 SORT: Total task items found: 0
+script.js:1640 🔄 SORT: Found 0 tasks in section-c
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899090655 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 1 for task-1751899090655
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751345947265 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 5 for task-1751345947265
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899079216 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 2 for task-1751899079216
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751079482305 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 3 for task-1751079482305
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 0 for task-1751898932316
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751096021427 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 4 for task-1751096021427
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751181136737 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 6 for task-1751181136737
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899074408 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 8 for task-1751899074408
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899084375 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 7 for task-1751899084375
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899158925 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 9 for task-1751899158925
+script.js:108 💾 DB SAVE SUCCESS: Task task-c-1 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 11 for task-c-1
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751899068493 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1680 ✅ SORT: Saved position 10 for task-1751899068493
+script.js:1696 ✅ Priority sort complete - all positions saved to database
+script.js:1898 🔄 DRAG: Moving task task-1751898932316 to parent section-triage at position 2
+script.js:1771 🔄 Updating task task-1751898932316: Object
+script.js:90 💾 DB SAVE: Attempting to save task task-1751898932316 to database
+script.js:91 💾 DB SAVE: Data being sent: {
+  "id": "task-1751898932316",
+  "content": "shower",
+  "isSection": false,
+  "completed": false,
+  "children": [],
+  "revisitDate": "2025-08-04T00:00:00.000Z",
+  "fire": true,
+  "fast": true,
+  "flow": true,
+  "fear": true,
+  "first": true,
+  "timeEstimate": 0,
+  "overview": "",
+  "details": "",
+  "scheduledTime": null,
+  "parent_id": "section-triage",
+  "positionOrder": 2
+}
+script.js:2630 Dropped into: TRIAGE
+script.js:108 💾 DB SAVE SUCCESS: Task task-1751898932316 saved successfully
+script.js:109 💾 DB SAVE: Server response: Object
+script.js:1862 ✅ Task task-1751898932316 updated successfully
+script.js:2027 🔄 Updating sibling positions: Array(12)
+/api/tasks/reorder:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+script.js:2044 ❌ Failed to update sibling positions: Error: Failed to update positions: 404
+    at updateSiblingPositions (script.js:2037:15)
+    at async handleDragEnd (script.js:1924:5)
+updateSiblingPositions @ script.js:2044
+script.js:505 Collapsed "TRIAGE"
+script.js:505 Expanded "TRIAGE"
+script.js:45 [7:10:31 PM] Debug modal opened via gear icon click
+script.js:45 [7:10:47 PM] Debug borders enabled
+script.js:45 [7:11:28 PM] Debug modal closed (clicked outside)
+script.js:45 [7:11:30 PM] Debug modal opened via gear icon click
+script.js:3394 Current time line updated: 19:12
