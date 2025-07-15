@@ -1230,7 +1230,8 @@ body[data-show-dates="true"] .task-date-container {
   position: relative !important;
   width: 100% !important;
   min-height: 1440px !important; /* 24 hours * 60px per hour */
-  background: transparent !important;
+  background: #1a1a1a !important;
+  padding-left: 60px !important; /* Space for hour labels */
   padding-top: 20px !important;
   display: block !important;
   overflow: visible !important;

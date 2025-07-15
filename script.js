@@ -3332,29 +3332,39 @@ function generateHourGrid() {
   console.log('🕐 GRID: Generating hour grid...');
   hourGrid.innerHTML = '';
   
-  // Create 48 half-hour slots (24 hours * 2)
-  for (let i = 0; i < 48; i++) {
-    const hour = Math.floor(i / 2);
-    const isHalfHour = i % 2 === 1;
-    const position = i * 30; // 30px per half hour
+  // Create 24 hour slots (one per hour)
+  for (let hour = 0; hour < 24; hour++) {
+    const position = hour * 60; // 60px per hour
     
     // Create hour line
     const hourLine = document.createElement('div');
-    hourLine.className = isHalfHour ? 'hour-line half-hour' : 'hour-line';
+    hourLine.className = 'hour-line';
+    hourLine.style.position = 'absolute';
     hourLine.style.top = position + 'px';
+    hourLine.style.left = '0';
+    hourLine.style.width = '100%';
+    hourLine.style.height = '1px';
+    hourLine.style.background = '#333333';
+    hourLine.style.zIndex = '1';
     hourGrid.appendChild(hourLine);
     
-    // Add hour label for full hours only
-    if (!isHalfHour) {
-      const hourLabel = document.createElement('div');
-      hourLabel.className = hour >= 12 ? 'hour-label pm' : 'hour-label';
-      hourLabel.style.top = position + 'px';
-      
-      let displayHour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-      hourLabel.textContent = displayHour;
-      
-      hourGrid.appendChild(hourLabel);
-    }
+    // Add hour label
+    const hourLabel = document.createElement('div');
+    hourLabel.className = hour >= 12 ? 'hour-label pm' : 'hour-label';
+    hourLabel.style.position = 'absolute';
+    hourLabel.style.top = (position - 10) + 'px';
+    hourLabel.style.left = '-50px';
+    hourLabel.style.width = '45px';
+    hourLabel.style.textAlign = 'right';
+    hourLabel.style.fontSize = '0.875rem';
+    hourLabel.style.color = '#dddddd';
+    hourLabel.style.zIndex = '2';
+    
+    let displayHour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+    const period = hour >= 12 ? 'PM' : 'AM';
+    hourLabel.textContent = `${displayHour} ${period}`;
+    
+    hourGrid.appendChild(hourLabel);
   }
   
   console.log('✅ GRID: Hour grid generated successfully with 48 slots');
