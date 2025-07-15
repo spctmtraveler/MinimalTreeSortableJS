@@ -225,6 +225,15 @@
             <div class="modal-content debug-modal-content">
                 <div class="modal-header">
                     <h2>Debug Panel</h2>
+                    <div class="debug-nav-dropdown">
+                        <select id="debug-nav-select" onchange="navigateToDebugPage(this.value)">
+                            <option value="">📋 Debug Pages</option>
+                            <option value="/debug/tasks">🔍 Raw JSON Tasks</option>
+                            <option value="/debug/table">📊 Table View</option>
+                            <option value="/debug/formatted">📝 Formatted View</option>
+                            <option value="/debug-files.html">📁 File Aggregator</option>
+                        </select>
+                    </div>
                     <button class="modal-close" onclick="document.getElementById('debug-modal').style.display='none'">&times;</button>
                 </div>
                 <div class="modal-body">

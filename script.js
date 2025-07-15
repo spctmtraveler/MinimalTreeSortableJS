@@ -3043,6 +3043,15 @@ function initDebugModal() {
   debugLogger('Debug modal initialized successfully');
 }
 
+// Navigation function for debug pages dropdown
+function navigateToDebugPage(url) {
+  if (url) {
+    window.open(url, '_blank');
+    // Reset dropdown to default
+    document.getElementById('debug-nav-select').value = '';
+  }
+}
+
 // Make an element draggable by its header
 function makeDraggable(element) {
   const header = element.querySelector('.modal-header');
