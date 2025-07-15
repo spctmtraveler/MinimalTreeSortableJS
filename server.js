@@ -14,6 +14,11 @@ const pool = new Pool({
 app.use(express.json());
 app.use(express.static('.'));
 
+// Secret debug files aggregation page
+app.get('/debug-files.html', (req, res) => {
+  res.sendFile(__dirname + '/debug-files.html');
+});
+
 // API Routes
 
 // Get all tasks

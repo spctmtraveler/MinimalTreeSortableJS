@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Files Debug Aggregator</title>
+    <style>
+        body {
+            background: #212121;
+            color: #7F7F7F;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #00CEF7;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            background: #00CEF7;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #0099cc;
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        #fileContent {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #cccccc;
+        }
+        
+        .file-separator {
+            color: #00CEF7;
+            font-weight: bold;
+            margin: 20px 0;
+            border-top: 2px solid #00CEF7;
+            padding-top: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #00CEF7;
+            font-size: 18px;
+            margin: 40px 0;
+        }
+        
+        .status {
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        
+        .error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Project Files Debug Aggregator</h1>
+        
+        <div class="controls">
+            <button class="btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+            <button class="btn" onclick="downloadAsFile()">💾 Download as TXT</button>
+            <button class="btn" onclick="refreshFiles()">🔄 Refresh Files</button>
+        </div>
+        
+        <div id="status"></div>
+        
+        <textarea id="fileContent" readonly></textarea>
+    </div>
+
+    <script>
+        let aggregatedContent = '';
+        
+        async function loadFiles() {
+            const status = document.getElementById('status');
+            const content = document.getElementById('fileContent');
+            
+            status.innerHTML = '<div class="loading">Loading project files...</div>';
+            
+            try {
+                // Load header content
+                const headerResponse = await fetch('/file-agg-header.md');
+                const headerContent = await headerResponse.text();
+                
+                // File list to aggregate
+                const files = [
+                    { path: '/index.html', type: 'HTML' },
+                    { path: '/styles.css', type: 'CSS' },
+                    { path: '/script.js', type: 'JavaScript' },
+                    { path: '/server.js', type: 'JavaScript' },
+                    { path: '/emergency-fix.js', type: 'JavaScript' },
+                    { path: '/filter-fix.js', type: 'JavaScript' },
+                    { path: '/simple-filter.js', type: 'JavaScript' },
+                    { path: '/date-fix.js', type: 'JavaScript' },
+                    { path: '/package.json', type: 'JSON' },
+                    { path: '/replit.md', type: 'Markdown' }
+                ];
+                
+                aggregatedContent = headerContent + '\n\n';
+                aggregatedContent += '=' .repeat(80) + '\n';
+                aggregatedContent += 'PROJECT FILES AGGREGATION\n';
+                aggregatedContent += '=' .repeat(80) + '\n\n';
+                
+                for (const file of files) {
+                    try {
+                        const response = await fetch(file.path);
+                        if (response.ok) {
+                            const fileContent = await response.text();
+                            
+                            aggregatedContent += '\n' + '/' .repeat(80) + '\n';
+                            aggregatedContent += `// Beginning file ${file.path} (${file.type})\n`;
+                            aggregatedContent += '/' .repeat(80) + '\n\n';
+                            aggregatedContent += fileContent;
+                            aggregatedContent += '\n\n' + '/' .repeat(80) + '\n';
+                            aggregatedContent += `// Ending file ${file.path} (${file.type})\n`;
+                            aggregatedContent += '/' .repeat(80) + '\n\n';
+                        } else {
+                            aggregatedContent += `\n// ERROR: Could not load ${file.path} (${response.status})\n\n`;
+                        }
+                    } catch (error) {
+                        aggregatedContent += `\n// ERROR: Failed to fetch ${file.path} - ${error.message}\n\n`;
+                    }
+                }
+                
+                content.value = aggregatedContent;
+                status.innerHTML = '<div class="success">✅ Files loaded successfully!</div>';
+                
+            } catch (error) {
+                status.innerHTML = `<div class="error">❌ Error loading files: ${error.message}</div>`;
+            }
+        }
+        
+        function copyToClipboard() {
+            const content = document.getElementById('fileContent');
+            const status = document.getElementById('status');
+            
+            content.select();
+            document.execCommand('copy');
+            
+            status.innerHTML = '<div class="success">✅ Content copied to clipboard!</div>';
+            setTimeout(() => {
+                status.innerHTML = '';
+            }, 3000);
+        }
+        
+        function downloadAsFile() {
+            const content = document.getElementById('fileContent').value;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dun-project-files-debug.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const status = document.getElementById('status');
+            status.innerHTML = '<div class="success">✅ File downloaded successfully!</div>';
+            setTimeout(() => {
+                status.innerHTML = '';
+            }, 3000);
+        }
+        
+        function refreshFiles() {
+            loadFiles();
+        }
+        
+        // Load files when page loads
+        window.addEventListener('load', loadFiles);
+    </script>
+</body>
+</html>
