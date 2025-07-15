@@ -3389,11 +3389,11 @@ function updateCurrentTimeLine() {
   const hours = now.getHours();
   const minutes = now.getMinutes();
   const totalMinutes = hours * 60 + minutes;
-  const position = (totalMinutes / 60) * 60; // 60px per hour
+  const position = totalMinutes; // Direct pixel positioning based on minutes
   
   currentTimeLine.style.top = position + 'px';
   
-  if (debug) console.log('Current time line updated:', `${hours}:${minutes.toString().padStart(2, '0')}`);
+  console.log('⏰ CURRENT TIME: Current time line updated:', `${hours}:${minutes.toString().padStart(2, '0')}`, 'position:', position + 'px');
 }
 
 // Initialize draggable limit lines
