@@ -32,13 +32,13 @@ app.get('/api/tasks', async (req, res) => {
       FROM tasks 
       ORDER BY position_order ASC
     `);
-    
+
     // Convert flat structure to nested tree
     const tasksMap = new Map();
     const rootTasks = [];
-    
+
     console.log(`🌳 TREE BUILD: Processing ${result.rows.length} database rows`);
-    
+
     // First pass: create all task objects
     result.rows.forEach(row => {
       const task = {
@@ -60,7 +60,7 @@ app.get('/api/tasks', async (req, res) => {
       };
       tasksMap.set(row.id, task);
     });
-    
+
     // Second pass: build the tree structure
     result.rows.forEach(row => {
       const task = tasksMap.get(row.id);
@@ -76,12 +76,12 @@ app.get('/api/tasks', async (req, res) => {
         console.log(`🌳 TREE BUILD: ORPHANED "${row.content}" - parent_id "${row.parent_id}" not found`);
       }
     });
-    
+
     console.log(`🌳 TREE BUILD: Final tree has ${rootTasks.length} root items`);
     rootTasks.forEach(item => {
       console.log(`🌳 ROOT: "${item.content}" with ${item.children.length} children`);
     });
-    
+
     res.json(rootTasks);
   } catch (error) {
     console.error('Error fetching tasks:', error);
@@ -101,7 +101,7 @@ app.get('/api/tasks/raw', async (req, res) => {
       FROM tasks 
       ORDER BY position_order
     `);
-    
+
     console.log(`RAW TASKS: Returning ${result.rows.length} raw database records`);
     res.json(result.rows);
   } catch (error) {
@@ -123,11 +123,11 @@ app.get('/api/tasks/:id', async (req, res) => {
       FROM tasks 
       WHERE id = $1
     `, [id]);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Task not found' });
     }
-    
+
     const task = result.rows[0];
     console.log('FETCH SUCCESS: Found task:', task);
     res.json(task);
@@ -145,7 +145,7 @@ app.post('/api/tasks', async (req, res) => {
       revisitDate, fire, fast, flow, fear, first, timeEstimate,
       overview, details, scheduledTime
     } = req.body;
-    
+
     const result = await pool.query(`
       INSERT INTO tasks (
         id, content, is_section, completed, parent_id, position_order,
@@ -158,7 +158,7 @@ app.post('/api/tasks', async (req, res) => {
       revisitDate, fire || false, fast || false, flow || false, fear || false, first || false,
       timeEstimate || 0, overview || '', details || '', scheduledTime
     ]);
-    
+
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating task:', error);
@@ -174,16 +174,16 @@ app.put('/api/tasks/:id', async (req, res) => {
       content, completed, revisitDate, fire, fast, flow, fear, first,
       timeEstimate, overview, details, scheduledTime, parent_id, positionOrder
     } = req.body;
-    
+
     console.log('UPDATE REQUEST for task:', id);
     console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
+
     // Handle empty dates - convert empty strings to null for PostgreSQL
     const cleanRevisitDate = revisitDate === '' || revisitDate === undefined ? null : revisitDate;
     const cleanScheduledTime = scheduledTime === '' || scheduledTime === undefined ? null : scheduledTime;
-    
+
     console.log('Cleaned dates:', { cleanRevisitDate, cleanScheduledTime });
-    
+
     const result = await pool.query(`
       UPDATE tasks SET
         content = $2,
@@ -207,11 +207,11 @@ app.put('/api/tasks/:id', async (req, res) => {
       id, content, completed, cleanRevisitDate, fire, fast, flow, fear, first,
       timeEstimate, overview, details, cleanScheduledTime, parent_id, positionOrder
     ]);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Task not found' });
     }
-    
+
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating task:', error);
@@ -223,13 +223,13 @@ app.put('/api/tasks/:id', async (req, res) => {
 app.delete('/api/tasks/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const result = await pool.query('DELETE FROM tasks WHERE id = $1 RETURNING *', [id]);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Task not found' });
     }
-    
+
     res.json({ message: 'Task deleted successfully' });
   } catch (error) {
     console.error('Error deleting task:', error);
@@ -241,18 +241,18 @@ app.delete('/api/tasks/:id', async (req, res) => {
 app.put('/api/tasks/reorder', async (req, res) => {
   try {
     const { updates } = req.body; // Array of {id, parentId, positionOrder}
-    
+
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
-      
+
       for (const update of updates) {
         await client.query(
           'UPDATE tasks SET parent_id = $2, position_order = $3 WHERE id = $1',
           [update.id, update.parentId, update.positionOrder]
         );
       }
-      
+
       await client.query('COMMIT');
       res.json({ message: 'Tasks reordered successfully' });
     } catch (error) {
@@ -271,7 +271,39 @@ app.put('/api/tasks/reorder', async (req, res) => {
 app.get('/debug/tasks', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM tasks ORDER BY position_order ASC');
-    res.json(result.rows);
+
+    // Add HTML wrapper for better presentation
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>DUN Tasks Database Debug - Raw JSON</title>
+      <style>
+        body { font-family: 'Courier New', monospace; background: #1a1a1a; color: #ddd; margin: 20px; }
+        h1 { color: #00CEF7; }
+        .description { color: #aaa; font-size: 14px; margin-bottom: 20px; font-style: italic; }
+        .nav { margin: 20px 0; }
+        .nav a { color: #00CEF7; margin-right: 15px; text-decoration: none; }
+        .nav a:hover { text-decoration: underline; }
+        pre { background: #2a2a2a; padding: 20px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; }
+      </style>
+    </head>
+    <body>
+      <h1>🔍 DUN Tasks Database Debug - Raw JSON</h1>
+      <div class="description">Complete raw JSON dump of all database records, useful for API testing and data analysis.</div>
+      <div class="nav">
+        <a href="/debug/tasks">Raw JSON</a>
+        <a href="/debug/table">Table View</a>
+        <a href="/debug/formatted">Formatted View</a>
+        <a href="/debug-files.html">File Aggregator</a>
+        <a href="/filter-flow-diagram.html">Filter Flow Diagram</a>
+        <a href="/">Back to App</a>
+      </div>
+      <pre>${JSON.stringify(result.rows, null, 2)}</pre>
+    </body>
+    </html>`;
+
+    res.send(html);
   } catch (error) {
     console.error('Error fetching debug tasks:', error);
     res.status(500).json({ error: 'Failed to fetch tasks' });
@@ -295,42 +327,42 @@ app.post('/api/reset-database', async (req, res) => {
 app.post('/api/load-test-data', async (req, res) => {
   try {
     console.log('🧪 TEST DATA: Loading comprehensive test dataset');
-    
+
     // First clear existing data
     await pool.query('DELETE FROM tasks');
     console.log('🧪 TEST DATA: Cleared existing data');
-    
+
     // Load test data from JSON file
     const fs = require('fs');
     const path = require('path');
     const testDataPath = path.join(__dirname, 'test-data.json');
     const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
-    
+
     // Calculate dynamic dates
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
-    
+
     // This week calculation (Monday-based)
     const daysSinceMonday = (today.getDay() + 6) % 7;
     const thisWeekDate = new Date(today);
     thisWeekDate.setDate(today.getDate() - daysSinceMonday + 3); // Wednesday
-    
+
     // Next week calculation
     const nextWeekDate = new Date(thisWeekDate);
     nextWeekDate.setDate(thisWeekDate.getDate() + 7);
-    
+
     // This month calculation
     const thisMonthDate = new Date(today.getFullYear(), today.getMonth(), 15);
-    
+
     // Next month calculation
     const nextMonthDate = new Date(today.getFullYear(), today.getMonth() + 1, 15);
-    
+
     // Helper function to format dates
     const formatDate = (date) => {
       return date.toISOString().split('T')[0];
     };
-    
+
     // Process and insert sections first
     console.log('🧪 TEST DATA: Inserting sections...');
     for (const section of testData.sections) {
@@ -346,12 +378,12 @@ app.post('/api/load-test-data', async (req, res) => {
         false, false, 0, '', '', null
       ]);
     }
-    
+
     // Process and insert tasks with dynamic dates
     console.log('🧪 TEST DATA: Inserting tasks with dynamic dates...');
     for (const task of testData.tasks) {
       let revisitDate = task.revisit_date;
-      
+
       // Replace date placeholders with actual dates
       if (revisitDate === 'TODAY_PLACEHOLDER') {
         revisitDate = formatDate(today);
@@ -366,7 +398,7 @@ app.post('/api/load-test-data', async (req, res) => {
       } else if (revisitDate === 'NEXT_MONTH_PLACEHOLDER') {
         revisitDate = formatDate(nextMonthDate);
       }
-      
+
       await pool.query(`
         INSERT INTO tasks (
           id, content, is_section, completed, parent_id, position_order,
@@ -380,14 +412,14 @@ app.post('/api/load-test-data', async (req, res) => {
         task.overview, task.details, task.scheduled_time
       ]);
     }
-    
+
     console.log('✅ TEST DATA: Comprehensive test dataset loaded successfully');
     res.json({ 
       message: 'Test data loaded successfully',
       sectionsCount: testData.sections.length,
       tasksCount: testData.tasks.length
     });
-    
+
   } catch (error) {
     console.error('❌ TEST DATA ERROR:', error);
     res.status(500).json({ error: 'Failed to load test data' });
@@ -398,37 +430,41 @@ app.post('/api/load-test-data', async (req, res) => {
 app.get('/debug/table', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM tasks ORDER BY position_order ASC');
-    
+
     let html = `
     <!DOCTYPE html>
     <html>
     <head>
-      <title>DUN Tasks Database Table</title>
+      <title>DUN Tasks Database Debug - Table View</title>
       <style>
-        body { font-family: Arial, sans-serif; background: #1a1a1a; color: #ddd; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; background: #2a2a2a; }
-        th, td { border: 1px solid #444; padding: 8px; text-align: left; vertical-align: top; }
-        th { background: #333; color: #00CEF7; position: sticky; top: 0; }
-        tr:nth-child(even) { background: #252525; }
-        .true { color: #0f8; }
-        .false { color: #888; }
-        .null { color: #888; font-style: italic; }
-        .section { background: #003366 !important; }
+        body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a1a; color: #ddd; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #444; padding: 8px; text-align: left; }
+        th { background-color: #333; color: #00CEF7; }
+        tr:nth-child(even) { background-color: #2a2a2a; }
+        .completed { opacity: 0.6; text-decoration: line-through; }
+        .flag-true { color: #00CEF7; font-weight: bold; }
+        .flag-false { color: #666; }
         h1 { color: #00CEF7; }
         .nav { margin: 20px 0; }
         .nav a { color: #00CEF7; margin-right: 15px; text-decoration: none; }
         .nav a:hover { text-decoration: underline; }
+        .description { color: #aaa; font-size: 14px; margin-bottom: 20px; font-style: italic; }
       </style>
     </head>
     <body>
-      <h1>📊 DUN Tasks Database Table</h1>
+      <h1>📊 DUN Tasks Database Debug - Table View</h1>
+      <div class="description">Tabular view of all database records showing raw field values, perfect for spotting data inconsistencies.</div>
       <div class="nav">
         <a href="/debug/tasks">Raw JSON</a>
         <a href="/debug/table">Table View</a>
+        <a href="/debug/formatted">Formatted View</a>
+        <a href="/debug-files.html">File Aggregator</a>
+        <a href="/filter-flow-diagram.html">Filter Flow Diagram</a>
         <a href="/">Back to App</a>
       </div>
       <p>Total records: ${result.rows.length}</p>
-      
+
       <table>
         <thead>
           <tr>
@@ -454,7 +490,7 @@ app.get('/debug/table', async (req, res) => {
         </thead>
         <tbody>
     `;
-    
+
     result.rows.forEach(row => {
       const formatValue = (val) => {
         if (val === null || val === undefined) return '<span class="null">null</span>';
@@ -463,7 +499,7 @@ app.get('/debug/table', async (req, res) => {
         if (typeof val === 'string' && val.length > 50) return val.substring(0, 50) + '...';
         return val;
       };
-      
+
       html += `
         <tr ${row.is_section ? 'class="section"' : ''}>
           <td>${row.id}</td>
@@ -487,14 +523,14 @@ app.get('/debug/table', async (req, res) => {
         </tr>
       `;
     });
-    
+
     html += `
         </tbody>
       </table>
     </body>
     </html>
     `;
-    
+
     res.send(html);
   } catch (error) {
     console.error('Error fetching table debug:', error);
@@ -506,7 +542,7 @@ app.get('/debug/table', async (req, res) => {
 app.get('/debug/formatted', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM tasks ORDER BY position_order ASC');
-    
+
     let html = `
     <!DOCTYPE html>
     <html>
@@ -544,7 +580,7 @@ app.get('/debug/formatted', async (req, res) => {
     // Group tasks by parent
     const sections = result.rows.filter(t => t.is_section);
     const tasks = result.rows.filter(t => !t.is_section);
-    
+
     // Show sections first
     sections.forEach(section => {
       html += `
@@ -552,15 +588,15 @@ app.get('/debug/formatted', async (req, res) => {
           <h2>📁 SECTION: ${section.content} (${section.id})</h2>
           <div class="meta">Position: ${section.position_order} | Created: ${new Date(section.created_at).toLocaleString()}</div>
       `;
-      
+
       // Find tasks in this section
       const sectionTasks = tasks.filter(t => t.parent_id === section.id);
       html += `<p>📋 Tasks in section: ${sectionTasks.length}</p>`;
-      
+
       sectionTasks.forEach(task => {
         const flags = ['fire', 'fast', 'flow', 'fear', 'first'];
         const activeFlags = flags.filter(f => task[f]);
-        
+
         html += `
           <div class="task ${task.completed ? 'completed' : ''}">
             <strong>${task.content}</strong>
@@ -581,10 +617,10 @@ app.get('/debug/formatted', async (req, res) => {
           </div>
         `;
       });
-      
+
       html += `</div>`;
     });
-    
+
     // Show orphaned tasks (no parent or invalid parent)
     const orphanedTasks = tasks.filter(t => !t.parent_id || !sections.find(s => s.id === t.parent_id));
     if (orphanedTasks.length > 0) {
@@ -593,10 +629,10 @@ app.get('/debug/formatted', async (req, res) => {
           <h2>⚠️ ORPHANED TASKS (${orphanedTasks.length})</h2>
           <p>Tasks without valid parent sections:</p>
       `;
-      
+
       orphanedTasks.forEach(task => {
         const flags = ['fire', 'fast', 'flow', 'fear', 'first'];
-        
+
         html += `
           <div class="task ${task.completed ? 'completed' : ''}">
             <strong>${task.content}</strong>
@@ -611,10 +647,10 @@ app.get('/debug/formatted', async (req, res) => {
           </div>
         `;
       });
-      
+
       html += `</div>`;
     }
-    
+
     html += `
       <h2>📊 Database Statistics</h2>
       <div class="section">
@@ -629,7 +665,7 @@ app.get('/debug/formatted', async (req, res) => {
     </body>
     </html>
     `;
-    
+
     res.send(html);
   } catch (error) {
     console.error('Error fetching formatted debug:', error);
