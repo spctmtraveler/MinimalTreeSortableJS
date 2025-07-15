@@ -3499,7 +3499,7 @@ function updateRemainingTimes() {
   // Update STOP remaining time
   const stopRemaining = document.getElementById('stop-remaining');
   if (stopRemaining) {
-    const stopMinutes = hoursData.limitLines.stop.position;
+    const stopMinutes = 18 * 60; // 6:00 PM
     const remainingToStop = stopMinutes - currentMinutes;
     stopRemaining.textContent = formatRemainingTime(remainingToStop);
   }
@@ -3507,7 +3507,7 @@ function updateRemainingTimes() {
   // Update SLEEP remaining time
   const sleepRemaining = document.getElementById('sleep-remaining');
   if (sleepRemaining) {
-    const sleepMinutes = hoursData.limitLines.sleep.position;
+    const sleepMinutes = 23 * 60; // 11:00 PM
     const remainingToSleep = sleepMinutes - currentMinutes;
     sleepRemaining.textContent = formatRemainingTime(remainingToSleep);
   }

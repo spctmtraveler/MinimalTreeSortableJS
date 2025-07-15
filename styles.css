@@ -1431,40 +1431,32 @@ body[data-show-dates="true"] .task-date-container {
 
 .limit-line-bar {
   width: 100%;
-  height: 3px;
-  background: repeating-linear-gradient(
-    45deg,
-    #00CEF7,
-    #00CEF7 4px,
-    transparent 4px,
-    transparent 8px
-  );
+  height: 2px;
+  background: #ff6b6b;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.sleep-line .limit-line-bar {
+  background: #4ecdc4;
 }
 
 .limit-icon {
   position: absolute;
-  right: -30px;
-  top: -12px;
-  width: 24px;
-  height: 24px;
-  background: #00CEF7;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: white;
+  right: -25px;
+  top: -8px;
+  font-size: 16px;
   cursor: ns-resize;
-  border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 3;
 }
 
 .limit-label {
   position: absolute;
   left: -100px;
   top: -8px;
-  font-size: 0.75rem;
-  color: #00CEF7;
+  font-size: 10px;
+  color: #ffffff;
   font-weight: bold;
   white-space: nowrap;
 }
@@ -1472,9 +1464,9 @@ body[data-show-dates="true"] .task-date-container {
 .remaining-time {
   position: absolute;
   right: -60px;
-  top: 8px;
-  font-size: 0.75rem;
-  color: #00CEF7;
+  top: 4px;
+  font-size: 9px;
+  color: #cccccc;
   white-space: nowrap;
 }
 
