@@ -3383,17 +3383,24 @@ function initCurrentTimeLine() {
 // Update current time line position
 function updateCurrentTimeLine() {
   const currentTimeLine = document.getElementById('current-time-line');
-  if (!currentTimeLine) return;
+  if (!currentTimeLine) {
+    console.log('⏰ ERROR: current-time-line element not found!');
+    return;
+  }
   
   const now = new Date();
   const hours = now.getHours();
   const minutes = now.getMinutes();
   const totalMinutes = hours * 60 + minutes;
-  const position = totalMinutes; // Direct pixel positioning based on minutes
+  const position = (totalMinutes / 60) * 60; // Same calculation as limit lines: 60px per hour
   
+  currentTimeLine.style.position = 'absolute';
   currentTimeLine.style.top = position + 'px';
+  currentTimeLine.style.left = '0';
+  currentTimeLine.style.display = 'block';
+  currentTimeLine.style.visibility = 'visible';
   
-  console.log('⏰ CURRENT TIME: Current time line updated:', `${hours}:${minutes.toString().padStart(2, '0')}`, 'position:', position + 'px');
+  console.log('⏰ CURRENT TIME: Current time line updated:', `${hours}:${minutes.toString().padStart(2, '0')}`, 'position:', position + 'px', 'totalMinutes:', totalMinutes);
 }
 
 // Initialize draggable limit lines
