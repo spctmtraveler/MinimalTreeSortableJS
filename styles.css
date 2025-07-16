@@ -1233,7 +1233,7 @@ body[data-show-dates="true"] .task-date-container {
   background: #1a1a1a !important;
   padding-left: 60px !important; /* Space for hour labels */
   padding-top: 20px !important;
-  padding-right: 120px !important; /* Increased space for limit line icons and text */
+  padding-right: 80px !important; /* Space for limit line icons and text */
   display: block !important;
   overflow: visible !important;
 }
@@ -1416,17 +1416,15 @@ body[data-show-dates="true"] .task-date-container {
 
 .time-icon {
   position: absolute !important;
-  right: -100px !important;
+  right: -60px !important;
   top: -8px !important;
   font-size: 16px !important;
   color: #00CEF7 !important;
   cursor: pointer !important;
   z-index: 21 !important;
-  width: 24px !important;
+  width: 20px !important;
   height: 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: block !important;
 }
 
 /* Limit Lines */
@@ -1460,18 +1458,16 @@ body[data-show-dates="true"] .task-date-container {
 
 .limit-icon {
   position: absolute !important;
-  right: -100px !important;
+  right: -60px !important;
   top: -8px !important;
   font-size: 16px !important;
   color: #ff6b6b !important;
   cursor: ns-resize !important;
   z-index: 21 !important;
   pointer-events: none !important;
-  width: 24px !important;
+  width: 20px !important;
   height: 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: block !important;
 }
 
 .sleep-line .limit-icon {
@@ -1480,7 +1476,7 @@ body[data-show-dates="true"] .task-date-container {
 
 .limit-label {
   position: absolute !important;
-  right: -70px !important;
+  right: -40px !important;
   top: 10px !important;
   font-size: 12px !important;
   color: #7F7F7F !important;
