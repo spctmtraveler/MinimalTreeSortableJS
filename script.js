@@ -3671,16 +3671,14 @@ function updateRemainingTimes() {
   }
 }
 
-// Format remaining time (e.g., 570 minutes -> "9h 30m")
+// Format remaining time (e.g., 570 minutes -> "9:30")
 function formatRemainingTime(minutes) {
-  if (minutes <= 0) return '0m';
+  if (minutes <= 0) return '0:00';
   
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
   
-  if (hours === 0) return `${mins}m`;
-  if (mins === 0) return `${hours}h`;
-  return `${hours}h ${mins}m`;
+  return `${hours}:${mins.toString().padStart(2, '0')}`;
 }
 
 // Setup event listeners for Hours panel
