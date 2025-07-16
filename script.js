@@ -3489,13 +3489,41 @@ function updateCurrentTimeLine() {
   const totalMinutes = hours * 60 + minutes;
   const position = (totalMinutes / 60) * 60; // Same calculation as limit lines: 60px per hour
   
-  currentTimeLine.style.position = 'absolute';
-  currentTimeLine.style.top = position + 'px';
-  currentTimeLine.style.left = '0';
-  currentTimeLine.style.display = 'block';
-  currentTimeLine.style.visibility = 'visible';
+  // Get timeline container for proper positioning context
+  const timeline = document.getElementById('hours-timeline');
+  const timelineRect = timeline ? timeline.getBoundingClientRect() : null;
+  
+  // Force position the current time line with explicit styles
+  currentTimeLine.style.cssText = `
+    position: absolute !important;
+    top: ${position}px !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 3px !important;
+    background: #00CEF7 !important;
+    z-index: 20 !important;
+    display: block !important;
+    visibility: visible !important;
+  `;
+  
+  // Also apply to the indicator child if it exists
+  const indicator = currentTimeLine.querySelector('.time-line-indicator');
+  if (indicator) {
+    indicator.style.cssText = `
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: #00CEF7 !important;
+      z-index: 20 !important;
+      display: block !important;
+      visibility: visible !important;
+    `;
+  }
   
   console.log('⏰ CURRENT TIME: Current time line updated:', `${hours}:${minutes.toString().padStart(2, '0')}`, 'position:', position + 'px', 'totalMinutes:', totalMinutes);
+  console.log('⏰ CURRENT TIME: Timeline container rect:', timelineRect);
 }
 
 // Initialize draggable limit lines
@@ -3519,11 +3547,36 @@ function initLimitLines() {
 // Position limit line at specified time
 function positionLimitLine(element, minutes) {
   const position = (minutes / 60) * 60; // 60px per hour
-  element.style.position = 'absolute';
-  element.style.top = position + 'px';
-  element.style.left = '0';
-  element.style.width = '100%';
-  element.style.zIndex = '15';
+  
+  // Force position the limit line with explicit styles
+  element.style.cssText = `
+    position: absolute !important;
+    top: ${position}px !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 3px !important;
+    z-index: 15 !important;
+    display: block !important;
+    visibility: visible !important;
+    cursor: ns-resize !important;
+  `;
+  
+  // Also apply to the bar child if it exists
+  const bar = element.querySelector('.limit-line-bar');
+  if (bar) {
+    bar.style.cssText = `
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: ${element.id === 'stop-line' ? '#ff6b6b' : '#00BFAE'} !important;
+      z-index: 15 !important;
+      display: block !important;
+      visibility: visible !important;
+    `;
+  }
+  
   console.log('🚦 LIMIT LINE: Positioned', element.id, 'at', position + 'px', 'for', minutes, 'minutes');
 }
 
