@@ -1448,12 +1448,12 @@ body[data-show-dates="true"] .task-date-container {
 
 .limit-icon {
   position: absolute !important;
-  right: -25px !important;
+  left: calc(100% + 10px) !important;
   top: -8px !important;
   font-size: 16px !important;
   color: #ff6b6b !important;
   cursor: ns-resize !important;
-  z-index: 3 !important;
+  z-index: 21 !important;
 }
 
 .sleep-line .limit-icon {
@@ -1462,17 +1462,24 @@ body[data-show-dates="true"] .task-date-container {
 
 .limit-label {
   position: absolute !important;
-  right: -120px !important;
-  top: -10px !important;
+  left: calc(100% + 10px) !important;
+  top: 8px !important;
   font-size: 11px !important;
-  color: #ffffff !important;
-  font-weight: bold !important;
+  color: #7F7F7F !important;
+  font-weight: normal !important;
   white-space: nowrap !important;
-  z-index: 3 !important;
+  z-index: 21 !important;
 }
 
 .remaining-time {
   position: absolute !important;
+  left: calc(100% + 10px) !important;
+  top: 8px !important;
+  font-size: 11px !important;
+  color: #7F7F7F !important;
+  font-weight: normal !important;
+  white-space: nowrap !important;
+  z-index: 21 !important;
   right: -120px !important;
   top: 5px !important;
   font-size: 10px !important;

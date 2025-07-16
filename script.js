@@ -3619,10 +3619,13 @@ function makeLimitLineDraggable(element, type) {
     const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     hoursData.limitLines[type].time = timeStr;
     
-    // Update label
+    // Update label with just duration
     const label = element.querySelector('.limit-label');
     if (label) {
-      label.textContent = `${type.toUpperCase()} ${formatTimeDisplay(timeStr)}`;
+      const currentTime = new Date();
+      const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+      const remainingMinutes = newPosition - currentMinutes;
+      label.textContent = formatRemainingTime(remainingMinutes);
     }
     
     updateRemainingTimes();
@@ -3652,19 +3655,19 @@ function updateRemainingTimes() {
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
   
   // Update STOP remaining time
-  const stopRemaining = document.getElementById('stop-remaining');
-  if (stopRemaining) {
-    const stopMinutes = 18 * 60; // 6:00 PM
+  const stopLabel = document.querySelector('#stop-line .limit-label');
+  if (stopLabel) {
+    const stopMinutes = hoursData.limitLines.stop.position;
     const remainingToStop = stopMinutes - currentMinutes;
-    stopRemaining.textContent = formatRemainingTime(remainingToStop);
+    stopLabel.textContent = formatRemainingTime(remainingToStop);
   }
   
   // Update SLEEP remaining time
-  const sleepRemaining = document.getElementById('sleep-remaining');
-  if (sleepRemaining) {
-    const sleepMinutes = 23 * 60; // 11:00 PM
+  const sleepLabel = document.querySelector('#sleep-line .limit-label');
+  if (sleepLabel) {
+    const sleepMinutes = hoursData.limitLines.sleep.position;
     const remainingToSleep = sleepMinutes - currentMinutes;
-    sleepRemaining.textContent = formatRemainingTime(remainingToSleep);
+    sleepLabel.textContent = formatRemainingTime(remainingToSleep);
   }
 }
 
