@@ -3792,10 +3792,10 @@ function renderHoursTask(task) {
     <span class="task-title">${task.title}</span>
     <div class="task-block-controls">
       <button class="task-control-btn edit-btn" title="Edit task">
-        <i class="fa-solid fa-pencil"></i>
+        <i class="fas fa-edit"></i>
       </button>
       <button class="task-control-btn delete-btn" title="Delete task">
-        <i class="fa-solid fa-times"></i>
+        <i class="fas fa-trash"></i>
       </button>
     </div>
     <div class="resize-handle"></div>
