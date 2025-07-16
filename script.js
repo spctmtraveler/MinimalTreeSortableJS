@@ -3398,6 +3398,20 @@ function initCurrentTimeLine() {
 function debugForceTimelineVisible() {
   console.log('🚨 DEBUG: Starting force visibility check...');
   
+  // Get the Hours timeline container to understand positioning context
+  const hoursTimeline = document.getElementById('hours-timeline');
+  console.log('🚨 DEBUG: hoursTimeline container:', hoursTimeline);
+  
+  if (hoursTimeline) {
+    const timelineRect = hoursTimeline.getBoundingClientRect();
+    console.log('🚨 DEBUG: Hours timeline container position:', {
+      top: timelineRect.top,
+      left: timelineRect.left,
+      width: timelineRect.width,
+      height: timelineRect.height
+    });
+  }
+  
   // Check current time line
   const currentTimeLine = document.getElementById('current-time-line');
   const timeLineIndicator = document.querySelector('.time-line-indicator');
@@ -3417,22 +3431,6 @@ function debugForceTimelineVisible() {
     console.log('  - visibility:', styles.visibility);
     console.log('  - zIndex:', styles.zIndex);
     console.log('  - background:', styles.background);
-    
-    // FORCE EXTREME VISIBILITY
-    currentTimeLine.style.cssText = `
-      position: fixed !important;
-      top: 200px !important;
-      left: 50px !important;
-      width: 500px !important;
-      height: 20px !important;
-      background: red !important;
-      z-index: 99999 !important;
-      display: block !important;
-      visibility: visible !important;
-      border: 5px solid yellow !important;
-      box-shadow: 0 0 20px purple !important;
-    `;
-    console.log('🚨 DEBUG: FORCED current time line styles applied');
   }
   
   if (timeLineIndicator) {
@@ -3447,30 +3445,18 @@ function debugForceTimelineVisible() {
     console.log('  - visibility:', styles.visibility);
     console.log('  - zIndex:', styles.zIndex);
     console.log('  - background:', styles.background);
-    
-    // FORCE EXTREME VISIBILITY
-    timeLineIndicator.style.cssText = `
-      position: fixed !important;
-      top: 250px !important;
-      left: 50px !important;
-      width: 500px !important;
-      height: 20px !important;
-      background: blue !important;
-      z-index: 99999 !important;
-      display: block !important;
-      visibility: visible !important;
-      border: 5px solid orange !important;
-      box-shadow: 0 0 20px green !important;
-    `;
-    console.log('🚨 DEBUG: FORCED time line indicator styles applied');
   }
   
   // Check limit lines
   const stopLine = document.getElementById('stop-line');
   const stopBar = document.querySelector('.stop-line .limit-line-bar');
+  const sleepLine = document.getElementById('sleep-line');
+  const sleepBar = document.querySelector('.sleep-line .limit-line-bar');
   
   console.log('🚨 DEBUG: stopLine element:', stopLine);
   console.log('🚨 DEBUG: stopBar element:', stopBar);
+  console.log('🚨 DEBUG: sleepLine element:', sleepLine);
+  console.log('🚨 DEBUG: sleepBar element:', sleepBar);
   
   if (stopBar) {
     console.log('🚨 DEBUG: Stop bar computed styles:');
@@ -3484,25 +3470,9 @@ function debugForceTimelineVisible() {
     console.log('  - visibility:', styles.visibility);
     console.log('  - zIndex:', styles.zIndex);
     console.log('  - background:', styles.background);
-    
-    // FORCE EXTREME VISIBILITY
-    stopBar.style.cssText = `
-      position: fixed !important;
-      top: 300px !important;
-      left: 50px !important;
-      width: 500px !important;
-      height: 20px !important;
-      background: red !important;
-      z-index: 99999 !important;
-      display: block !important;
-      visibility: visible !important;
-      border: 5px solid cyan !important;
-      box-shadow: 0 0 20px magenta !important;
-    `;
-    console.log('🚨 DEBUG: FORCED stop bar styles applied');
   }
   
-  console.log('🚨 DEBUG: Force visibility check complete');
+  console.log('🚨 DEBUG: Force visibility check complete - elements exist, fixing positioning...');
 }
 
 // Update current time line position

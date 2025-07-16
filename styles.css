@@ -1398,14 +1398,12 @@ body[data-show-dates="true"] .task-date-container {
 .time-line-indicator {
   position: absolute !important;
   left: 0 !important;
-  width: 600px !important;
-  height: 10px !important;
+  width: 100% !important;
+  height: 3px !important;
   background: #00CEF7 !important;
   top: 0 !important;
-  z-index: 9999 !important;
+  z-index: 20 !important;
   display: block !important;
-  border: 2px solid #ff0000 !important;
-  box-shadow: 0 0 10px #00CEF7 !important;
   opacity: 1 !important;
 }
 
@@ -1433,13 +1431,12 @@ body[data-show-dates="true"] .task-date-container {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
-  width: 600px !important;
-  height: 10px !important;
+  width: 100% !important;
+  height: 3px !important;
   background: #ff6b6b !important;
-  z-index: 9999 !important;
+  z-index: 15 !important;
   display: block !important;
-  box-shadow: 0 0 10px rgba(255, 107, 107, 0.8) !important;
-  border: 2px solid #00ff00 !important;
+  box-shadow: 0 0 2px rgba(255, 107, 107, 0.8) !important;
   opacity: 1 !important;
 }
 
