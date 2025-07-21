@@ -2814,34 +2814,9 @@ function initDebugModal() {
     
     // Toggle modal visibility
     if (modal.style.display === 'block') {
-      modal.style.display = 'none';
-      debugLogger('Debug modal closed via gear icon click');
+      closeSettingsModal();
     } else {
-      modal.style.display = 'block';
-      debugLogger('Debug modal opened via gear icon click');
-      
-      // Auto-copy logs immediately when modal opens
-      setTimeout(() => {
-        const copyBtn = document.getElementById('copy-logs-btn');
-        if (copyBtn) {
-          copyBtn.click();
-          console.log('📋 AUTO-COPY: Logs copied automatically on modal open');
-        }
-      }, 100);
-      
-      // Update checkboxes with current states
-      const debugCheckbox = document.getElementById('debug-toggle-checkbox');
-      const bordersCheckbox = document.getElementById('borders-toggle-checkbox');
-      
-      if (debugCheckbox) debugCheckbox.checked = debug;
-      if (bordersCheckbox) bordersCheckbox.checked = document.body.classList.contains('debug-borders-enabled');
-      
-      // Update debug log display
-      const debugLogElement = document.getElementById('debug-log');
-      if (debugLogElement) {
-        debugLogElement.textContent = debugLog.join('\n');
-        debugLogElement.scrollTop = debugLogElement.scrollHeight;
-      }
+      openSettingsModal();
     }
   });
   
@@ -3029,46 +3004,81 @@ function initDebugModal() {
     });
   }
   
-  // Close modal when clicking outside
+  // Close modal when clicking outside the window (but not on it)
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
-      modal.style.display = 'none';
-      debugLogger('Debug modal closed (clicked outside)');
+      closeSettingsModal();
     }
   });
   
   // Make modal draggable
-  makeDraggable(modal.querySelector('.debug-modal-content'));
+  makeSettingsModalDraggable();
   
   debugLogger('Debug modal initialized successfully');
 }
 
-// Navigation function for debug pages dropdown
-function navigateToDebugPage(url) {
-  if (url) {
-    window.open(url, '_blank');
-    // Reset dropdown to default
-    document.getElementById('debug-nav-select').value = '';
+// Open the settings modal
+function openSettingsModal() {
+  const modal = document.getElementById('debug-modal');
+  if (!modal) return;
+  
+  modal.style.display = 'block';
+  debugLogger('Settings modal opened');
+  
+  // Update checkboxes with current states
+  const debugCheckbox = document.getElementById('debug-toggle-checkbox');
+  const bordersCheckbox = document.getElementById('borders-toggle-checkbox');
+  
+  if (debugCheckbox) debugCheckbox.checked = debug;
+  if (bordersCheckbox) bordersCheckbox.checked = document.body.classList.contains('debug-borders-enabled');
+  
+  // Update debug log display
+  const debugLogElement = document.getElementById('debug-log');
+  if (debugLogElement) {
+    debugLogElement.textContent = debugLog.join('\n');
+    debugLogElement.scrollTop = debugLogElement.scrollHeight;
+  }
+  
+  // Center the modal window
+  const settingsWindow = document.getElementById('settings-window');
+  if (settingsWindow) {
+    settingsWindow.style.position = 'fixed';
+    settingsWindow.style.top = '50%';
+    settingsWindow.style.left = '50%';
+    settingsWindow.style.transform = 'translate(-50%, -50%)';
   }
 }
 
-// Make an element draggable by its header
-function makeDraggable(element) {
-  const header = element.querySelector('.modal-header');
-  if (!header) return;
+// Close the settings modal
+function closeSettingsModal() {
+  const modal = document.getElementById('debug-modal');
+  if (!modal) return;
+  
+  modal.style.display = 'none';
+  debugLogger('Settings modal closed');
+}
+
+// Make the settings modal window draggable
+function makeSettingsModalDraggable() {
+  const settingsWindow = document.getElementById('settings-window');
+  const header = document.getElementById('settings-header');
+  
+  if (!settingsWindow || !header) return;
   
   let isDragging = false;
   let startX, startY, initialX, initialY;
   
   header.addEventListener('mousedown', (e) => {
-    // Don't start dragging if clicking on close button
-    if (e.target.closest('.modal-close')) return;
+    // Don't start dragging if clicking on dropdown or close button
+    if (e.target.closest('.debug-nav-dropdown') || e.target.closest('.settings-close-btn')) {
+      return;
+    }
     
     isDragging = true;
-    element.classList.add('dragging');
+    settingsWindow.classList.add('dragging');
     
     // Get current position
-    const rect = element.getBoundingClientRect();
+    const rect = settingsWindow.getBoundingClientRect();
     initialX = rect.left;
     initialY = rect.top;
     
@@ -3077,11 +3087,12 @@ function makeDraggable(element) {
     startY = e.clientY;
     
     // Remove transform and set explicit position
-    element.style.transform = 'none';
-    element.style.left = initialX + 'px';
-    element.style.top = initialY + 'px';
+    settingsWindow.style.transform = 'none';
+    settingsWindow.style.left = initialX + 'px';
+    settingsWindow.style.top = initialY + 'px';
     
-    debugLogger('Debug modal: Started dragging');
+    debugLogger('Settings modal: Started dragging');
+    e.preventDefault();
   });
   
   document.addEventListener('mousemove', (e) => {
@@ -3097,23 +3108,32 @@ function makeDraggable(element) {
     const newY = initialY + deltaY;
     
     // Keep modal within viewport bounds
-    const maxX = window.innerWidth - element.offsetWidth;
-    const maxY = window.innerHeight - element.offsetHeight;
+    const maxX = window.innerWidth - settingsWindow.offsetWidth;
+    const maxY = window.innerHeight - settingsWindow.offsetHeight;
     
     const boundedX = Math.max(0, Math.min(newX, maxX));
     const boundedY = Math.max(0, Math.min(newY, maxY));
     
-    element.style.left = boundedX + 'px';
-    element.style.top = boundedY + 'px';
+    settingsWindow.style.left = boundedX + 'px';
+    settingsWindow.style.top = boundedY + 'px';
   });
   
   document.addEventListener('mouseup', () => {
     if (isDragging) {
       isDragging = false;
-      element.classList.remove('dragging');
-      debugLogger('Debug modal: Finished dragging');
+      settingsWindow.classList.remove('dragging');
+      debugLogger('Settings modal: Finished dragging');
     }
   });
+}
+
+// Navigation function for debug pages dropdown
+function navigateToDebugPage(url) {
+  if (url) {
+    window.open(url, '_blank');
+    // Reset dropdown to default
+    document.getElementById('debug-nav-select').value = '';
+  }
 }
 
 /* ===== HOURS PANEL FUNCTIONALITY ===== */
