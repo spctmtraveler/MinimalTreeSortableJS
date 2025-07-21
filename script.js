@@ -3022,7 +3022,18 @@ function openSettingsModal() {
   const modal = document.getElementById('debug-modal');
   if (!modal) return;
   
-  modal.style.display = 'block';
+  // Force proper modal display styles
+  modal.style.cssText = `
+    display: block !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    z-index: 10000 !important;
+  `;
+  
   debugLogger('Settings modal opened');
   
   // Update checkboxes with current states
@@ -3039,13 +3050,23 @@ function openSettingsModal() {
     debugLogElement.scrollTop = debugLogElement.scrollHeight;
   }
   
-  // Center the modal window
+  // Force center the modal window with explicit positioning
   const settingsWindow = document.getElementById('settings-window');
   if (settingsWindow) {
-    settingsWindow.style.position = 'fixed';
-    settingsWindow.style.top = '50%';
-    settingsWindow.style.left = '50%';
-    settingsWindow.style.transform = 'translate(-50%, -50%)';
+    settingsWindow.style.cssText = `
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 700px !important;
+      max-width: 90vw !important;
+      max-height: 85vh !important;
+      background: var(--secondary-bg) !important;
+      border: 2px solid var(--accent-color) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6) !important;
+      z-index: 10001 !important;
+    `;
   }
 }
 
@@ -3055,6 +3076,13 @@ function closeSettingsModal() {
   if (!modal) return;
   
   modal.style.display = 'none';
+  
+  // Reset any inline styles that might interfere
+  const settingsWindow = document.getElementById('settings-window');
+  if (settingsWindow) {
+    settingsWindow.style.transform = '';
+  }
+  
   debugLogger('Settings modal closed');
 }
 
