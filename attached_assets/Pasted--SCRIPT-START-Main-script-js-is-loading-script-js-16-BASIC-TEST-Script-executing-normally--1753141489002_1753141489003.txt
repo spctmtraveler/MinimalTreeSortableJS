@@ -1,0 +1,343 @@
+🚀 SCRIPT START: Main script.js is loading...
+script.js:16 🧪 BASIC TEST: Script executing normally
+emergency-fix.js:2 🚨 EMERGENCY FIX: Loading immediate solutions...
+emergency-fix.js:6 🚨 Today is: 2025-07-21
+emergency-fix.js:259 🚨 EMERGENCY FIX: Script loaded
+script.js:2710 🚀 DOM READY: DOMContentLoaded event fired, starting application...
+script.js:2335 🚀 INIT UI: Starting UI initialization...
+script.js:2356 🔍 SETUP: Looking for filter dropdown... <select id=​"filter-dropdown">​…​</select>​
+script.js:2359 🔍 SETUP: Filter dropdown found, current value: all
+script.js:2361 ✅ SETUP: Filter dropdown event listener attached successfully
+script.js:2364 🧪 SETUP: Testing filter function directly...
+script.js:1359 🚀 FILTER START: handleFilterChange() function called
+script.js:1372 🔍 FILTER: Selected filter value = "all"
+script.js:1376 📅 FILTER: Today's date = 2025-07-21 (2025-07-21)
+script.js:1399 📅 DATE RANGES:
+    Today: Mon Jul 21 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+script.js:1414 📋 FILTER: Found 0 task items in DOM
+script.js:1572 
+🏁 FILTER COMPLETE: "all" filter applied
+script.js:1573 📊 SUMMARY: 0 total, 0 sections, 0 shown, 0 hidden
+script.js:2367 ✅ SETUP: Filter function executed successfully during setup
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1362:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1407:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1576:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2366:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2711:3)
+(anonymous) @ script.js:1344
+script.js:58 Tasks loaded from database
+script.js:2718 Using tasks from database
+script.js:2742 Application initialized
+script.js:2746 🕐 INIT: Starting Hours Panel initialization...
+script.js:3153 🕐 INIT: initHoursPanel() called
+script.js:3156 🕐 INIT: Calling generateHourGrid()...
+script.js:3363 🕐 GRID: Generating hour grid...
+script.js:3401 ✅ GRID: Hour grid generated successfully with 24 hours
+script.js:3159 🕐 INIT: Calling initCurrentTimeLine()...
+script.js:3545 ⏰ CURRENT TIME: Current time line updated: 18:43 position: 1123px totalMinutes: 1123
+script.js:3546 ⏰ CURRENT TIME: Timeline container rect: DOMRect
+script.js:3162 🕐 INIT: Calling initLimitLines()...
+script.js:3600 🚦 LIMIT LINE: Positioned stop-line at 1080px for 1080 minutes
+script.js:3600 🚦 LIMIT LINE: Positioned sleep-line at 1380px for 1380 minutes
+script.js:3165 🕐 INIT: Calling setupHoursEventListeners()...
+script.js:3168 🕐 INIT: Calling updateRemainingTimes()...
+script.js:3175 🕐 INIT: Calling addSampleHoursTasks()...
+script.js:45 [6:43:33 PM] Hours: Starting task loading from database...
+script.js:3178 ✅ HOURS: Panel initialization completed successfully
+script.js:2748 ✅ INIT: Hours Panel initialization completed
+script.js:45 [6:43:33 PM] Debug modal initialized successfully
+script.js:1344 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1338:25)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2729:5)
+(anonymous) @ script.js:1344
+script.js:45 [6:43:34 PM] Hours: Raw API response received
+script.js:45 [6:43:34 PM] Hours: API returned 23 total records
+script.js:45 [6:43:34 PM] Hours: First task structure: {"id":"task-today-a-1","content":"Today A 07a","is_section":false,"completed":false,"parent_id":"section-a","position_order":0,"revisit_date":"2025-07-21T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"time_estimate":"60.00","overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduled_time":"07:00:00"}
+script.js:45 [6:43:34 PM] Hours: Found 19 actual tasks (excluding 4 section headers)
+script.js:45 [6:43:34 PM] Hours: Sample actual task: {"id":"task-today-a-1","content":"Today A 07a","is_section":false,"completed":false,"parent_id":"section-a","position_order":0,"revisit_date":"2025-07-21T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"time_estimate":"60.00","overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduled_time":"07:00:00"}
+script.js:45 [6:43:34 PM] Hours: Today's date for comparison: 2025-07-21
+script.js:45 [6:43:34 PM] Hours: Examining task "Today A 07a" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 07:00:00
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a" has scheduled time: 07:00:00
+script.js:3253 ⏰ TIME PARSE: Task Today A 07a scheduled at 7:00
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 7:00, duration: 60min (from estimate: 60.00min → 60min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-1
+script.js:3280 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3283 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3285 🚀 ABOUT TO RENDER: Task hours-task-1 with data: Object
+script.js:3286 🚀 ABOUT TO RENDER: Container exists? true
+script.js:3783 🔧 RENDER: Starting to render task hours-task-1
+script.js:3789 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3798 🎯 POSITION CALC: Task hours-task-1 startMinutes: 420 position: 420px
+script.js:3799 🎯 HEIGHT CALC: Task hours-task-1 durationMinutes: 60 height: 60px
+script.js:3826 🔧 RENDER: About to setup task interactions for hours-task-1
+script.js:3827 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-1" style="position: absolute; top: 420px; height: 60px; left: 10px; right: 10px; background: rgb(0, 206, 247); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today A 07a</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3837 🔧 SETUP: Starting interaction setup for task hours-task-1
+script.js:3843 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3830 🔧 RENDER: Task rendering complete for hours-task-1
+script.js:45 [6:43:34 PM] Hours: Successfully added database task: "Today A 07a" at 7:00
+script.js:45 [6:43:34 PM] Hours: Examining task "Today A 07a Sub1" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 07:00:00
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub1" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub1" has scheduled time: 07:00:00
+script.js:3253 ⏰ TIME PARSE: Task Today A 07a Sub1 scheduled at 7:00
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 7:00, duration: 15min (from estimate: 10.00min → 15min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-2
+script.js:3280 🔍 OVERLAP RESULT: HAS OVERLAP
+script.js:3291 ❌ HAS OVERLAP: Skipping task due to overlap
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub1" overlaps with existing task, skipped
+script.js:45 [6:43:34 PM] Hours: Examining task "Today B 10a" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 10:30:00
+script.js:45 [6:43:34 PM] Hours: Task "Today B 10a" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today B 10a" has scheduled time: 10:30:00
+script.js:3253 ⏰ TIME PARSE: Task Today B 10a scheduled at 10:30
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 10:30, duration: 45min (from estimate: 45.00min → 45min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-3
+script.js:3280 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3283 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3285 🚀 ABOUT TO RENDER: Task hours-task-3 with data: Object
+script.js:3286 🚀 ABOUT TO RENDER: Container exists? true
+script.js:3783 🔧 RENDER: Starting to render task hours-task-3
+script.js:3789 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3798 🎯 POSITION CALC: Task hours-task-3 startMinutes: 630 position: 630px
+script.js:3799 🎯 HEIGHT CALC: Task hours-task-3 durationMinutes: 45 height: 45px
+script.js:3826 🔧 RENDER: About to setup task interactions for hours-task-3
+script.js:3827 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-3" style="position: absolute; top: 630px; height: 45px; left: 10px; right: 10px; background: rgb(0, 206, 247); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today B 10a</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3837 🔧 SETUP: Starting interaction setup for task hours-task-3
+script.js:3843 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3830 🔧 RENDER: Task rendering complete for hours-task-3
+script.js:45 [6:43:34 PM] Hours: Successfully added database task: "Today B 10a" at 10:30
+script.js:45 [6:43:34 PM] Hours: Examining task "Today A 07a Sub2.1" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 07:10:00
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub2.1" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub2.1" has scheduled time: 07:10:00
+script.js:3253 ⏰ TIME PARSE: Task Today A 07a Sub2.1 scheduled at 7:10
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 7:10, duration: 15min (from estimate: 8.00min → 15min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-4
+script.js:3280 🔍 OVERLAP RESULT: HAS OVERLAP
+script.js:3291 ❌ HAS OVERLAP: Skipping task due to overlap
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub2.1" overlaps with existing task, skipped
+script.js:45 [6:43:34 PM] Hours: Examining task "PastDue T NA" - revisitDate: 2024-12-15T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "PastDue T NA" date comparison - taskDate: 2024-12-15, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "Today C 04p" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 16:00:00
+script.js:45 [6:43:34 PM] Hours: Task "Today C 04p" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today C 04p" has scheduled time: 16:00:00
+script.js:3253 ⏰ TIME PARSE: Task Today C 04p scheduled at 16:00
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 16:00, duration: 30min (from estimate: 30.00min → 30min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-5
+script.js:3280 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3283 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3285 🚀 ABOUT TO RENDER: Task hours-task-5 with data: Object
+script.js:3286 🚀 ABOUT TO RENDER: Container exists? true
+script.js:3783 🔧 RENDER: Starting to render task hours-task-5
+script.js:3789 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3798 🎯 POSITION CALC: Task hours-task-5 startMinutes: 960 position: 960px
+script.js:3799 🎯 HEIGHT CALC: Task hours-task-5 durationMinutes: 30 height: 30px
+script.js:3826 🔧 RENDER: About to setup task interactions for hours-task-5
+script.js:3827 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-5" style="position: absolute; top: 960px; height: 30px; left: 10px; right: 10px; background: rgb(0, 206, 247); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today C 04p</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3837 🔧 SETUP: Starting interaction setup for task hours-task-5
+script.js:3843 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3830 🔧 RENDER: Task rendering complete for hours-task-5
+script.js:45 [6:43:34 PM] Hours: Successfully added database task: "Today C 04p" at 16:00
+script.js:45 [6:43:34 PM] Hours: Examining task "Today A 02p" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 14:00:00
+script.js:45 [6:43:34 PM] Hours: Task "Today A 02p" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today A 02p" has scheduled time: 14:00:00
+script.js:3253 ⏰ TIME PARSE: Task Today A 02p scheduled at 14:00
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 14:00, duration: 90min (from estimate: 90.00min → 90min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-6
+script.js:3280 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3283 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3285 🚀 ABOUT TO RENDER: Task hours-task-6 with data: Object
+script.js:3286 🚀 ABOUT TO RENDER: Container exists? true
+script.js:3783 🔧 RENDER: Starting to render task hours-task-6
+script.js:3789 ✅ RENDER: Container found, proceeding with task rendering
+script.js:3798 🎯 POSITION CALC: Task hours-task-6 startMinutes: 840 position: 840px
+script.js:3799 🎯 HEIGHT CALC: Task hours-task-6 durationMinutes: 90 height: 90px
+script.js:3826 🔧 RENDER: About to setup task interactions for hours-task-6
+script.js:3827 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-6" style="position: absolute; top: 840px; height: 90px; left: 10px; right: 10px; background: rgb(0, 206, 247); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today A 02p</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:3837 🔧 SETUP: Starting interaction setup for task hours-task-6
+script.js:3843 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:3830 🔧 RENDER: Task rendering complete for hours-task-6
+script.js:45 [6:43:34 PM] Hours: Successfully added database task: "Today A 02p" at 14:00
+script.js:45 [6:43:34 PM] Hours: Examining task "PastDue T NA" - revisitDate: 2025-01-10T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "PastDue T NA" date comparison - taskDate: 2025-01-10, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "Today A 07a Sub2" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 07:10:00
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub2" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub2" has scheduled time: 07:10:00
+script.js:3253 ⏰ TIME PARSE: Task Today A 07a Sub2 scheduled at 7:10
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 7:10, duration: 30min (from estimate: 35.00min → 30min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-7
+script.js:3280 🔍 OVERLAP RESULT: HAS OVERLAP
+script.js:3291 ❌ HAS OVERLAP: Skipping task due to overlap
+script.js:45 [6:43:34 PM] Hours: Task "Today A 07a Sub2" overlaps with existing task, skipped
+script.js:45 [6:43:34 PM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "ThisWeek C NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "ThisWeek C NA" date comparison - taskDate: 2025-07-24, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "ThisWeek C NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "Tomorrow A 09a" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 09:00:00
+script.js:45 [6:43:34 PM] Hours: Task "Tomorrow A 09a" date comparison - taskDate: 2025-07-22, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "Tomorrow A 09a" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "ThisMonth C NA" - revisitDate: 2025-07-15T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "ThisMonth C NA" date comparison - taskDate: 2025-07-15, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "ThisMonth C NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "Today B NA (Complete)" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "Today B NA (Complete)" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today B NA (Complete)" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "NA T NA" - revisitDate: null, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "NA T NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "NextMonth C NA" - revisitDate: 2025-08-15T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "NextMonth C NA" date comparison - taskDate: 2025-08-15, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "NextMonth C NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "NextWeek A NA" - revisitDate: 2025-07-31T00:00:00.000Z, scheduledTime: null
+script.js:45 [6:43:34 PM] Hours: Task "NextWeek A NA" date comparison - taskDate: 2025-07-31, today: 2025-07-21, isToday: false
+script.js:45 [6:43:34 PM] Hours: Task "NextWeek A NA" has no scheduled time or not scheduled for today
+script.js:45 [6:43:34 PM] Hours: Examining task "Today A 11a" - revisitDate: 2025-07-21T00:00:00.000Z, scheduledTime: 11:00:00
+script.js:45 [6:43:34 PM] Hours: Task "Today A 11a" date comparison - taskDate: 2025-07-21, today: 2025-07-21, isToday: true
+script.js:45 [6:43:34 PM] Hours: Task "Today A 11a" has scheduled time: 11:00:00
+script.js:3253 ⏰ TIME PARSE: Task Today A 11a scheduled at 11:00
+script.js:45 [6:43:34 PM] Hours: Created hours task - start: 11:00, duration: 45min (from estimate: 45.00min → 45min)
+script.js:3278 🔍 OVERLAP CHECK: About to check overlap for task hours-task-8
+script.js:3280 🔍 OVERLAP RESULT: HAS OVERLAP
+script.js:3291 ❌ HAS OVERLAP: Skipping task due to overlap
+script.js:45 [6:43:34 PM] Hours: Task "Today A 11a" overlaps with existing task, skipped
+script.js:3305 Hours panel: Added 4 tasks from database for today
+script.js:45 [6:43:34 PM] Hours: Successfully added 4 database tasks with scheduled times
+script.js:45 [6:43:34 PM] Hours: Summary - processed 19 actual tasks, added 4 with scheduled times
+emergency-fix.js:247 🚨 EMERGENCY: Starting all fixes...
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+emergency-fix.js:176 🕐 DEBUG: Checking Hours panel structure...
+emergency-fix.js:183 🕐 Hours Column exists: true
+emergency-fix.js:184 🕐 Hours Timeline exists: true
+emergency-fix.js:185 🕐 Hour Grid exists: true
+emergency-fix.js:186 🕐 Task Blocks Container exists: true
+emergency-fix.js:189 🕐 Hour Grid children count: 48
+emergency-fix.js:190 🕐 Hour Grid innerHTML length: 7876
+emergency-fix.js:194 🕐 Timeline computed style display: block
+emergency-fix.js:195 🕐 Timeline computed style position: static
+emergency-fix.js:196 🕐 Timeline computed style height: 0px
+script.js:2767 🧪 MANUAL TEST: Adding filter test button to page
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+script.js:3419 🚨 DEBUG: Starting force visibility check...
+script.js:3423 🚨 DEBUG: hoursTimeline container: <div class=​"hours-timeline" id=​"hours-timeline">​…​</div>​
+script.js:3427 🚨 DEBUG: Hours timeline container position: Object
+script.js:3439 🚨 DEBUG: currentTimeLine element: <div class=​"current-time-line" id=​"current-time-line" style=​"position:​ absolute !important;​ top:​ 1123px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ background:​ rgb(0, 206, 247)​ !important;​ z-index:​ 20 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​…​</div>​
+script.js:3440 🚨 DEBUG: timeLineIndicator element: <div class=​"time-line-indicator" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(0, 206, 247)​ !important;​ z-index:​ 20 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:3443 🚨 DEBUG: Current time line computed styles:
+script.js:3445   - position: absolute
+script.js:3446   - top: 1123px
+script.js:3447   - left: 0px
+script.js:3448   - width: 225px
+script.js:3449   - height: 3px
+script.js:3450   - display: block
+script.js:3451   - visibility: visible
+script.js:3452   - zIndex: 20
+script.js:3453   - background: rgb(0, 206, 247) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:3457 🚨 DEBUG: Time line indicator computed styles:
+script.js:3459   - position: absolute
+script.js:3460   - top: 0px
+script.js:3461   - left: 0px
+script.js:3462   - width: 225px
+script.js:3463   - height: 3px
+script.js:3464   - display: block
+script.js:3465   - visibility: visible
+script.js:3466   - zIndex: 20
+script.js:3467   - background: rgb(0, 206, 247) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:3476 🚨 DEBUG: stopLine element: <div class=​"limit-line stop-line" id=​"stop-line" data-time=​"18:​00" style=​"position:​ absolute !important;​ top:​ 1080px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​ cursor:​ ns-resize !important;​">​…​</div>​
+script.js:3477 🚨 DEBUG: stopBar element: <div class=​"limit-line-bar" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(255, 107, 107)​ !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:3478 🚨 DEBUG: sleepLine element: <div class=​"limit-line sleep-line" id=​"sleep-line" data-time=​"23:​00" style=​"position:​ absolute !important;​ top:​ 1380px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​ cursor:​ ns-resize !important;​">​…​</div>​
+script.js:3479 🚨 DEBUG: sleepBar element: <div class=​"limit-line-bar" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(0, 191, 174)​ !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:3482 🚨 DEBUG: Stop bar computed styles:
+script.js:3484   - position: absolute
+script.js:3485   - top: 0px
+script.js:3486   - left: 0px
+script.js:3487   - width: 225px
+script.js:3488   - height: 3px
+script.js:3489   - display: block
+script.js:3490   - visibility: visible
+script.js:3491   - zIndex: 15
+script.js:3492   - background: rgb(255, 107, 107) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:3495 🚨 DEBUG: Force visibility check complete - elements exist, fixing positioning...
+script.js:45 [6:43:39 PM] Settings modal opened
+script.js:45 [6:44:21 PM] Settings modal closed
+script.js:45 [6:44:21 PM] Settings modal opened
+script.js:45 [6:44:24 PM] Settings modal closed
