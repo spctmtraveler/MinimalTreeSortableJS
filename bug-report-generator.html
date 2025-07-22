@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Report Generator - DUN Task Management</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #212121;
+            color: #7F7F7F;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 30px;
+            border: 1px solid #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .header h1 {
+            color: #00CEF7;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .bug-report-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00CEF7;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00CEF7;
+            box-shadow: 0 0 0 2px rgba(0, 206, 247, 0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #00CEF7;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #00b8e6;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #444;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-1px);
+        }
+
+        .generated-report {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .generated-report h3 {
+            color: #00CEF7;
+            margin-bottom: 15px;
+        }
+
+        .generated-report pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .status-success {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+
+        .status-error {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+
+        .file-analysis {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .file-analysis h4 {
+            color: #00CEF7;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .file-analysis ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .file-analysis li {
+            padding: 5px 0;
+            border-bottom: 1px solid #2a2a2a;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .back-link {
+            margin-bottom: 20px;
+        }
+
+        .back-link a {
+            color: #00CEF7;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .severity-high { color: #dc3545; }
+        .severity-medium { color: #ffc107; }
+        .severity-low { color: #28a745; }
+
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-link">
+            <a href="debug-files.html">
+                <i class="fas fa-arrow-left"></i>
+                Back to Debug Files
+            </a>
+        </div>
+
+        <div class="header">
+            <h1><i class="fas fa-bug"></i> Bug Report Generator</h1>
+            <p>Comprehensive debugging information for AI consultation</p>
+        </div>
+
+        <div class="bug-report-form">
+            <div class="form-group">
+                <label for="bugTitle">Bug Title *</label>
+                <input type="text" id="bugTitle" placeholder="Brief description of the issue" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bugSeverity">Severity</label>
+                <select id="bugSeverity">
+                    <option value="high">High - App broken/unusable</option>
+                    <option value="medium" selected>Medium - Feature not working</option>
+                    <option value="low">Low - Minor visual/UX issue</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="expectedBehavior">Expected Behavior *</label>
+                <textarea id="expectedBehavior" placeholder="What should happen? Describe the correct behavior in detail." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="actualBehavior">Actual Behavior *</label>
+                <textarea id="actualBehavior" placeholder="What is actually happening? Describe the problem in detail." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="stepsToReproduce">Steps to Reproduce</label>
+                <textarea id="stepsToReproduce" placeholder="1. Go to...&#10;2. Click on...&#10;3. Notice that..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="attemptedSolutions">Attempted Solutions</label>
+                <textarea id="attemptedSolutions" placeholder="List everything you've tried to fix this issue, including specific code changes and their results."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="suspectedCauses">Suspected Causes</label>
+                <textarea id="suspectedCauses" placeholder="What do you think might be causing this issue? Include theories and hunches."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="affectedFiles">Key Files Involved</label>
+                <textarea id="affectedFiles" placeholder="List the files that are most likely related to this bug (e.g., script.js lines 1500-1600, styles.css .timeline-icon class)"></textarea>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="generateReport()">
+                <i class="fas fa-file-text"></i>
+                Generate Report
+            </button>
+            <button class="btn btn-secondary" onclick="copyToClipboard()" disabled id="copyBtn">
+                <i class="fas fa-clipboard"></i>
+                Copy to Clipboard
+            </button>
+            <button class="btn btn-success" onclick="downloadReport()" disabled id="downloadBtn">
+                <i class="fas fa-download"></i>
+                Download as TXT
+            </button>
+            <button class="btn btn-warning" onclick="captureScreenshot()">
+                <i class="fas fa-camera"></i>
+                Take Screenshot
+            </button>
+        </div>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <div class="generated-report" id="generatedReport">
+            <h3>Generated Bug Report</h3>
+            <pre id="reportContent"></pre>
+        </div>
+    </div>
+
+    <div class="copy-success" id="copySuccess">
+        <i class="fas fa-check"></i> Copied to clipboard!
+    </div>
+
+    <script>
+        let currentReport = '';
+
+        function generateReport() {
+            const bugTitle = document.getElementById('bugTitle').value;
+            const bugSeverity = document.getElementById('bugSeverity').value;
+            const expectedBehavior = document.getElementById('expectedBehavior').value;
+            const actualBehavior = document.getElementById('actualBehavior').value;
+            const stepsToReproduce = document.getElementById('stepsToReproduce').value;
+            const attemptedSolutions = document.getElementById('attemptedSolutions').value;
+            const suspectedCauses = document.getElementById('suspectedCauses').value;
+            const affectedFiles = document.getElementById('affectedFiles').value;
+
+            if (!bugTitle || !expectedBehavior || !actualBehavior) {
+                showMessage('Please fill in all required fields.', 'error');
+                return;
+            }
+
+            const timestamp = new Date().toISOString();
+            const reportId = 'BUG-' + Date.now();
+
+            currentReport = `
+================================================================================
+BUG REPORT FOR AI CONSULTATION
+================================================================================
+
+REPORT ID: ${reportId}
+GENERATED: ${timestamp}
+SEVERITY: ${bugSeverity.toUpperCase()}
+PROJECT: DUN Task Management System
+
+================================================================================
+BUG SUMMARY
+================================================================================
+
+TITLE: ${bugTitle}
+
+EXPECTED BEHAVIOR:
+${expectedBehavior}
+
+ACTUAL BEHAVIOR:
+${actualBehavior}
+
+${stepsToReproduce ? `STEPS TO REPRODUCE:
+${stepsToReproduce}
+
+` : ''}================================================================================
+INVESTIGATION DETAILS
+================================================================================
+
+ATTEMPTED SOLUTIONS:
+${attemptedSolutions || 'None specified'}
+
+SUSPECTED CAUSES:
+${suspectedCauses || 'None specified'}
+
+KEY FILES INVOLVED:
+${affectedFiles || 'Not specified'}
+
+================================================================================
+TECHNICAL CONTEXT
+================================================================================
+
+ARCHITECTURE:
+- Frontend: Vanilla HTML/CSS/JavaScript
+- Backend: Node.js with Express
+- Database: PostgreSQL
+- UI Libraries: SortableJS, FontAwesome
+- Styling: Dark theme (#212121 background, #7F7F7F text, #00CEF7 accent)
+
+RECENT CHANGES:
+- Icon positioning system updated to use flexbox approach
+- Task control buttons redesigned with FontAwesome icons
+- Timeline styling adjustments for Hours panel
+- Multiple CSS positioning attempts for limit line icons
+
+KEY COMPONENTS LIKELY INVOLVED:
+- Hours Panel Timeline (if UI-related)
+- Task Management System (if functionality-related)
+- Icon Positioning CSS Classes (.time-icon, .limit-icon, .limit-label)
+- JavaScript Event Handlers (if interaction-related)
+
+================================================================================
+DEBUGGING INSTRUCTIONS FOR AI
+================================================================================
+
+1. IMMEDIATE ANALYSIS:
+   - Examine the affected files listed above
+   - Check CSS positioning and flexbox implementations
+   - Verify JavaScript event binding and DOM manipulation
+   - Look for CSS specificity conflicts
+
+2. SYSTEMATIC APPROACH:
+   - Start with the most recently changed files
+   - Verify all CSS selectors are correctly targeting elements
+   - Check for !important conflicts or specificity issues
+   - Test with browser dev tools for real-time debugging
+
+3. COMMON CAUSES TO CHECK:
+   - CSS positioning conflicts (absolute vs relative vs flex)
+   - Missing or incorrect transform properties
+   - Z-index layering issues
+   - JavaScript DOM manipulation timing problems
+   - FontAwesome icon loading or class name issues
+
+4. VALIDATION STEPS:
+   - Test in browser dev tools first
+   - Make minimal changes and test incrementally
+   - Verify both desktop and mobile responsiveness
+   - Check console for JavaScript errors
+
+================================================================================
+SUPPLEMENTARY INFORMATION
+================================================================================
+
+NEXT STEPS:
+1. User will provide full file dump from file aggregator
+2. Screenshot of the current issue will be attached
+3. Browser console logs may be included if relevant
+4. Database state information if data-related
+
+CONTACT:
+This report should be used in conjunction with a complete file dump and 
+screenshot for optimal debugging assistance.
+
+================================================================================
+END OF REPORT
+================================================================================
+`.trim();
+
+            document.getElementById('reportContent').textContent = currentReport;
+            document.getElementById('generatedReport').style.display = 'block';
+            document.getElementById('copyBtn').disabled = false;
+            document.getElementById('downloadBtn').disabled = false;
+
+            showMessage('Bug report generated successfully!', 'success');
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(currentReport).then(() => {
+                showCopySuccess();
+            }).catch(err => {
+                showMessage('Failed to copy to clipboard: ' + err.message, 'error');
+            });
+        }
+
+        function downloadReport() {
+            const bugTitle = document.getElementById('bugTitle').value || 'bug-report';
+            const timestamp = new Date().toISOString().split('T')[0];
+            const filename = `${bugTitle.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${timestamp}.txt`;
+            
+            const blob = new Blob([currentReport], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showMessage('Report downloaded successfully!', 'success');
+        }
+
+        function captureScreenshot() {
+            // Open the main app in a new tab for screenshot
+            const appWindow = window.open('/', '_blank');
+            showMessage('App opened in new tab. Take screenshot and close tab to return here.', 'success');
+        }
+
+        function showMessage(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message status-${type}`;
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
+
+        function showCopySuccess() {
+            const successEl = document.getElementById('copySuccess');
+            successEl.style.display = 'block';
+            setTimeout(() => {
+                successEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // Auto-fill current icon positioning bug example
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pre-populate with the current icon positioning issue as an example
+            document.getElementById('bugTitle').value = 'Hours Panel timeline icons positioned incorrectly';
+            document.getElementById('expectedBehavior').value = 'Timeline icons (clock, stop, moon) should appear to the right of their respective horizontal timeline bars, positioned with proper vertical alignment using flexbox layout.';
+            document.getElementById('actualBehavior').value = 'Timeline icons and time labels appear flush left and positioned down a line instead of up and to the right of the timeline bars.';
+            document.getElementById('stepsToReproduce').value = '1. Open the app\n2. Click the clock icon in the header to show Hours panel\n3. Observe the timeline with current time line (blue)\n4. Notice the clock icon is not properly positioned\n5. Look at the stop line (red) and sleep line (teal)\n6. Notice their icons are also mispositioned';
+            document.getElementById('attemptedSolutions').value = '1. Changed from position: absolute with right: -100px to right: -60px\n2. Switched from display: block to display: flex with justify-content: flex-end\n3. Added transform: translate(15px, -5px) for visual offset\n4. Adjusted container width and positioning\n5. Modified CSS specificity with !important declarations\n6. Updated icon containers to use flexbox layout pattern';
+            document.getElementById('suspectedCauses').value = '1. CSS positioning conflicts between absolute and flex positioning\n2. Transform properties not being applied correctly\n3. Container sizing issues preventing proper flex alignment\n4. CSS specificity problems with !important overrides\n5. Possible DOM structure issues with nested positioning contexts';
+            document.getElementById('affectedFiles').value = 'styles.css:\n- .time-icon class (lines ~1420-1435)\n- .limit-icon class (lines ~1467-1485)\n- .limit-label class (lines ~1490-1505)\n- .hours-timeline container styles\n\nindex.html:\n- Hours panel timeline structure\n- Icon element hierarchy\n\nscript.js:\n- Hours panel initialization\n- Timeline rendering functions';
+        });
+    </script>
+</body>
+</html>

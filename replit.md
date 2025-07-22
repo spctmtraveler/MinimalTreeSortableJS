@@ -135,6 +135,15 @@ DUN is a hierarchical task management application built with a client-server arc
 - **Database Integration**: Task time changes sync between Hours panel and main task list
 - **User Confirmation**: "It worked! We're back in business! The daily tasks are drag n drop again!"
 
+### 🐛 Bug Report Generator (July 22, 2025)
+**New AI Consultation Tool**: Comprehensive debugging documentation system for complex issues
+- **Bug Report Form**: Structured input for title, severity, expected/actual behavior, reproduction steps
+- **Automated Report Generation**: Professional format with technical context and investigation details
+- **File Analysis Integration**: Pre-populated with affected files and attempted solutions
+- **Export Options**: Copy to clipboard, download as TXT, automatic screenshot capture
+- **Pre-filled Example**: Current icon positioning issue included as working example
+- **Streamlined Workflow**: Designed for efficient AI-to-AI consultation with minimal context switching
+
 ### 🔍 Key Business Logic (June 29, 2025)
 
 #### Triage Filtering Rules
