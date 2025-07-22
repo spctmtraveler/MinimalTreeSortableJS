@@ -1340,9 +1340,9 @@ body[data-show-dates="true"] .task-date-container {
   right: 2px;
   display: flex;
   gap: 2px;
-  opacity: 1; /* Force visible for debugging */
+  opacity: 0;
   transition: opacity 0.2s ease;
-  z-index: 15; /* Ensure above other elements */
+  z-index: 15;
 }
 
 .task-block:hover .task-block-controls {
@@ -1350,21 +1350,21 @@ body[data-show-dates="true"] .task-date-container {
 }
 
 .task-control-btn {
-  background: rgba(255, 0, 0, 0.7) !important; /* Red background for debugging */
-  border: 1px solid white !important; /* White border for debugging */
-  color: white !important;
-  font-size: 10px !important; /* Larger for debugging */
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  font-size: 0.7rem;
   cursor: pointer;
-  opacity: 1 !important; /* Force visible */
-  padding: 2px !important;
-  border-radius: 2px;
-  width: 16px !important; /* Larger for debugging */
-  height: 16px !important; /* Larger for debugging */
-  display: flex !important;
+  opacity: 0.9;
+  padding: 2px;
+  border-radius: 3px;
+  width: 16px;
+  height: 16px;
+  display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
-  z-index: 20 !important; /* Force above everything */
+  z-index: 20;
 }
 
 .task-control-btn:hover {
