@@ -1409,8 +1409,11 @@ function handleFilterChange() {
 
   console.log(`📅 DATE RANGES:
     Today: ${today.toDateString()}
+    Tomorrow: ${tomorrow.toDateString()}
     This Week: ${weekStart.toDateString()} → ${weekEnd.toDateString()}
-    This Month: ${monthStart.toDateString()} → ${monthEnd.toDateString()}`);
+    Next Week: ${nextWeekStart.toDateString()} → ${nextWeekEnd.toDateString()}
+    This Month: ${monthStart.toDateString()} → ${monthEnd.toDateString()}
+    Next Month: ${nextMonthStart.toDateString()} → ${nextMonthEnd.toDateString()}`);
 
   const allTaskItems = document.querySelectorAll('.task-item');
 
@@ -1521,7 +1524,38 @@ function handleFilterChange() {
           shouldShow = true;
           console.log(`🚨 FILTER: "${taskData.content}" - no revisit date, showing in all date filters`);
         }
-      } else {
+      } 
+      // TRIAGE INTEGRATION: Also check for overdue tasks in date filters
+      else if (!isCompleted) {
+        // Check if task is overdue (triage criteria)
+        let taskDate;
+        if (revisitDate === 'today') {
+          taskDate = today;
+        } else if (revisitDate === 'tomorrow') {
+          taskDate = tomorrow;
+        } else if (typeof revisitDate === 'string') {
+          if (revisitDate.includes('T')) {
+            taskDate = new Date(revisitDate);
+          } else if (revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            taskDate = new Date(revisitDate + 'T00:00:00');
+          } else {
+            taskDate = new Date(revisitDate);
+          }
+        }
+        
+        if (taskDate && !isNaN(taskDate)) {
+          const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+          
+          // If task is overdue, show it in ALL date filters (triage behavior)
+          if (taskDateOnly < today) {
+            shouldShow = true;
+            console.log(`🚨 TRIAGE IN DATE FILTER: "${taskData.content}" - overdue task showing in ${filterValue} filter`);
+          }
+        }
+      }
+      
+      // If not already shown by triage rules, apply regular date filtering
+      if (!shouldShow && (revisitDate && revisitDate !== null && revisitDate !== '')) {
         let taskDate;
         
         // Handle different date formats
@@ -2106,6 +2140,8 @@ function updateLayoutWidth() {
   const tasksVisible = !document.querySelector('.content-section')?.classList.contains('tasks-hidden');
   const priorityVisible = !document.body.classList.contains('priority-flags-hidden');
   const hoursVisible = !document.querySelector('.hours-column')?.classList.contains('hidden');
+  
+  if (debug) console.log(`Layout Detection: Tasks(${tasksVisible}) Priority(${priorityVisible}) Hours(${hoursVisible})`);
   
   let visiblePanels = 0;
   if (tasksVisible) visiblePanels++;
@@ -4305,9 +4341,10 @@ function renderHoursTask(task) {
   taskBlock.style.position = 'absolute';
   taskBlock.style.top = position + 'px';
   taskBlock.style.height = height + 'px';
-  taskBlock.style.left = '10px';
+  taskBlock.style.left = '2px';
   taskBlock.style.right = '10px';
   taskBlock.style.background = '#00CEF7';
+  taskBlock.style.background = 'rgba(0, 206, 247, 0.3)';
   taskBlock.style.color = 'white';
   taskBlock.style.borderRadius = '4px';
   taskBlock.style.zIndex = '10';
@@ -4554,7 +4591,9 @@ function makeTaskDraggable(taskBlock, task) {
       const updates = { scheduledTime: newTime };
       
       try {
-        await updateTaskState(task.id, updates);
+        // Use dbTaskId for database operations, fallback to task.id for demo tasks
+        const databaseId = task.dbTaskId || task.id;
+        await updateTaskState(databaseId, updates);
         
         // Propagate changes to modal if open
         const modal = document.getElementById('task-modal');
@@ -4660,7 +4699,9 @@ function makeTaskResizable(taskBlock, task, resizeHandle) {
       const updates = { timeEstimate: newEstimate };
       
       try {
-        await updateTaskState(task.id, updates);
+        // Use dbTaskId for database operations, fallback to task.id for demo tasks
+        const databaseId = task.dbTaskId || task.id;
+        await updateTaskState(databaseId, updates);
         
         // Propagate changes to modal if open
         const modal = document.getElementById('task-modal');
