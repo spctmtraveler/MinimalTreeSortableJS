@@ -1465,7 +1465,7 @@ body[data-show-dates="true"] .task-date-container {
 /* The icon for limit lines (stop, moon) */
 .limit-icon {
   position: absolute;
-  right: -40px;
+  right: -65px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 21;
@@ -1491,7 +1491,7 @@ body[data-show-dates="true"] .task-date-container {
 .limit-label {
   position: absolute;
   /* Align with the icon horizontally */
-  right: -55px;
+  right: -80px;
   /* Position below the line */
   top: 100%;
   margin-top: 5px;
