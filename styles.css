@@ -1022,6 +1022,7 @@ body > .sortable-drag {
   display: flex;
   justify-content: flex-end;
   margin-top: 24px;
+}
 .modal-actions button {
   padding: 8px 16px;
   margin-left: 12px;
@@ -1227,34 +1228,31 @@ body[data-show-dates="true"] .task-date-container {
 
 /* Hours Timeline Container */
 .hours-timeline {
-  position: relative !important;
-  width: 100% !important;
-  min-height: 1440px !important; /* 24 hours * 60px per hour */
-  background: #1a1a1a !important;
-  padding-left: 60px !important; /* Space for hour labels */
-  padding-top: 20px !important;
-  padding-right: 80px !important; /* Space for limit line icons and text */
-  display: block !important;
-  overflow: visible !important;
+  position: relative;
+  width: 100%;
+  min-height: 1440px; /* 24 hours * 60px per hour */
+  background: #1a1a1a;
+  padding-left: 60px; /* Space for hour labels */
+  padding-right: 80px; /* Space for limit line icons and text */
 }
 
 /* Hour Grid */
 .hour-grid {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .hour-line {
-  position: absolute !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 1px !important;
-  background: #333333 !important;
-  z-index: 1 !important;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #333333;
+  z-index: 1;
 }
 
 .hour-line.half-hour {
@@ -1264,15 +1262,15 @@ body[data-show-dates="true"] .task-date-container {
 }
 
 .hour-label {
-  position: absolute !important;
-  left: -50px !important;
-  top: -10px !important;
-  font-size: 0.875rem !important;
-  color: #dddddd !important;
-  font-weight: normal !important;
-  width: 45px !important;
-  text-align: right !important;
-  z-index: 2 !important;
+  position: absolute;
+  left: -50px;
+  top: -10px;
+  font-size: 0.875rem;
+  color: #dddddd;
+  font-weight: normal;
+  width: 45px;
+  text-align: right;
+  z-index: 2;
 }
 
 .hour-label.pm {
@@ -1281,12 +1279,12 @@ body[data-show-dates="true"] .task-date-container {
 
 /* Task Blocks Container */
 .task-blocks-container {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 5 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
 }
 
 /* Task Block Styling */
@@ -1390,117 +1388,126 @@ body[data-show-dates="true"] .task-date-container {
   box-shadow: 0 0 4px #00CEF7;
 }
 
-/* Current Time Line */
+/*
+ ===============================================================================
+ BUG FIX: Timeline Icon and Label Positioning
+ ===============================================================================
+ The original CSS for timeline icons used a complex and failing combination of 
+ `left: 0`, `width: 100%`, and `justify-content: flex-end`. This caused the icons 
+ and labels to render incorrectly at the far left of the screen.
+
+ The fix below replaces that logic with a simpler, more robust absolute positioning 
+ scheme. It positions the icons and labels from the right edge of the timeline, 
+ ensuring they appear correctly to the right of the timeline bars as intended.
+*/
+
+/* Current Time Line (Container for the line and its icon) */
 .current-time-line {
-  position: absolute !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 3px !important;
-  background: #00CEF7 !important;
-  z-index: 20 !important;
-  transition: top 150ms ease-in-out !important;
-  display: block !important;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #00CEF7;
+  z-index: 20;
+  transition: top 150ms ease-in-out;
 }
 
+/* Hide the old indicator div, as the parent is now the line itself */
 .time-line-indicator {
-  position: absolute !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 3px !important;
-  background: #00CEF7 !important;
-  top: 0 !important;
-  z-index: 20 !important;
-  display: block !important;
-  opacity: 1 !important;
+  display: none;
 }
 
+/* The clock icon for the current time */
 .time-icon {
-  position: absolute !important;
-  top: -8px !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 16px !important;
-  display: flex !important;
-  justify-content: flex-end !important;
-  z-index: 21 !important;
+  position: absolute;
+  /* Position from the right edge of the parent line */
+  right: -65px; 
+  top: 50%;
+  /* Vertically center the icon on the line */
+  transform: translateY(-50%); 
+  z-index: 21;
 }
 
+/* Remove the problematic transform from the inner icon element */
 .time-icon i.fas.fa-clock {
-  transform: translate(15px, -5px) !important;
-  font-size: 16px !important;
-  color: #00CEF7 !important;
-  cursor: pointer !important;
+  transform: none;
+  font-size: 16px;
+  color: #00CEF7;
+  cursor: pointer;
 }
 
-/* Limit Lines */
+/* Limit Lines (Containers for the line, icon, and label) */
 .limit-line {
-  position: absolute !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 2px !important;
-  z-index: 10 !important;
-  cursor: ns-resize !important;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 10;
+  cursor: ns-resize;
 }
 
+/* The visual bar is now the parent .limit-line element */
+.stop-line {
+  background: #ff6b6b;
+  box-shadow: 0 0 2px rgba(255, 107, 107, 0.8);
+}
+
+.sleep-line {
+  background: #4ecdc4;
+  box-shadow: 0 0 2px rgba(78, 205, 196, 0.8);
+}
+
+/* Hide the old bar div */
 .limit-line-bar {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 3px !important;
-  background: #ff6b6b !important;
-  z-index: 15 !important;
-  display: block !important;
-  box-shadow: 0 0 2px rgba(255, 107, 107, 0.8) !important;
-  opacity: 1 !important;
+  display: none;
 }
 
-.sleep-line .limit-line-bar {
-  background: #4ecdc4 !important;
-  z-index: 12 !important;
-  box-shadow: 0 0 2px rgba(78, 205, 196, 0.8) !important;
-}
-
+/* The icon for limit lines (stop, moon) */
 .limit-icon {
-  position: absolute !important;
-  top: -8px !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 16px !important;
-  display: flex !important;
-  justify-content: flex-end !important;
-  z-index: 21 !important;
-  pointer-events: none !important;
+  position: absolute;
+  right: -65px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 21;
+  pointer-events: none; /* Allows clicks to pass through to the draggable line */
 }
 
+/* Remove the problematic transform from the inner icon */
 .limit-icon i {
-  transform: translate(15px, -5px) !important;
-  font-size: 16px !important;
-  color: #ff6b6b !important;
-  cursor: ns-resize !important;
+  transform: none;
+  font-size: 16px;
+  cursor: ns-resize;
+}
+
+.stop-line .limit-icon i {
+  color: #ff6b6b;
 }
 
 .sleep-line .limit-icon i {
-  color: #4ecdc4 !important;
+  color: #4ecdc4;
 }
 
+/* The time label below the limit line icon */
 .limit-label {
-  position: absolute !important;
-  top: 10px !important;
-  left: 0 !important;
-  width: 100% !important;
-  display: flex !important;
-  justify-content: flex-end !important;
-  font-size: 12px !important;
-  color: #7F7F7F !important;
-  font-weight: normal !important;
-  white-space: nowrap !important;
-  z-index: 21 !important;
-  pointer-events: none !important;
-  transform: translateX(30px) !important;
+  position: absolute;
+  /* Align with the icon horizontally */
+  right: -80px;
+  /* Position below the line */
+  top: 100%;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #7F7F7F;
+  white-space: nowrap;
+  z-index: 21;
+  pointer-events: none;
+  /* Remove the old transform */
+  transform: none;
 }
 
-/* Remove .remaining-time as it's no longer used - replaced by .limit-label */
+/* ===============================================================================
+ END OF BUG FIX
+ ===============================================================================
+*/
 
 /* Task Block Inline Edit */
 .task-block input {
@@ -1551,7 +1558,7 @@ body.priority-flags-hidden .task-priority-header {
   height: 100% !important;
   background: rgba(0, 0, 0, 0.7) !important;
   z-index: 10000 !important;
-  display: block !important;
+  display: none;
 }
 
 .settings-modal-window {
