@@ -1335,41 +1335,44 @@ body[data-show-dates="true"] .task-date-container {
 
 /* Task Block Controls */
 .task-block-controls {
-  position: absolute;
-  top: 1px;
-  right: 2px;
-  display: flex;
-  gap: 2px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  z-index: 15;
+  position: absolute !important;
+  top: 1px !important;
+  right: 2px !important;
+  display: flex !important;
+  gap: 2px !important;
+  opacity: 0 !important;
+  transition: opacity 0.2s ease !important;
+  z-index: 15 !important;
+  pointer-events: auto !important;
 }
 
 .task-block:hover .task-block-controls {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 .task-control-btn {
-  background: rgba(0, 0, 0, 0.6);
-  border: none;
-  color: white;
-  font-size: 0.7rem;
-  cursor: pointer;
-  opacity: 0.9;
-  padding: 2px;
-  border-radius: 3px;
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  z-index: 20;
+  background: rgba(0, 0, 0, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+  font-size: 0.7rem !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  padding: 2px !important;
+  border-radius: 3px !important;
+  width: 16px !important;
+  height: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  z-index: 20 !important;
+  pointer-events: auto !important;
 }
 
 .task-control-btn:hover {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.2);
+  opacity: 1 !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.1) !important;
 }
 
 /* Resize Handle */
