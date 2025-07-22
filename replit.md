@@ -144,13 +144,6 @@ DUN is a hierarchical task management application built with a client-server arc
 - **Pre-filled Example**: Current icon positioning issue included as working example
 - **Streamlined Workflow**: Designed for efficient AI-to-AI consultation with minimal context switching
 
-### ✅ RESOLVED - Hours Panel Control Icons (July 22, 2025)
-**Issue Fixed**: Task edit/delete icons were missing from Hours panel task blocks
-- **Root Cause**: Icons were being rendered but hidden due to opacity:0 and hover state conflicts
-- **Solution**: Adjusted CSS positioning, z-index, and hover states for proper visibility
-- **Result**: Edit (pencil) and delete (trash) icons now appear correctly when hovering over task blocks
-- **User Confirmation**: "Yes, they're visible now. And they're actually in the correct place"
-
 ### 🔍 Key Business Logic (June 29, 2025)
 
 #### Triage Filtering Rules

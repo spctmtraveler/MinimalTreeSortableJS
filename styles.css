@@ -1335,44 +1335,41 @@ body[data-show-dates="true"] .task-date-container {
 
 /* Task Block Controls */
 .task-block-controls {
-  position: absolute !important;
-  top: 1px !important;
-  right: 2px !important;
-  display: flex !important;
-  gap: 2px !important;
-  opacity: 0 !important;
-  transition: opacity 0.2s ease !important;
-  z-index: 15 !important;
-  pointer-events: auto !important;
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  display: flex;
+  gap: 2px;
+  opacity: 1; /* Force visible for debugging */
+  transition: opacity 0.2s ease;
+  z-index: 15; /* Ensure above other elements */
 }
 
 .task-block:hover .task-block-controls {
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 .task-control-btn {
-  background: rgba(0, 0, 0, 0.7) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 0, 0, 0.7) !important; /* Red background for debugging */
+  border: 1px solid white !important; /* White border for debugging */
   color: white !important;
-  font-size: 0.7rem !important;
-  cursor: pointer !important;
-  opacity: 1 !important;
+  font-size: 10px !important; /* Larger for debugging */
+  cursor: pointer;
+  opacity: 1 !important; /* Force visible */
   padding: 2px !important;
-  border-radius: 3px !important;
-  width: 16px !important;
-  height: 16px !important;
+  border-radius: 2px;
+  width: 16px !important; /* Larger for debugging */
+  height: 16px !important; /* Larger for debugging */
   display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  z-index: 20 !important;
-  pointer-events: auto !important;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  z-index: 20 !important; /* Force above everything */
 }
 
 .task-control-btn:hover {
-  opacity: 1 !important;
-  background: rgba(255, 255, 255, 0.3) !important;
-  transform: scale(1.1) !important;
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Resize Handle */
