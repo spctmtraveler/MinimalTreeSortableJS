@@ -4695,7 +4695,7 @@ function makeTaskResizable(taskBlock, task, resizeHandle) {
       }, 400);
     } else if (task.durationMinutes !== startDuration) {
       // Duration changed - save to database and propagate to other views
-      const newEstimate = task.durationMinutes / 60; // Convert minutes to hours
+      const newEstimate = task.durationMinutes; // Keep in minutes for database
       const updates = { timeEstimate: newEstimate };
       
       try {

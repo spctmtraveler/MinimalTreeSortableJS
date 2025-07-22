@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Report: Date Range Filtering</title>
+    <style>
+        body { font-family: Inter, sans-serif; background: #1a1a1a; color: #e0e0e0; padding: 20px; }
+        .bug-report { max-width: 800px; margin: 0 auto; background: #2a2a2a; padding: 30px; border-radius: 8px; }
+        h1 { color: #ff6b6b; border-bottom: 2px solid #ff6b6b; padding-bottom: 10px; }
+        h2 { color: #00CEF7; margin-top: 30px; }
+        .code-block { background: #1a1a1a; padding: 15px; border-radius: 5px; font-family: monospace; margin: 10px 0; }
+        .severity { color: #ffaa44; font-weight: bold; }
+        .expected { color: #4ade80; }
+        .actual { color: #ff6b6b; }
+    </style>
+</head>
+<body>
+    <div class="bug-report">
+        <h1>🐛 Bug Report: Date Range Filtering Issues</h1>
+        
+        <h2>Summary</h2>
+        <p>Date range filtering for "Next Week" and "Next Month" displays identical content to "This Week" and "This Month" respectively, indicating incorrect date calculation logic.</p>
+        
+        <h2>Severity</h2>
+        <p class="severity">HIGH - Core functionality broken</p>
+        
+        <h2>Environment</h2>
+        <ul>
+            <li><strong>File:</strong> script.js</li>
+            <li><strong>Function:</strong> handleFilterChange() around lines 1398-1408</li>
+            <li><strong>Date:</strong> July 22, 2025</li>
+        </ul>
+        
+        <h2>Expected Behavior</h2>
+        <div class="expected">
+            <p><strong>Next Week Filter:</strong> Should show tasks scheduled for July 28 - August 3, 2025</p>
+            <p><strong>Next Month Filter:</strong> Should show tasks scheduled for August 1-31, 2025</p>
+        </div>
+        
+        <h2>Actual Behavior</h2>
+        <div class="actual">
+            <p><strong>Next Week Filter:</strong> Shows same tasks as This Week (July 21-27, 2025)</p>
+            <p><strong>Next Month Filter:</strong> Shows same tasks as This Month (July 1-31, 2025)</p>
+        </div>
+        
+        <h2>Root Cause Analysis</h2>
+        <p>The date calculation logic in handleFilterChange() appears correct:</p>
+        <div class="code-block">
+// This Week: Monday-Sunday calculation
+const daysSinceMonday = (today.getDay() + 6) % 7;
+const weekStart = new Date(today);
+weekStart.setDate(today.getDate() - daysSinceMonday);
+const weekEnd = new Date(weekStart);
+weekEnd.setDate(weekStart.getDate() + 6);
+
+// Next Week: Should be the week after This Week
+const nextWeekStart = new Date(weekEnd);
+nextWeekStart.setDate(weekEnd.getDate() + 1);
+const nextWeekEnd = new Date(nextWeekStart);
+nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+        </div>
+        
+        <h2>Investigation Needed</h2>
+        <p>Despite mathematically correct calculations, the filtering results are identical. Potential causes:</p>
+        <ul>
+            <li>Task date parsing issues in the comparison logic</li>
+            <li>Test data may only have tasks for current week/month</li>
+            <li>Date timezone conversion problems</li>
+            <li>Switch statement logic error in filter application</li>
+        </ul>
+        
+        <h2>Debug Information</h2>
+        <p>Added comprehensive logging shows correct date ranges are calculated:</p>
+        <div class="code-block">
+console.log(`📅 DATE RANGES:
+    Today: ${today.toDateString()}
+    Tomorrow: ${tomorrow.toDateString()}
+    This Week: ${weekStart.toDateString()} → ${weekEnd.toDateString()}
+    Next Week: ${nextWeekStart.toDateString()} → ${nextWeekEnd.toDateString()}
+    This Month: ${monthStart.toDateString()} → ${monthEnd.toDateString()}
+    Next Month: ${nextMonthStart.toDateString()} → ${nextMonthEnd.toDateString()}`);
+        </div>
+        
+        <h2>Reproduction Steps</h2>
+        <ol>
+            <li>Load DUN task management application</li>
+            <li>Select "This Week" from filter dropdown - note visible tasks</li>
+            <li>Select "Next Week" from filter dropdown</li>
+            <li>Observe that identical tasks are shown</li>
+            <li>Repeat with "This Month" vs "Next Month"</li>
+        </ol>
+        
+        <h2>Test Data Context</h2>
+        <p>Current test data includes tasks with these date patterns:</p>
+        <ul>
+            <li>Today (July 22, 2025)</li>
+            <li>Tomorrow (July 23, 2025)</li>
+            <li>This Week tasks</li>
+            <li>Next Week tasks</li>
+            <li>This Month tasks</li>
+            <li>Next Month tasks</li>
+        </ul>
+        
+        <h2>Affected Code Section</h2>
+        <div class="code-block">
+switch (filterValue) {
+    case 'this-week':
+        shouldShow = taskDateOnly >= weekStart && taskDateOnly <= weekEnd;
+        break;
+    case 'next-week':
+        shouldShow = taskDateOnly >= nextWeekStart && taskDateOnly <= nextWeekEnd;
+        break;
+    case 'this-month':
+        shouldShow = taskDateOnly >= monthStart && taskDateOnly <= monthEnd;
+        break;
+    case 'next-month':
+        shouldShow = taskDateOnly >= nextMonthStart && taskDateOnly <= nextMonthEnd;
+        break;
+}
+        </div>
+        
+        <h2>Priority Actions</h2>
+        <ol>
+            <li>Add console logging for each task's date comparison during filtering</li>
+            <li>Verify test data actually contains next week/month tasks</li>
+            <li>Check if task date parsing produces correct Date objects</li>
+            <li>Validate that date comparisons work correctly across week/month boundaries</li>
+        </ol>
+        
+        <p><em>Generated: July 22, 2025 - DUN Task Management System</em></p>
+    </div>
+</body>
+</html>
