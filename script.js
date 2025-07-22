@@ -969,7 +969,11 @@ function setupRealTimeSaving(task, titleInput, revisitInput, timeInput, overview
   });
 
   timeInput.addEventListener('change', () => {
-    debouncedSave({ scheduledTime: timeInput.value });
+    const newTime = timeInput.value;
+    debouncedSave({ scheduledTime: newTime });
+    
+    // Immediate propagation to Hours panel
+    propagateTimeChangeToHoursPanel(task.id, newTime);
   });
 
   overviewInput.addEventListener('input', () => {
@@ -981,7 +985,11 @@ function setupRealTimeSaving(task, titleInput, revisitInput, timeInput, overview
   });
 
   estimateInput.addEventListener('change', () => {
-    debouncedSave({ timeEstimate: parseFloat(estimateInput.value) || 0 });
+    const newEstimate = parseFloat(estimateInput.value) || 0;
+    debouncedSave({ timeEstimate: newEstimate });
+    
+    // Immediate propagation to Hours panel
+    propagateEstimateChangeToHoursPanel(task.id, newEstimate);
   });
 }
 
@@ -2104,21 +2112,43 @@ function updateLayoutWidth() {
   if (priorityVisible) visiblePanels++;
   if (hoursVisible) visiblePanels++;
   
-  // Calculate appropriate width based on visible panels
+  // Panel widths and margins
+  const tasksPanelWidth = 500;
+  const priorityPanelWidth = 150;
+  const hoursPanelWidth = 225;
+  const panelMargin = 20;
+  
+  // Calculate appropriate width based on visible panels with proper spacing
   let newWidth;
-  if (!tasksVisible && !hoursVisible) {
-    newWidth = '250px'; // Only priority column
-  } else if (tasksVisible && !hoursVisible) {
-    newWidth = priorityVisible ? '850px' : '700px'; // Tasks + optional priority
-  } else if (!tasksVisible && hoursVisible) {
-    newWidth = priorityVisible ? '395px' : '225px'; // Hours + optional priority (225px hours + 150px priority + 20px margin)
+  if (!tasksVisible && !hoursVisible && !priorityVisible) {
+    // No panels visible - shouldn't happen, but fallback
+    newWidth = '400px';
+  } else if (!tasksVisible && !hoursVisible && priorityVisible) {
+    // Only priority column
+    newWidth = `${priorityPanelWidth + 40}px`;
+  } else if (tasksVisible && !hoursVisible && !priorityVisible) {
+    // Only tasks column
+    newWidth = `${tasksPanelWidth + 40}px`;
+  } else if (!tasksVisible && hoursVisible && !priorityVisible) {
+    // Only hours column
+    newWidth = `${hoursPanelWidth + 40}px`;
+  } else if (tasksVisible && !hoursVisible && priorityVisible) {
+    // Tasks + priority
+    newWidth = `${tasksPanelWidth + priorityPanelWidth + panelMargin + 40}px`;
+  } else if (!tasksVisible && hoursVisible && priorityVisible) {
+    // Hours + priority
+    newWidth = `${hoursPanelWidth + priorityPanelWidth + panelMargin + 40}px`;
+  } else if (tasksVisible && hoursVisible && !priorityVisible) {
+    // Tasks + hours
+    newWidth = `${tasksPanelWidth + hoursPanelWidth + panelMargin + 40}px`;
   } else {
-    newWidth = priorityVisible ? '1095px' : '925px'; // All panels (700px tasks + 225px hours + 150px priority + margins)
+    // All three panels
+    newWidth = `${tasksPanelWidth + priorityPanelWidth + hoursPanelWidth + (panelMargin * 2) + 40}px`;
   }
   
   container.style.width = newWidth;
   
-  if (debug) console.log(`Layout: Updated width to ${newWidth} for ${visiblePanels} visible panels`);
+  if (debug) console.log(`Layout: Updated width to ${newWidth} for ${visiblePanels} visible panels (T:${tasksVisible}, P:${priorityVisible}, H:${hoursVisible})`);
 }
 
 // Start inline editing for task names in the main task list
@@ -2218,20 +2248,44 @@ function toggleCompletedTasks(btn) {
 function toggleTasksView(btn) {
   const tasksColumn = document.querySelector('.content-section');
   const toggleBtn = document.getElementById('toggle-tasks');
+  const priorityToggleBtn = document.getElementById('toggle-priority');
   
   if (tasksColumn && toggleBtn) {
     const isVisible = !tasksColumn.classList.contains('tasks-hidden');
     
     if (isVisible) {
-      // Hide tasks column
+      // Hide tasks column AND priority flags (since priority requires tasks)
       tasksColumn.classList.add('tasks-hidden');
       toggleBtn.classList.remove('active');
+      
+      // Also hide priority flags when tasks are hidden
+      if (!document.body.classList.contains('priority-flags-hidden')) {
+        document.body.classList.add('priority-flags-hidden');
+        priorityToggleBtn?.classList.remove('active');
+        
+        // Hide priority flag elements
+        const priorityFlags = document.querySelectorAll('.priority-flag, .task-priority-flags');
+        priorityFlags.forEach(flag => {
+          flag.style.display = 'none';
+        });
+        
+        // Hide priority controls
+        const sortBtn = document.getElementById('priority-sort-btn');
+        const consolidateBtn = document.getElementById('consolidate-btn');
+        if (sortBtn) sortBtn.style.display = 'none';
+        if (consolidateBtn) consolidateBtn.style.display = 'none';
+        
+        console.log('🎯 Priority flags auto-hidden with tasks panel');
+      }
+      
       console.log('📋 Tasks panel hidden');
     } else {
       // Show tasks column
       tasksColumn.classList.remove('tasks-hidden');
       toggleBtn.classList.add('active');
       console.log('📋 Tasks panel shown');
+      
+      // Note: Priority flags remain hidden until user explicitly shows them
     }
     
     // Update layout after panel visibility change
@@ -4477,7 +4531,7 @@ function makeTaskDraggable(taskBlock, task) {
     taskBlock.style.top = position + 'px';
   });
   
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('mouseup', async () => {
     if (!isDragging) return;
     
     isDragging = false;
@@ -4494,6 +4548,37 @@ function makeTaskDraggable(taskBlock, task) {
         const position = (startMinutes / 60) * 60;
         taskBlock.style.top = position + 'px';
       }, 400);
+    } else if (task.startMinutes !== startMinutes) {
+      // Time changed - save to database and propagate to other views
+      const newTime = minutesToTimeString(task.startMinutes);
+      const updates = { scheduledTime: newTime };
+      
+      try {
+        await updateTaskState(task.id, updates);
+        
+        // Propagate changes to modal if open
+        const modal = document.getElementById('task-modal');
+        if (modal && modal.style.display === 'block') {
+          const timeInput = document.getElementById('modal-scheduled-time');
+          if (timeInput && timeInput.value !== newTime) {
+            timeInput.value = newTime;
+          }
+        }
+        
+        // Show success feedback
+        showToast('Time Updated', `Task moved to ${formatTime(newTime)}`, '', null, 2000);
+        
+        if (debug) console.log('dragEnd: Time saved to database and propagated', task.id, newTime);
+      } catch (error) {
+        console.error('dragEnd: Failed to save time change', error);
+        showToast('Save Error', 'Failed to save time change', '', null, 3000);
+        
+        // Revert on error
+        task.startMinutes = startMinutes;
+        task.startIndex = Math.round(startMinutes / 15);
+        const position = (startMinutes / 60) * 60;
+        taskBlock.style.top = position + 'px';
+      }
     }
     
     if (debug) console.log('dragEnd: Hours task drag ended', task);
@@ -4552,7 +4637,7 @@ function makeTaskResizable(taskBlock, task, resizeHandle) {
     taskBlock.style.height = height + 'px';
   });
   
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('mouseup', async () => {
     if (!isResizing) return;
     
     isResizing = false;
@@ -4569,8 +4654,112 @@ function makeTaskResizable(taskBlock, task, resizeHandle) {
         const height = (startDuration / 60) * 60;
         taskBlock.style.height = height + 'px';
       }, 400);
+    } else if (task.durationMinutes !== startDuration) {
+      // Duration changed - save to database and propagate to other views
+      const newEstimate = task.durationMinutes / 60; // Convert minutes to hours
+      const updates = { timeEstimate: newEstimate };
+      
+      try {
+        await updateTaskState(task.id, updates);
+        
+        // Propagate changes to modal if open
+        const modal = document.getElementById('task-modal');
+        if (modal && modal.style.display === 'block') {
+          const estimateInput = document.getElementById('modal-time-estimate');
+          if (estimateInput && parseFloat(estimateInput.value) !== newEstimate) {
+            estimateInput.value = newEstimate.toString();
+          }
+        }
+        
+        // Show success feedback
+        const durationText = task.durationMinutes >= 60 ? 
+          `${Math.floor(task.durationMinutes / 60)}h ${task.durationMinutes % 60}m` : 
+          `${task.durationMinutes}m`;
+        showToast('Duration Updated', `Task duration set to ${durationText}`, '', null, 2000);
+        
+        if (debug) console.log('resize: Duration saved to database and propagated', task.id, newEstimate);
+      } catch (error) {
+        console.error('resize: Failed to save duration change', error);
+        showToast('Save Error', 'Failed to save duration change', '', null, 3000);
+        
+        // Revert on error
+        task.durationMinutes = startDuration;
+        task.durationSteps = Math.round(startDuration / 15);
+        const height = (startDuration / 60) * 60;
+        taskBlock.style.height = height + 'px';
+      }
     }
     
     if (debug) console.log('resize: Hours task resize ended', task);
   });
+}
+
+/* ---------- Helper Functions for Time Formatting ----------- */
+function minutesToTimeString(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:00`;
+}
+
+function formatTime(timeString) {
+  if (!timeString) return '';
+  const [hours, minutes] = timeString.split(':');
+  const hour24 = parseInt(hours);
+  const hour12 = hour24 === 0 ? 12 : (hour24 > 12 ? hour24 - 12 : hour24);
+  const ampm = hour24 >= 12 ? 'PM' : 'AM';
+  return `${hour12}:${minutes}${ampm}`;
+}
+
+/* ---------- Hours Panel Propagation Functions ----------- */
+function propagateTimeChangeToHoursPanel(taskId, newTime) {
+  try {
+    // Find the Hours panel task block
+    const taskBlock = document.querySelector(`.task-block[data-task-id="${taskId}"]`);
+    if (!taskBlock) return;
+    
+    // Convert time string to minutes
+    const [hours, minutes] = newTime.split(':');
+    const totalMinutes = (parseInt(hours) * 60) + parseInt(minutes);
+    
+    // Find the corresponding hours data object
+    const hoursTask = hoursData.tasks.find(t => t.id === taskId);
+    if (hoursTask) {
+      hoursTask.startMinutes = totalMinutes;
+      hoursTask.startIndex = Math.round(totalMinutes / 15);
+      
+      // Update visual position
+      const position = (totalMinutes / 60) * 60;
+      taskBlock.style.top = position + 'px';
+      
+      if (debug) console.log('propagateTime: Updated Hours panel position for', taskId, newTime);
+    }
+  } catch (error) {
+    console.error('propagateTime: Failed to update Hours panel', error);
+  }
+}
+
+function propagateEstimateChangeToHoursPanel(taskId, newEstimate) {
+  try {
+    // Find the Hours panel task block
+    const taskBlock = document.querySelector(`.task-block[data-task-id="${taskId}"]`);
+    if (!taskBlock) return;
+    
+    // Convert hours to minutes
+    const totalMinutes = newEstimate * 60;
+    
+    // Find the corresponding hours data object
+    const hoursTask = hoursData.tasks.find(t => t.id === taskId);
+    if (hoursTask) {
+      hoursTask.durationMinutes = totalMinutes;
+      hoursTask.durationSteps = Math.round(totalMinutes / 15);
+      
+      // Update visual height
+      const height = (totalMinutes / 60) * 60;
+      taskBlock.style.height = height + 'px';
+      
+      if (debug) console.log('propagateEstimate: Updated Hours panel height for', taskId, newEstimate + 'h');
+    }
+  } catch (error) {
+    console.error('propagateEstimate: Failed to update Hours panel', error);
+  }
 }
