@@ -40,6 +40,9 @@ function debugLogger(message) {
     debugLogElement.scrollTop = debugLogElement.scrollHeight;
   }
   
+  // Update popup window log if open
+  updatePopupDebugLog();
+  
   // Also log to console if debug is enabled
   if (debug) {
     console.log(logEntry);
@@ -3017,24 +3020,48 @@ function initDebugModal() {
   debugLogger('Debug modal initialized successfully');
 }
 
-// Open the settings modal
+// Global reference to settings popup window
+let settingsPopupWindow = null;
+
+// Open the settings modal in a popup window
 function openSettingsModal() {
+  // Check if popup is already open and bring it to front
+  if (settingsPopupWindow && !settingsPopupWindow.closed) {
+    settingsPopupWindow.focus();
+    debugLogger('Settings window brought to front');
+    return;
+  }
+  
+  // Create popup window
+  const windowFeatures = 'width=800,height=700,left=100,top=100,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes';
+  settingsPopupWindow = window.open('', 'DUN_Settings', windowFeatures);
+  
+  if (!settingsPopupWindow) {
+    // Fallback to modal if popup blocked
+    openSettingsModalFallback();
+    return;
+  }
+  
+  // Generate settings window HTML
+  const settingsHTML = generateSettingsHTML();
+  
+  // Write the HTML to the popup
+  settingsPopupWindow.document.write(settingsHTML);
+  settingsPopupWindow.document.close();
+  
+  // Setup communication between windows
+  setupSettingsWindowCommunication();
+  
+  debugLogger('Settings opened in popup window');
+}
+
+// Fallback to modal if popup is blocked
+function openSettingsModalFallback() {
   const modal = document.getElementById('debug-modal');
   if (!modal) return;
   
-  // Force proper modal display styles
-  modal.style.cssText = `
-    display: block !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0, 0, 0, 0.7) !important;
-    z-index: 10000 !important;
-  `;
-  
-  debugLogger('Settings modal opened');
+  modal.style.display = 'block';
+  debugLogger('Settings modal opened (popup fallback)');
   
   // Update checkboxes with current states
   const debugCheckbox = document.getElementById('debug-toggle-checkbox');
@@ -3049,41 +3076,436 @@ function openSettingsModal() {
     debugLogElement.textContent = debugLog.join('\n');
     debugLogElement.scrollTop = debugLogElement.scrollHeight;
   }
+}
+
+// Generate HTML for settings popup window
+function generateSettingsHTML() {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUN Settings Console</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: #1a1a1a; 
+            color: #e0e0e0; 
+            overflow-x: hidden;
+        }
+        .settings-container {
+            padding: 20px;
+            max-width: 100%;
+        }
+        .settings-header {
+            background: linear-gradient(135deg, #00CEF7, #0099cc);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .settings-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .debug-controls {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #333;
+            border-radius: 8px;
+        }
+        .debug-controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .debug-controls input[type="checkbox"] {
+            accent-color: #00CEF7;
+        }
+        .debug-controls button {
+            background: #00CEF7;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .debug-controls button:hover {
+            background: #0099cc;
+        }
+        .debug-database-controls {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #2a1a1a;
+            border: 2px solid #cc4444;
+            border-radius: 8px;
+        }
+        .debug-database-controls h4 {
+            color: #ff6b6b;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        .debug-danger-btn {
+            background: #cc4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 12px;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+        }
+        .debug-danger-btn:hover {
+            background: #aa3333;
+        }
+        .debug-warning {
+            color: #ffaa44;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+        .debug-nav-section {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .debug-nav-section h4 {
+            color: #00CEF7;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        .nav-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .nav-link {
+            background: #3a3a3a;
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .nav-link:hover {
+            background: #4a4a4a;
+            color: #00CEF7;
+        }
+        .debug-log-container {
+            margin-bottom: 24px;
+        }
+        .debug-log-container h3 {
+            color: #00CEF7;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .debug-log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 16px;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            border: 1px solid #333;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">
+            <i class="fa-solid fa-gear"></i>
+            <div class="settings-title">DUN Settings Console</div>
+        </div>
+        
+        <div class="debug-controls">
+            <label>
+                <input type="checkbox" id="debug-toggle-checkbox"> Enable Debug Logging
+            </label>
+            <label>
+                <input type="checkbox" id="borders-toggle-checkbox"> Show Element Borders
+            </label>
+            <button id="clear-debug-log">Clear Log</button>
+            <button id="copy-debug-log">Copy Log</button>
+        </div>
+        
+        <div class="debug-nav-section">
+            <h4>📋 Debug Pages</h4>
+            <div class="nav-links">
+                <a href="/debug/tasks" target="_blank" class="nav-link">
+                    <i class="fa-solid fa-code"></i> Raw JSON Tasks
+                </a>
+                <a href="/debug/table" target="_blank" class="nav-link">
+                    <i class="fa-solid fa-table"></i> Table View
+                </a>
+                <a href="/debug/formatted" target="_blank" class="nav-link">
+                    <i class="fa-solid fa-file-lines"></i> Formatted View
+                </a>
+                <a href="/debug-files.html" target="_blank" class="nav-link">
+                    <i class="fa-solid fa-folder-open"></i> File Aggregator
+                </a>
+                <a href="/filter-flow-diagram.html" target="_blank" class="nav-link">
+                    <i class="fa-solid fa-diagram-project"></i> Filter Flow Diagram
+                </a>
+            </div>
+        </div>
+        
+        <div class="debug-database-controls">
+            <h4>🚨 Dangerous Database Operations</h4>
+            <button id="clear-database-btn" class="debug-danger-btn">Clear Database</button>
+            <button id="load-test-data-btn" class="debug-danger-btn">Load Test Data</button>
+            <p class="debug-warning">⚠️ These operations are irreversible and will modify your database!</p>
+        </div>
+        
+        <div class="debug-log-container">
+            <h3>Debug Log:</h3>
+            <pre id="debug-log" class="debug-log">${debugLog.join('\\n')}</pre>
+        </div>
+    </div>
+</body>
+</html>
+  `;
+}
+
+// Setup communication between main window and settings popup
+function setupSettingsWindowCommunication() {
+  if (!settingsPopupWindow || settingsPopupWindow.closed) return;
   
-  // Force center the modal window with explicit positioning
-  const settingsWindow = document.getElementById('settings-window');
-  if (settingsWindow) {
-    settingsWindow.style.cssText = `
-      position: fixed !important;
-      top: 50% !important;
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 700px !important;
-      max-width: 90vw !important;
-      max-height: 85vh !important;
-      background: var(--secondary-bg) !important;
-      border: 2px solid var(--accent-color) !important;
-      border-radius: 12px !important;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6) !important;
-      z-index: 10001 !important;
-    `;
+  // Wait for popup to load, then setup event listeners
+  setTimeout(() => {
+    const popupDoc = settingsPopupWindow.document;
+    
+    // Debug logging toggle
+    const debugCheckbox = popupDoc.getElementById('debug-toggle-checkbox');
+    if (debugCheckbox) {
+      debugCheckbox.checked = debug;
+      debugCheckbox.addEventListener('change', (e) => {
+        debug = e.target.checked;
+        debugLogger(`Debug logging ${debug ? 'enabled' : 'disabled'}`);
+        updatePopupDebugLog();
+      });
+    }
+    
+    // Borders toggle
+    const bordersCheckbox = popupDoc.getElementById('borders-toggle-checkbox');
+    if (bordersCheckbox) {
+      bordersCheckbox.checked = document.body.classList.contains('debug-borders-enabled');
+      bordersCheckbox.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          document.body.classList.add('debug-borders-enabled');
+          debugLogger('Debug borders enabled');
+        } else {
+          document.body.classList.remove('debug-borders-enabled');
+          debugLogger('Debug borders disabled');
+        }
+        updatePopupDebugLog();
+      });
+    }
+    
+    // Clear log button
+    const clearLogBtn = popupDoc.getElementById('clear-debug-log');
+    if (clearLogBtn) {
+      clearLogBtn.addEventListener('click', () => {
+        debugLog = [];
+        debugLogger('Debug log cleared');
+        updatePopupDebugLog();
+      });
+    }
+    
+    // Copy log button
+    const copyLogBtn = popupDoc.getElementById('copy-debug-log');
+    if (copyLogBtn) {
+      copyLogBtn.addEventListener('click', async () => {
+        try {
+          const logText = debugLog.join('\n');
+          await navigator.clipboard.writeText(logText);
+          copyLogBtn.textContent = 'Copied!';
+          setTimeout(() => {
+            copyLogBtn.textContent = 'Copy Log';
+          }, 1000);
+        } catch (err) {
+          console.error('Failed to copy log:', err);
+          copyLogBtn.textContent = 'Copy failed';
+          setTimeout(() => {
+            copyLogBtn.textContent = 'Copy Log';
+          }, 1000);
+        }
+      });
+    }
+    
+    // Database controls
+    setupDatabaseControls(popupDoc);
+    
+  }, 100);
+}
+
+// Setup database controls in popup
+function setupDatabaseControls(popupDoc) {
+  // Clear database button
+  const clearDatabaseBtn = popupDoc.getElementById('clear-database-btn');
+  if (clearDatabaseBtn) {
+    clearDatabaseBtn.addEventListener('click', async () => {
+      const confirmation = confirm(
+        '🚨 DANGER: Clear Database\n\n' +
+        'This will permanently delete ALL tasks from the database.\n' +
+        'This action cannot be undone!\n\n' +
+        'Are you absolutely sure you want to continue?'
+      );
+      
+      if (!confirmation) {
+        debugLogger('Database clear operation cancelled by user');
+        return;
+      }
+      
+      const doubleConfirmation = confirm(
+        '⚠️ FINAL WARNING\n\n' +
+        'You are about to delete ALL tasks permanently.\n' +
+        'Type "DELETE" and click OK to confirm this dangerous operation.'
+      );
+      
+      if (!doubleConfirmation) {
+        debugLogger('Database clear operation cancelled at final confirmation');
+        return;
+      }
+      
+      try {
+        clearDatabaseBtn.textContent = 'Clearing...';
+        clearDatabaseBtn.disabled = true;
+        
+        debugLogger('🚨 DATABASE CLEAR: User confirmed deletion, executing...');
+        
+        const response = await fetch('/api/reset-database', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to clear database: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        debugLogger('✅ DATABASE CLEAR: ' + result.message);
+        
+        // Refresh the main application
+        window.location.reload();
+        
+      } catch (error) {
+        console.error('❌ Database clear error:', error);
+        debugLogger('❌ DATABASE CLEAR ERROR: ' + error.message);
+        clearDatabaseBtn.textContent = 'Clear Database';
+        clearDatabaseBtn.disabled = false;
+      }
+      
+      updatePopupDebugLog();
+    });
+  }
+  
+  // Load test data button
+  const loadTestDataBtn = popupDoc.getElementById('load-test-data-btn');
+  if (loadTestDataBtn) {
+    loadTestDataBtn.addEventListener('click', async () => {
+      const confirmation = confirm(
+        '🧪 Load Test Data\n\n' +
+        'This will:\n' +
+        '• Delete ALL existing tasks\n' +
+        '• Load comprehensive test dataset\n' +
+        '• Create tasks for all time intervals\n' +
+        '• Add tasks with various priority combinations\n' +
+        '• Include nested tasks and sample data\n\n' +
+        'Continue?'
+      );
+      
+      if (!confirmation) {
+        debugLogger('Test data load operation cancelled by user');
+        return;
+      }
+      
+      try {
+        loadTestDataBtn.textContent = 'Loading...';
+        loadTestDataBtn.disabled = true;
+        
+        debugLogger('🧪 TEST DATA: User confirmed load, executing...');
+        
+        const response = await fetch('/api/load-test-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load test data: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        debugLogger('✅ TEST DATA LOADED: ' + result.message);
+        debugLogger(`📊 TEST DATA STATS: ${result.sectionsCount} sections, ${result.tasksCount} tasks`);
+        
+        // Refresh the main application
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        
+      } catch (error) {
+        console.error('❌ Test data load error:', error);
+        debugLogger('❌ TEST DATA ERROR: ' + error.message);
+        loadTestDataBtn.textContent = 'Load Test Data';
+        loadTestDataBtn.disabled = false;
+      }
+      
+      updatePopupDebugLog();
+    });
+  }
+}
+
+// Update debug log in popup window
+function updatePopupDebugLog() {
+  if (!settingsPopupWindow || settingsPopupWindow.closed) return;
+  
+  const debugLogElement = settingsPopupWindow.document.getElementById('debug-log');
+  if (debugLogElement) {
+    debugLogElement.textContent = debugLog.join('\n');
+    debugLogElement.scrollTop = debugLogElement.scrollHeight;
   }
 }
 
 // Close the settings modal
 function closeSettingsModal() {
-  const modal = document.getElementById('debug-modal');
-  if (!modal) return;
-  
-  modal.style.display = 'none';
-  
-  // Reset any inline styles that might interfere
-  const settingsWindow = document.getElementById('settings-window');
-  if (settingsWindow) {
-    settingsWindow.style.transform = '';
+  if (settingsPopupWindow && !settingsPopupWindow.closed) {
+    settingsPopupWindow.close();
+    settingsPopupWindow = null;
+    debugLogger('Settings popup window closed');
   }
   
-  debugLogger('Settings modal closed');
+  // Also handle fallback modal
+  const modal = document.getElementById('debug-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    debugLogger('Settings modal closed');
+  }
 }
 
 // Make the settings modal window draggable
