@@ -1350,10 +1350,10 @@ body[data-show-dates="true"] .task-date-container {
 }
 
 .task-control-btn {
-  background: rgba(255, 0, 0, 0.7) !important; /* Red background for debugging */
-  border: 1px solid white !important; /* White border for debugging */
+  background: rgba(255, 0, 0, 0.0) !important; /* Red background for debugging */
+  border: 1px solid transparent !important;  /* Invisible border for debugging */
   color: white !important;
-  font-size: 10px !important; /* Larger for debugging */
+  font-size: 12px !important; /* Larger for debugging */
   cursor: pointer;
   opacity: 1 !important; /* Force visible */
   padding: 2px !important;
@@ -1423,7 +1423,7 @@ body[data-show-dates="true"] .task-date-container {
 .time-icon {
   position: absolute;
   /* Position from the right edge of the parent line */
-  right: -65px; 
+  right: -25px; 
   top: 50%;
   /* Vertically center the icon on the line */
   transform: translateY(-50%); 
@@ -1467,7 +1467,7 @@ body[data-show-dates="true"] .task-date-container {
 /* The icon for limit lines (stop, moon) */
 .limit-icon {
   position: absolute;
-  right: -65px;
+  right: -25px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 21;
@@ -1493,11 +1493,11 @@ body[data-show-dates="true"] .task-date-container {
 .limit-label {
   position: absolute;
   /* Align with the icon horizontally */
-  right: -80px;
+  right: -35px;
   /* Position below the line */
   top: 100%;
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 14px;
   color: #7F7F7F;
   white-space: nowrap;
   z-index: 21;
