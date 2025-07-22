@@ -1353,7 +1353,7 @@ ${debugInfo.taskTreeHTML}
       console.log('📋 DOM DUMP: Copied to clipboard for context:', context);
     }).catch(err => {
       console.error('📋 DOM DUMP: Failed to copy to clipboard:', err);
-      showToast('DOM Debug Error', 'Failed to copy DOM dump to clipboard');
+      console.error('DOM Debug Error: Failed to copy DOM dump to clipboard');
     });
     
     return debugInfo;

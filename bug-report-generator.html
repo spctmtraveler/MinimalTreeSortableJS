@@ -280,46 +280,69 @@
         <div class="bug-report-form">
             <div class="form-group">
                 <label for="bugTitle">Bug Title *</label>
-                <input type="text" id="bugTitle" placeholder="Brief description of the issue" required>
+                <input type="text" id="bugTitle" value="Date Range Filter Bug: Next Week/Next Month Show Identical Results" required>
             </div>
 
             <div class="form-group">
                 <label for="bugSeverity">Severity</label>
                 <select id="bugSeverity">
-                    <option value="high">High - App broken/unusable</option>
-                    <option value="medium" selected>Medium - Feature not working</option>
+                    <option value="high" selected>High - App broken/unusable</option>
+                    <option value="medium">Medium - Feature not working</option>
                     <option value="low">Low - Minor visual/UX issue</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="expectedBehavior">Expected Behavior *</label>
-                <textarea id="expectedBehavior" placeholder="What should happen? Describe the correct behavior in detail." required></textarea>
+                <textarea id="expectedBehavior" required>Date range filters should show different results:
+- Next Week: Tasks scheduled July 28 - August 3, 2025  
+- Next Month: Tasks scheduled August 1-31, 2025
+- Triage tasks (overdue/unscheduled) should appear in Today/Tomorrow filters</textarea>
             </div>
 
             <div class="form-group">
                 <label for="actualBehavior">Actual Behavior *</label>
-                <textarea id="actualBehavior" placeholder="What is actually happening? Describe the problem in detail." required></textarea>
+                <textarea id="actualBehavior" required>Date range filters show identical results:
+- Next Week shows same tasks as This Week (July 21-27, 2025)
+- Next Month shows same tasks as This Month (July 1-31, 2025)  
+- Triage tasks don't appear in Today/Tomorrow date filters despite fixes</textarea>
             </div>
 
             <div class="form-group">
                 <label for="stepsToReproduce">Steps to Reproduce</label>
-                <textarea id="stepsToReproduce" placeholder="1. Go to...&#10;2. Click on...&#10;3. Notice that..."></textarea>
+                <textarea id="stepsToReproduce">1. Load DUN task management application
+2. Select "This Week" from filter dropdown - note visible tasks
+3. Select "Next Week" from filter dropdown  
+4. Observe identical tasks are shown
+5. Repeat with "This Month" vs "Next Month"
+6. Try Today/Tomorrow filters - triage tasks missing</textarea>
             </div>
 
             <div class="form-group">
                 <label for="attemptedSolutions">Attempted Solutions</label>
-                <textarea id="attemptedSolutions" placeholder="List everything you've tried to fix this issue, including specific code changes and their results."></textarea>
+                <textarea id="attemptedSolutions">1. Added comprehensive date range debugging with console.log statements
+2. Enhanced triage filtering rules to include overdue tasks in Today/Tomorrow
+3. Fixed Hours panel database ID mismatch (dbTaskId vs temporary IDs)
+4. Added layout detection logging for panel repositioning issues
+5. Verified date calculation logic - mathematically correct but results identical</textarea>
             </div>
 
             <div class="form-group">
                 <label for="suspectedCauses">Suspected Causes</label>
-                <textarea id="suspectedCauses" placeholder="What do you think might be causing this issue? Include theories and hunches."></textarea>
+                <textarea id="suspectedCauses">1. Task date parsing issues in comparison logic
+2. Test data may only contain tasks for current week/month periods
+3. Date timezone conversion problems causing incorrect comparisons
+4. Switch statement logic error in filter application
+5. Database date storage format mismatch with JavaScript Date objects</textarea>
             </div>
 
             <div class="form-group">
                 <label for="affectedFiles">Key Files Involved</label>
-                <textarea id="affectedFiles" placeholder="List the files that are most likely related to this bug (e.g., script.js lines 1500-1600, styles.css .timeline-icon class)"></textarea>
+                <textarea id="affectedFiles">script.js (lines 1398-1408): handleFilterChange() function
+script.js (lines 1410-1450): Date range calculation logic
+script.js (lines 1500-1600): Task filtering and display logic
+server.js: Database date format and task query endpoints
+Test data: Database records with date patterns for Next Week/Next Month</textarea>
             </div>
         </div>
 
@@ -509,7 +532,7 @@ END OF REPORT
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = filename;
+            a.download = 'Bug Report ReadMe First.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -543,16 +566,10 @@ END OF REPORT
             }, 3000);
         }
 
-        // Auto-fill current icon positioning bug example
+        // Pre-populated with date range filter bug for immediate AI consultation
         document.addEventListener('DOMContentLoaded', function() {
-            // Pre-populate with the current icon positioning issue as an example
-            document.getElementById('bugTitle').value = 'Hours Panel timeline icons positioned incorrectly';
-            document.getElementById('expectedBehavior').value = 'Timeline icons (clock, stop, moon) should appear to the right of their respective horizontal timeline bars, positioned with proper vertical alignment using flexbox layout.';
-            document.getElementById('actualBehavior').value = 'Timeline icons and time labels appear flush left and positioned down a line instead of up and to the right of the timeline bars.';
-            document.getElementById('stepsToReproduce').value = '1. Open the app\n2. Click the clock icon in the header to show Hours panel\n3. Observe the timeline with current time line (blue)\n4. Notice the clock icon is not properly positioned\n5. Look at the stop line (red) and sleep line (teal)\n6. Notice their icons are also mispositioned';
-            document.getElementById('attemptedSolutions').value = '1. Changed from position: absolute with right: -100px to right: -60px\n2. Switched from display: block to display: flex with justify-content: flex-end\n3. Added transform: translate(15px, -5px) for visual offset\n4. Adjusted container width and positioning\n5. Modified CSS specificity with !important declarations\n6. Updated icon containers to use flexbox layout pattern';
-            document.getElementById('suspectedCauses').value = '1. CSS positioning conflicts between absolute and flex positioning\n2. Transform properties not being applied correctly\n3. Container sizing issues preventing proper flex alignment\n4. CSS specificity problems with !important overrides\n5. Possible DOM structure issues with nested positioning contexts';
-            document.getElementById('affectedFiles').value = 'styles.css:\n- .time-icon class (lines ~1420-1435)\n- .limit-icon class (lines ~1467-1485)\n- .limit-label class (lines ~1490-1505)\n- .hours-timeline container styles\n\nindex.html:\n- Hours panel timeline structure\n- Icon element hierarchy\n\nscript.js:\n- Hours panel initialization\n- Timeline rendering functions';
+            // Form is already pre-populated in HTML for immediate use
+            console.log('Bug Report Generator loaded with Date Range Filter bug details');
         });
     </script>
 </body>
