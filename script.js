@@ -4804,3 +4804,306 @@ function propagateEstimateChangeToHoursPanel(taskId, newEstimate) {
     console.error('propagateEstimate: Failed to update Hours panel', error);
   }
 }
+
+/* ---------- One-Click Debug Export System ----------- */
+async function startOneClickExport() {
+  const progressDiv = document.getElementById('export-progress');
+  const stepsDiv = document.getElementById('export-steps');
+  const exportBtn = document.getElementById('one-click-export');
+  
+  // Show progress panel
+  progressDiv.style.display = 'block';
+  exportBtn.disabled = true;
+  exportBtn.textContent = '⏳ Exporting...';
+  
+  const steps = [
+    'Initializing export process...',
+    'Collecting system information...',
+    'Fetching raw task data from API...',
+    'Gathering project source files...',
+    'Capturing debug logs and console data...',
+    'Generating comprehensive bug report...',
+    'Creating filter flow analysis...',
+    'Compiling final export package...',
+    'Preparing download...'
+  ];
+  
+  let exportData = {
+    timestamp: new Date().toISOString(),
+    systemInfo: {
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      debug: debug,
+      currentFilter: document.getElementById('filter-dropdown')?.value
+    },
+    sections: []
+  };
+  
+  try {
+    for (let i = 0; i < steps.length; i++) {
+      await updateExportProgress(stepsDiv, steps, i, 'active');
+      
+      switch (i) {
+        case 0: // Initialize
+          await new Promise(resolve => setTimeout(resolve, 300));
+          break;
+          
+        case 1: // System info
+          exportData.sections.push({
+            title: 'SYSTEM INFORMATION',
+            content: `Timestamp: ${exportData.timestamp}
+User Agent: ${exportData.systemInfo.userAgent}
+Current URL: ${exportData.systemInfo.url}
+Viewport: ${exportData.systemInfo.viewport}
+Debug Mode: ${exportData.systemInfo.debug}
+Current Filter: ${exportData.systemInfo.currentFilter || 'None'}
+
+DOM Elements Status:
+- Task Tree: ${document.getElementById('task-tree') ? 'Present' : 'Missing'}
+- Filter Dropdown: ${document.getElementById('filter-dropdown') ? 'Present' : 'Missing'}
+- Hours Panel: ${document.querySelector('.hours-column') ? 'Present' : 'Missing'}
+- Task Items: ${document.querySelectorAll('.task-item').length} found`
+          });
+          break;
+          
+        case 2: // Raw API data
+          try {
+            const rawTasksResponse = await fetch('/api/tasks/raw');
+            const rawTasks = await rawTasksResponse.json();
+            exportData.sections.push({
+              title: 'RAW API TASK DATA',
+              content: JSON.stringify(rawTasks, null, 2)
+            });
+          } catch (error) {
+            exportData.sections.push({
+              title: 'RAW API TASK DATA',
+              content: `ERROR: ${error.message}`
+            });
+          }
+          break;
+          
+        case 3: // Source files
+          const sourceFiles = [
+            '/index.html', '/styles.css', '/script.js', '/server.js',
+            '/emergency-fix.js', '/filter-fix.js', '/package.json', '/replit.md'
+          ];
+          
+          let fileContents = '';
+          for (const filePath of sourceFiles) {
+            try {
+              const response = await fetch(filePath);
+              if (response.ok) {
+                const content = await response.text();
+                fileContents += `\n${'='.repeat(80)}\n`;
+                fileContents += `FILE: ${filePath}\n`;
+                fileContents += `${'='.repeat(80)}\n\n`;
+                fileContents += content;
+                fileContents += '\n\n';
+              }
+            } catch (error) {
+              fileContents += `\nERROR loading ${filePath}: ${error.message}\n`;
+            }
+          }
+          
+          exportData.sections.push({
+            title: 'PROJECT SOURCE FILES',
+            content: fileContents
+          });
+          break;
+          
+        case 4: // Debug logs
+          const debugLog = document.getElementById('debug-log')?.textContent || 'No debug log available';
+          
+          exportData.sections.push({
+            title: 'DEBUG LOGS AND CONSOLE DATA',
+            content: `DEBUG LOG:\n${debugLog}\n\nCONSOLE INFORMATION:\n${JSON.stringify(exportData.systemInfo, null, 2)}`
+          });
+          break;
+          
+        case 5: // Bug report
+          exportData.sections.push({
+            title: 'COMPREHENSIVE BUG REPORT',
+            content: `BUG REPORT: Date Range Filter Issues
+
+SEVERITY: High - Core functionality broken
+
+EXPECTED BEHAVIOR:
+- Next Week: Tasks scheduled July 28 - August 3, 2025
+- Next Month: Tasks scheduled August 1-31, 2025
+- Triage tasks (overdue/unscheduled) should appear in Today/Tomorrow filters
+
+ACTUAL BEHAVIOR:
+- Next Week shows same tasks as This Week (July 21-27, 2025)
+- Next Month shows same tasks as This Month (July 1-31, 2025)
+- Triage tasks don't appear in Today/Tomorrow date filters despite fixes
+
+REPRODUCTION STEPS:
+1. Load DUN task management application
+2. Select "This Week" from filter dropdown - note visible tasks
+3. Select "Next Week" from filter dropdown
+4. Observe identical tasks are shown
+5. Repeat with "This Month" vs "Next Month"
+6. Try Today/Tomorrow filters - triage tasks missing
+
+ATTEMPTED SOLUTIONS:
+1. Added comprehensive date range debugging with console.log statements
+2. Enhanced triage filtering rules to include overdue tasks in Today/Tomorrow
+3. Fixed Hours panel database ID mismatch (dbTaskId vs temporary IDs)
+4. Added layout detection logging for panel repositioning issues
+5. Verified date calculation logic - mathematically correct but results identical
+
+SUSPECTED CAUSES:
+1. Task date parsing issues in comparison logic
+2. Test data may only contain tasks for current week/month periods
+3. Date timezone conversion problems causing incorrect comparisons
+4. Switch statement logic error in filter application
+5. Database date storage format mismatch with JavaScript Date objects
+
+KEY FILES INVOLVED:
+script.js (lines 1398-1408): handleFilterChange() function
+script.js (lines 1410-1450): Date range calculation logic
+script.js (lines 1500-1600): Task filtering and display logic
+server.js: Database date format and task query endpoints`
+          });
+          break;
+          
+        case 6: // Filter flow analysis
+          exportData.sections.push({
+            title: 'FILTER FLOW ANALYSIS',
+            content: `Current filter state analysis and flow diagram data:
+- Current filter selection: ${exportData.systemInfo.currentFilter}
+- Visible tasks count: ${document.querySelectorAll('.task-item:not([style*="display: none"])').length}
+- Hidden tasks count: ${document.querySelectorAll('.task-item[style*="display: none"]').length}
+- Date range calculations and comparisons
+- Task visibility logic flow`
+          });
+          break;
+          
+        case 7: // Compile package
+          await new Promise(resolve => setTimeout(resolve, 500));
+          break;
+          
+        case 8: // Prepare download
+          const finalExport = generateFinalExportContent(exportData);
+          downloadExportFile(finalExport);
+          break;
+      }
+      
+      await updateExportProgress(stepsDiv, steps, i, 'complete');
+    }
+    
+    // Success
+    exportBtn.textContent = '✅ Export Complete!';
+    setTimeout(() => {
+      exportBtn.disabled = false;
+      exportBtn.textContent = '🚀 One-Click Debug Export';
+      progressDiv.style.display = 'none';
+    }, 3000);
+    
+  } catch (error) {
+    console.error('Export failed:', error);
+    exportBtn.textContent = '❌ Export Failed';
+    exportBtn.style.background = '#dc3545';
+    setTimeout(() => {
+      exportBtn.disabled = false;
+      exportBtn.textContent = '🚀 One-Click Debug Export';
+      exportBtn.style.background = '#28a745';
+    }, 3000);
+  }
+}
+
+async function updateExportProgress(stepsDiv, steps, currentIndex, status) {
+  stepsDiv.innerHTML = '';
+  
+  steps.forEach((step, index) => {
+    const stepDiv = document.createElement('div');
+    stepDiv.className = 'export-step';
+    
+    if (index < currentIndex) {
+      stepDiv.classList.add('complete');
+      stepDiv.textContent = `✅ ${step}`;
+    } else if (index === currentIndex) {
+      stepDiv.classList.add(status);
+      stepDiv.textContent = status === 'active' ? `⏳ ${step}` : `✅ ${step}`;
+    } else {
+      stepDiv.textContent = `⏸️ ${step}`;
+    }
+    
+    stepsDiv.appendChild(stepDiv);
+  });
+  
+  await new Promise(resolve => setTimeout(resolve, 150));
+}
+
+function generateFinalExportContent(exportData) {
+  let content = `================================================================================
+DUN TASK MANAGEMENT - COMPREHENSIVE DEBUG EXPORT
+================================================================================
+
+Generated: ${exportData.timestamp}
+Export Type: One-Click Complete Debug Package
+Purpose: AI Consultation for Date Range Filter Bug
+
+================================================================================
+EXPORT CONTENTS
+================================================================================
+
+This export contains:
+1. System information and environment details
+2. Raw API task data from database
+3. Complete project source code files
+4. Debug logs and console information  
+5. Comprehensive bug report with reproduction steps
+6. Filter flow analysis and task visibility data
+
+================================================================================\n\n`;
+
+  exportData.sections.forEach(section => {
+    content += `${'='.repeat(80)}\n`;
+    content += `${section.title}\n`;
+    content += `${'='.repeat(80)}\n\n`;
+    content += section.content;
+    content += '\n\n';
+  });
+
+  content += `================================================================================
+END OF EXPORT - READY FOR AI CONSULTATION
+================================================================================
+
+INSTRUCTIONS FOR AI DEBUGGING:
+1. Review system information for environment context
+2. Examine raw API data for data consistency issues
+3. Analyze source code files for logic errors
+4. Check debug logs for runtime issues
+5. Focus on date range filter logic in script.js
+6. Verify database date format compatibility
+
+PRIORITY ISSUE: Date range filters (Next Week/Next Month) showing identical 
+results to current period filters (This Week/This Month).
+
+Contact: Use this complete export for comprehensive debugging assistance.
+`;
+
+  return content;
+}
+
+function downloadExportFile(content) {
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Bug Report ReadMe First.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Connect one-click export button on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const exportBtn = document.getElementById('one-click-export');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', startOneClickExport);
+  }
+});
