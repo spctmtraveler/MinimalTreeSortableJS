@@ -4832,14 +4832,31 @@ function propagateEstimateChangeToHoursPanel(taskId, newEstimate) {
 /* ---------- One-Click Debug Export System ----------- */
 async function startOneClickExport() {
   debugLogger('startOneClickExport function called');
-  const progressDiv = document.getElementById('export-progress');
-  const stepsDiv = document.getElementById('export-steps');
-  const exportBtn = document.getElementById('one-click-export');
+  
+  // Try to find elements in popup window first, then main window
+  let progressDiv, stepsDiv, exportBtn;
+  let targetDoc = document;
+  
+  if (settingsPopupWindow && !settingsPopupWindow.closed) {
+    targetDoc = settingsPopupWindow.document;
+    debugLogger('Using popup window document for export UI');
+  }
+  
+  progressDiv = targetDoc.getElementById('export-progress');
+  stepsDiv = targetDoc.getElementById('export-steps');
+  exportBtn = targetDoc.getElementById('one-click-export-nav') || targetDoc.getElementById('one-click-export');
+  
+  if (!progressDiv || !stepsDiv) {
+    debugLogger('ERROR: Could not find export progress elements');
+    return;
+  }
   
   // Show progress panel
   progressDiv.style.display = 'block';
-  exportBtn.disabled = true;
-  exportBtn.textContent = '⏳ Exporting...';
+  if (exportBtn) {
+    exportBtn.disabled = true;
+    exportBtn.textContent = '⏳ Exporting...';
+  }
   
   const steps = [
     'Initializing export process...',
@@ -5019,21 +5036,46 @@ server.js: Database date format and task query endpoints`
     }
     
     // Success
-    exportBtn.textContent = '✅ Export Complete!';
+    if (exportBtn) {
+      if (exportBtn.id === 'one-click-export-nav') {
+        exportBtn.innerHTML = '<i class="fa-solid fa-check"></i> Export Complete!';
+      } else {
+        exportBtn.textContent = '✅ Export Complete!';
+      }
+    }
     setTimeout(() => {
-      exportBtn.disabled = false;
-      exportBtn.textContent = '🚀 One-Click Debug Export';
+      if (exportBtn) {
+        exportBtn.disabled = false;
+        if (exportBtn.id === 'one-click-export-nav') {
+          exportBtn.innerHTML = '<i class="fa-solid fa-rocket"></i> One-Click Debug Export';
+        } else {
+          exportBtn.textContent = '🚀 One-Click Debug Export';
+        }
+      }
       progressDiv.style.display = 'none';
     }, 3000);
     
   } catch (error) {
     console.error('Export failed:', error);
-    exportBtn.textContent = '❌ Export Failed';
-    exportBtn.style.background = '#dc3545';
+    debugLogger('Export failed: ' + error.message);
+    if (exportBtn) {
+      if (exportBtn.id === 'one-click-export-nav') {
+        exportBtn.innerHTML = '<i class="fa-solid fa-exclamation-triangle"></i> Export Failed';
+      } else {
+        exportBtn.textContent = '❌ Export Failed';
+      }
+      exportBtn.style.background = '#dc3545';
+    }
     setTimeout(() => {
-      exportBtn.disabled = false;
-      exportBtn.textContent = '🚀 One-Click Debug Export';
-      exportBtn.style.background = '#28a745';
+      if (exportBtn) {
+        exportBtn.disabled = false;
+        if (exportBtn.id === 'one-click-export-nav') {
+          exportBtn.innerHTML = '<i class="fa-solid fa-rocket"></i> One-Click Debug Export';
+        } else {
+          exportBtn.textContent = '🚀 One-Click Debug Export';
+        }
+        exportBtn.style.background = '#28a745';
+      }
     }, 3000);
   }
 }

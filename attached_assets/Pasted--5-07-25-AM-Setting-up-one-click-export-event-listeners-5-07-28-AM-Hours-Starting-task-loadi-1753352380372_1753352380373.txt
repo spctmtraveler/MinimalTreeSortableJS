@@ -1,0 +1,72 @@
+[5:07:25 AM] Setting up one-click export event listeners...
+[5:07:28 AM] Hours: Starting task loading from database...
+[5:07:28 AM] Debug modal initialized successfully
+[5:07:28 AM] Hours: Raw API response received
+[5:07:28 AM] Hours: API returned 23 total records
+[5:07:28 AM] Hours: First task structure: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","is_section":false,"completed":false,"parent_id":"task-today-a-1-sub-2","position_order":0,"revisit_date":"2025-07-22T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"time_estimate":"1.00","overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduled_time":"07:00:00"}
+[5:07:28 AM] Hours: Found 19 actual tasks (excluding 4 section headers)
+[5:07:28 AM] Hours: Sample actual task: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","is_section":false,"completed":false,"parent_id":"task-today-a-1-sub-2","position_order":0,"revisit_date":"2025-07-22T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"time_estimate":"1.00","overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduled_time":"07:00:00"}
+[5:07:28 AM] Hours: Today's date for comparison: 2025-07-24
+[5:07:28 AM] Hours: Examining task "Today A 07a Sub2.1" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 07:00:00
+[5:07:28 AM] Hours: Task "Today A 07a Sub2.1" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today A 07a Sub2.1" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today B 10a" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 10:30:00
+[5:07:28 AM] Hours: Task "Today B 10a" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today B 10a" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today A 07a" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 04:00:00
+[5:07:28 AM] Hours: Task "Today A 07a" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today A 07a" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today A 07a Sub1" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 08:00:00
+[5:07:28 AM] Hours: Task "Today A 07a Sub1" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today A 07a Sub1" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "PastDue T NA" - revisitDate: 2024-12-15T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "PastDue T NA" date comparison - taskDate: 2024-12-15, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today C 04p" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 16:00:00
+[5:07:28 AM] Hours: Task "Today C 04p" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today C 04p" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "PastDue T NA" - revisitDate: 2025-01-10T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "PastDue T NA" date comparison - taskDate: 2025-01-10, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today A 07a Sub2" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 07:10:00
+[5:07:28 AM] Hours: Task "Today A 07a Sub2" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today A 07a Sub2" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+[5:07:28 AM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "ThisWeek C NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "ThisWeek C NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+[5:07:28 AM] Hours: Task "ThisWeek C NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today A 02p" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 12:00:00
+[5:07:28 AM] Hours: Task "Today A 02p" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today A 02p" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Tomorrow A 09a" - revisitDate: 2025-07-23T00:00:00.000Z, scheduledTime: 09:00:00
+[5:07:28 AM] Hours: Task "Tomorrow A 09a" date comparison - taskDate: 2025-07-23, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Tomorrow A 09a" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "NA T NA" - revisitDate: null, scheduledTime: null
+[5:07:28 AM] Hours: Task "NA T NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today B NA (Complete)" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "Today B NA (Complete)" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today B NA (Complete)" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "ThisMonth C NA" - revisitDate: 2025-07-15T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "ThisMonth C NA" date comparison - taskDate: 2025-07-15, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "ThisMonth C NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+[5:07:28 AM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "NextWeek A NA" - revisitDate: 2025-07-31T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "NextWeek A NA" date comparison - taskDate: 2025-07-31, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "NextWeek A NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "Today A 11a" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 06:00:00
+[5:07:28 AM] Hours: Task "Today A 11a" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "Today A 11a" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: Examining task "NextMonth C NA" - revisitDate: 2025-08-15T00:00:00.000Z, scheduledTime: null
+[5:07:28 AM] Hours: Task "NextMonth C NA" date comparison - taskDate: 2025-08-15, today: 2025-07-24, isToday: false
+[5:07:28 AM] Hours: Task "NextMonth C NA" has no scheduled time or not scheduled for today
+[5:07:28 AM] Hours: No database tasks scheduled for today found, adding demo task
+[5:07:28 AM] Hours: Added single demo task at 5:00 PM
+[5:07:28 AM] Hours: Summary - processed 19 actual tasks, added 0 with scheduled times
+[5:19:19 AM] Settings opened in popup window
+[5:19:19 AM] One-click export event listener attached successfully
+[5:19:21 AM] One-click export button clicked
+[5:19:21 AM] startOneClickExport function called
