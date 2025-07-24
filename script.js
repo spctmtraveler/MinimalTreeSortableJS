@@ -3398,8 +3398,20 @@ function setupSettingsWindowCommunication() {
     if (exportNavBtn) {
       exportNavBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        startOneClickExport();
+        debugLogger('One-click export button clicked');
+        
+        // Make sure the function is available in the main window context
+        if (typeof window.startOneClickExport === 'function') {
+          window.startOneClickExport();
+        } else if (typeof startOneClickExport === 'function') {
+          startOneClickExport();
+        } else {
+          debugLogger('ERROR: startOneClickExport function not found');
+        }
       });
+      debugLogger('One-click export event listener attached successfully');
+    } else {
+      debugLogger('ERROR: One-click export button not found in popup');
     }
     
     // Debug logging toggle
@@ -4819,6 +4831,7 @@ function propagateEstimateChangeToHoursPanel(taskId, newEstimate) {
 
 /* ---------- One-Click Debug Export System ----------- */
 async function startOneClickExport() {
+  debugLogger('startOneClickExport function called');
   const progressDiv = document.getElementById('export-progress');
   const stepsDiv = document.getElementById('export-steps');
   const exportBtn = document.getElementById('one-click-export');
@@ -5112,12 +5125,18 @@ function downloadExportFile(content) {
   URL.revokeObjectURL(url);
 }
 
+// Make the function globally available after definition
+window.startOneClickExport = startOneClickExport;
+
 // Connect one-click export button on page load
 document.addEventListener('DOMContentLoaded', function() {
+  debugLogger('Setting up one-click export event listeners...');
+  
   // Set up export button in settings modal (if exists)
   const exportBtn = document.getElementById('one-click-export');
   if (exportBtn) {
     exportBtn.addEventListener('click', startOneClickExport);
+    debugLogger('Main export button event listener attached');
   }
   
   // Set up export button in navigation (if exists)
@@ -5127,5 +5146,6 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       startOneClickExport();
     });
+    debugLogger('Navigation export button event listener attached');
   }
 });
