@@ -5128,37 +5128,52 @@ async function updateExportProgress(stepsDiv, steps, currentIndex, status) {
 }
 
 function generateFinalExportContent(exportData) {
+  // Check for errors in sections and move to top
+  const errorSections = exportData.sections.filter(section => 
+    section.content.includes('ERROR:') || section.title.includes('ERROR')
+  );
+  const normalSections = exportData.sections.filter(section => 
+    !section.content.includes('ERROR:') && !section.title.includes('ERROR')
+  );
+  
   let content = `================================================================================
 DUN TASK MANAGEMENT - COMPREHENSIVE DEBUG EXPORT
 ================================================================================
 
 Generated: ${exportData.timestamp}
-Export Type: One-Click Complete Debug Package
-Purpose: AI Consultation for Date Range Filter Bug
-
-================================================================================
-EXPORT CONTENTS
-================================================================================
+Purpose: Complete system analysis for debugging date filter and UI issues
 
 This export contains:
-1. System information and environment details
-2. Raw API task data from database
-3. Complete project source code files
-4. Debug logs and console information  
-5. Comprehensive bug report with reproduction steps
-6. Filter flow analysis and task visibility data
+1. ERROR INFORMATION (if any) - Critical issues requiring immediate attention
+2. SYSTEM INFORMATION - Current application state and environment details  
+3. RAW TASK DATA - Direct database records for data integrity verification
+4. PROJECT SOURCE FILES - Complete codebase for analysis
+5. DEBUG LOGS - Runtime information and console data
+6. COMPREHENSIVE BUG REPORT - Known issues with reproduction steps
+7. FILTER FLOW ANALYSIS - Current filtering state and behavior
 
-================================================================================\n\n`;
+================================================================================
+`;
 
-  exportData.sections.forEach(section => {
-    content += `${'='.repeat(80)}\n`;
-    content += `${section.title}\n`;
+  // Add error sections first if any exist
+  if (errorSections.length > 0) {
+    content += `\n⚠️  CRITICAL ERRORS DETECTED - REVIEW IMMEDIATELY\n`;
     content += `${'='.repeat(80)}\n\n`;
-    content += section.content;
-    content += '\n\n';
+    errorSections.forEach(section => {
+      content += `\n${section.title}\n`;
+      content += `${'-'.repeat(section.title.length)}\n`;
+      content += `${section.content}\n\n`;
+    });
+  }
+
+  // Add normal sections
+  normalSections.forEach(section => {
+    content += `\n${section.title}\n`;
+    content += `${'-'.repeat(section.title.length)}\n`;
+    content += `${section.content}\n\n`;
   });
 
-  content += `================================================================================
+  content += `\n================================================================================
 END OF EXPORT - READY FOR AI CONSULTATION
 ================================================================================
 
@@ -5171,24 +5186,33 @@ INSTRUCTIONS FOR AI DEBUGGING:
 6. Verify database date format compatibility
 
 PRIORITY ISSUE: Date range filters (Next Week/Next Month) showing identical 
-results to current period filters (This Week/This Month).
-
-Contact: Use this complete export for comprehensive debugging assistance.
-`;
+results to current period filters (This Week/This Month).`;
 
   return content;
 }
 
 function downloadExportFile(content) {
+  // Extract error text for filename if present
+  let filename = 'Bug Report ReadMe First';
+  const errorMatch = content.match(/ERROR:([^\n]{1,50})/);
+  if (errorMatch) {
+    const errorText = errorMatch[1].trim()
+      .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove invalid filename characters
+      .replace(/\s+/g, ' ') // Normalize spaces
+      .substring(0, 15); // First 15 characters
+    filename = `${errorText} - ${filename}`;
+  }
+  
   const blob = new Blob([content], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'Bug Report ReadMe First.txt';
+  a.download = `${filename}.txt`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+  debugLogger(`📁 EXPORT: File saved as "${filename}.txt"`);
 }
 
 // Make the function globally available after definition

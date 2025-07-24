@@ -1,0 +1,179 @@
+After analyzing the debug package, I've identified the cause of the filter malfunction and can provide a definitive solution.
+
+The root cause of the bug is that the file emergency-fix.js is overriding the correct and complete filter logic found in script.js. The emergency script was likely a temporary patch but was left active. It contains an incomplete filter function that only handles "Today," "Tomorrow," and "Triage," causing all other date-range filters to default to showing all tasks.
+
+Root Cause Analysis
+
+Correct Logic Exists: The file script.js contains a well-structured function, handleFilterChange(), which correctly calculates all date ranges ("This Week," "Next Week," "This Month," "Next Month") and applies the filter logic properly .
+
+
+Override Mechanism: However, index.html loads emergency-fix.js after script.js.
+
+Event Listener Hijack: Inside emergency-fix.js, the setupEmergencyDropdown function explicitly removes the correct event listener from script.js by cloning the filter dropdown element. It then attaches its own, incomplete 
+
+emergencyFilter function .
+
+
+Incomplete Emergency Filter: The emergencyFilter function only contains logic for the "today", "tomorrow", and "triage" options . When you select "This Week," "Next Week," or any other option, the function has no specific instructions and defaults to showing every task. This is why "This Week" and "Next Week" appear to show identical results—they are both just showing everything.
+
+Below are the solutions to resolve this issue, ordered from most to least recommended.
+
+Solutions
+Solution 1: The Recommended Fix - Remove the Emergency Override
+The simplest and most correct solution is to stop the emergency fix from running altogether. This allows the fully functional filter logic in script.js to work as intended.
+
+Instructions:
+Open the index.html file.
+
+Find and delete the line that loads emergency-fix.js.
+
+Code to Remove from /index.html:
+HTML
+
+<script src="script.js"></script>
+<script src="emergency-fix.js"></script> ```
+
+By removing this single line, you will restore the correct functionality without any other changes.
+
+***
+
+### Solution 2: The Redundant Fix - Complete the Emergency Filter
+
+If, for some reason, `emergency-fix.js` must remain, the alternative is to make its filter function complete. This involves copying the correct logic from `script.js` into it. This approach is not ideal as it creates redundant code, but it will work.
+
+#### Instructions:
+
+1.  Open `script.js` and copy the entire `handleFilterChange` function[cite: 564].
+2.  Open `emergency-fix.js` and paste the copied function, replacing the existing, incomplete `emergencyFilter` function[cite: 1404].
+3.  Rename the pasted function from `handleFilterChange` to `emergencyFilter`.
+
+#### Code to Add to `/emergency-fix.js`:
+
+Replace the current `emergencyFilter` function with this complete version from `script.js`:
+
+```javascript
+function emergencyFilter() { // Renamed from handleFilterChange
+  console.log('🚀 FILTER START: handleFilterChange() function called');
+  const filterDropdown = document.getElementById('filter-dropdown');
+  if (!filterDropdown) {
+    console.log('❌ FILTER ERROR: filter-dropdown element not found!');
+    return;
+  }
+  const filterValue = filterDropdown.value;
+  console.log(`🔍 FILTER: Selected filter value = "${filterValue}"`);
+  
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const daysSinceMonday = (today.getDay() + 6) % 7;
+  const weekStart = new Date(today);
+  weekStart.setDate(today.getDate() - daysSinceMonday);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+  
+  const nextWeekStart = new Date(weekEnd);
+  nextWeekStart.setDate(weekEnd.getDate() + 1);
+  const nextWeekEnd = new Date(nextWeekStart);
+  nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+  
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  
+  const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+
+  const allTaskItems = document.querySelectorAll('.task-item');
+  allTaskItems.forEach(taskItem => {
+    if (taskItem.classList.contains('section-header')) {
+      taskItem.style.display = '';
+      return;
+    }
+    
+    let shouldShow = false;
+    const rawTaskData = taskItem.dataset.taskData || '{}';
+    const taskData = JSON.parse(rawTaskData);
+    
+    if (filterValue === 'all') {
+      shouldShow = true;
+    } else if (filterValue === 'triage') {
+      // ... (Triage logic from script.js)
+    } else {
+      const revisitDate = taskData.revisitDate;
+      if (!revisitDate && !taskData.completed) {
+        shouldShow = true; 
+      } else if (revisitDate) {
+        let taskDate;
+        if (revisitDate.includes('T')) {
+            taskDate = new Date(revisitDate);
+        } else if (revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            taskDate = new Date(revisitDate + 'T00:00:00');
+        } else {
+            taskDate = new Date(revisitDate);
+        }
+        
+        if (taskDate && !isNaN(taskDate)) {
+          const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+          switch (filterValue) {
+            case 'today':
+              shouldShow = taskDateOnly.getTime() === today.getTime();
+              break;
+            case 'tomorrow':
+              shouldShow = taskDateOnly.getTime() === tomorrow.getTime();
+              break;
+            case 'this-week':
+              shouldShow = taskDateOnly >= weekStart && taskDateOnly <= weekEnd;
+              break;
+            case 'next-week':
+              shouldShow = taskDateOnly >= nextWeekStart && taskDateOnly <= nextWeekEnd;
+              break;
+            case 'this-month':
+              shouldShow = taskDateOnly >= monthStart && taskDateOnly <= monthEnd;
+              break;
+            case 'next-month':
+              shouldShow = taskDateOnly >= nextMonthStart && taskDateOnly <= nextMonthEnd;
+              break;
+          }
+        }
+      }
+    }
+    taskItem.style.display = shouldShow ? '' : 'none';
+  });
+}
+Solution 3: The Surgical Fix - Disable the Override
+This approach keeps the emergency file but prevents it from hijacking the filter functionality. This is useful if other functions within emergency-fix.js are still needed.
+
+Instructions:
+Open the emergency-fix.js file.
+
+Find the setupEmergencyDropdown function.
+
+Comment out the lines that clone the dropdown and add the new event listener.
+
+Code to Comment Out in /emergency-fix.js:
+JavaScript
+
+function setupEmergencyDropdown() {
+  const dropdown = document.getElementById('filter-dropdown');
+  if (!dropdown) {
+    setTimeout(setupEmergencyDropdown, 300);
+    return;
+  }
+  
+  // Clone dropdown to remove existing listeners
+  /* COMMENT OUT THESE LINES
+  const newDropdown = dropdown.cloneNode(true);
+  dropdown.parentNode.replaceChild(newDropdown, dropdown);
+  
+  newDropdown.addEventListener('change', () => {
+    console.log(`🚨 DROPDOWN: Changed to "${newDropdown.value}"`);
+    setTimeout(emergencyFilter, 50); // Small delay to ensure DOM is ready
+  });
+  */
+
+  // Apply current filter immediately
+  emergencyFilter();
+  
+  console.log('✅ EMERGENCY DROPDOWN: Override complete');
+}
