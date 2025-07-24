@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Filter Bug Report - July 24, 2025</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #ddd;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #ff4444;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        h2 {
+            color: #00CEF7;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .critical {
+            background: #3d1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .code-block {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .success { color: #44ff44; }
+        .error { color: #ff4444; }
+        .warning { color: #ffaa44; }
+        .nav {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .nav a {
+            color: #00CEF7;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 CRITICAL BUG REPORT</h1>
+        <div style="text-align: center; color: #ff4444; font-size: 1.2rem; margin-bottom: 30px;">
+            Date Filter System Completely Broken - July 24, 2025
+        </div>
+
+        <div class="nav">
+            <a href="/">Back to App</a>
+            <a href="/debug/tasks">Raw JSON</a>
+            <a href="/filter-flow-diagram.html">Filter Flow Diagram</a>
+            <a href="/debug-files.html">File Aggregator</a>
+            <a href="/bug-report-generator.html">Bug Report Generator</a>
+        </div>
+
+        <div class="critical">
+            <h2>🔥 Critical Issue Summary</h2>
+            <p><strong>Status:</strong> <span class="error">BROKEN</span> - All date filters (Today, Tomorrow, This Week, etc.) show zero tasks</p>
+            <p><strong>Scope:</strong> Only "All" and "Triage" filters work correctly</p>
+            <p><strong>Impact:</strong> Users cannot filter tasks by date, making the application mostly unusable</p>
+            <p><strong>Root Cause:</strong> Date matching logic was over-corrected during debugging and is now completely broken</p>
+        </div>
+
+        <h2>📋 Test Case Analysis</h2>
+        <p>Using structured test data that reveals expected behavior through task names:</p>
+        
+        <div class="code-block">
+<span class="error">FAILING TEST CASES:</span>
+
+<span class="success">Expected Results for "Today" Filter (July 24, 2025):</span>
+✅ Should show: "Today A 07a" - has revisit_date: 2025-07-24
+✅ Should show: "Today B 10a" - has revisit_date: 2025-07-24  
+✅ Should show: "Today C 04p" - has revisit_date: 2025-07-24
+✅ Should show: "PastDue T NA" - overdue task (Dec 2024), incomplete
+✅ Should show: "ThisWeek B NA" - if scheduled for today's date
+✅ Should show: "ThisWeek C NA" - if scheduled for today's date
+
+<span class="error">Actual Results:</span>
+❌ Shows: ZERO tasks (completely broken)
+
+<span class="success">Expected Results for "Tomorrow" Filter (July 25, 2025):</span>
+✅ Should show: "Tomorrow A 09a" - has revisit_date: 2025-07-25
+
+<span class="error">Actual Results:</span>
+❌ Shows: ZERO tasks (completely broken)
+        </div>
+
+        <h2>🔍 Technical Analysis</h2>
+        
+        <h3>Code Flow Analysis</h3>
+        <div class="code-block">
+<span class="success">WORKING COMPONENTS:</span>
+✅ DOM Query: document.querySelectorAll('.task-item') finds ~23 elements
+✅ Date Calculation: today = 2025-07-24, tomorrow = 2025-07-25  
+✅ Data Parsing: taskData.revisitDate = "2025-07-24T00:00:00.000Z"
+✅ Filter Detection: filterValue = "today", "tomorrow", etc.
+
+<span class="error">BROKEN COMPONENTS:</span>
+❌ Date Matching Logic: shouldShow never becomes true for any tasks
+❌ Switch Statement: Contains logic but execution flow broken
+❌ Overdue Logic: Added but not executing properly
+❌ Result: All tasks get shouldShow = false
+        </div>
+
+        <h3>Recent Change History</h3>
+        <div class="code-block">
+<span class="warning">PROGRESSION OF BUG:</span>
+
+1. <span class="success">Original State:</span> Filters worked but overdue tasks appeared in ALL filters
+2. <span class="warning">First Fix Attempt:</span> Removed overdue logic - broke all date filters completely  
+3. <span class="error">Second Fix Attempt:</span> Added overdue logic back but flow still broken
+4. <span class="error">Current State:</span> Logic exists but shouldShow stays false for all tasks
+
+<span class="error">KEY ISSUE:</span> The date matching logic exists but the execution flow is broken.
+Tasks are being processed but the switch statement results are not being applied.
+        </div>
+
+        <h2>🚨 Debug Information for AI Consultants</h2>
+        
+        <h3>Super-Dump Debugging Added</h3>
+        <p>Enhanced logging triggers when task names don't match expected filter behavior:</p>
+        <div class="code-block">
+// Added super-dump triggers for:
+- "PastDue" tasks in "today" filter  
+- "Today" tasks in "today" filter
+- "Tomorrow" tasks in "tomorrow" filter
+- "ThisWeek" tasks in "this-week" filter
+
+// Logs detailed comparison data:
+- Full task data object
+- Parsed dates and calculations  
+- Boolean logic results (isToday, isOverdue, shouldShow)
+- Final visibility decision
+        </div>
+
+        <h3>Business Logic Requirements</h3>
+        <div class="code-block">
+<span class="success">CONFIRMED REQUIREMENTS:</span>
+
+1. <span class="success">Past Due Tasks:</span> Should appear in Triage AND current date filters
+   - Rationale: Overdue tasks need immediate attention
+   - Example: "PastDue T NA" (Dec 2024) should show in Today filter
+
+2. <span class="success">Exact Date Matches:</span> Should appear in their specific filters
+   - Example: "Today A 07a" should show in Today filter
+   - Example: "Tomorrow A 09a" should show in Tomorrow filter
+
+3. <span class="success">Unscheduled Tasks:</span> Should ONLY appear in Triage filter
+   - Example: "NA T NA" should only show in Triage
+
+4. <span class="success">Completed Tasks:</span> Should not appear in any date filters
+   - Example: "Today B NA (Complete)" should be hidden
+        </div>
+
+        <h2>📁 File Locations</h2>
+        <div class="code-block">
+<span class="warning">PRIMARY FILES TO EXAMINE:</span>
+
+script.js (lines ~1515-1650): Main filter logic
+  - handleFilterChange() function
+  - Date calculation logic  
+  - Switch statement for filter types
+  - shouldShow variable assignment
+
+index.html: Filter dropdown and DOM structure
+styles.css: Task visibility styling
+server.js: Task data serving (working correctly)
+
+<span class="warning">DEBUG FILES:</span>
+filter-flow-diagram.html: Visual flow analysis
+debug-files.html: Source code aggregator  
+bug-report-generator.html: Structured bug reporting
+        </div>
+
+        <h2>🔧 Recommended Investigation Steps</h2>
+        <ol>
+            <li><strong>Examine shouldShow Logic Flow:</strong> Trace why shouldShow remains false</li>
+            <li><strong>Check Switch Statement Execution:</strong> Verify switch cases are being reached</li>
+            <li><strong>Test Date Comparison Math:</strong> Validate taskDateOnly.getTime() comparisons</li>
+            <li><strong>Review Variable Scope:</strong> Ensure shouldShow assignments persist correctly</li>
+            <li><strong>Enable Super-Dump:</strong> Use task names to trigger detailed logging</li>
+        </ol>
+
+        <h2>📊 Current Console Output Pattern</h2>
+        <div class="code-block">
+<span class="success">WORKING LOGS (when filters work):</span>
+"🔍 FILTER START: handleFilterChange() function called"
+"🔍 FILTER: Selected filter value = 'today'"
+"📋 FILTER: Found 23 task items"
+"🔍 TODAY FILTER: Task 'Today A 07a' - isToday: true, shouldShow: true"
+"✅ SHOW: 'Today A 07a' will be visible"
+"🏁 FILTER COMPLETE: 8 shown, 15 hidden"
+
+<span class="error">BROKEN LOGS (current state):</span>
+"🔍 FILTER START: handleFilterChange() function called"  
+"🔍 FILTER: Selected filter value = 'today'"
+"📋 FILTER: Found 23 task items"
+"❌ HIDE: 'Today A 07a' will be hidden"  ← WRONG!
+"❌ HIDE: 'PastDue T NA' will be hidden"  ← WRONG!
+"🏁 FILTER COMPLETE: 0 shown, 23 hidden"  ← ALL WRONG!
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #2a2a2a; border-radius: 8px; text-align: center;">
+            <h3 style="color: #00CEF7; margin-bottom: 15px;">For AI Consultants</h3>
+            <p>This report contains the complete current state of the filter bug. The test data has descriptive names that make expected behavior obvious. Use the super-dump debugging to trace the exact point where the logic fails.</p>
+            <p style="margin-top: 15px;"><strong>Priority:</strong> Restore basic date filtering functionality. The logic exists but the execution flow is broken.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -404,57 +404,58 @@ When working correctly, you should see logs like:
         </div>
 
         <div class="debug-section">
-            <h3>🚨 Current Bug Status (July 24, 2025)</h3>
-            <p><strong>CRITICAL ISSUE:</strong> Filter logic was over-corrected and completely broken. All date filters now show zero tasks.</p>
+            <h3>🚨 UPDATED Bug Status (July 24, 2025 - 4:47 PM)</h3>
+            <p><strong>CRITICAL ISSUE:</strong> After multiple fix attempts, date filters still show zero tasks despite having complete logic.</p>
             <div class="code-block">
-                <span class="highlight-issue">ROOT CAUSE: Missing date matching logic in handleFilterChange()</span>
+                <span class="highlight-issue">ROOT CAUSE: Execution flow broken - logic exists but shouldShow stays false</span>
                 
-Current state:
+Current state after latest fixes:
 ✅ DOM queries work: document.querySelectorAll('.task-item') finds ~23 elements
 ✅ Date calculations work: today = 2025-07-24, tomorrow = 2025-07-25  
 ✅ Task data parsing works: taskData.revisitDate = "2025-07-24T00:00:00.000Z"
-❌ Date matching logic: COMPLETELY MISSING - shouldShow never becomes true
-❌ Result: NO tasks visible in any date filter (Today, Tomorrow, This Week, etc.)
+✅ Switch statement exists: Cases for 'today', 'tomorrow', etc. all present
+✅ Overdue logic added: isOverdue = taskDateOnly < today && !isCompleted
+❌ Execution broken: shouldShow = isToday || isOverdue never evaluates to true
+❌ Result: NO tasks visible in any date filter despite complete logic
             </div>
             
-            <p><strong>What Happened:</strong></p>
+            <p><strong>Debug Investigation:</strong></p>
             <ol>
-                <li><strong>Original Bug:</strong> Overdue tasks appeared in ALL date filters</li>
-                <li><strong>Over-Correction:</strong> Removed ALL logic that sets shouldShow = true for date filters</li>
-                <li><strong>Current State:</strong> Only Triage and All filters work, all date filters broken</li>
+                <li><strong>Latest Attempt:</strong> Added comprehensive overdue logic and super-dump debugging</li>
+                <li><strong>Expected:</strong> "PastDue T NA" (Dec 2024) should show in Today filter</li>
+                <li><strong>Expected:</strong> "Today A 07a" should show in Today filter</li>
+                <li><strong>Actual:</strong> All date filters show 0 tasks (logic present but not executing)</li>
+                <li><strong>Next Step:</strong> Need to trace why boolean operations fail in switch statement</li>
             </ol>
         </div>
 
         <div class="debug-section">
-            <h3>🔧 Required Fix</h3>
-            <p>The date matching logic needs to be restored in script.js around line 1527:</p>
+            <h3>🔧 Current Logic Status (UPDATED)</h3>
+            <p>The date matching logic has been restored but execution flow is still broken:</p>
             <div class="code-block">
-<span class="highlight-success">SOLUTION: Add back the date matching switch statement</span>
+<span class="highlight-issue">CURRENT LOGIC (line ~1577 in script.js):</span>
 
-// Current broken logic (line ~1527):
-if (!shouldShow && (revisitDate && revisitDate !== null && revisitDate !== '')) {
-  // Date parsing exists but NO LOGIC to set shouldShow = true
-}
+case 'today':
+  const isToday = taskDateOnly.getTime() === today.getTime();
+  const isOverdue = taskDateOnly.getTime() < today.getTime() && !isCompleted;
+  shouldShow = isToday || isOverdue;
+  console.log(`🔍 TODAY FILTER: isToday: ${isToday}, isOverdue: ${isOverdue}, shouldShow: ${shouldShow}`);
+  break;
 
-// REQUIRED FIX:
-if (revisitDate && revisitDate !== null && revisitDate !== '') {
-  let taskDate = new Date(revisitDate);
-  const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
-  
-  switch (filterValue) {
-    case 'today':
-      shouldShow = taskDateOnly.getTime() === today.getTime();
-      break;
-    case 'tomorrow':
-      shouldShow = taskDateOnly.getTime() === tomorrow.getTime();
-      break;
-    case 'this-week':
-      shouldShow = taskDateOnly.getTime() >= weekStart.getTime() 
-                && taskDateOnly.getTime() <= weekEnd.getTime();
-      break;
-    // ... other cases
-  }
-}
+<span class="highlight-issue">PROBLEM: Logic is complete but boolean evaluation fails</span>
+
+Expected for "PastDue T NA" (Dec 15, 2024):
+- taskDateOnly = Dec 15, 2024
+- today = July 24, 2025  
+- isToday = false (Dec 15 ≠ July 24)
+- isOverdue = true (Dec 15 < July 24 AND !completed)
+- shouldShow = false || true = TRUE ← Should work but doesn't
+
+<span class="highlight-success">INVESTIGATION NEEDED:</span>
+1. Are the boolean variables actually being calculated correctly?
+2. Is the shouldShow assignment being overwritten somewhere?
+3. Is there a scope issue with the shouldShow variable?
+4. Is the switch statement being reached at all?
             </div>
         </div>
 
