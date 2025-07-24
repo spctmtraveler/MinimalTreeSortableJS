@@ -1517,11 +1517,30 @@ function handleFilterChange() {
       const revisitDate = taskData.revisitDate;
       const isCompleted = taskData.completed;
       
-      // Date filters should ONLY show tasks with specific dates matching the filter
-      // Tasks without revisit dates should ONLY appear in Triage filter
+      // CORRECTED BUSINESS LOGIC: 
+      // - Past due tasks should show in ALL date filters (they need attention)
+      // - Exact date matches should show in their specific filters
+      // - Tasks without revisit dates should ONLY appear in Triage filter
       
-      // If not already shown by triage rules, apply regular date filtering
-      if (!shouldShow && (revisitDate && revisitDate !== null && revisitDate !== '')) {
+      // Check for super-dump trigger: First failure case
+      const shouldTriggerDump = taskData.content && (
+        (taskData.content.includes('PastDue') && filterValue === 'today') ||
+        (taskData.content.includes('Today') && filterValue === 'today') ||
+        (taskData.content.includes('Tomorrow') && filterValue === 'tomorrow') ||
+        (taskData.content.includes('ThisWeek') && filterValue === 'this-week')
+      );
+      
+      if (shouldTriggerDump && !isCompleted) {
+        console.log(`\n🚨🚨🚨 SUPER-DUMP: Task "${taskData.content}" should match filter "${filterValue}" but may not be showing`);
+        console.log(`📋 FULL TASK DATA:`, taskData);
+        console.log(`📅 REVISIT DATE: "${revisitDate}" (type: ${typeof revisitDate})`);
+        console.log(`✅ COMPLETED: ${isCompleted}`);
+        console.log(`🎯 FILTER: "${filterValue}"`);
+        console.log(`📆 TODAY: ${today.toDateString()} (${today.getTime()})`);
+        console.log(`📆 TOMORROW: ${tomorrow.toDateString()} (${tomorrow.getTime()})`);
+      }
+      
+      if (revisitDate && revisitDate !== null && revisitDate !== '') {
         let taskDate;
         
         // Handle different date formats
@@ -1544,18 +1563,44 @@ function handleFilterChange() {
           // Convert to date-only for comparison
           const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
           
+          if (shouldTriggerDump && !isCompleted) {
+            console.log(`🔍 PARSED DATE: taskDate = ${taskDate.toISOString()}`);
+            console.log(`🔍 DATE-ONLY: taskDateOnly = ${taskDateOnly.toDateString()} (${taskDateOnly.getTime()})`);
+            console.log(`🔍 COMPARISON: taskDateOnly < today? ${taskDateOnly.getTime() < today.getTime()}`);
+            console.log(`🔍 COMPARISON: taskDateOnly === today? ${taskDateOnly.getTime() === today.getTime()}`);
+          }
+          
           switch (filterValue) {
             case 'today':
-              shouldShow = taskDateOnly.getTime() === today.getTime();
-              console.log(`🔍 TODAY FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, today: ${today.toDateString()}, match: ${shouldShow}`);
+              // CORRECTED LOGIC: Show tasks that are due today OR overdue (past due)
+              const isToday = taskDateOnly.getTime() === today.getTime();
+              const isOverdue = taskDateOnly.getTime() < today.getTime() && !isCompleted;
+              shouldShow = isToday || isOverdue;
+              
+              if (shouldTriggerDump && !isCompleted) {
+                console.log(`🔍 TODAY LOGIC: isToday=${isToday}, isOverdue=${isOverdue}, shouldShow=${shouldShow}`);
+              }
+              console.log(`🔍 TODAY FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, today: ${today.toDateString()}, isToday: ${isToday}, isOverdue: ${isOverdue}, shouldShow: ${shouldShow}`);
               break;
             case 'tomorrow':
+              // Tomorrow filter: Only exact matches (no overdue logic for tomorrow)
               shouldShow = taskDateOnly.getTime() === tomorrow.getTime();
+              if (shouldTriggerDump && !isCompleted) {
+                console.log(`🔍 TOMORROW LOGIC: exact match = ${shouldShow}`);
+              }
+              console.log(`🔍 TOMORROW FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, tomorrow: ${tomorrow.toDateString()}, match: ${shouldShow}`);
               break;
             case 'this-week':
-              shouldShow = taskDateOnly.getTime() >= weekStart.getTime() 
-                        && taskDateOnly.getTime() <= weekEnd.getTime();
-              console.log(`🔍 THIS-WEEK FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, weekStart: ${weekStart.toDateString()}, weekEnd: ${weekEnd.toDateString()}, match: ${shouldShow}`);
+              // This week: Show tasks in week range OR overdue tasks
+              const isInWeek = taskDateOnly.getTime() >= weekStart.getTime() 
+                            && taskDateOnly.getTime() <= weekEnd.getTime();
+              const isOverdueForWeek = taskDateOnly.getTime() < weekStart.getTime() && !isCompleted;
+              shouldShow = isInWeek || isOverdueForWeek;
+              
+              if (shouldTriggerDump && !isCompleted) {
+                console.log(`🔍 THIS-WEEK LOGIC: isInWeek=${isInWeek}, isOverdueForWeek=${isOverdueForWeek}, shouldShow=${shouldShow}`);
+              }
+              console.log(`🔍 THIS-WEEK FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, weekStart: ${weekStart.toDateString()}, weekEnd: ${weekEnd.toDateString()}, isInWeek: ${isInWeek}, isOverdue: ${isOverdueForWeek}, shouldShow: ${shouldShow}`);
               break;
             case 'next-week':
               shouldShow = taskDateOnly.getTime() >= nextWeekStart.getTime() 
@@ -1563,11 +1608,15 @@ function handleFilterChange() {
               console.log(`🔍 NEXT-WEEK FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, nextWeekStart: ${nextWeekStart.toDateString()}, nextWeekEnd: ${nextWeekEnd.toDateString()}, match: ${shouldShow}`);
               break;
             case 'this-month':
-              shouldShow = taskDateOnly.getTime() >= monthStart.getTime() 
-                        && taskDateOnly.getTime() <= monthEnd.getTime();
-              console.log(`🔍 THIS-MONTH FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, monthStart: ${monthStart.toDateString()}, monthEnd: ${monthEnd.toDateString()}, match: ${shouldShow}`);
+              // This month: Show tasks in month range OR overdue tasks
+              const isInMonth = taskDateOnly.getTime() >= monthStart.getTime() 
+                             && taskDateOnly.getTime() <= monthEnd.getTime();
+              const isOverdueForMonth = taskDateOnly.getTime() < monthStart.getTime() && !isCompleted;
+              shouldShow = isInMonth || isOverdueForMonth;
+              console.log(`🔍 THIS-MONTH FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, monthStart: ${monthStart.toDateString()}, monthEnd: ${monthEnd.toDateString()}, isInMonth: ${isInMonth}, isOverdue: ${isOverdueForMonth}, shouldShow: ${shouldShow}`);
               break;
             case 'next-month':
+              // Next month: Only exact matches (no overdue logic for future dates)
               shouldShow = taskDateOnly.getTime() >= nextMonthStart.getTime() 
                         && taskDateOnly.getTime() <= nextMonthEnd.getTime();
               console.log(`🔍 NEXT-MONTH FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, nextMonthStart: ${nextMonthStart.toDateString()}, nextMonthEnd: ${nextMonthEnd.toDateString()}, match: ${shouldShow}`);
@@ -1576,6 +1625,23 @@ function handleFilterChange() {
               shouldShow = false;
               break;
           }
+          
+          // SUPER-DUMP: Final result for failure cases
+          if (shouldTriggerDump && !isCompleted) {
+            console.log(`🚨 FINAL RESULT: Task "${taskData.content}" shouldShow = ${shouldShow}`);
+            if (!shouldShow) {
+              console.log(`💥 FAILURE ANALYSIS: This task should be visible but won't be!`);
+              console.log(`💥 TASK NAME suggests: ${taskData.content.includes('PastDue') ? 'PAST DUE' : taskData.content.includes('Today') ? 'TODAY' : taskData.content.includes('Tomorrow') ? 'TOMORROW' : 'OTHER'}`);
+              console.log(`💥 FILTER TYPE: ${filterValue}`);
+              console.log(`💥 DATE COMPARISON: task=${taskDateOnly.toDateString()}, filter_target=${filterValue === 'today' ? today.toDateString() : filterValue === 'tomorrow' ? tomorrow.toDateString() : 'other'}`);
+            }
+            console.log(`🚨🚨🚨 END SUPER-DUMP for "${taskData.content}"\n`);
+          }
+        }
+      } else {
+        // No revisit date - only show in Triage
+        if (shouldTriggerDump) {
+          console.log(`🚨 NO REVISIT DATE: Task "${taskData.content}" has no revisit date, should only appear in Triage filter`);
         }
       }
     }
