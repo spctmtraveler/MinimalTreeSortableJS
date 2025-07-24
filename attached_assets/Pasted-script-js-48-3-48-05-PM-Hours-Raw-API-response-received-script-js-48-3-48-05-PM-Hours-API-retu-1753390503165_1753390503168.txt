@@ -1,0 +1,1263 @@
+script.js:48 [3:48:05 PM] Hours: Raw API response received
+script.js:48 [3:48:05 PM] Hours: API returned 23 total records
+script.js:48 [3:48:05 PM] Hours: First task structure: {"id":"task-today-b-1","content":"Today B 10a","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"time_estimate":"45.00","overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduled_time":"09:00:00"}
+script.js:48 [3:48:05 PM] Hours: Found 19 actual tasks (excluding 4 section headers)
+script.js:48 [3:48:05 PM] Hours: Sample actual task: {"id":"task-today-b-1","content":"Today B 10a","is_section":false,"completed":false,"parent_id":"section-b","position_order":0,"revisit_date":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"time_estimate":"45.00","overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduled_time":"09:00:00"}
+script.js:48 [3:48:05 PM] Hours: Today's date for comparison: 2025-07-24
+script.js:48 [3:48:05 PM] Hours: Examining task "Today B 10a" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 09:00:00
+script.js:48 [3:48:05 PM] Hours: Task "Today B 10a" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today B 10a" has scheduled time: 09:00:00
+script.js:3828 ⏰ TIME PARSE: Task Today B 10a scheduled at 9:00
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 9:00, duration: 45min (from estimate: 45.00min → 45min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-1
+script.js:3855 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3858 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3860 🚀 ABOUT TO RENDER: Task hours-task-1 with data: Object
+script.js:3861 🚀 ABOUT TO RENDER: Container exists? true
+script.js:4358 🔧 RENDER: Starting to render task hours-task-1
+script.js:4364 ✅ RENDER: Container found, proceeding with task rendering
+script.js:4373 🎯 POSITION CALC: Task hours-task-1 startMinutes: 540 position: 540px
+script.js:4374 🎯 HEIGHT CALC: Task hours-task-1 durationMinutes: 45 height: 45px
+script.js:4402 🔧 RENDER: About to setup task interactions for hours-task-1
+script.js:4403 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-1" style="position: absolute; top: 540px; height: 45px; left: 2px; right: 10px; background: rgba(0, 206, 247, 0.3); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today B 10a</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:4413 🔧 SETUP: Starting interaction setup for task hours-task-1
+script.js:4419 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:4406 🔧 RENDER: Task rendering complete for hours-task-1
+script.js:48 [3:48:05 PM] Hours: Successfully added database task: "Today B 10a" at 9:00
+script.js:48 [3:48:05 PM] Hours: Examining task "Today A 07a Sub1" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 07:00:00
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub1" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub1" has scheduled time: 07:00:00
+script.js:3828 ⏰ TIME PARSE: Task Today A 07a Sub1 scheduled at 7:00
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 7:00, duration: 15min (from estimate: 10.00min → 15min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-2
+script.js:3855 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3858 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3860 🚀 ABOUT TO RENDER: Task hours-task-2 with data: Object
+script.js:3861 🚀 ABOUT TO RENDER: Container exists? true
+script.js:4358 🔧 RENDER: Starting to render task hours-task-2
+script.js:4364 ✅ RENDER: Container found, proceeding with task rendering
+script.js:4373 🎯 POSITION CALC: Task hours-task-2 startMinutes: 420 position: 420px
+script.js:4374 🎯 HEIGHT CALC: Task hours-task-2 durationMinutes: 15 height: 15px
+script.js:4402 🔧 RENDER: About to setup task interactions for hours-task-2
+script.js:4403 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-2" style="position: absolute; top: 420px; height: 15px; left: 2px; right: 10px; background: rgba(0, 206, 247, 0.3); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today A 07a Sub1</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:4413 🔧 SETUP: Starting interaction setup for task hours-task-2
+script.js:4419 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:4406 🔧 RENDER: Task rendering complete for hours-task-2
+script.js:48 [3:48:05 PM] Hours: Successfully added database task: "Today A 07a Sub1" at 7:00
+script.js:48 [3:48:05 PM] Hours: Examining task "Today A 07a Sub2.1" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 07:10:00
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub2.1" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub2.1" has scheduled time: 07:10:00
+script.js:3828 ⏰ TIME PARSE: Task Today A 07a Sub2.1 scheduled at 7:10
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 7:10, duration: 15min (from estimate: 8.00min → 15min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-3
+script.js:3855 🔍 OVERLAP RESULT: HAS OVERLAP
+script.js:3866 ❌ HAS OVERLAP: Skipping task due to overlap
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub2.1" overlaps with existing task, skipped
+script.js:48 [3:48:05 PM] Hours: Examining task "Today C 04p" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 16:00:00
+script.js:48 [3:48:05 PM] Hours: Task "Today C 04p" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today C 04p" has scheduled time: 16:00:00
+script.js:3828 ⏰ TIME PARSE: Task Today C 04p scheduled at 16:00
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 16:00, duration: 30min (from estimate: 30.00min → 30min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-4
+script.js:3855 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3858 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3860 🚀 ABOUT TO RENDER: Task hours-task-4 with data: Object
+script.js:3861 🚀 ABOUT TO RENDER: Container exists? true
+script.js:4358 🔧 RENDER: Starting to render task hours-task-4
+script.js:4364 ✅ RENDER: Container found, proceeding with task rendering
+script.js:4373 🎯 POSITION CALC: Task hours-task-4 startMinutes: 960 position: 960px
+script.js:4374 🎯 HEIGHT CALC: Task hours-task-4 durationMinutes: 30 height: 30px
+script.js:4402 🔧 RENDER: About to setup task interactions for hours-task-4
+script.js:4403 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-4" style="position: absolute; top: 960px; height: 30px; left: 2px; right: 10px; background: rgba(0, 206, 247, 0.3); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today C 04p</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:4413 🔧 SETUP: Starting interaction setup for task hours-task-4
+script.js:4419 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:4406 🔧 RENDER: Task rendering complete for hours-task-4
+script.js:48 [3:48:05 PM] Hours: Successfully added database task: "Today C 04p" at 16:00
+script.js:48 [3:48:05 PM] Hours: Examining task "PastDue T NA" - revisitDate: 2024-12-15T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "PastDue T NA" date comparison - taskDate: 2024-12-15, today: 2025-07-24, isToday: false
+script.js:48 [3:48:05 PM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "Today A 07a" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 07:00:00
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a" has scheduled time: 07:00:00
+script.js:3828 ⏰ TIME PARSE: Task Today A 07a scheduled at 7:00
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 7:00, duration: 60min (from estimate: 60.00min → 60min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-5
+script.js:3855 🔍 OVERLAP RESULT: HAS OVERLAP
+script.js:3866 ❌ HAS OVERLAP: Skipping task due to overlap
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a" overlaps with existing task, skipped
+script.js:48 [3:48:05 PM] Hours: Examining task "PastDue T NA" - revisitDate: 2025-01-10T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "PastDue T NA" date comparison - taskDate: 2025-01-10, today: 2025-07-24, isToday: false
+script.js:48 [3:48:05 PM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "ThisWeek C NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "ThisWeek C NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "ThisWeek C NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "Today A 07a Sub2" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 07:10:00
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub2" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub2" has scheduled time: 07:10:00
+script.js:3828 ⏰ TIME PARSE: Task Today A 07a Sub2 scheduled at 7:10
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 7:10, duration: 30min (from estimate: 35.00min → 30min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-6
+script.js:3855 🔍 OVERLAP RESULT: HAS OVERLAP
+script.js:3866 ❌ HAS OVERLAP: Skipping task due to overlap
+script.js:48 [3:48:05 PM] Hours: Task "Today A 07a Sub2" overlaps with existing task, skipped
+script.js:48 [3:48:05 PM] Hours: Examining task "Today A 02p" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 14:00:00
+script.js:48 [3:48:05 PM] Hours: Task "Today A 02p" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today A 02p" has scheduled time: 14:00:00
+script.js:3828 ⏰ TIME PARSE: Task Today A 02p scheduled at 14:00
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 14:00, duration: 90min (from estimate: 90.00min → 90min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-7
+script.js:3855 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3858 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3860 🚀 ABOUT TO RENDER: Task hours-task-7 with data: Object
+script.js:3861 🚀 ABOUT TO RENDER: Container exists? true
+script.js:4358 🔧 RENDER: Starting to render task hours-task-7
+script.js:4364 ✅ RENDER: Container found, proceeding with task rendering
+script.js:4373 🎯 POSITION CALC: Task hours-task-7 startMinutes: 840 position: 840px
+script.js:4374 🎯 HEIGHT CALC: Task hours-task-7 durationMinutes: 90 height: 90px
+script.js:4402 🔧 RENDER: About to setup task interactions for hours-task-7
+script.js:4403 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-7" style="position: absolute; top: 840px; height: 90px; left: 2px; right: 10px; background: rgba(0, 206, 247, 0.3); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today A 02p</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:4413 🔧 SETUP: Starting interaction setup for task hours-task-7
+script.js:4419 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:4406 🔧 RENDER: Task rendering complete for hours-task-7
+script.js:48 [3:48:05 PM] Hours: Successfully added database task: "Today A 02p" at 14:00
+script.js:48 [3:48:05 PM] Hours: Examining task "NA T NA" - revisitDate: null, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "NA T NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "ThisMonth C NA" - revisitDate: 2025-07-15T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "ThisMonth C NA" date comparison - taskDate: 2025-07-15, today: 2025-07-24, isToday: false
+script.js:48 [3:48:05 PM] Hours: Task "ThisMonth C NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "Today B NA (Complete)" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "Today B NA (Complete)" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today B NA (Complete)" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "Tomorrow A 09a" - revisitDate: 2025-07-25T00:00:00.000Z, scheduledTime: 09:00:00
+script.js:48 [3:48:05 PM] Hours: Task "Tomorrow A 09a" date comparison - taskDate: 2025-07-25, today: 2025-07-24, isToday: false
+script.js:48 [3:48:05 PM] Hours: Task "Tomorrow A 09a" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "NextMonth C NA" - revisitDate: 2025-08-15T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "NextMonth C NA" date comparison - taskDate: 2025-08-15, today: 2025-07-24, isToday: false
+script.js:48 [3:48:05 PM] Hours: Task "NextMonth C NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "NextWeek A NA" - revisitDate: 2025-07-31T00:00:00.000Z, scheduledTime: null
+script.js:48 [3:48:05 PM] Hours: Task "NextWeek A NA" date comparison - taskDate: 2025-07-31, today: 2025-07-24, isToday: false
+script.js:48 [3:48:05 PM] Hours: Task "NextWeek A NA" has no scheduled time or not scheduled for today
+script.js:48 [3:48:05 PM] Hours: Examining task "Today A 11a" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: 11:00:00
+script.js:48 [3:48:05 PM] Hours: Task "Today A 11a" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [3:48:05 PM] Hours: Task "Today A 11a" has scheduled time: 11:00:00
+script.js:3828 ⏰ TIME PARSE: Task Today A 11a scheduled at 11:00
+script.js:48 [3:48:05 PM] Hours: Created hours task - start: 11:00, duration: 45min (from estimate: 45.00min → 45min)
+script.js:3853 🔍 OVERLAP CHECK: About to check overlap for task hours-task-8
+script.js:3855 🔍 OVERLAP RESULT: NO OVERLAP
+script.js:3858 ✅ NO OVERLAP: Adding task to hoursData.tasks
+script.js:3860 🚀 ABOUT TO RENDER: Task hours-task-8 with data: Object
+script.js:3861 🚀 ABOUT TO RENDER: Container exists? true
+script.js:4358 🔧 RENDER: Starting to render task hours-task-8
+script.js:4364 ✅ RENDER: Container found, proceeding with task rendering
+script.js:4373 🎯 POSITION CALC: Task hours-task-8 startMinutes: 660 position: 660px
+script.js:4374 🎯 HEIGHT CALC: Task hours-task-8 durationMinutes: 45 height: 45px
+script.js:4402 🔧 RENDER: About to setup task interactions for hours-task-8
+script.js:4403 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-8" style="position: absolute; top: 660px; height: 45px; left: 2px; right: 10px; background: rgba(0, 206, 247, 0.3); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Today A 11a</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:4413 🔧 SETUP: Starting interaction setup for task hours-task-8
+script.js:4419 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:4406 🔧 RENDER: Task rendering complete for hours-task-8
+script.js:48 [3:48:05 PM] Hours: Successfully added database task: "Today A 11a" at 11:00
+script.js:3880 Hours panel: Added 5 tasks from database for today
+script.js:48 [3:48:05 PM] Hours: Successfully added 5 database tasks with scheduled times
+script.js:48 [3:48:05 PM] Hours: Summary - processed 19 actual tasks, added 5 with scheduled times
+script.js:2871 🧪 MANUAL TEST: Adding filter test button to page
+script.js:3994 🚨 DEBUG: Starting force visibility check...
+script.js:3998 🚨 DEBUG: hoursTimeline container: <div class=​"hours-timeline" id=​"hours-timeline">​…​</div>​
+script.js:4002 🚨 DEBUG: Hours timeline container position: Object
+script.js:4014 🚨 DEBUG: currentTimeLine element: <div class=​"current-time-line" id=​"current-time-line" style=​"position:​ absolute !important;​ top:​ 953px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ background:​ rgb(0, 206, 247)​ !important;​ z-index:​ 20 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​…​</div>​
+script.js:4015 🚨 DEBUG: timeLineIndicator element: <div class=​"time-line-indicator" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(0, 206, 247)​ !important;​ z-index:​ 20 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:4018 🚨 DEBUG: Current time line computed styles:
+script.js:4020   - position: absolute
+script.js:4021   - top: 948px
+script.js:4022   - left: 0px
+script.js:4023   - width: 225px
+script.js:4024   - height: 3px
+script.js:4025   - display: block
+script.js:4026   - visibility: visible
+script.js:4027   - zIndex: 20
+script.js:4028   - background: rgb(0, 206, 247) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:4032 🚨 DEBUG: Time line indicator computed styles:
+script.js:4034   - position: absolute
+script.js:4035   - top: 0px
+script.js:4036   - left: 0px
+script.js:4037   - width: 225px
+script.js:4038   - height: 3px
+script.js:4039   - display: block
+script.js:4040   - visibility: visible
+script.js:4041   - zIndex: 20
+script.js:4042   - background: rgb(0, 206, 247) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:4051 🚨 DEBUG: stopLine element: <div class=​"limit-line stop-line" id=​"stop-line" data-time=​"18:​00" style=​"position:​ absolute !important;​ top:​ 1080px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​ cursor:​ ns-resize !important;​">​…​</div>​
+script.js:4052 🚨 DEBUG: stopBar element: <div class=​"limit-line-bar" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(255, 107, 107)​ !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:4053 🚨 DEBUG: sleepLine element: <div class=​"limit-line sleep-line" id=​"sleep-line" data-time=​"23:​00" style=​"position:​ absolute !important;​ top:​ 1380px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​ cursor:​ ns-resize !important;​">​…​</div>​
+script.js:4054 🚨 DEBUG: sleepBar element: <div class=​"limit-line-bar" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(0, 191, 174)​ !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:4057 🚨 DEBUG: Stop bar computed styles:
+script.js:4059   - position: absolute
+script.js:4060   - top: 0px
+script.js:4061   - left: 0px
+script.js:4062   - width: 225px
+script.js:4063   - height: 3px
+script.js:4064   - display: block
+script.js:4065   - visibility: visible
+script.js:4066   - zIndex: 15
+script.js:4067   - background: rgb(255, 107, 107) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:4070 🚨 DEBUG: Force visibility check complete - elements exist, fixing positioning...
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "tomorrow"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 23 task items in DOM
+script.js:1437 
+--- PROCESSING TASK 1/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 2/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-1","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2024-12-15T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":120,"overview":"Overdue tax documents - organize and file tax documents from last year","details":"Need to gather receipts, W2s, and other tax documents. This is overdue and needs immediate attention.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-1, revisitDate: 2024-12-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 3/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-2","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-01-10T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Call insurance company - follow up on insurance claim","details":"Need to call about the pending claim for the car accident. Reference number: INS-2024-9876.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-2, revisitDate: 2025-01-10T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 4/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-no-date-1","content":"NA T NA","isSection":false,"completed":false,"children":[],"revisitDate":null,"fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":180,"overview":"Organize digital photos - sort and organize years of digital photos","details":"Need to go through thousands of photos and organize them into folders by year and event. This could take hours.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NA T NA" - ID: task-no-date-1, revisitDate: null, parent: undefined
+script.js:1525 🚨 FILTER: "NA T NA" - no revisit date, showing in all date filters
+script.js:1621 ✅ SHOW: "NA T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 5/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 6/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1","content":"Today A 07a","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"},{"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a" - ID: task-today-a-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today A 07a" will be visible
+script.js:1437 
+--- PROCESSING TASK 7/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub1" - ID: task-today-a-1-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub1" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub1" will be visible
+script.js:1437 
+--- PROCESSING TASK 8/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2" - ID: task-today-a-1-sub-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2" will be visible
+script.js:1437 
+--- PROCESSING TASK 9/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2.1" - ID: task-today-a-1-sub-2-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2.1" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2.1" will be visible
+script.js:1437 
+--- PROCESSING TASK 10/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-2","content":"Today A 02p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":90,"overview":"Client presentation - present quarterly results to major client","details":"Present Q4 performance metrics and discuss strategy for Q1. Prepare for questions about budget allocation.","scheduledTime":"14:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 02p" - ID: task-today-a-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 02p" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today A 02p" will be visible
+script.js:1437 
+--- PROCESSING TASK 11/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-tomorrow-1","content":"Tomorrow A 09a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-25T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":true,"first":true,"timeEstimate":75,"overview":"Doctor appointment - annual physical checkup","details":"Routine physical with Dr. Smith. Bring insurance card and list of current medications. Fasting required.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Tomorrow A 09a" - ID: task-tomorrow-1, revisitDate: 2025-07-25T00:00:00.000Z, parent: undefined
+script.js:1624 ❌ HIDE: "Tomorrow A 09a" will be hidden
+script.js:1437 
+--- PROCESSING TASK 12/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-week-1","content":"NextWeek A NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-31T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":true,"timeEstimate":240,"overview":"Project proposal - draft proposal for new client project","details":"Create comprehensive proposal including timeline, budget, and deliverables for the mobile app project.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextWeek A NA" - ID: task-next-week-1, revisitDate: 2025-07-31T00:00:00.000Z, parent: undefined
+script.js:1624 ❌ HIDE: "NextWeek A NA" will be hidden
+script.js:1437 
+--- PROCESSING TASK 13/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-1","content":"Today A 11a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":true,"fear":false,"first":false,"timeEstimate":45,"overview":"Code review - review pull requests from team members","details":"Review 3 pull requests focusing on code quality, security, and performance improvements.","scheduledTime":"11:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 11a" - ID: task-mixed-flags-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 11a" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today A 11a" will be visible
+script.js:1437 
+--- PROCESSING TASK 14/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 15/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-b-1","content":"Today B 10a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":45,"overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Today B 10a" - ID: task-today-b-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today B 10a" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today B 10a" will be visible
+script.js:1437 
+--- PROCESSING TASK 16/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-1","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Team meeting prep - prepare agenda and materials for weekly team meeting","details":"Review project status, prepare update slides, and create agenda for Friday's team meeting.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-this-week-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 17/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-completed-1","content":"Today B NA (Complete)","isSection":false,"completed":true,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Weekly report - submit weekly status report","details":"Completed and submitted to manager. Included project updates and next week's priorities.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "Today B NA (Complete)" - ID: task-completed-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1624 ❌ HIDE: "Today B NA (Complete)" will be hidden
+script.js:1437 
+--- PROCESSING TASK 18/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-2","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":60,"overview":"Backup important files - backup critical work files to cloud storage","details":"Upload project files, client data, and personal documents to Google Drive and external hard drive.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-mixed-flags-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 19/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 20/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-c-1","content":"Today C 04p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":30,"overview":"Read industry articles - stay updated on industry trends","details":"Read 3-4 articles from Harvard Business Review and TechCrunch about emerging trends in our industry.","scheduledTime":"16:00:00"}
+script.js:1453 📊 PARSED TASK: "Today C 04p" - ID: task-today-c-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today C 04p" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "Today C 04p" will be visible
+script.js:1437 
+--- PROCESSING TASK 21/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-2","content":"ThisWeek C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":120,"overview":"Car maintenance - oil change and tire rotation","details":"Schedule appointment at Honda service center. Car is due for 50,000 mile service.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek C NA" - ID: task-this-week-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek C NA" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "ThisWeek C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 22/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-month-1","content":"ThisMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-15T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":90,"overview":"Update resume - refresh resume with recent accomplishments","details":"Add recent projects, update skills section, and get feedback from mentor before networking event.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisMonth C NA" - ID: task-this-month-1, revisitDate: 2025-07-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisMonth C NA" - overdue task showing in tomorrow filter
+script.js:1621 ✅ SHOW: "ThisMonth C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 23/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-month-1","content":"NextMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-08-15T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":120,"overview":"Plan summer vacation - research and book summer vacation","details":"Compare destinations, check flight prices, and make reservations. Consider Europe or national parks.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextMonth C NA" - ID: task-next-month-1, revisitDate: 2025-08-15T00:00:00.000Z, parent: undefined
+script.js:1624 ❌ HIDE: "NextMonth C NA" will be hidden
+script.js:1628 
+🏁 FILTER COMPLETE: "tomorrow" filter applied
+script.js:1629 📊 SUMMARY: 23 total, 4 sections, 19 shown, 4 hidden
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Before Filter Processing
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Critical Filter Moment - Task Query Results
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: After Filter Processing Complete
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "today"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 23 task items in DOM
+script.js:1437 
+--- PROCESSING TASK 1/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 2/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-1","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2024-12-15T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":120,"overview":"Overdue tax documents - organize and file tax documents from last year","details":"Need to gather receipts, W2s, and other tax documents. This is overdue and needs immediate attention.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-1, revisitDate: 2024-12-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 3/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-2","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-01-10T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Call insurance company - follow up on insurance claim","details":"Need to call about the pending claim for the car accident. Reference number: INS-2024-9876.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-2, revisitDate: 2025-01-10T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 4/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-no-date-1","content":"NA T NA","isSection":false,"completed":false,"children":[],"revisitDate":null,"fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":180,"overview":"Organize digital photos - sort and organize years of digital photos","details":"Need to go through thousands of photos and organize them into folders by year and event. This could take hours.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NA T NA" - ID: task-no-date-1, revisitDate: null, parent: undefined
+script.js:1525 🚨 FILTER: "NA T NA" - no revisit date, showing in all date filters
+script.js:1621 ✅ SHOW: "NA T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 5/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 6/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1","content":"Today A 07a","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"},{"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a" - ID: task-today-a-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today A 07a" will be visible
+script.js:1437 
+--- PROCESSING TASK 7/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub1" - ID: task-today-a-1-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub1" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub1" will be visible
+script.js:1437 
+--- PROCESSING TASK 8/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2" - ID: task-today-a-1-sub-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2" will be visible
+script.js:1437 
+--- PROCESSING TASK 9/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2.1" - ID: task-today-a-1-sub-2-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2.1" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2.1" will be visible
+script.js:1437 
+--- PROCESSING TASK 10/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-2","content":"Today A 02p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":90,"overview":"Client presentation - present quarterly results to major client","details":"Present Q4 performance metrics and discuss strategy for Q1. Prepare for questions about budget allocation.","scheduledTime":"14:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 02p" - ID: task-today-a-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 02p" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today A 02p" will be visible
+script.js:1437 
+--- PROCESSING TASK 11/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-tomorrow-1","content":"Tomorrow A 09a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-25T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":true,"first":true,"timeEstimate":75,"overview":"Doctor appointment - annual physical checkup","details":"Routine physical with Dr. Smith. Bring insurance card and list of current medications. Fasting required.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Tomorrow A 09a" - ID: task-tomorrow-1, revisitDate: 2025-07-25T00:00:00.000Z, parent: undefined
+script.js:1584 🔍 TODAY FILTER: Task "Tomorrow A 09a" - taskDate: Thu Jul 24 2025, today: Thu Jul 24 2025, match: true
+script.js:1621 ✅ SHOW: "Tomorrow A 09a" will be visible
+script.js:1437 
+--- PROCESSING TASK 12/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-week-1","content":"NextWeek A NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-31T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":true,"timeEstimate":240,"overview":"Project proposal - draft proposal for new client project","details":"Create comprehensive proposal including timeline, budget, and deliverables for the mobile app project.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextWeek A NA" - ID: task-next-week-1, revisitDate: 2025-07-31T00:00:00.000Z, parent: undefined
+script.js:1584 🔍 TODAY FILTER: Task "NextWeek A NA" - taskDate: Wed Jul 30 2025, today: Thu Jul 24 2025, match: false
+script.js:1624 ❌ HIDE: "NextWeek A NA" will be hidden
+script.js:1437 
+--- PROCESSING TASK 13/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-1","content":"Today A 11a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":true,"fear":false,"first":false,"timeEstimate":45,"overview":"Code review - review pull requests from team members","details":"Review 3 pull requests focusing on code quality, security, and performance improvements.","scheduledTime":"11:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 11a" - ID: task-mixed-flags-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 11a" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today A 11a" will be visible
+script.js:1437 
+--- PROCESSING TASK 14/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 15/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-b-1","content":"Today B 10a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":45,"overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Today B 10a" - ID: task-today-b-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today B 10a" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today B 10a" will be visible
+script.js:1437 
+--- PROCESSING TASK 16/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-1","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Team meeting prep - prepare agenda and materials for weekly team meeting","details":"Review project status, prepare update slides, and create agenda for Friday's team meeting.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-this-week-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 17/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-completed-1","content":"Today B NA (Complete)","isSection":false,"completed":true,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Weekly report - submit weekly status report","details":"Completed and submitted to manager. Included project updates and next week's priorities.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "Today B NA (Complete)" - ID: task-completed-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1584 🔍 TODAY FILTER: Task "Today B NA (Complete)" - taskDate: Wed Jul 23 2025, today: Thu Jul 24 2025, match: false
+script.js:1624 ❌ HIDE: "Today B NA (Complete)" will be hidden
+script.js:1437 
+--- PROCESSING TASK 18/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-2","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":60,"overview":"Backup important files - backup critical work files to cloud storage","details":"Upload project files, client data, and personal documents to Google Drive and external hard drive.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-mixed-flags-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 19/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 20/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-c-1","content":"Today C 04p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":30,"overview":"Read industry articles - stay updated on industry trends","details":"Read 3-4 articles from Harvard Business Review and TechCrunch about emerging trends in our industry.","scheduledTime":"16:00:00"}
+script.js:1453 📊 PARSED TASK: "Today C 04p" - ID: task-today-c-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today C 04p" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "Today C 04p" will be visible
+script.js:1437 
+--- PROCESSING TASK 21/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-2","content":"ThisWeek C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":120,"overview":"Car maintenance - oil change and tire rotation","details":"Schedule appointment at Honda service center. Car is due for 50,000 mile service.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek C NA" - ID: task-this-week-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek C NA" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "ThisWeek C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 22/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-month-1","content":"ThisMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-15T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":90,"overview":"Update resume - refresh resume with recent accomplishments","details":"Add recent projects, update skills section, and get feedback from mentor before networking event.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisMonth C NA" - ID: task-this-month-1, revisitDate: 2025-07-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisMonth C NA" - overdue task showing in today filter
+script.js:1621 ✅ SHOW: "ThisMonth C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 23/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-month-1","content":"NextMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-08-15T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":120,"overview":"Plan summer vacation - research and book summer vacation","details":"Compare destinations, check flight prices, and make reservations. Consider Europe or national parks.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextMonth C NA" - ID: task-next-month-1, revisitDate: 2025-08-15T00:00:00.000Z, parent: undefined
+script.js:1584 🔍 TODAY FILTER: Task "NextMonth C NA" - taskDate: Thu Aug 14 2025, today: Thu Jul 24 2025, match: false
+script.js:1624 ❌ HIDE: "NextMonth C NA" will be hidden
+script.js:1628 
+🏁 FILTER COMPLETE: "today" filter applied
+script.js:1629 📊 SUMMARY: 23 total, 4 sections, 20 shown, 3 hidden
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Before Filter Processing
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Critical Filter Moment - Task Query Results
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: After Filter Processing Complete
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "next-week"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 23 task items in DOM
+script.js:1437 
+--- PROCESSING TASK 1/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 2/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-1","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2024-12-15T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":120,"overview":"Overdue tax documents - organize and file tax documents from last year","details":"Need to gather receipts, W2s, and other tax documents. This is overdue and needs immediate attention.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-1, revisitDate: 2024-12-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 3/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-2","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-01-10T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Call insurance company - follow up on insurance claim","details":"Need to call about the pending claim for the car accident. Reference number: INS-2024-9876.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-2, revisitDate: 2025-01-10T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 4/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-no-date-1","content":"NA T NA","isSection":false,"completed":false,"children":[],"revisitDate":null,"fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":180,"overview":"Organize digital photos - sort and organize years of digital photos","details":"Need to go through thousands of photos and organize them into folders by year and event. This could take hours.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NA T NA" - ID: task-no-date-1, revisitDate: null, parent: undefined
+script.js:1525 🚨 FILTER: "NA T NA" - no revisit date, showing in all date filters
+script.js:1621 ✅ SHOW: "NA T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 5/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 6/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1","content":"Today A 07a","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"},{"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a" - ID: task-today-a-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a" will be visible
+script.js:1437 
+--- PROCESSING TASK 7/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub1" - ID: task-today-a-1-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub1" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub1" will be visible
+script.js:1437 
+--- PROCESSING TASK 8/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2" - ID: task-today-a-1-sub-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2" will be visible
+script.js:1437 
+--- PROCESSING TASK 9/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2.1" - ID: task-today-a-1-sub-2-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2.1" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2.1" will be visible
+script.js:1437 
+--- PROCESSING TASK 10/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-2","content":"Today A 02p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":90,"overview":"Client presentation - present quarterly results to major client","details":"Present Q4 performance metrics and discuss strategy for Q1. Prepare for questions about budget allocation.","scheduledTime":"14:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 02p" - ID: task-today-a-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 02p" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 02p" will be visible
+script.js:1437 
+--- PROCESSING TASK 11/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-tomorrow-1","content":"Tomorrow A 09a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-25T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":true,"first":true,"timeEstimate":75,"overview":"Doctor appointment - annual physical checkup","details":"Routine physical with Dr. Smith. Bring insurance card and list of current medications. Fasting required.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Tomorrow A 09a" - ID: task-tomorrow-1, revisitDate: 2025-07-25T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "Tomorrow A 09a" - taskDate: Thu Jul 24 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: false
+script.js:1624 ❌ HIDE: "Tomorrow A 09a" will be hidden
+script.js:1437 
+--- PROCESSING TASK 12/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-week-1","content":"NextWeek A NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-31T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":true,"timeEstimate":240,"overview":"Project proposal - draft proposal for new client project","details":"Create comprehensive proposal including timeline, budget, and deliverables for the mobile app project.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextWeek A NA" - ID: task-next-week-1, revisitDate: 2025-07-31T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "NextWeek A NA" - taskDate: Wed Jul 30 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: true
+script.js:1621 ✅ SHOW: "NextWeek A NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 13/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-1","content":"Today A 11a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":true,"fear":false,"first":false,"timeEstimate":45,"overview":"Code review - review pull requests from team members","details":"Review 3 pull requests focusing on code quality, security, and performance improvements.","scheduledTime":"11:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 11a" - ID: task-mixed-flags-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 11a" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 11a" will be visible
+script.js:1437 
+--- PROCESSING TASK 14/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 15/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-b-1","content":"Today B 10a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":45,"overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Today B 10a" - ID: task-today-b-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today B 10a" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today B 10a" will be visible
+script.js:1437 
+--- PROCESSING TASK 16/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-1","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Team meeting prep - prepare agenda and materials for weekly team meeting","details":"Review project status, prepare update slides, and create agenda for Friday's team meeting.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-this-week-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 17/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-completed-1","content":"Today B NA (Complete)","isSection":false,"completed":true,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Weekly report - submit weekly status report","details":"Completed and submitted to manager. Included project updates and next week's priorities.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "Today B NA (Complete)" - ID: task-completed-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "Today B NA (Complete)" - taskDate: Wed Jul 23 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: false
+script.js:1624 ❌ HIDE: "Today B NA (Complete)" will be hidden
+script.js:1437 
+--- PROCESSING TASK 18/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-2","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":60,"overview":"Backup important files - backup critical work files to cloud storage","details":"Upload project files, client data, and personal documents to Google Drive and external hard drive.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-mixed-flags-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 19/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 20/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-c-1","content":"Today C 04p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":30,"overview":"Read industry articles - stay updated on industry trends","details":"Read 3-4 articles from Harvard Business Review and TechCrunch about emerging trends in our industry.","scheduledTime":"16:00:00"}
+script.js:1453 📊 PARSED TASK: "Today C 04p" - ID: task-today-c-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today C 04p" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today C 04p" will be visible
+script.js:1437 
+--- PROCESSING TASK 21/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-2","content":"ThisWeek C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":120,"overview":"Car maintenance - oil change and tire rotation","details":"Schedule appointment at Honda service center. Car is due for 50,000 mile service.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek C NA" - ID: task-this-week-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek C NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisWeek C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 22/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-month-1","content":"ThisMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-15T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":90,"overview":"Update resume - refresh resume with recent accomplishments","details":"Add recent projects, update skills section, and get feedback from mentor before networking event.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisMonth C NA" - ID: task-this-month-1, revisitDate: 2025-07-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisMonth C NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisMonth C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 23/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-month-1","content":"NextMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-08-15T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":120,"overview":"Plan summer vacation - research and book summer vacation","details":"Compare destinations, check flight prices, and make reservations. Consider Europe or national parks.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextMonth C NA" - ID: task-next-month-1, revisitDate: 2025-08-15T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "NextMonth C NA" - taskDate: Thu Aug 14 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: false
+script.js:1624 ❌ HIDE: "NextMonth C NA" will be hidden
+script.js:1628 
+🏁 FILTER COMPLETE: "next-week" filter applied
+script.js:1629 📊 SUMMARY: 23 total, 4 sections, 20 shown, 3 hidden
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Before Filter Processing
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Critical Filter Moment - Task Query Results
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: After Filter Processing Complete
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "this-week"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 23 task items in DOM
+script.js:1437 
+--- PROCESSING TASK 1/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 2/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-1","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2024-12-15T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":120,"overview":"Overdue tax documents - organize and file tax documents from last year","details":"Need to gather receipts, W2s, and other tax documents. This is overdue and needs immediate attention.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-1, revisitDate: 2024-12-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 3/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-2","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-01-10T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Call insurance company - follow up on insurance claim","details":"Need to call about the pending claim for the car accident. Reference number: INS-2024-9876.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-2, revisitDate: 2025-01-10T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 4/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-no-date-1","content":"NA T NA","isSection":false,"completed":false,"children":[],"revisitDate":null,"fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":180,"overview":"Organize digital photos - sort and organize years of digital photos","details":"Need to go through thousands of photos and organize them into folders by year and event. This could take hours.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NA T NA" - ID: task-no-date-1, revisitDate: null, parent: undefined
+script.js:1525 🚨 FILTER: "NA T NA" - no revisit date, showing in all date filters
+script.js:1621 ✅ SHOW: "NA T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 5/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 6/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1","content":"Today A 07a","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"},{"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a" - ID: task-today-a-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today A 07a" will be visible
+script.js:1437 
+--- PROCESSING TASK 7/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub1" - ID: task-today-a-1-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub1" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub1" will be visible
+script.js:1437 
+--- PROCESSING TASK 8/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2" - ID: task-today-a-1-sub-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2" will be visible
+script.js:1437 
+--- PROCESSING TASK 9/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2.1" - ID: task-today-a-1-sub-2-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2.1" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2.1" will be visible
+script.js:1437 
+--- PROCESSING TASK 10/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-2","content":"Today A 02p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":90,"overview":"Client presentation - present quarterly results to major client","details":"Present Q4 performance metrics and discuss strategy for Q1. Prepare for questions about budget allocation.","scheduledTime":"14:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 02p" - ID: task-today-a-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 02p" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today A 02p" will be visible
+script.js:1437 
+--- PROCESSING TASK 11/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-tomorrow-1","content":"Tomorrow A 09a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-25T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":true,"first":true,"timeEstimate":75,"overview":"Doctor appointment - annual physical checkup","details":"Routine physical with Dr. Smith. Bring insurance card and list of current medications. Fasting required.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Tomorrow A 09a" - ID: task-tomorrow-1, revisitDate: 2025-07-25T00:00:00.000Z, parent: undefined
+script.js:1592 🔍 THIS-WEEK FILTER: Task "Tomorrow A 09a" - taskDate: Thu Jul 24 2025, weekStart: Mon Jul 21 2025, weekEnd: Sun Jul 27 2025, match: true
+script.js:1621 ✅ SHOW: "Tomorrow A 09a" will be visible
+script.js:1437 
+--- PROCESSING TASK 12/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-week-1","content":"NextWeek A NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-31T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":true,"timeEstimate":240,"overview":"Project proposal - draft proposal for new client project","details":"Create comprehensive proposal including timeline, budget, and deliverables for the mobile app project.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextWeek A NA" - ID: task-next-week-1, revisitDate: 2025-07-31T00:00:00.000Z, parent: undefined
+script.js:1592 🔍 THIS-WEEK FILTER: Task "NextWeek A NA" - taskDate: Wed Jul 30 2025, weekStart: Mon Jul 21 2025, weekEnd: Sun Jul 27 2025, match: false
+script.js:1624 ❌ HIDE: "NextWeek A NA" will be hidden
+script.js:1437 
+--- PROCESSING TASK 13/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-1","content":"Today A 11a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":true,"fear":false,"first":false,"timeEstimate":45,"overview":"Code review - review pull requests from team members","details":"Review 3 pull requests focusing on code quality, security, and performance improvements.","scheduledTime":"11:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 11a" - ID: task-mixed-flags-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 11a" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today A 11a" will be visible
+script.js:1437 
+--- PROCESSING TASK 14/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 15/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-b-1","content":"Today B 10a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":45,"overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Today B 10a" - ID: task-today-b-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today B 10a" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today B 10a" will be visible
+script.js:1437 
+--- PROCESSING TASK 16/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-1","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Team meeting prep - prepare agenda and materials for weekly team meeting","details":"Review project status, prepare update slides, and create agenda for Friday's team meeting.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-this-week-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 17/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-completed-1","content":"Today B NA (Complete)","isSection":false,"completed":true,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Weekly report - submit weekly status report","details":"Completed and submitted to manager. Included project updates and next week's priorities.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "Today B NA (Complete)" - ID: task-completed-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1592 🔍 THIS-WEEK FILTER: Task "Today B NA (Complete)" - taskDate: Wed Jul 23 2025, weekStart: Mon Jul 21 2025, weekEnd: Sun Jul 27 2025, match: true
+script.js:1621 ✅ SHOW: "Today B NA (Complete)" will be visible
+script.js:1437 
+--- PROCESSING TASK 18/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-2","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":60,"overview":"Backup important files - backup critical work files to cloud storage","details":"Upload project files, client data, and personal documents to Google Drive and external hard drive.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-mixed-flags-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 19/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 20/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-c-1","content":"Today C 04p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":30,"overview":"Read industry articles - stay updated on industry trends","details":"Read 3-4 articles from Harvard Business Review and TechCrunch about emerging trends in our industry.","scheduledTime":"16:00:00"}
+script.js:1453 📊 PARSED TASK: "Today C 04p" - ID: task-today-c-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today C 04p" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "Today C 04p" will be visible
+script.js:1437 
+--- PROCESSING TASK 21/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-2","content":"ThisWeek C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":120,"overview":"Car maintenance - oil change and tire rotation","details":"Schedule appointment at Honda service center. Car is due for 50,000 mile service.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek C NA" - ID: task-this-week-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek C NA" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "ThisWeek C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 22/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-month-1","content":"ThisMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-15T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":90,"overview":"Update resume - refresh resume with recent accomplishments","details":"Add recent projects, update skills section, and get feedback from mentor before networking event.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisMonth C NA" - ID: task-this-month-1, revisitDate: 2025-07-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisMonth C NA" - overdue task showing in this-week filter
+script.js:1621 ✅ SHOW: "ThisMonth C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 23/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-month-1","content":"NextMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-08-15T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":120,"overview":"Plan summer vacation - research and book summer vacation","details":"Compare destinations, check flight prices, and make reservations. Consider Europe or national parks.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextMonth C NA" - ID: task-next-month-1, revisitDate: 2025-08-15T00:00:00.000Z, parent: undefined
+script.js:1592 🔍 THIS-WEEK FILTER: Task "NextMonth C NA" - taskDate: Thu Aug 14 2025, weekStart: Mon Jul 21 2025, weekEnd: Sun Jul 27 2025, match: false
+script.js:1624 ❌ HIDE: "NextMonth C NA" will be hidden
+script.js:1628 
+🏁 FILTER COMPLETE: "this-week" filter applied
+script.js:1629 📊 SUMMARY: 23 total, 4 sections, 21 shown, 2 hidden
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Before Filter Processing
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Critical Filter Moment - Task Query Results
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: After Filter Processing Complete
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "next-week"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 23 task items in DOM
+script.js:1437 
+--- PROCESSING TASK 1/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 2/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-1","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2024-12-15T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":120,"overview":"Overdue tax documents - organize and file tax documents from last year","details":"Need to gather receipts, W2s, and other tax documents. This is overdue and needs immediate attention.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-1, revisitDate: 2024-12-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 3/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-2","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-01-10T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Call insurance company - follow up on insurance claim","details":"Need to call about the pending claim for the car accident. Reference number: INS-2024-9876.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-2, revisitDate: 2025-01-10T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 4/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-no-date-1","content":"NA T NA","isSection":false,"completed":false,"children":[],"revisitDate":null,"fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":180,"overview":"Organize digital photos - sort and organize years of digital photos","details":"Need to go through thousands of photos and organize them into folders by year and event. This could take hours.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NA T NA" - ID: task-no-date-1, revisitDate: null, parent: undefined
+script.js:1525 🚨 FILTER: "NA T NA" - no revisit date, showing in all date filters
+script.js:1621 ✅ SHOW: "NA T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 5/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 6/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1","content":"Today A 07a","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"},{"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a" - ID: task-today-a-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a" will be visible
+script.js:1437 
+--- PROCESSING TASK 7/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub1" - ID: task-today-a-1-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub1" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub1" will be visible
+script.js:1437 
+--- PROCESSING TASK 8/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2" - ID: task-today-a-1-sub-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2" will be visible
+script.js:1437 
+--- PROCESSING TASK 9/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2.1" - ID: task-today-a-1-sub-2-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2.1" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2.1" will be visible
+script.js:1437 
+--- PROCESSING TASK 10/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-2","content":"Today A 02p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":90,"overview":"Client presentation - present quarterly results to major client","details":"Present Q4 performance metrics and discuss strategy for Q1. Prepare for questions about budget allocation.","scheduledTime":"14:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 02p" - ID: task-today-a-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 02p" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 02p" will be visible
+script.js:1437 
+--- PROCESSING TASK 11/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-tomorrow-1","content":"Tomorrow A 09a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-25T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":true,"first":true,"timeEstimate":75,"overview":"Doctor appointment - annual physical checkup","details":"Routine physical with Dr. Smith. Bring insurance card and list of current medications. Fasting required.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Tomorrow A 09a" - ID: task-tomorrow-1, revisitDate: 2025-07-25T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "Tomorrow A 09a" - taskDate: Thu Jul 24 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: false
+script.js:1624 ❌ HIDE: "Tomorrow A 09a" will be hidden
+script.js:1437 
+--- PROCESSING TASK 12/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-week-1","content":"NextWeek A NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-31T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":true,"timeEstimate":240,"overview":"Project proposal - draft proposal for new client project","details":"Create comprehensive proposal including timeline, budget, and deliverables for the mobile app project.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextWeek A NA" - ID: task-next-week-1, revisitDate: 2025-07-31T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "NextWeek A NA" - taskDate: Wed Jul 30 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: true
+script.js:1621 ✅ SHOW: "NextWeek A NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 13/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-1","content":"Today A 11a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":true,"fear":false,"first":false,"timeEstimate":45,"overview":"Code review - review pull requests from team members","details":"Review 3 pull requests focusing on code quality, security, and performance improvements.","scheduledTime":"11:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 11a" - ID: task-mixed-flags-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 11a" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today A 11a" will be visible
+script.js:1437 
+--- PROCESSING TASK 14/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 15/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-b-1","content":"Today B 10a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":45,"overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Today B 10a" - ID: task-today-b-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today B 10a" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today B 10a" will be visible
+script.js:1437 
+--- PROCESSING TASK 16/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-1","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Team meeting prep - prepare agenda and materials for weekly team meeting","details":"Review project status, prepare update slides, and create agenda for Friday's team meeting.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-this-week-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 17/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-completed-1","content":"Today B NA (Complete)","isSection":false,"completed":true,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Weekly report - submit weekly status report","details":"Completed and submitted to manager. Included project updates and next week's priorities.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "Today B NA (Complete)" - ID: task-completed-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "Today B NA (Complete)" - taskDate: Wed Jul 23 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: false
+script.js:1624 ❌ HIDE: "Today B NA (Complete)" will be hidden
+script.js:1437 
+--- PROCESSING TASK 18/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-2","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":60,"overview":"Backup important files - backup critical work files to cloud storage","details":"Upload project files, client data, and personal documents to Google Drive and external hard drive.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-mixed-flags-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 19/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 20/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-c-1","content":"Today C 04p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":30,"overview":"Read industry articles - stay updated on industry trends","details":"Read 3-4 articles from Harvard Business Review and TechCrunch about emerging trends in our industry.","scheduledTime":"16:00:00"}
+script.js:1453 📊 PARSED TASK: "Today C 04p" - ID: task-today-c-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today C 04p" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "Today C 04p" will be visible
+script.js:1437 
+--- PROCESSING TASK 21/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-2","content":"ThisWeek C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":120,"overview":"Car maintenance - oil change and tire rotation","details":"Schedule appointment at Honda service center. Car is due for 50,000 mile service.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek C NA" - ID: task-this-week-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek C NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisWeek C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 22/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-month-1","content":"ThisMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-15T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":90,"overview":"Update resume - refresh resume with recent accomplishments","details":"Add recent projects, update skills section, and get feedback from mentor before networking event.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisMonth C NA" - ID: task-this-month-1, revisitDate: 2025-07-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisMonth C NA" - overdue task showing in next-week filter
+script.js:1621 ✅ SHOW: "ThisMonth C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 23/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-month-1","content":"NextMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-08-15T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":120,"overview":"Plan summer vacation - research and book summer vacation","details":"Compare destinations, check flight prices, and make reservations. Consider Europe or national parks.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextMonth C NA" - ID: task-next-month-1, revisitDate: 2025-08-15T00:00:00.000Z, parent: undefined
+script.js:1597 🔍 NEXT-WEEK FILTER: Task "NextMonth C NA" - taskDate: Thu Aug 14 2025, nextWeekStart: Mon Jul 28 2025, nextWeekEnd: Sun Aug 03 2025, match: false
+script.js:1624 ❌ HIDE: "NextMonth C NA" will be hidden
+script.js:1628 
+🏁 FILTER COMPLETE: "next-week" filter applied
+script.js:1629 📊 SUMMARY: 23 total, 4 sections, 20 shown, 3 hidden
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Before Filter Processing
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Critical Filter Moment - Task Query Results
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: After Filter Processing Complete
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "this-month"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 23 task items in DOM
+script.js:1437 
+--- PROCESSING TASK 1/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 2/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-1","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2024-12-15T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":120,"overview":"Overdue tax documents - organize and file tax documents from last year","details":"Need to gather receipts, W2s, and other tax documents. This is overdue and needs immediate attention.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-1, revisitDate: 2024-12-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 3/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-2","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-01-10T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Call insurance company - follow up on insurance claim","details":"Need to call about the pending claim for the car accident. Reference number: INS-2024-9876.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-2, revisitDate: 2025-01-10T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 4/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-no-date-1","content":"NA T NA","isSection":false,"completed":false,"children":[],"revisitDate":null,"fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":180,"overview":"Organize digital photos - sort and organize years of digital photos","details":"Need to go through thousands of photos and organize them into folders by year and event. This could take hours.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NA T NA" - ID: task-no-date-1, revisitDate: null, parent: undefined
+script.js:1525 🚨 FILTER: "NA T NA" - no revisit date, showing in all date filters
+script.js:1621 ✅ SHOW: "NA T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 5/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 6/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1","content":"Today A 07a","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"},{"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a" - ID: task-today-a-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today A 07a" will be visible
+script.js:1437 
+--- PROCESSING TASK 7/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub1" - ID: task-today-a-1-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub1" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub1" will be visible
+script.js:1437 
+--- PROCESSING TASK 8/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2" - ID: task-today-a-1-sub-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2" will be visible
+script.js:1437 
+--- PROCESSING TASK 9/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2.1" - ID: task-today-a-1-sub-2-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2.1" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2.1" will be visible
+script.js:1437 
+--- PROCESSING TASK 10/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-2","content":"Today A 02p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":90,"overview":"Client presentation - present quarterly results to major client","details":"Present Q4 performance metrics and discuss strategy for Q1. Prepare for questions about budget allocation.","scheduledTime":"14:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 02p" - ID: task-today-a-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 02p" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today A 02p" will be visible
+script.js:1437 
+--- PROCESSING TASK 11/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-tomorrow-1","content":"Tomorrow A 09a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-25T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":true,"first":true,"timeEstimate":75,"overview":"Doctor appointment - annual physical checkup","details":"Routine physical with Dr. Smith. Bring insurance card and list of current medications. Fasting required.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Tomorrow A 09a" - ID: task-tomorrow-1, revisitDate: 2025-07-25T00:00:00.000Z, parent: undefined
+script.js:1602 🔍 THIS-MONTH FILTER: Task "Tomorrow A 09a" - taskDate: Thu Jul 24 2025, monthStart: Tue Jul 01 2025, monthEnd: Thu Jul 31 2025, match: true
+script.js:1621 ✅ SHOW: "Tomorrow A 09a" will be visible
+script.js:1437 
+--- PROCESSING TASK 12/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-week-1","content":"NextWeek A NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-31T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":true,"timeEstimate":240,"overview":"Project proposal - draft proposal for new client project","details":"Create comprehensive proposal including timeline, budget, and deliverables for the mobile app project.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextWeek A NA" - ID: task-next-week-1, revisitDate: 2025-07-31T00:00:00.000Z, parent: undefined
+script.js:1602 🔍 THIS-MONTH FILTER: Task "NextWeek A NA" - taskDate: Wed Jul 30 2025, monthStart: Tue Jul 01 2025, monthEnd: Thu Jul 31 2025, match: true
+script.js:1621 ✅ SHOW: "NextWeek A NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 13/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-1","content":"Today A 11a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":true,"fear":false,"first":false,"timeEstimate":45,"overview":"Code review - review pull requests from team members","details":"Review 3 pull requests focusing on code quality, security, and performance improvements.","scheduledTime":"11:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 11a" - ID: task-mixed-flags-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 11a" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today A 11a" will be visible
+script.js:1437 
+--- PROCESSING TASK 14/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 15/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-b-1","content":"Today B 10a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":45,"overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Today B 10a" - ID: task-today-b-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today B 10a" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today B 10a" will be visible
+script.js:1437 
+--- PROCESSING TASK 16/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-1","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Team meeting prep - prepare agenda and materials for weekly team meeting","details":"Review project status, prepare update slides, and create agenda for Friday's team meeting.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-this-week-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 17/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-completed-1","content":"Today B NA (Complete)","isSection":false,"completed":true,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Weekly report - submit weekly status report","details":"Completed and submitted to manager. Included project updates and next week's priorities.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "Today B NA (Complete)" - ID: task-completed-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1602 🔍 THIS-MONTH FILTER: Task "Today B NA (Complete)" - taskDate: Wed Jul 23 2025, monthStart: Tue Jul 01 2025, monthEnd: Thu Jul 31 2025, match: true
+script.js:1621 ✅ SHOW: "Today B NA (Complete)" will be visible
+script.js:1437 
+--- PROCESSING TASK 18/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-2","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":60,"overview":"Backup important files - backup critical work files to cloud storage","details":"Upload project files, client data, and personal documents to Google Drive and external hard drive.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-mixed-flags-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 19/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 20/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-c-1","content":"Today C 04p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":30,"overview":"Read industry articles - stay updated on industry trends","details":"Read 3-4 articles from Harvard Business Review and TechCrunch about emerging trends in our industry.","scheduledTime":"16:00:00"}
+script.js:1453 📊 PARSED TASK: "Today C 04p" - ID: task-today-c-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today C 04p" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "Today C 04p" will be visible
+script.js:1437 
+--- PROCESSING TASK 21/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-2","content":"ThisWeek C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":120,"overview":"Car maintenance - oil change and tire rotation","details":"Schedule appointment at Honda service center. Car is due for 50,000 mile service.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek C NA" - ID: task-this-week-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek C NA" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "ThisWeek C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 22/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-month-1","content":"ThisMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-15T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":90,"overview":"Update resume - refresh resume with recent accomplishments","details":"Add recent projects, update skills section, and get feedback from mentor before networking event.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisMonth C NA" - ID: task-this-month-1, revisitDate: 2025-07-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisMonth C NA" - overdue task showing in this-month filter
+script.js:1621 ✅ SHOW: "ThisMonth C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 23/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-month-1","content":"NextMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-08-15T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":120,"overview":"Plan summer vacation - research and book summer vacation","details":"Compare destinations, check flight prices, and make reservations. Consider Europe or national parks.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextMonth C NA" - ID: task-next-month-1, revisitDate: 2025-08-15T00:00:00.000Z, parent: undefined
+script.js:1602 🔍 THIS-MONTH FILTER: Task "NextMonth C NA" - taskDate: Thu Aug 14 2025, monthStart: Tue Jul 01 2025, monthEnd: Thu Jul 31 2025, match: false
+script.js:1624 ❌ HIDE: "NextMonth C NA" will be hidden
+script.js:1628 
+🏁 FILTER COMPLETE: "this-month" filter applied
+script.js:1629 📊 SUMMARY: 23 total, 4 sections, 22 shown, 1 hidden
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Before Filter Processing
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Critical Filter Moment - Task Query Results
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: After Filter Processing Complete
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "next-month"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 23 task items in DOM
+script.js:1437 
+--- PROCESSING TASK 1/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 2/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-1","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2024-12-15T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":120,"overview":"Overdue tax documents - organize and file tax documents from last year","details":"Need to gather receipts, W2s, and other tax documents. This is overdue and needs immediate attention.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-1, revisitDate: 2024-12-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 3/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-past-due-2","content":"PastDue T NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-01-10T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Call insurance company - follow up on insurance claim","details":"Need to call about the pending claim for the car accident. Reference number: INS-2024-9876.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "PastDue T NA" - ID: task-past-due-2, revisitDate: 2025-01-10T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "PastDue T NA" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "PastDue T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 4/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-no-date-1","content":"NA T NA","isSection":false,"completed":false,"children":[],"revisitDate":null,"fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":180,"overview":"Organize digital photos - sort and organize years of digital photos","details":"Need to go through thousands of photos and organize them into folders by year and event. This could take hours.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NA T NA" - ID: task-no-date-1, revisitDate: null, parent: undefined
+script.js:1525 🚨 FILTER: "NA T NA" - no revisit date, showing in all date filters
+script.js:1621 ✅ SHOW: "NA T NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 5/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 6/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1","content":"Today A 07a","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"},{"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Morning workout - high intensity interval training session","details":"30 minutes of HIIT followed by 15 minutes of stretching. Focus on cardio and core strength.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a" - ID: task-today-a-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today A 07a" will be visible
+script.js:1437 
+--- PROCESSING TASK 7/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-1","content":"Today A 07a Sub1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":10,"overview":"Warm-up routine - dynamic stretching and light cardio","details":"5 minutes of dynamic stretching followed by 5 minutes of light cardio to prepare for workout.","scheduledTime":"07:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub1" - ID: task-today-a-1-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub1" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub1" will be visible
+script.js:1437 
+--- PROCESSING TASK 8/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2","content":"Today A 07a Sub2","isSection":false,"completed":false,"children":[{"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":35,"overview":"Main workout set - core HIIT exercises","details":"Burpees, mountain climbers, jumping jacks, and plank variations. 4 rounds of 8 minutes each.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2" - ID: task-today-a-1-sub-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2" will be visible
+script.js:1437 
+--- PROCESSING TASK 9/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"timeEstimate":8,"overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduledTime":"07:10:00"}
+script.js:1453 📊 PARSED TASK: "Today A 07a Sub2.1" - ID: task-today-a-1-sub-2-sub-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 07a Sub2.1" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today A 07a Sub2.1" will be visible
+script.js:1437 
+--- PROCESSING TASK 10/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-a-2","content":"Today A 02p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":true,"timeEstimate":90,"overview":"Client presentation - present quarterly results to major client","details":"Present Q4 performance metrics and discuss strategy for Q1. Prepare for questions about budget allocation.","scheduledTime":"14:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 02p" - ID: task-today-a-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 02p" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today A 02p" will be visible
+script.js:1437 
+--- PROCESSING TASK 11/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-tomorrow-1","content":"Tomorrow A 09a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-25T00:00:00.000Z","fire":true,"fast":true,"flow":false,"fear":true,"first":true,"timeEstimate":75,"overview":"Doctor appointment - annual physical checkup","details":"Routine physical with Dr. Smith. Bring insurance card and list of current medications. Fasting required.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Tomorrow A 09a" - ID: task-tomorrow-1, revisitDate: 2025-07-25T00:00:00.000Z, parent: undefined
+script.js:1607 🔍 NEXT-MONTH FILTER: Task "Tomorrow A 09a" - taskDate: Thu Jul 24 2025, nextMonthStart: Fri Aug 01 2025, nextMonthEnd: Sun Aug 31 2025, match: false
+script.js:1624 ❌ HIDE: "Tomorrow A 09a" will be hidden
+script.js:1437 
+--- PROCESSING TASK 12/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-week-1","content":"NextWeek A NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-31T00:00:00.000Z","fire":true,"fast":false,"flow":true,"fear":false,"first":true,"timeEstimate":240,"overview":"Project proposal - draft proposal for new client project","details":"Create comprehensive proposal including timeline, budget, and deliverables for the mobile app project.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextWeek A NA" - ID: task-next-week-1, revisitDate: 2025-07-31T00:00:00.000Z, parent: undefined
+script.js:1607 🔍 NEXT-MONTH FILTER: Task "NextWeek A NA" - taskDate: Wed Jul 30 2025, nextMonthStart: Fri Aug 01 2025, nextMonthEnd: Sun Aug 31 2025, match: false
+script.js:1624 ❌ HIDE: "NextWeek A NA" will be hidden
+script.js:1437 
+--- PROCESSING TASK 13/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-1","content":"Today A 11a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":true,"fear":false,"first":false,"timeEstimate":45,"overview":"Code review - review pull requests from team members","details":"Review 3 pull requests focusing on code quality, security, and performance improvements.","scheduledTime":"11:00:00"}
+script.js:1453 📊 PARSED TASK: "Today A 11a" - ID: task-mixed-flags-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today A 11a" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today A 11a" will be visible
+script.js:1437 
+--- PROCESSING TASK 14/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 15/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-b-1","content":"Today B 10a","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":45,"overview":"Grocery shopping - weekly grocery run","details":"Buy ingredients for this week's meal prep. Focus on fresh vegetables, protein, and pantry staples.","scheduledTime":"09:00:00"}
+script.js:1453 📊 PARSED TASK: "Today B 10a" - ID: task-today-b-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today B 10a" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today B 10a" will be visible
+script.js:1437 
+--- PROCESSING TASK 16/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-1","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":false,"first":true,"timeEstimate":60,"overview":"Team meeting prep - prepare agenda and materials for weekly team meeting","details":"Review project status, prepare update slides, and create agenda for Friday's team meeting.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-this-week-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 17/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-completed-1","content":"Today B NA (Complete)","isSection":false,"completed":true,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":30,"overview":"Weekly report - submit weekly status report","details":"Completed and submitted to manager. Included project updates and next week's priorities.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "Today B NA (Complete)" - ID: task-completed-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1607 🔍 NEXT-MONTH FILTER: Task "Today B NA (Complete)" - taskDate: Wed Jul 23 2025, nextMonthStart: Fri Aug 01 2025, nextMonthEnd: Sun Aug 31 2025, match: false
+script.js:1624 ❌ HIDE: "Today B NA (Complete)" will be hidden
+script.js:1437 
+--- PROCESSING TASK 18/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-mixed-flags-2","content":"ThisWeek B NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":true,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":60,"overview":"Backup important files - backup critical work files to cloud storage","details":"Upload project files, client data, and personal documents to Google Drive and external hard drive.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek B NA" - ID: task-mixed-flags-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek B NA" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "ThisWeek B NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 19/23 ---
+script.js:1444 📁 SECTION: Found section header - always visible
+script.js:1437 
+--- PROCESSING TASK 20/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-today-c-1","content":"Today C 04p","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":30,"overview":"Read industry articles - stay updated on industry trends","details":"Read 3-4 articles from Harvard Business Review and TechCrunch about emerging trends in our industry.","scheduledTime":"16:00:00"}
+script.js:1453 📊 PARSED TASK: "Today C 04p" - ID: task-today-c-1, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "Today C 04p" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "Today C 04p" will be visible
+script.js:1437 
+--- PROCESSING TASK 21/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-week-2","content":"ThisWeek C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-24T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":false,"first":false,"timeEstimate":120,"overview":"Car maintenance - oil change and tire rotation","details":"Schedule appointment at Honda service center. Car is due for 50,000 mile service.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisWeek C NA" - ID: task-this-week-2, revisitDate: 2025-07-24T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisWeek C NA" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "ThisWeek C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 22/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-this-month-1","content":"ThisMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-07-15T00:00:00.000Z","fire":false,"fast":false,"flow":false,"fear":true,"first":false,"timeEstimate":90,"overview":"Update resume - refresh resume with recent accomplishments","details":"Add recent projects, update skills section, and get feedback from mentor before networking event.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "ThisMonth C NA" - ID: task-this-month-1, revisitDate: 2025-07-15T00:00:00.000Z, parent: undefined
+script.js:1552 🚨 TRIAGE IN DATE FILTER: "ThisMonth C NA" - overdue task showing in next-month filter
+script.js:1621 ✅ SHOW: "ThisMonth C NA" will be visible
+script.js:1437 
+--- PROCESSING TASK 23/23 ---
+script.js:1450 📄 RAW DATA: {"id":"task-next-month-1","content":"NextMonth C NA","isSection":false,"completed":false,"children":[],"revisitDate":"2025-08-15T00:00:00.000Z","fire":false,"fast":false,"flow":true,"fear":false,"first":false,"timeEstimate":120,"overview":"Plan summer vacation - research and book summer vacation","details":"Compare destinations, check flight prices, and make reservations. Consider Europe or national parks.","scheduledTime":null}
+script.js:1453 📊 PARSED TASK: "NextMonth C NA" - ID: task-next-month-1, revisitDate: 2025-08-15T00:00:00.000Z, parent: undefined
+script.js:1607 🔍 NEXT-MONTH FILTER: Task "NextMonth C NA" - taskDate: Thu Aug 14 2025, nextMonthStart: Fri Aug 01 2025, nextMonthEnd: Sun Aug 31 2025, match: true
+script.js:1621 ✅ SHOW: "NextMonth C NA" will be visible
+script.js:1628 
+🏁 FILTER COMPLETE: "next-month" filter applied
+script.js:1629 📊 SUMMARY: 23 total, 4 sections, 20 shown, 3 hidden
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Before Filter Processing
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: Critical Filter Moment - Task Query Results
+script.js:1353 📋 DOM DUMP: Copied to clipboard for context: After Filter Processing Complete
+script.js:4120 ⏰ CURRENT TIME: Current time line updated: 15:53 position: 953px totalMinutes: 953
+script.js:4121 ⏰ CURRENT TIME: Timeline container rect: DOMRect

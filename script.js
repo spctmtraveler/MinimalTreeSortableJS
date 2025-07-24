@@ -1517,42 +1517,8 @@ function handleFilterChange() {
       const revisitDate = taskData.revisitDate;
       const isCompleted = taskData.completed;
       
-      // CRITICAL FIX: Tasks with no revisit date should ALWAYS show up in date filters
-      // because they need attention (require scheduling/categorization)
-      if (!revisitDate || revisitDate === null || revisitDate === '') {
-        if (!isCompleted) {
-          shouldShow = true;
-          console.log(`🚨 FILTER: "${taskData.content}" - no revisit date, showing in all date filters`);
-        }
-      } 
-      // TRIAGE INTEGRATION: Also check for overdue tasks in date filters
-      else if (!isCompleted) {
-        // Check if task is overdue (triage criteria)
-        let taskDate;
-        if (revisitDate === 'today') {
-          taskDate = today;
-        } else if (revisitDate === 'tomorrow') {
-          taskDate = tomorrow;
-        } else if (typeof revisitDate === 'string') {
-          if (revisitDate.includes('T')) {
-            taskDate = new Date(revisitDate);
-          } else if (revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-            taskDate = new Date(revisitDate + 'T00:00:00');
-          } else {
-            taskDate = new Date(revisitDate);
-          }
-        }
-        
-        if (taskDate && !isNaN(taskDate)) {
-          const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
-          
-          // If task is overdue, show it in ALL date filters (triage behavior)
-          if (taskDateOnly < today) {
-            shouldShow = true;
-            console.log(`🚨 TRIAGE IN DATE FILTER: "${taskData.content}" - overdue task showing in ${filterValue} filter`);
-          }
-        }
-      }
+      // Date filters should ONLY show tasks with specific dates matching the filter
+      // Tasks without revisit dates should ONLY appear in Triage filter
       
       // If not already shown by triage rules, apply regular date filtering
       if (!shouldShow && (revisitDate && revisitDate !== null && revisitDate !== '')) {
