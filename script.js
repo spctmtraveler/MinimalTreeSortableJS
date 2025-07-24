@@ -3362,6 +3362,9 @@ function generateSettingsHTML() {
                 <a href="/filter-flow-diagram.html" target="_blank" class="nav-link">
                     <i class="fa-solid fa-diagram-project"></i> Filter Flow Diagram
                 </a>
+                <a href="#" class="nav-link" id="one-click-export-nav">
+                    <i class="fa-solid fa-rocket"></i> One-Click Debug Export
+                </a>
             </div>
         </div>
         
@@ -3389,6 +3392,15 @@ function setupSettingsWindowCommunication() {
   // Wait for popup to load, then setup event listeners
   setTimeout(() => {
     const popupDoc = settingsPopupWindow.document;
+    
+    // One-click export button
+    const exportNavBtn = popupDoc.getElementById('one-click-export-nav');
+    if (exportNavBtn) {
+      exportNavBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        startOneClickExport();
+      });
+    }
     
     // Debug logging toggle
     const debugCheckbox = popupDoc.getElementById('debug-toggle-checkbox');
@@ -5102,8 +5114,18 @@ function downloadExportFile(content) {
 
 // Connect one-click export button on page load
 document.addEventListener('DOMContentLoaded', function() {
+  // Set up export button in settings modal (if exists)
   const exportBtn = document.getElementById('one-click-export');
   if (exportBtn) {
     exportBtn.addEventListener('click', startOneClickExport);
+  }
+  
+  // Set up export button in navigation (if exists)
+  const exportNavBtn = document.getElementById('one-click-export-nav');
+  if (exportNavBtn) {
+    exportNavBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      startOneClickExport();
+    });
   }
 });
