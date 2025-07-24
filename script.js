@@ -1422,7 +1422,7 @@ function handleFilterChange() {
 //
 //
 //
-  debugger; // This will pause execution here when Developer Tools is open
+
 
   
   console.log(`📋 FILTER: Found ${allTaskItems.length} task items in DOM`);
@@ -1587,16 +1587,27 @@ function handleFilterChange() {
               shouldShow = taskDateOnly.getTime() === tomorrow.getTime();
               break;
             case 'this-week':
-              shouldShow = taskDateOnly >= weekStart && taskDateOnly <= weekEnd;
+              shouldShow = taskDateOnly.getTime() >= weekStart.getTime() 
+                        && taskDateOnly.getTime() <= weekEnd.getTime();
+              console.log(`🔍 THIS-WEEK FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, weekStart: ${weekStart.toDateString()}, weekEnd: ${weekEnd.toDateString()}, match: ${shouldShow}`);
               break;
             case 'next-week':
-              shouldShow = taskDateOnly >= nextWeekStart && taskDateOnly <= nextWeekEnd;
+              shouldShow = taskDateOnly.getTime() >= nextWeekStart.getTime() 
+                        && taskDateOnly.getTime() <= nextWeekEnd.getTime();
+              console.log(`🔍 NEXT-WEEK FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, nextWeekStart: ${nextWeekStart.toDateString()}, nextWeekEnd: ${nextWeekEnd.toDateString()}, match: ${shouldShow}`);
               break;
             case 'this-month':
-              shouldShow = taskDateOnly >= monthStart && taskDateOnly <= monthEnd;
+              shouldShow = taskDateOnly.getTime() >= monthStart.getTime() 
+                        && taskDateOnly.getTime() <= monthEnd.getTime();
+              console.log(`🔍 THIS-MONTH FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, monthStart: ${monthStart.toDateString()}, monthEnd: ${monthEnd.toDateString()}, match: ${shouldShow}`);
               break;
             case 'next-month':
-              shouldShow = taskDateOnly >= nextMonthStart && taskDateOnly <= nextMonthEnd;
+              shouldShow = taskDateOnly.getTime() >= nextMonthStart.getTime() 
+                        && taskDateOnly.getTime() <= nextMonthEnd.getTime();
+              console.log(`🔍 NEXT-MONTH FILTER: Task "${taskData.content}" - taskDate: ${taskDateOnly.toDateString()}, nextMonthStart: ${nextMonthStart.toDateString()}, nextMonthEnd: ${nextMonthEnd.toDateString()}, match: ${shouldShow}`);
+              break;
+            default:
+              shouldShow = false;
               break;
           }
         }

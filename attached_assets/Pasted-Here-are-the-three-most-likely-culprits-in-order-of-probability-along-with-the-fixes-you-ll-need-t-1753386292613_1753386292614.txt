@@ -1,0 +1,57 @@
+Here are the three most likely culprits, in order of probability, along with the fixes you’ll need to apply. All line numbers refer to the export in Bug Report ReadMe First.txt.
+
+1. Remove that stray debugger;
+Because DevTools is open in “Debug Mode,” the debugger; statement at the top of your filter function will halt execution every time you change the dropdown—so only the first filter ever actually runs. Removing it lets the full logic execute for every selection (including Next Week/Next Month).
+
+diff
+Copy
+Edit
+--- script.js (around line 41) :contentReference[oaicite:0]{index=0}
+-    debugger; // This will pause execution here when Developer Tools is open
+2. Kill the Emergency‑Filter override
+You’re loading emergency-fix.js (and firing emergencyFilter()) after your real filter logic. That fallback only knows how to handle “all,” “today,” and “triage,” and then unconditionally shows everything for every other value—so “this‑week” and “next‑week” look identical.
+
+In index.html, remove the emergency‑fix script tag:
+
+diff
+Copy
+Edit
+ <script src="script.js"></script>
+<script src="emergency-fix.js"></script>
+csharp
+Copy
+Edit
+- **In `script.js`**, also delete the `setTimeout` calls that invoke `emergencyFilter()`, `emergencyDateDisplay()`, etc. :contentReference[oaicite:1]{index=1}
+
+---
+
+**3. Harden your date‑range switch**  
+As a belt‑and‑suspenders step, make the comparisons crystal‑clear by using `.getTime()` and ensure each case has an explicit `break;`. This prevents any accidental fall‑through or type coercion issues. Update your switch in `handleFilterChange()` (around where you do `case 'next‑week': …`) to:  
+```js
+switch (filterValue) {
+// …
+case 'this-week':
+  shouldShow = taskDateOnly.getTime() >= weekStart.getTime()
+            && taskDateOnly.getTime() <= weekEnd.getTime();
+  break;
+
+case 'next-week':
+  shouldShow = taskDateOnly.getTime() >= nextWeekStart.getTime()
+            && taskDateOnly.getTime() <= nextWeekEnd.getTime();
+  break;
+
+case 'this-month':
+  shouldShow = taskDateOnly.getTime() >= monthStart.getTime()
+            && taskDateOnly.getTime() <= monthEnd.getTime();
+  break;
+
+case 'next-month':
+  shouldShow = taskDateOnly.getTime() >= nextMonthStart.getTime()
+            && taskDateOnly.getTime() <= nextMonthEnd.getTime();
+  break;
+
+default:
+  shouldShow = false;
+}
+This makes the intent explicit and guards against subtle date‑object quirks 
+.
