@@ -228,88 +228,67 @@
         <table class="flow-table" id="visual-table">
             <thead>
                 <tr>
-                    <th style="width: 15%;">Action</th>
-                    <th style="width: 25%;">Description</th>
-                    <th style="width: 35%;">Code Responsible</th>
-                    <th style="width: 25%;">Data State</th>
+                    <th style="width: 15%;">Step</th>
+                    <th style="width: 25%;">Action</th>
+                    <th style="width: 35%;">Current Logic</th>
+                    <th style="width: 25%;">Issue Analysis</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="success-highlight">
-                    <td class="step-action">User Changes</td>
-                    <td class="step-description">User selects a different option in the filter dropdown menu</td>
-                    <td class="step-code">HTML: &lt;select id="filter-dropdown"&gt;<br/>JavaScript: addEventListener('change', handleFilterChange)</td>
-                    <td class="step-data">filterValue = "today" | "all" | "triage" | etc.</td>
+                    <td class="step-action">1. Trigger</td>
+                    <td class="step-description">User selects filter dropdown (Today, Tomorrow, etc.)</td>
+                    <td class="step-code">filterDropdown.addEventListener('change', handleFilterChange)<br/>filterValue = "today" | "tomorrow" | "this-week"</td>
+                    <td class="step-data">✅ Working correctly</td>
                 </tr>
                 
                 <tr class="success-highlight">
-                    <td class="step-action">Event Triggers</td>
-                    <td class="step-description">The 'change' event fires and calls the handleFilterChange function</td>
-                    <td class="step-code">script.js line ~1185:<br/>filterDropdown.addEventListener('change', handleFilterChange);</td>
-                    <td class="step-data">Event object: { target: { value: "today" } }</td>
+                    <td class="step-action">2. Date Calc</td>
+                    <td class="step-description">Calculate date ranges for comparison</td>
+                    <td class="step-code">const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());<br/>const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);</td>
+                    <td class="step-data">✅ Using local browser timezone<br/>Today: 2025-07-24<br/>Tomorrow: 2025-07-25</td>
                 </tr>
                 
                 <tr class="success-highlight">
-                    <td class="step-action">Read Filter</td>
-                    <td class="step-description">Function reads the selected filter value from the dropdown</td>
-                    <td class="step-code">const filterValue = filterDropdown.value;<br/>console.log(`🔍 FILTER: Selected filter value = "${filterValue}"`);</td>
-                    <td class="step-data">filterValue = "today"</td>
-                </tr>
-                
-                <tr class="success-highlight">
-                    <td class="step-action">Calculate Dates</td>
-                    <td class="step-description">Function calculates today's date and other date ranges for comparison</td>
-                    <td class="step-code">const now = new Date();<br/>const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());</td>
-                    <td class="step-data">today = Date object: "2025-07-12T00:00:00.000Z"<br/>todayStr = "2025-07-12"</td>
-                </tr>
-                
-                <tr class="issue-highlight">
-                    <td class="step-action"><span class="issue-indicator">Find Tasks</span></td>
-                    <td class="step-description">Function searches for all task items in the DOM to filter them</td>
+                    <td class="step-action">3. Find Tasks</td>
+                    <td class="step-description">Query DOM for all task elements</td>
                     <td class="step-code">const allTaskItems = document.querySelectorAll('.task-item');<br/>console.log(`📋 FILTER: Found ${allTaskItems.length} task items`);</td>
-                    <td class="step-data"><span class="issue-indicator">allTaskItems.length = 0</span><br/>(This is the problem!)</td>
+                    <td class="step-data">✅ Finding ~23 task items<br/>Includes sections + tasks</td>
                 </tr>
                 
                 <tr class="issue-highlight">
-                    <td class="step-action"><span class="issue-indicator">Process Each</span></td>
-                    <td class="step-description">Function loops through each task to apply filter logic</td>
-                    <td class="step-code">allTaskItems.forEach(taskItem => {<br/>  // Filter logic here<br/>});</td>
-                    <td class="step-data"><span class="issue-indicator">Loop executes 0 times</span><br/>No tasks processed</td>
+                    <td class="step-action"><span class="issue-indicator">4. Date Logic</span></td>
+                    <td class="step-description">Apply date filter logic to each task</td>
+                    <td class="step-code">REMOVED BROKEN LOGIC:<br/>- Tasks with no revisit date → show in ALL filters<br/>- Overdue tasks → show in ALL filters<br/><br/>NOW: Only exact date matches should show</td>
+                    <td class="step-data"><span class="issue-indicator">❌ OVER-REMOVED LOGIC</span><br/>Now NO tasks show in date filters<br/>Missing proper date matching</td>
                 </tr>
                 
                 <tr class="issue-highlight">
-                    <td class="step-action"><span class="issue-indicator">Check Sections</span></td>
-                    <td class="step-description">Function identifies section headers and always shows them</td>
-                    <td class="step-code">if (taskItem.classList.contains('section-header')) {<br/>  taskItem.style.display = '';<br/>}</td>
-                    <td class="step-data"><span class="issue-indicator">No sections found</span><br/>Section headers not processed</td>
+                    <td class="step-action"><span class="issue-indicator">5. Tomorrow</span></td>
+                    <td class="step-description">Tomorrow filter should show only July 25, 2025 tasks</td>
+                    <td class="step-code">case 'tomorrow':<br/>  shouldShow = taskDateOnly.getTime() === tomorrow.getTime();<br/>  break;</td>
+                    <td class="step-data"><span class="issue-indicator">❌ NOT EXECUTING</span><br/>Logic exists but never reached<br/>All tasks filtered out before this</td>
                 </tr>
                 
                 <tr class="issue-highlight">
-                    <td class="step-action"><span class="issue-indicator">Parse Data</span></td>
-                    <td class="step-description">Function extracts task data from DOM element's dataset</td>
-                    <td class="step-code">const taskData = JSON.parse(taskItem.dataset.taskData || '{}');<br/>console.log(`📊 PARSED: "${taskData.content}"`);</td>
-                    <td class="step-data"><span class="issue-indicator">No parsing occurs</span><br/>taskData objects not created</td>
+                    <td class="step-action"><span class="issue-indicator">6. Task Data</span></td>
+                    <td class="step-description">Parse task data to get revisit dates</td>
+                    <td class="step-code">const taskData = JSON.parse(taskItem.dataset.taskData);<br/>const revisitDate = taskData.revisitDate;<br/>// "2025-07-24T00:00:00.000Z" format</td>
+                    <td class="step-data"><span class="issue-indicator">❌ LOGIC BYPASS</span><br/>Date parsing works fine<br/>But filter logic skipped</td>
                 </tr>
                 
                 <tr class="issue-highlight">
-                    <td class="step-action"><span class="issue-indicator">Apply Logic</span></td>
-                    <td class="step-description">Function applies filter-specific logic to determine task visibility</td>
-                    <td class="step-code">if (filterValue === 'today') {<br/>  const taskDateStr = taskData.revisitDate.split('T')[0];<br/>  shouldShow = taskDateStr === todayStr;<br/>}</td>
-                    <td class="step-data"><span class="issue-indicator">No logic applied</span><br/>shouldShow values not set</td>
+                    <td class="step-action"><span class="issue-indicator">7. Show/Hide</span></td>
+                    <td class="step-description">Set task visibility based on shouldShow flag</td>
+                    <td class="step-code">taskItem.style.display = shouldShow ? '' : 'none';<br/>if (shouldShow) shownCount++; else hiddenCount++;</td>
+                    <td class="step-data"><span class="issue-indicator">❌ ALL HIDDEN</span><br/>shouldShow = false for all tasks<br/>No tasks visible in any date filter</td>
                 </tr>
                 
                 <tr class="issue-highlight">
-                    <td class="step-action"><span class="issue-indicator">Set Visibility</span></td>
-                    <td class="step-description">Function shows or hides task elements based on filter logic</td>
-                    <td class="step-code">taskItem.style.display = shouldShow ? '' : 'none';<br/>if (shouldShow) shownCount++;</td>
-                    <td class="step-data"><span class="issue-indicator">No elements modified</span><br/>shownCount = 0, hiddenCount = 0</td>
-                </tr>
-                
-                <tr class="issue-highlight">
-                    <td class="step-action"><span class="issue-indicator">Log Results</span></td>
-                    <td class="step-description">Function logs the final count of shown vs hidden tasks</td>
-                    <td class="step-code">console.log(`🏁 FILTER COMPLETE: ${shownCount} shown, ${hiddenCount} hidden`);</td>
-                    <td class="step-data"><span class="issue-indicator">Output: "0 shown, 0 hidden"</span><br/>Indicates no tasks were processed</td>
+                    <td class="step-action"><span class="issue-indicator">8. Root Cause</span></td>
+                    <td class="step-description">CRITICAL BUG: Missing date matching logic</td>
+                    <td class="step-code">// MISSING: The actual date comparison logic<br/>// The switch statement exists but never executes<br/>// because shouldShow remains false</td>
+                    <td class="step-data"><span class="issue-indicator">❌ BROKEN LOGIC FLOW</span><br/>Fixed overdue bug but<br/>broke normal filtering</td>
                 </tr>
             </tbody>
         </table>
@@ -425,47 +404,82 @@ When working correctly, you should see logs like:
         </div>
 
         <div class="debug-section">
-            <h3>🐛 Root Cause Analysis</h3>
-            <p>Based on the console logs, the filter function executes but finds <strong>0 task elements</strong>:</p>
+            <h3>🚨 Current Bug Status (July 24, 2025)</h3>
+            <p><strong>CRITICAL ISSUE:</strong> Filter logic was over-corrected and completely broken. All date filters now show zero tasks.</p>
             <div class="code-block">
-                <span class="highlight-issue">"📋 WORKING FILTER: Found 0 task elements"</span>
+                <span class="highlight-issue">ROOT CAUSE: Missing date matching logic in handleFilterChange()</span>
+                
+Current state:
+✅ DOM queries work: document.querySelectorAll('.task-item') finds ~23 elements
+✅ Date calculations work: today = 2025-07-24, tomorrow = 2025-07-25  
+✅ Task data parsing works: taskData.revisitDate = "2025-07-24T00:00:00.000Z"
+❌ Date matching logic: COMPLETELY MISSING - shouldShow never becomes true
+❌ Result: NO tasks visible in any date filter (Today, Tomorrow, This Week, etc.)
             </div>
             
-            <p><strong>Possible Causes:</strong></p>
+            <p><strong>What Happened:</strong></p>
             <ol>
-                <li><strong>Timing Issue:</strong> Filter runs before DOM is fully built</li>
-                <li><strong>CSS Class Issue:</strong> Tasks don't have '.task-item' class</li>
-                <li><strong>DOM Structure Issue:</strong> Tasks are in different container than expected</li>
-                <li><strong>Script Loading Issue:</strong> Filter function runs before buildTree() completes</li>
+                <li><strong>Original Bug:</strong> Overdue tasks appeared in ALL date filters</li>
+                <li><strong>Over-Correction:</strong> Removed ALL logic that sets shouldShow = true for date filters</li>
+                <li><strong>Current State:</strong> Only Triage and All filters work, all date filters broken</li>
             </ol>
         </div>
 
         <div class="debug-section">
-            <h3>🔧 Debugging Steps</h3>
-            <p>To diagnose the issue, add this debug code to your browser console:</p>
+            <h3>🔧 Required Fix</h3>
+            <p>The date matching logic needs to be restored in script.js around line 1527:</p>
             <div class="code-block">
-// Check if task elements exist with different selectors
-console.log('Direct .task-item count:', document.querySelectorAll('.task-item').length);
-console.log('All divs with task in class:', document.querySelectorAll('[class*="task"]').length);
-console.log('Elements in task-tree:', document.querySelector('#task-tree')?.children.length);
-console.log('Task tree HTML:', document.querySelector('#task-tree')?.innerHTML.substring(0, 500));
+<span class="highlight-success">SOLUTION: Add back the date matching switch statement</span>
 
-// Check timing of buildTree vs filter
-setTimeout(() => {
-    console.log('After delay - .task-item count:', document.querySelectorAll('.task-item').length);
-}, 1000);
+// Current broken logic (line ~1527):
+if (!shouldShow && (revisitDate && revisitDate !== null && revisitDate !== '')) {
+  // Date parsing exists but NO LOGIC to set shouldShow = true
+}
+
+// REQUIRED FIX:
+if (revisitDate && revisitDate !== null && revisitDate !== '') {
+  let taskDate = new Date(revisitDate);
+  const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+  
+  switch (filterValue) {
+    case 'today':
+      shouldShow = taskDateOnly.getTime() === today.getTime();
+      break;
+    case 'tomorrow':
+      shouldShow = taskDateOnly.getTime() === tomorrow.getTime();
+      break;
+    case 'this-week':
+      shouldShow = taskDateOnly.getTime() >= weekStart.getTime() 
+                && taskDateOnly.getTime() <= weekEnd.getTime();
+      break;
+    // ... other cases
+  }
+}
             </div>
         </div>
 
         <div class="debug-section">
-            <h3>✅ Expected Successful Flow</h3>
-            <p>When working correctly, you should see logs like:</p>
+            <h3>✅ Expected Results After Fix</h3>
+            <p>Once the date matching logic is restored, you should see:</p>
             <div class="code-block">
-<span class="highlight-success">"📋 FILTER: Found 15 task items in DOM"</span>
-<span class="highlight-success">"📁 SECTION: Found section header"</span>
-<span class="highlight-success">"📊 PARSED: 'Remove Milan's Bidet' - revisitDate: 2025-07-12"</span>
-<span class="highlight-success">"✅ SHOW: 'Remove Milan's Bidet' will be visible"</span>
-<span class="highlight-success">"🏁 FILTER COMPLETE: 8 shown, 7 hidden"</span>
+<span class="highlight-success">Today Filter (2025-07-24):</span>
+- "Today A 07a" ✅
+- "Today B 10a" ✅  
+- "Today C 04p" ✅
+- "ThisWeek B NA" ✅ (has today's date)
+- "ThisWeek C NA" ✅ (has today's date)
+
+<span class="highlight-success">Tomorrow Filter (2025-07-25):</span>
+- "Tomorrow A 09a" ✅ (ONLY this task should show)
+
+<span class="highlight-success">Triage Filter:</span>
+- "PastDue T NA" ✅ (overdue tasks)
+- "NA T NA" ✅ (no revisit date)
+
+<span class="highlight-success">Console Logs:</span>
+"🔍 TODAY FILTER: Task 'Today A 07a' - match: true"
+"🔍 TOMORROW FILTER: Task 'Tomorrow A 09a' - match: true"
+"🏁 FILTER COMPLETE: X shown, Y hidden"
             </div>
         </div>
     </div>
