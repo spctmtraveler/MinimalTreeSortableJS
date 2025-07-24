@@ -1,0 +1,250 @@
+🚀 SCRIPT START: Main script.js is loading...
+script.js:16 🧪 BASIC TEST: Script executing normally
+emergency-fix.js:2 🚨 EMERGENCY FIX: Loading immediate solutions...
+emergency-fix.js:6 🚨 Today is: 2025-07-24
+emergency-fix.js:259 🚨 EMERGENCY FIX: Script loaded
+script.js:2803 🚀 DOM READY: DOMContentLoaded event fired, starting application...
+script.js:2428 🚀 INIT UI: Starting UI initialization...
+script.js:2449 🔍 SETUP: Looking for filter dropdown... <select id=​"filter-dropdown">​…​</select>​
+script.js:2452 🔍 SETUP: Filter dropdown found, current value: all
+script.js:2454 ✅ SETUP: Filter dropdown event listener attached successfully
+script.js:2457 🧪 SETUP: Testing filter function directly...
+script.js:1370 🚀 FILTER START: handleFilterChange() function called
+script.js:1383 🔍 FILTER: Selected filter value = "all"
+script.js:1387 📅 FILTER: Today's date = 2025-07-24 (2025-07-24)
+script.js:1410 📅 DATE RANGES:
+    Today: Thu Jul 24 2025
+    Tomorrow: Fri Jul 25 2025
+    This Week: Mon Jul 21 2025 → Sun Jul 27 2025
+    Next Week: Mon Jul 28 2025 → Sun Aug 03 2025
+    This Month: Tue Jul 01 2025 → Thu Jul 31 2025
+    Next Month: Fri Aug 01 2025 → Sun Aug 31 2025
+script.js:1428 📋 FILTER: Found 0 task items in DOM
+script.js:1617 
+🏁 FILTER COMPLETE: "all" filter applied
+script.js:1618 📊 SUMMARY: 0 total, 0 sections, 0 shown, 0 hidden
+script.js:2460 ✅ SETUP: Filter function executed successfully during setup
+script.js:1355 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1349:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1373:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2459:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2804:3)
+(anonymous) @ script.js:1355
+script.js:1356 DOM Debug Error: Failed to copy DOM dump to clipboard
+(anonymous) @ script.js:1356
+script.js:1355 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1349:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1421:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2459:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2804:3)
+(anonymous) @ script.js:1355
+script.js:1356 DOM Debug Error: Failed to copy DOM dump to clipboard
+(anonymous) @ script.js:1356
+script.js:1355 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1349:25)
+    at handleFilterChange (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1621:3)
+    at initUI (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2459:7)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2804:3)
+(anonymous) @ script.js:1355
+script.js:1356 DOM Debug Error: Failed to copy DOM dump to clipboard
+(anonymous) @ script.js:1356
+script.js:48 [5:20:57 AM] Setting up one-click export event listeners...
+script.js:61 Tasks loaded from database
+script.js:2811 Using tasks from database
+script.js:2835 Application initialized
+script.js:2839 🕐 INIT: Starting Hours Panel initialization...
+script.js:3717 🕐 INIT: initHoursPanel() called
+script.js:3720 🕐 INIT: Calling generateHourGrid()...
+script.js:3927 🕐 GRID: Generating hour grid...
+script.js:3965 ✅ GRID: Hour grid generated successfully with 24 hours
+script.js:3723 🕐 INIT: Calling initCurrentTimeLine()...
+script.js:4109 ⏰ CURRENT TIME: Current time line updated: 5:20 position: 320px totalMinutes: 320
+script.js:4110 ⏰ CURRENT TIME: Timeline container rect: DOMRect
+script.js:3726 🕐 INIT: Calling initLimitLines()...
+script.js:4164 🚦 LIMIT LINE: Positioned stop-line at 1080px for 1080 minutes
+script.js:4164 🚦 LIMIT LINE: Positioned sleep-line at 1380px for 1380 minutes
+script.js:3729 🕐 INIT: Calling setupHoursEventListeners()...
+script.js:3732 🕐 INIT: Calling updateRemainingTimes()...
+script.js:3739 🕐 INIT: Calling addSampleHoursTasks()...
+script.js:48 [5:20:57 AM] Hours: Starting task loading from database...
+script.js:3742 ✅ HOURS: Panel initialization completed successfully
+script.js:2841 ✅ INIT: Hours Panel initialization completed
+script.js:48 [5:20:57 AM] Debug modal initialized successfully
+script.js:1355 📋 DOM DUMP: Failed to copy to clipboard: DOMException: Failed to execute 'writeText' on 'Clipboard': Document is not focused.
+    at DOM_dump (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:1349:25)
+    at HTMLDocument.<anonymous> (https://026531d2-5885-4556-97ce-9067555146a2-00-3khush2ibb5f.kirk.replit.dev/script.js:2822:5)
+(anonymous) @ script.js:1355
+script.js:1356 DOM Debug Error: Failed to copy DOM dump to clipboard
+(anonymous) @ script.js:1356
+script.js:48 [5:20:57 AM] Hours: Raw API response received
+script.js:48 [5:20:57 AM] Hours: API returned 23 total records
+script.js:48 [5:20:57 AM] Hours: First task structure: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","is_section":false,"completed":false,"parent_id":"task-today-a-1-sub-2","position_order":0,"revisit_date":"2025-07-22T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"time_estimate":"1.00","overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduled_time":"07:00:00"}
+script.js:48 [5:20:57 AM] Hours: Found 19 actual tasks (excluding 4 section headers)
+script.js:48 [5:20:57 AM] Hours: Sample actual task: {"id":"task-today-a-1-sub-2-sub-1","content":"Today A 07a Sub2.1","is_section":false,"completed":false,"parent_id":"task-today-a-1-sub-2","position_order":0,"revisit_date":"2025-07-22T00:00:00.000Z","fire":false,"fast":true,"flow":false,"fear":true,"first":false,"time_estimate":"1.00","overview":"Round 1: Burpees - high intensity burpee set","details":"30 seconds on, 30 seconds rest, repeat for 8 minutes. Focus on form over speed.","scheduled_time":"07:00:00"}
+script.js:48 [5:20:57 AM] Hours: Today's date for comparison: 2025-07-24
+script.js:48 [5:20:57 AM] Hours: Examining task "Today A 07a Sub2.1" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 07:00:00
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a Sub2.1" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a Sub2.1" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today B 10a" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 10:30:00
+script.js:48 [5:20:57 AM] Hours: Task "Today B 10a" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today B 10a" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today A 07a" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 04:00:00
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today A 07a Sub1" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 08:00:00
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a Sub1" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a Sub1" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "PastDue T NA" - revisitDate: 2024-12-15T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "PastDue T NA" date comparison - taskDate: 2024-12-15, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today C 04p" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 16:00:00
+script.js:48 [5:20:57 AM] Hours: Task "Today C 04p" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today C 04p" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "PastDue T NA" - revisitDate: 2025-01-10T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "PastDue T NA" date comparison - taskDate: 2025-01-10, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "PastDue T NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today A 07a Sub2" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 07:10:00
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a Sub2" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today A 07a Sub2" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [5:20:57 AM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "ThisWeek C NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "ThisWeek C NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [5:20:57 AM] Hours: Task "ThisWeek C NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today A 02p" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 12:00:00
+script.js:48 [5:20:57 AM] Hours: Task "Today A 02p" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today A 02p" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Tomorrow A 09a" - revisitDate: 2025-07-23T00:00:00.000Z, scheduledTime: 09:00:00
+script.js:48 [5:20:57 AM] Hours: Task "Tomorrow A 09a" date comparison - taskDate: 2025-07-23, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Tomorrow A 09a" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "NA T NA" - revisitDate: null, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "NA T NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today B NA (Complete)" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "Today B NA (Complete)" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today B NA (Complete)" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "ThisMonth C NA" - revisitDate: 2025-07-15T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "ThisMonth C NA" date comparison - taskDate: 2025-07-15, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "ThisMonth C NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "ThisWeek B NA" - revisitDate: 2025-07-24T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "ThisWeek B NA" date comparison - taskDate: 2025-07-24, today: 2025-07-24, isToday: true
+script.js:48 [5:20:57 AM] Hours: Task "ThisWeek B NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "NextWeek A NA" - revisitDate: 2025-07-31T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "NextWeek A NA" date comparison - taskDate: 2025-07-31, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "NextWeek A NA" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "Today A 11a" - revisitDate: 2025-07-22T00:00:00.000Z, scheduledTime: 06:00:00
+script.js:48 [5:20:57 AM] Hours: Task "Today A 11a" date comparison - taskDate: 2025-07-22, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "Today A 11a" has no scheduled time or not scheduled for today
+script.js:48 [5:20:57 AM] Hours: Examining task "NextMonth C NA" - revisitDate: 2025-08-15T00:00:00.000Z, scheduledTime: null
+script.js:48 [5:20:57 AM] Hours: Task "NextMonth C NA" date comparison - taskDate: 2025-08-15, today: 2025-07-24, isToday: false
+script.js:48 [5:20:57 AM] Hours: Task "NextMonth C NA" has no scheduled time or not scheduled for today
+script.js:3869 Hours panel: Added 0 tasks from database for today
+script.js:48 [5:20:57 AM] Hours: No database tasks scheduled for today found, adding demo task
+script.js:3887 🚀 DEMO RENDER: About to render demo task hours-task-1 with data: Object
+script.js:3888 🚀 DEMO RENDER: Container exists? true
+script.js:4347 🔧 RENDER: Starting to render task hours-task-1
+script.js:4353 ✅ RENDER: Container found, proceeding with task rendering
+script.js:4362 🎯 POSITION CALC: Task hours-task-1 startMinutes: 1020 position: 1020px
+script.js:4363 🎯 HEIGHT CALC: Task hours-task-1 durationMinutes: 60 height: 60px
+script.js:4391 🔧 RENDER: About to setup task interactions for hours-task-1
+script.js:4392 🔧 RENDER: TaskBlock HTML before setup: <div class="task-block" data-task-id="hours-task-1" style="position: absolute; top: 1020px; height: 60px; left: 2px; right: 10px; background: rgba(0, 206, 247, 0.3); color: white; border-radius: 4px; z-index: 10;">
+    <span class="task-title">Fake Task</span>
+    <div class="task-block-controls">
+      <button class="task-control-btn edit-btn" title="Edit task">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="task-control-btn delete-btn" title="Delete task">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+script.js:4402 🔧 SETUP: Starting interaction setup for task hours-task-1
+script.js:4408 🔧 SETUP: Found elements - title: true edit: true delete: true resize: true
+script.js:4395 🔧 RENDER: Task rendering complete for hours-task-1
+script.js:48 [5:20:57 AM] Hours: Added single demo task at 5:00 PM
+script.js:48 [5:20:57 AM] Hours: Summary - processed 19 actual tasks, added 0 with scheduled times
+emergency-fix.js:247 🚨 EMERGENCY: Starting all fixes...
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+emergency-fix.js:176 🕐 DEBUG: Checking Hours panel structure...
+emergency-fix.js:183 🕐 Hours Column exists: true
+emergency-fix.js:184 🕐 Hours Timeline exists: true
+emergency-fix.js:185 🕐 Hour Grid exists: true
+emergency-fix.js:186 🕐 Task Blocks Container exists: true
+emergency-fix.js:189 🕐 Hour Grid children count: 48
+emergency-fix.js:190 🕐 Hour Grid innerHTML length: 7876
+emergency-fix.js:194 🕐 Timeline computed style display: block
+emergency-fix.js:195 🕐 Timeline computed style position: relative
+emergency-fix.js:196 🕐 Timeline computed style height: 1440px
+script.js:2860 🧪 MANUAL TEST: Adding filter test button to page
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:120 🚨 EMERGENCY DATE: Setting up persistent date display...
+emergency-fix.js:130 🚨 DATE: Enabled persistent date display
+emergency-fix.js:148 ✅ EMERGENCY DATE: Persistent date display configured
+emergency-fix.js:40 🚨 EMERGENCY FILTER: Current filter is "all"
+emergency-fix.js:44 🚨 Found 23 total task elements
+emergency-fix.js:108 🚨 EMERGENCY FILTER: Applied "all" filter
+emergency-fix.js:171 ✅ EMERGENCY DROPDOWN: Override complete
+script.js:3983 🚨 DEBUG: Starting force visibility check...
+script.js:3987 🚨 DEBUG: hoursTimeline container: <div class=​"hours-timeline" id=​"hours-timeline">​…​</div>​
+script.js:3991 🚨 DEBUG: Hours timeline container position: Object
+script.js:4003 🚨 DEBUG: currentTimeLine element: <div class=​"current-time-line" id=​"current-time-line" style=​"position:​ absolute !important;​ top:​ 335px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ background:​ rgb(0, 206, 247)​ !important;​ z-index:​ 20 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​…​</div>​
+script.js:4004 🚨 DEBUG: timeLineIndicator element: <div class=​"time-line-indicator" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(0, 206, 247)​ !important;​ z-index:​ 20 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:4007 🚨 DEBUG: Current time line computed styles:
+script.js:4009   - position: absolute
+script.js:4010   - top: 320px
+script.js:4011   - left: 0px
+script.js:4012   - width: 225px
+script.js:4013   - height: 3px
+script.js:4014   - display: block
+script.js:4015   - visibility: visible
+script.js:4016   - zIndex: 20
+script.js:4017   - background: rgb(0, 206, 247) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:4021 🚨 DEBUG: Time line indicator computed styles:
+script.js:4023   - position: absolute
+script.js:4024   - top: 0px
+script.js:4025   - left: 0px
+script.js:4026   - width: 225px
+script.js:4027   - height: 3px
+script.js:4028   - display: block
+script.js:4029   - visibility: visible
+script.js:4030   - zIndex: 20
+script.js:4031   - background: rgb(0, 206, 247) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:4040 🚨 DEBUG: stopLine element: <div class=​"limit-line stop-line" id=​"stop-line" data-time=​"18:​00" style=​"position:​ absolute !important;​ top:​ 1080px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​ cursor:​ ns-resize !important;​">​…​</div>​
+script.js:4041 🚨 DEBUG: stopBar element: <div class=​"limit-line-bar" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(255, 107, 107)​ !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:4042 🚨 DEBUG: sleepLine element: <div class=​"limit-line sleep-line" id=​"sleep-line" data-time=​"23:​00" style=​"position:​ absolute !important;​ top:​ 1380px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 3px !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​ cursor:​ ns-resize !important;​">​…​</div>​
+script.js:4043 🚨 DEBUG: sleepBar element: <div class=​"limit-line-bar" style=​"position:​ absolute !important;​ top:​ 0px !important;​ left:​ 0px !important;​ width:​ 100% !important;​ height:​ 100% !important;​ background:​ rgb(0, 191, 174)​ !important;​ z-index:​ 15 !important;​ display:​ block !important;​ visibility:​ visible !important;​">​</div>​
+script.js:4046 🚨 DEBUG: Stop bar computed styles:
+script.js:4048   - position: absolute
+script.js:4049   - top: 0px
+script.js:4050   - left: 0px
+script.js:4051   - width: 225px
+script.js:4052   - height: 3px
+script.js:4053   - display: block
+script.js:4054   - visibility: visible
+script.js:4055   - zIndex: 15
+script.js:4056   - background: rgb(255, 107, 107) none repeat scroll 0% 0% / auto padding-box border-box
+script.js:4059 🚨 DEBUG: Force visibility check complete - elements exist, fixing positioning...
+script.js:4109 ⏰ CURRENT TIME: Current time line updated: 5:25 position: 325px totalMinutes: 325
+script.js:4110 ⏰ CURRENT TIME: Timeline container rect: DOMRect
+script.js:4109 ⏰ CURRENT TIME: Current time line updated: 5:30 position: 330px totalMinutes: 330
+script.js:4110 ⏰ CURRENT TIME: Timeline container rect: DOMRect
+script.js:4109 ⏰ CURRENT TIME: Current time line updated: 5:35 position: 335px totalMinutes: 335
+script.js:4110 ⏰ CURRENT TIME: Timeline container rect: DOMRect
+script.js:48 [5:36:50 AM] Settings opened in popup window
+script.js:48 [5:36:50 AM] One-click export event listener attached successfully
+script.js:48 [5:36:52 AM] One-click export button clicked
+script.js:48 [5:36:52 AM] startOneClickExport function called
+script.js:48 [5:36:52 AM] Using popup window document for export UI
+script.js:48 [5:36:52 AM] ERROR: Could not find export progress elements

@@ -4831,31 +4831,26 @@ function propagateEstimateChangeToHoursPanel(taskId, newEstimate) {
 
 /* ---------- One-Click Debug Export System ----------- */
 async function startOneClickExport() {
-  debugLogger('startOneClickExport function called');
+  debugLogger('🚀 EXPORT: Starting one-click debug export process');
   
-  // Try to find elements in popup window first, then main window
-  let progressDiv, stepsDiv, exportBtn;
+  // Find the export button for status updates
+  let exportBtn = null;
   let targetDoc = document;
   
   if (settingsPopupWindow && !settingsPopupWindow.closed) {
     targetDoc = settingsPopupWindow.document;
-    debugLogger('Using popup window document for export UI');
+    debugLogger('EXPORT: Using popup window document');
   }
   
-  progressDiv = targetDoc.getElementById('export-progress');
-  stepsDiv = targetDoc.getElementById('export-steps');
   exportBtn = targetDoc.getElementById('one-click-export-nav') || targetDoc.getElementById('one-click-export');
   
-  if (!progressDiv || !stepsDiv) {
-    debugLogger('ERROR: Could not find export progress elements');
-    return;
-  }
-  
-  // Show progress panel
-  progressDiv.style.display = 'block';
   if (exportBtn) {
     exportBtn.disabled = true;
-    exportBtn.textContent = '⏳ Exporting...';
+    if (exportBtn.id === 'one-click-export-nav') {
+      exportBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Exporting...';
+    } else {
+      exportBtn.textContent = '⏳ Exporting...';
+    }
   }
   
   const steps = [
@@ -4884,48 +4879,68 @@ async function startOneClickExport() {
   
   try {
     for (let i = 0; i < steps.length; i++) {
-      await updateExportProgress(stepsDiv, steps, i, 'active');
+      debugLogger(`📋 EXPORT STEP ${i + 1}/9: ${steps[i]}`);
       
       switch (i) {
         case 0: // Initialize
+          debugLogger('EXPORT: Initializing export system...');
           await new Promise(resolve => setTimeout(resolve, 300));
+          debugLogger('✅ EXPORT: Export system initialized');
           break;
           
         case 1: // System info
+          debugLogger('EXPORT: Collecting system information...');
+          const systemData = {
+            timestamp: exportData.timestamp,
+            userAgent: exportData.systemInfo.userAgent,
+            url: exportData.systemInfo.url,
+            viewport: exportData.systemInfo.viewport,
+            debug: exportData.systemInfo.debug,
+            currentFilter: exportData.systemInfo.currentFilter || 'None',
+            taskTree: document.getElementById('task-tree') ? 'Present' : 'Missing',
+            filterDropdown: document.getElementById('filter-dropdown') ? 'Present' : 'Missing',
+            hoursPanel: document.querySelector('.hours-column') ? 'Present' : 'Missing',
+            taskItems: document.querySelectorAll('.task-item').length
+          };
           exportData.sections.push({
             title: 'SYSTEM INFORMATION',
-            content: `Timestamp: ${exportData.timestamp}
-User Agent: ${exportData.systemInfo.userAgent}
-Current URL: ${exportData.systemInfo.url}
-Viewport: ${exportData.systemInfo.viewport}
-Debug Mode: ${exportData.systemInfo.debug}
-Current Filter: ${exportData.systemInfo.currentFilter || 'None'}
+            content: `Timestamp: ${systemData.timestamp}
+User Agent: ${systemData.userAgent}
+Current URL: ${systemData.url}
+Viewport: ${systemData.viewport}
+Debug Mode: ${systemData.debug}
+Current Filter: ${systemData.currentFilter}
 
 DOM Elements Status:
-- Task Tree: ${document.getElementById('task-tree') ? 'Present' : 'Missing'}
-- Filter Dropdown: ${document.getElementById('filter-dropdown') ? 'Present' : 'Missing'}
-- Hours Panel: ${document.querySelector('.hours-column') ? 'Present' : 'Missing'}
-- Task Items: ${document.querySelectorAll('.task-item').length} found`
+- Task Tree: ${systemData.taskTree}
+- Filter Dropdown: ${systemData.filterDropdown}
+- Hours Panel: ${systemData.hoursPanel}
+- Task Items: ${systemData.taskItems} found`
           });
+          debugLogger(`✅ EXPORT: System info collected - ${systemData.taskItems} tasks, debug: ${systemData.debug}`);
           break;
           
         case 2: // Raw API data
+          debugLogger('EXPORT: Fetching raw task data from API...');
           try {
-            const rawTasksResponse = await fetch('/api/tasks/raw');
-            const rawTasks = await rawTasksResponse.json();
+            const response = await fetch('/api/debug/tasks');
+            const rawData = await response.json();
             exportData.sections.push({
-              title: 'RAW API TASK DATA',
-              content: JSON.stringify(rawTasks, null, 2)
+              title: 'RAW TASK DATA (API)',
+              content: JSON.stringify(rawData, null, 2)
             });
+            debugLogger(`✅ EXPORT: Raw API data fetched - ${rawData.length || 0} records`);
           } catch (error) {
+            debugLogger(`❌ EXPORT: Failed to fetch API data - ${error.message}`);
             exportData.sections.push({
-              title: 'RAW API TASK DATA',
-              content: `ERROR: ${error.message}`
+              title: 'RAW TASK DATA (API)',
+              content: `ERROR: Failed to fetch API data - ${error.message}`
             });
           }
           break;
           
         case 3: // Source files
+          debugLogger('EXPORT: Gathering project source files...');
           const sourceFiles = [
             '/index.html', '/styles.css', '/script.js', '/server.js',
             '/emergency-fix.js', '/filter-fix.js', '/package.json', '/replit.md'
@@ -4952,18 +4967,22 @@ DOM Elements Status:
             title: 'PROJECT SOURCE FILES',
             content: fileContents
           });
+          debugLogger('✅ EXPORT: Project source files collected');
           break;
           
         case 4: // Debug logs
+          debugLogger('EXPORT: Capturing debug logs and console data...');
           const debugLog = document.getElementById('debug-log')?.textContent || 'No debug log available';
           
           exportData.sections.push({
             title: 'DEBUG LOGS AND CONSOLE DATA',
             content: `DEBUG LOG:\n${debugLog}\n\nCONSOLE INFORMATION:\n${JSON.stringify(exportData.systemInfo, null, 2)}`
           });
+          debugLogger('✅ EXPORT: Debug logs and console data captured');
           break;
           
         case 5: // Bug report
+          debugLogger('EXPORT: Generating comprehensive bug report...');
           exportData.sections.push({
             title: 'COMPREHENSIVE BUG REPORT',
             content: `BUG REPORT: Date Range Filter Issues
@@ -5008,9 +5027,11 @@ script.js (lines 1410-1450): Date range calculation logic
 script.js (lines 1500-1600): Task filtering and display logic
 server.js: Database date format and task query endpoints`
           });
+          debugLogger('✅ EXPORT: Comprehensive bug report generated');
           break;
           
         case 6: // Filter flow analysis
+          debugLogger('EXPORT: Creating filter flow analysis...');
           exportData.sections.push({
             title: 'FILTER FLOW ANALYSIS',
             content: `Current filter state analysis and flow diagram data:
@@ -5020,22 +5041,26 @@ server.js: Database date format and task query endpoints`
 - Date range calculations and comparisons
 - Task visibility logic flow`
           });
+          debugLogger('✅ EXPORT: Filter flow analysis created');
           break;
           
         case 7: // Compile package
+          debugLogger('EXPORT: Compiling final export package...');
           await new Promise(resolve => setTimeout(resolve, 500));
+          debugLogger('✅ EXPORT: Final package compiled');
           break;
           
         case 8: // Prepare download
+          debugLogger('EXPORT: Preparing download...');
           const finalExport = generateFinalExportContent(exportData);
           downloadExportFile(finalExport);
+          debugLogger('✅ EXPORT: File download initiated');
           break;
       }
-      
-      await updateExportProgress(stepsDiv, steps, i, 'complete');
     }
     
     // Success
+    debugLogger('🎉 EXPORT: Export completed successfully! File download should have started.');
     if (exportBtn) {
       if (exportBtn.id === 'one-click-export-nav') {
         exportBtn.innerHTML = '<i class="fa-solid fa-check"></i> Export Complete!';
@@ -5052,7 +5077,6 @@ server.js: Database date format and task query endpoints`
           exportBtn.textContent = '🚀 One-Click Debug Export';
         }
       }
-      progressDiv.style.display = 'none';
     }, 3000);
     
   } catch (error) {
