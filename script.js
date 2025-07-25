@@ -1543,31 +1543,48 @@ function handleFilterChange() {
       if (revisitDate && revisitDate !== null && revisitDate !== '') {
         let taskDate;
         
-        // Handle different date formats
+        // Handle different date formats with proper timezone handling
         if (revisitDate === 'today') {
           taskDate = today;
         } else if (revisitDate === 'tomorrow') {
           taskDate = tomorrow;
         } else if (typeof revisitDate === 'string') {
-          // Handle ISO date strings from database (YYYY-MM-DDTHH:MM:SS.SSSZ)
-          if (revisitDate.includes('T')) {
-            taskDate = new Date(revisitDate);
+          // CRITICAL FIX: Parse database dates correctly to prevent timezone conversion
+          if (revisitDate.includes('T') && revisitDate.includes('Z')) {
+            // UTC date from database - extract date part and parse as local midnight
+            const datePart = revisitDate.split('T')[0]; // Extract 'YYYY-MM-DD'
+            const [year, month, day] = datePart.split('-').map(Number);
+            taskDate = new Date(year, month - 1, day); // Local midnight
+            console.log(`📅 UTC DATE CONVERSION: ${revisitDate} → local ${taskDate.toDateString()}`);
+          } else if (revisitDate.includes('T')) {
+            // ISO date without Z - extract date part and parse as local
+            const datePart = revisitDate.split('T')[0];
+            const [year, month, day] = datePart.split('-').map(Number);
+            taskDate = new Date(year, month - 1, day);
           } else if (revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-            taskDate = new Date(revisitDate + 'T00:00:00');
+            // YYYY-MM-DD format - parse as local date
+            const [year, month, day] = revisitDate.split('-').map(Number);
+            taskDate = new Date(year, month - 1, day);
           } else {
             taskDate = new Date(revisitDate);
           }
         }
         
         if (taskDate && !isNaN(taskDate)) {
-          // Convert to date-only for comparison
-          const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+          // taskDate is already at local midnight, use it directly for comparison
+          const taskDateOnly = taskDate;
+          
+          console.log(`🔍 DATE COMPARISON: Task "${taskData.content}"
+    Raw revisitDate: ${revisitDate}
+    Parsed taskDate: ${taskDate.toDateString()} (${taskDate.getTime()})
+    today: ${today.toDateString()} (${today.getTime()})
+    Match: ${taskDateOnly.getTime() === today.getTime()}`);
           
           if (shouldTriggerDump && !isCompleted) {
-            console.log(`🔍 PARSED DATE: taskDate = ${taskDate.toISOString()}`);
-            console.log(`🔍 DATE-ONLY: taskDateOnly = ${taskDateOnly.toDateString()} (${taskDateOnly.getTime()})`);
-            console.log(`🔍 COMPARISON: taskDateOnly < today? ${taskDateOnly.getTime() < today.getTime()}`);
-            console.log(`🔍 COMPARISON: taskDateOnly === today? ${taskDateOnly.getTime() === today.getTime()}`);
+            console.log(`🔍 SUPER-DUMP: taskDateOnly = ${taskDateOnly.toDateString()} (${taskDateOnly.getTime()})`);
+            console.log(`🔍 SUPER-DUMP: today = ${today.toDateString()} (${today.getTime()})`);
+            console.log(`🔍 SUPER-DUMP: taskDateOnly < today? ${taskDateOnly.getTime() < today.getTime()}`);
+            console.log(`🔍 SUPER-DUMP: taskDateOnly === today? ${taskDateOnly.getTime() === today.getTime()}`);
           }
           
           switch (filterValue) {
@@ -4940,7 +4957,7 @@ DOM Elements Status:
         case 2: // Raw API data
           debugLogger('EXPORT: Fetching raw task data from API...');
           try {
-            const response = await fetch('/api/debug/tasks');
+            const response = await fetch('/debug/tasks');
             const rawData = await response.json();
             exportData.sections.push({
               title: 'RAW TASK DATA (API)',

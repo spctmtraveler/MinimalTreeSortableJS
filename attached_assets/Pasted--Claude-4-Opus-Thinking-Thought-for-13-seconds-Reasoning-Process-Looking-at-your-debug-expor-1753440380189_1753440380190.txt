@@ -1,0 +1,80 @@
+
+Claude 4 Opus Thinking
+Thought for 13 seconds
+Reasoning Process
+
+
+Looking at your debug export, I've identified the root cause of the filter issue. The date comparison is failing because of a timezone mismatch between your database dates and JavaScript's local date handling.
+
+The Problem
+Your tasks have revisit_date values like:
+
+"2025-07-25T00:00:00.000Z" (UTC timezone with Z suffix)
+When comparing dates in the filter logic, the code creates local dates but compares them against UTC dates from the database, causing mismatches.
+
+The Fix
+Here's the corrected date parsing logic for script.js. Replace the date parsing section in handleFilterChange() (around lines 1530-1560):
+
+Copy
+// Handle different date formats with proper timezone handling
+if (revisitDate === 'today') {
+  taskDate = today;
+} else if (revisitDate === 'tomorrow') {
+  taskDate = tomorrow;
+} else if (typeof revisitDate === 'string') {
+  // CRITICAL FIX: Parse database dates correctly
+  if (revisitDate.includes('T') && revisitDate.includes('Z')) {
+    // UTC date from database - convert to local date at midnight
+    const utcDate = new Date(revisitDate);
+    taskDate = new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate());
+    console.log(`📅 UTC DATE CONVERSION: ${revisitDate} → ${taskDate.toISOString()}`);
+  } else if (revisitDate.includes('T')) {
+    // ISO date without Z - extract date part and parse as local
+    const datePart = revisitDate.split('T')[0];
+    const [year, month, day] = datePart.split('-').map(Number);
+    taskDate = new Date(year, month - 1, day);
+  } else if (revisitDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    // YYYY-MM-DD format - parse as local date
+    const [year, month, day] = revisitDate.split('-').map(Number);
+    taskDate = new Date(year, month - 1, day);
+  } else {
+    taskDate = new Date(revisitDate);
+  }
+}
+
+if (taskDate && !isNaN(taskDate)) {
+  // Ensure we're comparing date-only (no time component)
+  const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+  
+  console.log(`🔍 DATE COMPARISON: Task "${taskData.content}"
+    Raw revisitDate: ${revisitDate}
+    Parsed taskDate: ${taskDate.toISOString()}
+    taskDateOnly: ${taskDateOnly.toDateString()} (${taskDateOnly.getTime()})
+    today: ${today.toDateString()} (${today.getTime()})
+    Match: ${taskDateOnly.getTime() === today.getTime()}`);
+Quick Test
+To verify this fix works:
+
+Apply the code change above
+Select "Today" filter
+You should see tasks with today's date appear
+Additional API Error
+Your export also shows an API error:
+
+Copy
+ERROR: Failed to fetch API data - Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+This suggests the /api/debug/tasks endpoint is returning an HTML page instead of JSON. The endpoint might not exist or there's a routing issue in server.js.
+
+To fix the API endpoint, check if /api/debug/tasks exists in your server.js. If not, it should return raw JSON like:
+
+Copy
+app.get('/api/debug/tasks', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tasks ORDER BY position_order ASC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching debug tasks:', error);
+    res.status(500).json({ error: 'Failed to fetch tasks' });
+  }
+});
+Try the date parsing fix first - this should resolve your immediate filtering issue!

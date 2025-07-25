@@ -1,0 +1,210 @@
+Coding partner
+
+Show thinking
+Of course! I can help you figure out this bug. After reviewing the comprehensive debug export you provided, I've pinpointed the issues causing the filter malfunctions.
+
+This is a great example of how a bug can have multiple layers. We're dealing with two primary problems: conflicting scripts overriding each other and a subtle timezone bug in the core logic.
+
+Let's break it down.
+
+1. The Root Cause: Conflicting Filter Scripts
+Your application is loading three separate JavaScript files, each with its own implementation of the filter logic:
+
+
+script.js: Contains the intended, most complete filter logic in the handleFilterChange function. 
+
+emergency-fix.js: An incomplete script that attempts to fix the filter. It replaces the filter dropdown element, which removes the original event listener from 
+
+script.js. 
+
+
+filter-fix.js: Another incomplete script that also tries to attach its own filter logic. 
+
+Because emergency-fix.js replaces the dropdown, the correct logic in handleFilterChange is never actually being called. Instead, the simplified emergencyFilter function is running, which only handles "Today," "Tomorrow," and "Triage" and doesn't work correctly for date ranges, leading to the unpredictable behavior you're seeing.
+
+Solution:
+You need to consolidate to a single source of truth for your filtering logic.
+
+Disable the Fix Scripts: The first step is to prevent emergency-fix.js and filter-fix.js from loading. The best way to do this is to remove the <script> tags that include them from your index.html file. This will ensure that the main handleFilterChange function in script.js is the only one in control.
+
+Focus on the Core Logic: Once the conflicting scripts are removed, we can focus on fixing the bug within script.js.
+
+2. The Core Bug: Timezone Conversion Error
+With the conflicting scripts out of the way, the main handleFilterChange function will run, but it has a subtle bug related to how it handles dates, which is why your filters were failing.
+
+
+The Problem: The database stores dates in UTC format (e.g., 2025-07-25T00:00:00.000Z).  When your JavaScript code 
+
+new Date('2025-07-25T00:00:00.000Z') runs in the browser, it converts this UTC time to your local timezone. If your local timezone is behind UTC (like in the Americas), the date becomes the previous day (e.g., July 24th at 7:00 PM). The code then compares this incorrect local date to "today's" date, and the match fails.
+
+The Fix: We need to parse the date string in a way that ignores timezones, ensuring we are comparing "apples to apples" (a local date to another local date).
+
+Solution:
+Replace the problematic date parsing logic in script.js inside the handleFilterChange function.
+
+Code to Fix in script.js
+This is the corrected code block. It reliably parses the date part of the string, avoiding timezone conversion issues.
+
+JavaScript
+
+// In script.js, inside the handleFilterChange function...
+
+// ...
+      if (revisitDate && revisitDate !== null && revisitDate !== '') {
+        let taskDate;
+
+        if (revisitDate === 'today') {
+          taskDate = today;
+        } else if (revisitDate === 'tomorrow') {
+          taskDate = tomorrow;
+        } else if (typeof revisitDate === 'string') {
+            // =================================================
+            // START OF FIX
+            // =================================================
+            
+            // By parsing only the date part (YYYY-MM-DD), we avoid timezone conversions.
+            // This creates a Date object at midnight in the browser's local timezone.
+            const datePart = revisitDate.split('T')[0];
+            if (datePart.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                const [year, month, day] = datePart.split('-').map(Number);
+                taskDate = new Date(year, month - 1, day);
+            } else {
+                // Fallback for less reliable formats like '4/22'
+                taskDate = new Date(revisitDate);
+            }
+
+            // =================================================
+            // END OF FIX
+            // =================================================
+        }
+        
+        if (taskDate && !isNaN(taskDate)) {
+          // Since taskDate is now correctly set to local midnight, we can use it directly.
+          const taskDateOnly = taskDate;
+          
+          // The rest of your switch statement will now work correctly...
+          switch (filterValue) {
+// ...
+3. Bonus Fix: Debug Export Error
+I also noticed the "Failed to fetch API data" error in your debug report.  This is a simple bug in your export tool.
+
+
+The Problem: The export script in script.js tries to fetch data from /api/debug/tasks. 
+
+
+The Fix: Your server endpoint is actually located at /debug/tasks (without the /api prefix). 
+
+To fix this, go to the startOneClickExport function in script.js and change this line:
+
+JavaScript
+
+// Change this line in startOneClickExport() in script.js
+const response = await fetch('/debug/tasks');
+By making these changes, you will eliminate the conflicting scripts, fix the core timezone bug, and repair your debug export tool. Your date filters should now work exactly as you expect. Let me know if you have any other questions!
+
+
+
+
+
+
+
+That's not enough to explain all the errors. For example sorting for today shows tasks from today and tomorrow.
+
+Triage should always include any past due tasks (past-due according to the current local time/date) and any tasks that do not have a revisit date assigned.
+
+
+
+Coding partner
+
+Show thinking
+You are absolutely right to point that out. Thank you for the clarification. My previous explanation didn't fully connect the dots for all the errors you're seeing. The fact that the "Today" filter is showing tasks from "Tomorrow" is the key symptom that confirms the root cause.
+
+Let's dive into exactly why that's happening and how to fix it, along with the Triage logic.
+
+The Core Problem: Why "Today" Shows "Tomorrow's" Tasks
+The issue is 100% a timezone conversion bug in script.js. Your browser's local time is behind UTC (as you're in Texas), and the code mishandles this conversion.
+
+Here is a step-by-step trace of the error:
+
+
+A Task for Tomorrow: A task scheduled for "tomorrow" (July 26th) is stored in the database with a UTC timestamp, likely 2025-07-26T00:00:00.000Z. 
+
+
+
+
+Incorrect Conversion: Your code in handleFilterChange uses new Date('2025-07-26T00:00:00.000Z').  In your local Central Time Zone (which is UTC-5), this date is actually 
+
+19:00 (7 PM) on July 25th.
+
+Flawed Date Extraction: The next line of code then extracts the year, month, and day from this incorrectly converted local date. It extracts 
+
+getFullYear() (2025), getMonth() (July), and getDate() (25). 
+
+The False Match: It uses these parts to build a new date, taskDateOnly, which becomes July 25th. The code then compares this to the today variable (also July 25th), and they match perfectly.
+
+This is why a task for tomorrow incorrectly appears in today's filter. The timezone bug shifts it back by a day.
+
+The Definitive Solution
+As I mentioned before, the absolute first step is to remove or disable emergency-fix.js and filter-fix.js to stop them from interfering.
+
+Once that is done, the following corrected code in the handleFilterChange function inside script.js will resolve both the "Today/Tomorrow" bug and the Triage filter inaccuracies.
+
+Corrected Code for script.js
+This logic replaces the faulty date-parsing section. By manually parsing the YYYY-MM-DD part of the string, it correctly creates the date in the browser's local timezone, preventing the UTC shift.
+
+JavaScript
+
+// In script.js, inside the handleFilterChange function...
+
+// ...
+      if (revisitDate && revisitDate !== null && revisitDate !== '') {
+        let taskDate;
+
+        if (revisitDate === 'today') {
+          taskDate = today;
+        } else if (revisitDate === 'tomorrow') {
+          taskDate = tomorrow;
+        } else if (typeof revisitDate === 'string') {
+            // =================================================================
+            // START: This is the corrected code block.
+            // =================================================================
+            
+            // By parsing only the date part (YYYY-MM-DD) from the string,
+            // we create a Date object at midnight in the browser's local
+            // timezone, which prevents the UTC-to-local conversion error.
+            const datePart = revisitDate.split('T')[0]; // Extracts 'YYYY-MM-DD'
+            if (datePart.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                const [year, month, day] = datePart.split('-').map(Number);
+                // Creates the date correctly in the local timezone.
+                taskDate = new Date(year, month - 1, day); 
+            } else {
+                // Fallback for other, less reliable formats like '4/22'
+                taskDate = new Date(revisitDate);
+            }
+
+            // =================================================================
+            // END: This is the corrected code block.
+            // =================================================================
+        }
+        
+        if (taskDate && !isNaN(taskDate)) {
+          // The rest of your switch statement will now work correctly
+          // because `taskDate` is now timezone-safe for comparison.
+          const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+          
+          switch (filterValue) {
+          //... the rest of the function
+Applying the Fix to the Triage Filter
+You are correct about the Triage requirements. The logic in script.js aims to meet them, but it fails because it uses the same broken date logic.
+
+Your Triage filter logic currently checks for:
+
+Tasks manually placed in the "Triage" section. 
+
+Uncompleted tasks that have no revisit date. 
+
+Uncompleted tasks whose revisit date is in the past (
+
+taskDateOnly < today). 
+
+Applying the date-parsing fix above will make the "past due" check reliable and accurate, ensuring that any task whose date has passed according to your local time will correctly appear in Triage, just as you require.

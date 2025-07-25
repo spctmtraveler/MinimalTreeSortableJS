@@ -1,0 +1,103 @@
+🛠️ One‑Page Fix Plan
+Kill Dupes – one filter owner only
+1.1 Remove/disable <script src="emergency‑fix.js"> and <script src="filter‑fix.js">.
+1.2 Keep only script.js; its handleFilterChange() will now run.
+
+Timezone Proof – local‑midnight parsing
+
+js
+Copy
+Edit
+// helpers.js (or top of script.js)
+function parseDateLocal(iso) {
+  // handles 'YYYY‑MM‑DD', full ISO, or empty
+  if (!iso) return null;
+  if (iso === 'today')     return today;
+  if (iso === 'tomorrow')  return tomorrow;
+
+  const datePart = iso.split('T')[0];                // strip time / Z
+  const [y,m,d]  = datePart.split('-').map(Number);  // y=2025 m=07 d=25
+  return new Date(y, m-1, d);                        // local midnight
+}
+function sameDay(a,b){
+  return a.getFullYear()===b.getFullYear() &&
+         a.getMonth()   ===b.getMonth()    &&
+         a.getDate()    ===b.getDate();
+}
+Filter Logic – central switch
+
+js
+Copy
+Edit
+const today    = new Date();                         // local now
+const tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
+
+switch (filterValue) {
+
+  case 'today': {
+    const isToday   = sameDay(taskDate, today);
+    const overdue   = taskDate < today && !isToday && !isCompleted;
+    shouldShow      = isToday || overdue;
+    break;
+  }
+
+  case 'tomorrow':
+    shouldShow = sameDay(taskDate, tomorrow);
+    break;
+
+  case 'this-week': {
+    const weekStart = new Date(today); weekStart.setDate(today.getDate()-today.getDay());
+    const weekEnd   = new Date(weekStart); weekEnd.setDate(weekStart.getDate()+6);
+    shouldShow = taskDate >= weekStart && taskDate <= weekEnd;
+    break;
+  }
+
+  case 'triage': {
+    const noDate    = !taskData.revisitDate && !isCompleted;
+    const pastDue   = taskDate < today && !sameDay(taskDate,today) && !isCompleted;
+    shouldShow      = noDate || pastDue;
+    break;
+  }
+
+  /* …next‑week, this‑month, next‑month… */
+}
+Every date arrives via const taskDate = parseDateLocal(taskData.revisitDate);
+
+Triage Rules – always visible
+
+Unscheduled AND incomplete
+
+Past‑due (before local today) AND incomplete
+
+Manually placed tasks remain
+
+Export Endpoint – wrong path
+
+diff
+Copy
+Edit
+- const response = await fetch('/api/debug/tasks');
++ const response = await fetch('/debug/tasks');
+Smoke Test – what to expect
+
+Today shows “Today A”, “Today B”, “Today C”, plus any overdue.
+
+Tomorrow shows “Tomorrow A” only.
+
+Triage shows overdue + unscheduled.
+
+Console logs reflect correct isToday / overdue / shouldShow.
+
+Copy‑paste checklist for dev:
+
+ Delete emergency‑fix.js & filter‑fix.js tags
+
+ Add parseDateLocal() + sameDay()
+
+ Replace date parsing & switch block as above
+
+ Update export endpoint
+
+ Rerun filters ‑ confirm counts & logs
+
+That single patch eliminates the UTC slip, prevents tomorrow‑in‑today, and guarantees Triage behaves as specified.
