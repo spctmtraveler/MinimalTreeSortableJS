@@ -2898,33 +2898,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Initialize debug modal functionality
   initDebugModal();
   
-  // Add manual filter test button for debugging
-  setTimeout(() => {
-    console.log('🧪 MANUAL TEST: Adding filter test button to page');
-    const testBtn = document.createElement('button');
-    testBtn.textContent = 'TEST FILTER';
-    testBtn.style.position = 'fixed';
-    testBtn.style.top = '10px';
-    testBtn.style.right = '10px';
-    testBtn.style.zIndex = '9999';
-    testBtn.style.background = '#00CEF7';
-    testBtn.style.color = 'white';
-    testBtn.style.border = 'none';
-    testBtn.style.padding = '5px 10px';
-    testBtn.style.cursor = 'pointer';
-    testBtn.onclick = () => {
-      console.log('🧪 MANUAL: Filter test button clicked');
-      const dropdown = document.getElementById('filter-dropdown');
-      if (dropdown) {
-        dropdown.value = 'today';
-        console.log('🧪 MANUAL: Set dropdown to today, calling handleFilterChange()');
-        handleFilterChange();
-      } else {
-        console.log('❌ MANUAL: Dropdown still not found');
-      }
-    };
-    document.body.appendChild(testBtn);
-  }, 1000);
+  // Test filter button removed - was causing mobile UI issues
 });
 
 /* ===== DEBUG MODAL FUNCTIONALITY ===== */
